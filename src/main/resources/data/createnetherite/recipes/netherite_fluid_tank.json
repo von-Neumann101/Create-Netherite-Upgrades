@@ -2,14 +2,11 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "pattern": [
-    "NBN",
-    "BTB",
-    "NBN"
+    " N ",
+    "TTT",
+    " N "
   ],
   "key": {
-    "B": {
-      "item": "create:brass_sheet"
-    },
     "N": {
       "item": "createnetherite:netherite_sheet"
     },
@@ -18,6 +15,7 @@
     }
   },
   "result": {
-    "item": "createnetherite:netherite_fluid_tank"
+    "item": "createnetherite:netherite_fluid_tank",
+    "count": 3
   }
 }
