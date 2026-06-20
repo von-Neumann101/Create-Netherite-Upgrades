@@ -2,7 +2,6 @@ package io.github.boosterproject.booster.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.simibubi.create.AllPartialModels;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntityRenderer;
 import dev.engine_room.flywheel.api.visualization.VisualizationManager;
 import io.github.boosterproject.booster.content.fluids.pump.PowerfulMechanicalPumpBlockEntity;
@@ -14,8 +13,6 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class PowerfulMechanicalPumpRenderer extends KineticBlockEntityRenderer<PowerfulMechanicalPumpBlockEntity> {
-    private static final int GEAR_COLOR = 0x202020;
-
     public PowerfulMechanicalPumpRenderer(BlockEntityRendererProvider.Context context) {
         super(context);
     }
@@ -31,12 +28,11 @@ public class PowerfulMechanicalPumpRenderer extends KineticBlockEntityRenderer<P
         RenderType type = getRenderType(be, state);
         VertexConsumer vertexConsumer = buffer.getBuffer(type);
         standardKineticRotationTransform(getRotatedModel(be, state), be, light)
-            .color(GEAR_COLOR)
             .renderInto(ms, vertexConsumer);
     }
 
     @Override
     protected SuperByteBuffer getRotatedModel(PowerfulMechanicalPumpBlockEntity be, BlockState state) {
-        return CachedBuffers.partialFacing(AllPartialModels.MECHANICAL_PUMP_COG, state);
+        return CachedBuffers.partialFacing(BoosterPartialModels.POWERFUL_MECHANICAL_PUMP_COG, state);
     }
 }
