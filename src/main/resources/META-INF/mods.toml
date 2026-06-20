@@ -14,7 +14,7 @@ A Create addon mod.
 [[dependencies.createnetherite]]
 modId = "forge"
 mandatory = true
-versionRange = "[47.1.33,)"
+versionRange = "[47.1.0,47.2.0)"
 ordering = "NONE"
 side = "BOTH"
 
