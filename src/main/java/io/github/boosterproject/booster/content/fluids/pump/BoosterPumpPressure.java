@@ -4,7 +4,7 @@ import com.mojang.logging.LogUtils;
 import com.simibubi.create.content.fluids.pump.PumpBlockEntity;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import io.github.boosterproject.booster.config.BoosterConfigs;
-import net.minecraftforge.fml.loading.FMLLoader;
+import net.neoforged.fml.loading.FMLLoader;
 import org.slf4j.Logger;
 
 public final class BoosterPumpPressure {
@@ -12,7 +12,7 @@ public final class BoosterPumpPressure {
 
     /*
      * FluidNetwork derives transferSpeed from pressure / 2. 4096 pressure still
-     * permits 2048 mB/t, well above the default 4x boost at Create's usual max
+     * permits 2048 mB/t, well above the default 8x boost at Create's usual max
      * 256 RPM, while preventing extreme configs from causing excessive per-tick
      * drain/fill work or float overflow.
      */

@@ -4,25 +4,23 @@ import io.github.boosterproject.booster.Booster;
 import io.github.boosterproject.booster.content.fluids.pump.PowerfulMechanicalPumpBlockItem;
 import io.github.boosterproject.booster.content.fluids.tank.NetheriteFluidTankBlockItem;
 import net.minecraft.world.item.Item;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.registries.DeferredItem;
+import net.neoforged.neoforge.registries.DeferredRegister;
 
 public final class BoosterItems {
-    public static final DeferredRegister<Item> ITEMS =
-        DeferredRegister.create(ForgeRegistries.ITEMS, Booster.MOD_ID);
+    public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Booster.MOD_ID);
 
-    public static final RegistryObject<Item> POWERFUL_MECHANICAL_PUMP =
+    public static final DeferredItem<Item> POWERFUL_MECHANICAL_PUMP =
         ITEMS.register("powerful_mechanical_pump", () -> new PowerfulMechanicalPumpBlockItem(
             BoosterBlocks.POWERFUL_MECHANICAL_PUMP.get(),
             new Item.Properties()
         ));
 
-    public static final RegistryObject<Item> NETHERITE_SHEET =
+    public static final DeferredItem<Item> NETHERITE_SHEET =
         ITEMS.register("netherite_sheet", () -> new Item(new Item.Properties()));
 
-    public static final RegistryObject<Item> NETHERITE_FLUID_TANK =
+    public static final DeferredItem<Item> NETHERITE_FLUID_TANK =
         ITEMS.register("netherite_fluid_tank", () -> new NetheriteFluidTankBlockItem(
             BoosterBlocks.NETHERITE_FLUID_TANK.get(),
             new Item.Properties()

@@ -1,109 +1,146 @@
 plugins {
-    id "java"
-    id "maven-publish"
-    id "net.neoforged.moddev.legacyforge" version "2.0.107"
+    id 'java-library'
+    id 'maven-publish'
+    id 'net.neoforged.moddev' version '2.0.142'
+    id 'idea'
 }
+
+tasks.named('wrapper', Wrapper).configure {
+    distributionType = Wrapper.DistributionType.BIN
+}
+
+version = mod_version
+group = mod_group_id
 
 base {
-    archivesName = "createnetherite-${minecraft_version}"
-    group = mod_group_id
-    version = mod_version
+    archivesName = "${mod_id}-${minecraft_version}"
 }
 
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
-    }
-    withSourcesJar()
-    withJavadocJar()
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+
+sourceSets.main.resources {
+    srcDir('src/generated/resources')
+    exclude("**/*.bbmodel")
+    exclude("src/generated/**/.cache")
 }
 
-legacyForge {
-    version = "${minecraft_version}-${forge_version}"
+repositories {
+    maven { url = "https://maven.createmod.net" }
+    maven { url = "https://maven.ithundxr.dev/snapshots" }
+    mavenCentral()
+}
+
+neoForge {
+    version = project.neo_version
 
     parchment {
-        minecraftVersion = minecraft_version
-        mappingsVersion = parchment_version
-    }
-
-    mods {
-        createnetherite {
-            sourceSet(sourceSets.main)
-        }
+        mappingsVersion = project.parchment_mappings_version
+        minecraftVersion = project.parchment_minecraft_version
     }
 
     runs {
-        configureEach {
-            systemProperty("forge.logging.markers", "")
-            systemProperty("forge.logging.console.level", "info")
-            programArgument("-mixin.config=createnetherite.mixins.json")
-        }
-
         client {
             client()
             gameDirectory = project.file("run")
+            programArgument("-mixin.config=${mod_id}.mixins.json")
+            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
         }
 
         server {
             server()
             gameDirectory = project.file("run/server")
+            programArgument '--nogui'
+            programArgument("-mixin.config=${mod_id}.mixins.json")
+            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+        }
+
+        data {
+            data()
+            programArguments.addAll '--mod', project.mod_id, '--all',
+                '--output', file('src/generated/resources/').getAbsolutePath(),
+                '--existing', file('src/main/resources/').getAbsolutePath()
+        }
+
+        configureEach {
+            systemProperty 'forge.logging.markers', 'REGISTRIES'
+            logLevel = org.slf4j.event.Level.INFO
+        }
+    }
+
+    mods {
+        "${mod_id}" {
+            sourceSet(sourceSets.main)
         }
     }
 }
 
-Provider<RegularFile> createNetheriteRefmap
-mixin {
-    createNetheriteRefmap = add(sourceSets.main, "createnetherite.refmap.json")
-    config "createnetherite.mixins.json"
-}
-
-repositories {
-    maven { url = "https://maven.aliyun.com/repository/public" }
-    maven { url = "https://maven.aliyun.com/repository/central" }
-    maven { url = "https://maven.minecraftforge.net/" }
-    maven { url = "https://maven.createmod.net" }
-    maven { url = "https://maven.ithundxr.dev/mirror" }
-    mavenCentral()
-    mavenLocal()
+configurations {
+    runtimeClasspath.extendsFrom localRuntime
 }
 
 dependencies {
-    modCompileOnly("com.simibubi.create:create-${minecraft_version}:${create_version}:slim") {
+    implementation("com.simibubi.create:create-${minecraft_version}:${create_version}:slim") {
         transitive = false
     }
-    modRuntimeOnly("com.simibubi.create:create-${minecraft_version}:${create_version}:all") {
-        transitive = false
-    }
-
-    compileOnly("com.tterrag.registrate:Registrate:${registrate_version}")
-    compileOnly("net.createmod.catnip:Catnip-Forge-${minecraft_version}:${catnip_version}")
-    compileOnly("net.createmod.ponder:Ponder-Forge-${minecraft_version}:${ponder_version}")
-    compileOnly("dev.engine-room.flywheel:flywheel-forge-api-${minecraft_version}:${flywheel_version}")
-    compileOnly("dev.engine-room.flywheel:flywheel-forge-${minecraft_version}:${flywheel_version}")
-    modRuntimeOnly("net.createmod.ponder:Ponder-Forge-${minecraft_version}:${ponder_version}")
-    modRuntimeOnly("dev.engine-room.flywheel:flywheel-forge-${minecraft_version}:${flywheel_version}")
-    modRuntimeOnly("dev.engine-room.vanillin:vanillin-forge-${minecraft_version}:${vanillin_version}")
+    implementation("net.createmod.ponder:ponder-neoforge:${ponder_version}+mc${minecraft_version}")
+    compileOnly("dev.engine-room.flywheel:flywheel-neoforge-api-${minecraft_version}:${flywheel_version}")
+    runtimeOnly("dev.engine-room.flywheel:flywheel-neoforge-${minecraft_version}:${flywheel_version}")
+    implementation("com.tterrag.registrate:Registrate:${registrate_version}")
 
     compileOnly("io.github.llamalad7:mixinextras-common:${mixin_extras_version}")
     annotationProcessor "org.spongepowered:mixin:0.8.5:processor"
 }
 
-tasks.withType(JavaCompile).configureEach {
-    options.encoding = "UTF-8"
-    options.release = 17
+var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
+    var replaceProperties = [
+        minecraft_version      : minecraft_version,
+        minecraft_version_range: minecraft_version_range,
+        neo_version            : neo_version,
+        loader_version_range   : loader_version_range,
+        mod_id                 : mod_id,
+        mod_name               : mod_name,
+        mod_license            : mod_license,
+        mod_version            : mod_version,
+        mod_authors            : mod_authors,
+        mod_description        : mod_description,
+        create_version_range   : create_version_range,
+    ]
+    inputs.properties replaceProperties
+    expand replaceProperties
+    from "src/main/templates"
+    into "build/generated/sources/modMetadata"
 }
 
-processResources {
-    inputs.property("version", project.version)
+sourceSets.main.resources.srcDir generateModMetadata
+neoForge.ideSyncTask generateModMetadata
 
-    filesMatching("META-INF/mods.toml") {
-        expand(version: project.version)
+jar {
+    manifest.attributes([
+        "MixinConfigs": "${mod_id}.mixins.json"
+    ])
+}
+
+publishing {
+    publications {
+        register('mavenJava', MavenPublication) {
+            from components.java
+        }
+    }
+    repositories {
+        maven {
+            url "file://${project.projectDir}/repo"
+        }
     }
 }
 
-jar {
-    from(createNetheriteRefmap)
-    manifest.attributes([
-        "MixinConfigs": "createnetherite.mixins.json"
-    ])
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.release = 21
+}
+
+idea {
+    module {
+        downloadSources = true
+        downloadJavadoc = true
+    }
 }

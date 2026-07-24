@@ -6,11 +6,11 @@ import io.github.boosterproject.booster.config.BoosterConfigs;
 import io.github.boosterproject.booster.registry.BoosterBlockEntityTypes;
 import net.createmod.catnip.animation.LerpedFloat;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler.FluidAction;
 
 public class NetheriteFluidTankBlockEntity extends FluidTankBlockEntity {
     public static final int DEFAULT_CAPACITY_MULTIPLIER = 16;
@@ -44,12 +44,12 @@ public class NetheriteFluidTankBlockEntity extends FluidTankBlockEntity {
     }
 
     @Override
-    protected void read(CompoundTag compound, boolean clientPacket) {
+    protected void read(CompoundTag compound, HolderLookup.Provider registries, boolean clientPacket) {
         CompoundTag tankContent = compound.contains("TankContent")
             ? compound.getCompound("TankContent").copy()
             : null;
 
-        super.read(compound, clientPacket);
+        super.read(compound, registries, clientPacket);
 
         if (!isController()) {
             return;
@@ -57,7 +57,7 @@ public class NetheriteFluidTankBlockEntity extends FluidTankBlockEntity {
 
         tankInventory.setCapacity(getCapacityForBlocks(getTotalTankSize()));
         if (tankContent != null) {
-            tankInventory.readFromNBT(tankContent);
+            tankInventory.readFromNBT(registries, tankContent);
         }
         drainOverflow();
         forceFluidLevelUpdate = true;

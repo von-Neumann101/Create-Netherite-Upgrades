@@ -9,9 +9,9 @@ import io.github.boosterproject.booster.registry.BoosterBlocks;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 
 public final class BoosterClient {
     private BoosterClient() {
@@ -22,9 +22,9 @@ public final class BoosterClient {
         modEventBus.addListener(BoosterClient::registerRenderers);
         modEventBus.addListener(BoosterClient::clientSetup);
         CreateClient.MODEL_SWAPPER.getCustomBlockModels()
-            .register(new ResourceLocation(Booster.MOD_ID, "powerful_mechanical_pump"), PipeAttachmentModel::withAO);
+            .register(ResourceLocation.fromNamespaceAndPath(Booster.MOD_ID, "powerful_mechanical_pump"), PipeAttachmentModel::withAO);
         CreateClient.MODEL_SWAPPER.getCustomBlockModels()
-            .register(new ResourceLocation(Booster.MOD_ID, "netherite_fluid_tank"), NetheriteFluidTankModel::standard);
+            .register(ResourceLocation.fromNamespaceAndPath(Booster.MOD_ID, "netherite_fluid_tank"), NetheriteFluidTankModel::standard);
     }
 
     private static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {

@@ -22,9 +22,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.client.model.data.ModelData;
-import net.minecraftforge.client.model.data.ModelData.Builder;
-import net.minecraftforge.client.model.data.ModelProperty;
+import net.neoforged.neoforge.client.model.data.ModelData;
+import net.neoforged.neoforge.client.model.data.ModelData.Builder;
+import net.neoforged.neoforge.client.model.data.ModelProperty;
 
 public class NetheriteFluidTankModel extends CTModel {
     private static final ModelProperty<CullData> CULL_PROPERTY = new ModelProperty<>();
@@ -72,8 +72,8 @@ public class NetheriteFluidTankModel extends CTModel {
     private static CTSpriteShiftEntry getCT(String name) {
         return CTSpriteShifter.getCT(
             AllCTTypes.RECTANGLE,
-            new ResourceLocation(Booster.MOD_ID, "block/netherite_fluid_tank/" + name),
-            new ResourceLocation(Booster.MOD_ID, "block/netherite_fluid_tank/" + name + "_connected")
+            ResourceLocation.fromNamespaceAndPath(Booster.MOD_ID, "block/netherite_fluid_tank/" + name),
+            ResourceLocation.fromNamespaceAndPath(Booster.MOD_ID, "block/netherite_fluid_tank/" + name + "_connected")
         );
     }
 

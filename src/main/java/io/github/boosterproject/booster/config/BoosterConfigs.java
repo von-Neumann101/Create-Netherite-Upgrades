@@ -1,15 +1,15 @@
 package io.github.boosterproject.booster.config;
 
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.config.ModConfig;
+import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.config.ModConfig;
+import net.neoforged.neoforge.common.ModConfigSpec;
 
 public final class BoosterConfigs {
-    public static final ForgeConfigSpec SERVER_SPEC;
+    public static final ModConfigSpec SERVER_SPEC;
     public static final Server SERVER;
 
     static {
-        ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
+        ModConfigSpec.Builder builder = new ModConfigSpec.Builder();
         SERVER = new Server(builder);
         SERVER_SPEC = builder.build();
     }
@@ -17,16 +17,16 @@ public final class BoosterConfigs {
     private BoosterConfigs() {
     }
 
-    public static void register(ModLoadingContext context) {
-        context.registerConfig(ModConfig.Type.SERVER, SERVER_SPEC, "createnetherite-server.toml");
+    public static void register(ModContainer container) {
+        container.registerConfig(ModConfig.Type.SERVER, SERVER_SPEC, "createnetherite-server.toml");
     }
 
     public static final class Server {
-        public final ForgeConfigSpec.DoubleValue powerfulPumpStressImpact;
-        public final ForgeConfigSpec.DoubleValue powerfulPumpPressureMultiplier;
-        public final ForgeConfigSpec.IntValue netheriteFluidTankCapacityMultiplier;
+        public final ModConfigSpec.DoubleValue powerfulPumpStressImpact;
+        public final ModConfigSpec.DoubleValue powerfulPumpPressureMultiplier;
+        public final ModConfigSpec.IntValue netheriteFluidTankCapacityMultiplier;
 
-        private Server(ForgeConfigSpec.Builder builder) {
+        private Server(ModConfigSpec.Builder builder) {
             powerfulPumpStressImpact = builder
                 .comment(
                     "Create base stress impact for createnetherite:powerful_mechanical_pump at 1 RPM.",

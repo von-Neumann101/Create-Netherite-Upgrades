@@ -6,7 +6,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public final class BoosterPartialModels {
     public static final PartialModel POWERFUL_MECHANICAL_PUMP_COG =
-        PartialModel.of(new ResourceLocation(Booster.MOD_ID, "block/powerful_mechanical_pump/cog"));
+        PartialModel.of(ResourceLocation.fromNamespaceAndPath(Booster.MOD_ID, "block/powerful_mechanical_pump/cog"));
 
     private BoosterPartialModels() {
     }
