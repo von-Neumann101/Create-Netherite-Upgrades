@@ -3,6 +3,7 @@ package io.github.boosterproject.booster.registry;
 import io.github.boosterproject.booster.Booster;
 import io.github.boosterproject.booster.content.fluids.pump.PowerfulMechanicalPumpBlockEntity;
 import io.github.boosterproject.booster.content.fluids.tank.NetheriteFluidTankBlockEntity;
+import io.github.boosterproject.booster.content.kinetics.steamEngine.NetheriteSteamEngineBlockEntity;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.bus.api.IEventBus;
@@ -21,6 +22,11 @@ public final class BoosterBlockEntityTypes {
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<NetheriteFluidTankBlockEntity>> NETHERITE_FLUID_TANK =
         BLOCK_ENTITY_TYPES.register("netherite_fluid_tank", () -> BlockEntityType.Builder
             .of(NetheriteFluidTankBlockEntity::new, BoosterBlocks.NETHERITE_FLUID_TANK.get())
+            .build(null));
+
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<NetheriteSteamEngineBlockEntity>> NETHERITE_STEAM_ENGINE =
+        BLOCK_ENTITY_TYPES.register("netherite_steam_engine", () -> BlockEntityType.Builder
+            .of(NetheriteSteamEngineBlockEntity::new, BoosterBlocks.NETHERITE_STEAM_ENGINE.get())
             .build(null));
 
     private BoosterBlockEntityTypes() {

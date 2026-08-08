@@ -1,8 +1,9 @@
 {
-  "block.createnetherite.netherite_fluid_tank": "下界合金流体储罐",
-  "block.createnetherite.powerful_mechanical_pump": "强力机械泵",
+  "block.createnetherite.netherite_fluid_tank": "\u4e0b\u754c\u5408\u91d1\u6d41\u4f53\u50a8\u7f50",
+  "block.createnetherite.netherite_steam_engine": "\u4e0b\u754c\u5408\u91d1\u84b8\u6c7d\u5f15\u64ce",
+  "block.createnetherite.powerful_mechanical_pump": "\u5f3a\u529b\u673a\u68b0\u6cf5",
   "itemGroup.createnetherite.createnetherite": "Create Netherite",
-  "item.createnetherite.netherite_sheet": "下界合金板",
-  "tooltip.createnetherite.netherite_fluid_tank": "容量是普通流体储罐的 %s 倍。",
-  "tooltip.createnetherite.powerful_mechanical_pump": "高吞吐量流体泵"
+  "item.createnetherite.netherite_sheet": "\u4e0b\u754c\u5408\u91d1\u677f",
+  "tooltip.createnetherite.netherite_fluid_tank": "\u5bb9\u91cf\u662f\u666e\u901a\u6d41\u4f53\u50a8\u7f50\u7684 %s \u500d\u3002",
+  "tooltip.createnetherite.powerful_mechanical_pump": "\u9ad8\u541e\u5410\u91cf\u6d41\u4f53\u6cf5"
 }

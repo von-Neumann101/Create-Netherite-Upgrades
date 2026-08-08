@@ -96,6 +96,7 @@ MixinConfigs: createnetherite.mixins.json
 
 - `createnetherite:powerful_mechanical_pump`
 - `createnetherite:netherite_fluid_tank`
+- `createnetherite:netherite_steam_engine`
 - `createnetherite:netherite_sheet`
 
 创造模式标签页：
@@ -103,7 +104,7 @@ MixinConfigs: createnetherite.mixins.json
 - 注册位置：`BoosterCreativeModeTabs`
 - 标签页 ID：`createnetherite:createnetherite`
 - 图标：强力机械泵
-- 包含：强力机械泵、下界合金流体储罐、下界合金板
+- 包含：强力机械泵、下界合金流体储罐、下界合金蒸汽引擎、下界合金板
 
 ## 主类与初始化
 
@@ -127,6 +128,7 @@ public Booster(IEventBus modEventBus, ModContainer modContainer)
   - `BoosterBlockEntityTypes`
 - 客户端侧通过 `FMLEnvironment.dist == Dist.CLIENT` 调用 `BoosterClient.register(...)`
 - 在 `FMLCommonSetupEvent` 中用 `BlockStressValues.IMPACTS.register(...)` 注册强力机械泵基础应力冲击
+- 在 `FMLCommonSetupEvent` 中注册下界合金蒸汽引擎的 2048 SU 基础容量和最高 64 RPM
 
 不要使用 1.20.1 的：
 
@@ -145,6 +147,7 @@ NeoForge 1.21.1 使用 NeoForge DeferredRegister 新类型，不再使用 Forge 
 - `DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Booster.MOD_ID)`
 - `DeferredBlock<PowerfulMechanicalPumpBlock> POWERFUL_MECHANICAL_PUMP`
 - `DeferredBlock<NetheriteFluidTankBlock> NETHERITE_FLUID_TANK`
+- `DeferredBlock<NetheriteSteamEngineBlock> NETHERITE_STEAM_ENGINE`
 
 1.21.1 API 差异：
 
@@ -159,6 +162,7 @@ NeoForge 1.21.1 使用 NeoForge DeferredRegister 新类型，不再使用 Forge 
 - `DeferredItem<Item> POWERFUL_MECHANICAL_PUMP`
 - `DeferredItem<Item> NETHERITE_SHEET`
 - `DeferredItem<Item> NETHERITE_FLUID_TANK`
+- `DeferredItem<Item> NETHERITE_STEAM_ENGINE`
 
 ### BlockEntityType
 
@@ -168,6 +172,7 @@ NeoForge 1.21.1 使用 NeoForge DeferredRegister 新类型，不再使用 Forge 
 - 使用 `DeferredHolder<BlockEntityType<?>, BlockEntityType<T>>`
 - `POWERFUL_MECHANICAL_PUMP` 绑定 `PowerfulMechanicalPumpBlockEntity`
 - `NETHERITE_FLUID_TANK` 绑定 `NetheriteFluidTankBlockEntity`
+- `NETHERITE_STEAM_ENGINE` 绑定 `NetheriteSteamEngineBlockEntity`
 
 ## 配置
 
@@ -399,6 +404,16 @@ multiBlockCapacity = blockCount * singleBlockCapacity
 
 如果物品保存了 `TankContent`，会把流体量裁剪到单方块容量。
 
+## 下界合金锅炉与蒸汽引擎实现
+
+- `NetheriteFluidTankBlockEntity` 使用 `NetheriteBoilerData`，保留 Create 原版 1–18 级锅炉规则。
+- 每级供水需求为 12 mB/t；Create 原版为 10 mB/t。
+- 下界合金蒸汽引擎基础应力容量为 2048 SU，是 Create 原版蒸汽引擎的两倍。
+- `NetheriteSteamEngineBlock` 和对应方块实体只允许连接下界合金流体储罐。
+- `BoilerDataMixin` 只让下界合金储罐识别下界合金蒸汽引擎，并修正护目镜中的应力与耗水显示。
+- `SteamEngineBlockEntityMixin` 让 Create 的活塞运动与目标角度逻辑识别自定义蒸汽引擎。
+- 普通 Create 储罐仍只识别普通蒸汽引擎，两种锅炉不能混搭。
+
 ## 客户端渲染与模型
 
 入口：`client/BoosterClient.java`
@@ -406,11 +421,12 @@ multiBlockCapacity = blockCount * singleBlockCapacity
 - 注册 BE renderer：
   - 强力泵：`PowerfulMechanicalPumpRenderer`
   - 下界合金储罐：`NetheriteFluidTankRenderer`
+  - 下界合金蒸汽引擎：复用 Create `SteamEngineRenderer`
 - 使用 `CreateClient.MODEL_SWAPPER.getCustomBlockModels()`：
   - 强力泵：`PipeAttachmentModel::withAO`
   - 储罐：`NetheriteFluidTankModel::standard`
 - 储罐渲染层：`ItemBlockRenderTypes.setRenderLayer(..., RenderType.cutoutMipped())`
-- Flywheel visual：`SimpleBlockEntityVisualizer.builder(...).factory(PowerfulMechanicalPumpVisual::new).apply()`
+- Flywheel visual：强力泵使用 `PowerfulMechanicalPumpVisual`，下界合金蒸汽引擎复用 `SteamEngineVisual`
 
 1.21.1 API 差异：
 
@@ -453,6 +469,7 @@ Minecraft 1.21.1 数据路径使用 singular registry path：
 
 - `assets/createnetherite/blockstates/powerful_mechanical_pump.json`
 - `assets/createnetherite/blockstates/netherite_fluid_tank.json`
+- `assets/createnetherite/blockstates/netherite_steam_engine.json`
 - `assets/createnetherite/models/block/powerful_mechanical_pump/block.json`
 - `assets/createnetherite/models/block/powerful_mechanical_pump/cog.json`
 - `assets/createnetherite/textures/block/powerful_mechanical_pump/pump.png`
@@ -466,6 +483,7 @@ Minecraft 1.21.1 数据路径使用 singular registry path：
 
 - 强力机械泵：两个下界合金板 + 三个 `create:mechanical_pump`，输出 3 个
 - 下界合金流体储罐：两个下界合金板 + 三个 `create:fluid_tank`，输出 3 个
+- 下界合金蒸汽引擎：两个下界合金板 + 三个 `create:steam_engine`，输出 3 个
 - 下界合金板：Create pressing，输入 `c:ingots/netherite`，输出 `createnetherite:netherite_sheet`
 
 本分支补充了：
@@ -496,13 +514,14 @@ minecraft:netherite_ingot
 
 ## 已知限制与注意点
 
-- 不支持用下界合金流体储罐参与 Create 锅炉多方块结构。
 - 强力机械泵不改变 Create 原版流向语义；正反转仍按原版泵处理。
 - 压力倍率提升吞吐，不提升管道可传播距离。Create 管网传播距离不是由 pressure 决定的。
 - 不修改 Create 原版源码。
 - 不把类放进 `com.simibubi.create` 包。
-- 后续升级 Create 6.0.10 以上时，必须重新检查三个 Mixin target：
+- 后续升级 Create 6.0.10 以上时，必须重新检查五组 Mixin target：
   - `PumpBlockEntity.distributePressureTo`
   - `PumpBlockEntity$PumpFluidTransferBehaviour.tick`
   - `FluidPropagator.propagateChangedPipe`
+  - `BoilerData.evaluate` / `BoilerData.addToGoggleTooltip`
+  - `SteamEngineBlockEntity.tick` / `SteamEngineBlockEntity.getTargetAngle`
 - `FluidPropagatorMixin` 注释里提到 Create 6.0.8，是从 Forge 版迁移保留下来的说明；功能在 1.21.1 runClient 中没有触发启动错误，但建议后续清理注释以免误导。

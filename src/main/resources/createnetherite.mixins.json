@@ -5,9 +5,11 @@
   "compatibilityLevel": "JAVA_21",
   "refmap": "createnetherite.refmap.json",
   "mixins": [
+    "BoilerDataMixin",
     "FluidPropagatorMixin",
     "PumpBlockEntityMixin",
-    "PumpFluidTransferBehaviourMixin"
+    "PumpFluidTransferBehaviourMixin",
+    "SteamEngineBlockEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1

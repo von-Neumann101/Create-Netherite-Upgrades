@@ -8,6 +8,7 @@ import io.github.boosterproject.booster.registry.BoosterBlockEntityTypes;
 import io.github.boosterproject.booster.registry.BoosterBlocks;
 import io.github.boosterproject.booster.registry.BoosterCreativeModeTabs;
 import io.github.boosterproject.booster.registry.BoosterItems;
+import net.minecraft.world.level.block.Block;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
@@ -37,9 +38,15 @@ public class Booster {
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {
-        event.enqueueWork(() -> BlockStressValues.IMPACTS.register(
-            BoosterBlocks.POWERFUL_MECHANICAL_PUMP.get(),
-            () -> BoosterConfigs.SERVER.powerfulPumpStressImpact.get()
-        ));
+        event.enqueueWork(() -> {
+            BlockStressValues.IMPACTS.register(
+                BoosterBlocks.POWERFUL_MECHANICAL_PUMP.get(),
+                () -> BoosterConfigs.SERVER.powerfulPumpStressImpact.get()
+            );
+
+            Block netheriteSteamEngine = BoosterBlocks.NETHERITE_STEAM_ENGINE.get();
+            BlockStressValues.CAPACITIES.register(netheriteSteamEngine, () -> 2048.0D);
+            BlockStressValues.setGeneratorSpeed(64, true).accept(netheriteSteamEngine);
+        });
     }
 }

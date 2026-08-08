@@ -15,7 +15,7 @@
     }
   },
   "result": {
-    "item": "createnetherite:netherite_fluid_tank",
+    "id": "createnetherite:netherite_fluid_tank",
     "count": 3
   }
 }

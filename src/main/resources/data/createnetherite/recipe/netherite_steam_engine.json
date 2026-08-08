@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " N ",
+    "EEE",
+    " N "
+  ],
+  "key": {
+    "N": { "item": "createnetherite:netherite_sheet" },
+    "E": { "item": "create:steam_engine" }
+  },
+  "result": {
+    "id": "createnetherite:netherite_steam_engine",
+    "count": 3
+  }
+}

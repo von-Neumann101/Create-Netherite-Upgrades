@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "createnetherite:netherite_fluid_tank"
+    "createnetherite:netherite_fluid_tank",
+    "createnetherite:netherite_steam_engine"
   ]
 }

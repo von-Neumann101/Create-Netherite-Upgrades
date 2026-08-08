@@ -21,6 +21,7 @@ public class NetheriteFluidTankBlockEntity extends FluidTankBlockEntity {
 
     public NetheriteFluidTankBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
+        boiler = new NetheriteBoilerData();
     }
 
     public static int getNetheriteCapacityMultiplierValue() {
