@@ -11,6 +11,9 @@
     "PumpFluidTransferBehaviourMixin",
     "SteamEngineBlockEntityMixin"
   ],
+  "client": [
+    "FluidTankRendererMixin"
+  ],
   "injectors": {
     "defaultRequire": 1
   }
