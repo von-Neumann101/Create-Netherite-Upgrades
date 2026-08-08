@@ -1,5 +1,6 @@
 package io.github.boosterproject.booster.mixin;
 
+import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.fluids.tank.BoilerData;
 import com.simibubi.create.content.fluids.tank.FluidTankBlockEntity;
 import com.tterrag.registrate.util.entry.BlockEntry;
@@ -27,7 +28,7 @@ public abstract class BoilerDataMixin {
     )
     private boolean booster$recognizeMatchingSteamEngine(BlockEntry<?> entry, BlockState state,
                                                          FluidTankBlockEntity controller) {
-        if (controller instanceof NetheriteFluidTankBlockEntity) {
+        if (entry == AllBlocks.STEAM_ENGINE && controller instanceof NetheriteFluidTankBlockEntity) {
             return state.is(BoosterBlocks.NETHERITE_STEAM_ENGINE.get());
         }
         return entry.has(state);
