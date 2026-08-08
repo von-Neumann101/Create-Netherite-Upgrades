@@ -7,6 +7,10 @@ import net.minecraft.resources.ResourceLocation;
 public final class BoosterPartialModels {
     public static final PartialModel POWERFUL_MECHANICAL_PUMP_COG =
         PartialModel.of(ResourceLocation.fromNamespaceAndPath(Booster.MOD_ID, "block/powerful_mechanical_pump/cog"));
+    public static final PartialModel NETHERITE_BOILER_GAUGE =
+        PartialModel.of(ResourceLocation.fromNamespaceAndPath(Booster.MOD_ID, "block/netherite_boiler/gauge"));
+    public static final PartialModel NETHERITE_BOILER_GAUGE_DIAL =
+        PartialModel.of(ResourceLocation.fromNamespaceAndPath(Booster.MOD_ID, "block/netherite_boiler/gauge_dial"));
 
     private BoosterPartialModels() {
     }
