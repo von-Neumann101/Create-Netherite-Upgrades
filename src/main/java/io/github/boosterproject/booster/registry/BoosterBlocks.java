@@ -1,9 +1,11 @@
 package io.github.boosterproject.booster.registry;
 
+import com.simibubi.create.AllBlocks;
 import io.github.boosterproject.booster.Booster;
 import io.github.boosterproject.booster.content.fluids.pump.PowerfulMechanicalPumpBlock;
 import io.github.boosterproject.booster.content.fluids.tank.NetheriteFluidTankBlock;
 import io.github.boosterproject.booster.content.kinetics.steamEngine.NetheriteSteamEngineBlock;
+import io.github.boosterproject.booster.content.logistics.vault.NetheriteItemVaultBlock;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
@@ -31,6 +33,12 @@ public final class BoosterBlocks {
         BLOCKS.register("netherite_steam_engine", () -> new NetheriteSteamEngineBlock(
             BlockBehaviour.Properties.ofFullCopy(Blocks.NETHERITE_BLOCK)
                 .noOcclusion()
+        ));
+
+    public static final DeferredBlock<NetheriteItemVaultBlock> NETHERITE_ITEM_VAULT =
+        BLOCKS.register("netherite_item_vault", () -> new NetheriteItemVaultBlock(
+            BlockBehaviour.Properties.ofFullCopy(AllBlocks.ITEM_VAULT.get())
+                .explosionResistance(1200.0F)
         ));
 
     private BoosterBlocks() {

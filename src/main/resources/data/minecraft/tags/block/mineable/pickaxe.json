@@ -3,6 +3,7 @@
   "values": [
     "createnetherite:powerful_mechanical_pump",
     "createnetherite:netherite_fluid_tank",
-    "createnetherite:netherite_steam_engine"
+    "createnetherite:netherite_steam_engine",
+    "createnetherite:netherite_item_vault"
   ]
 }

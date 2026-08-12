@@ -4,6 +4,7 @@ import com.simibubi.create.CreateClient;
 import com.simibubi.create.content.fluids.PipeAttachmentModel;
 import com.simibubi.create.content.kinetics.steamEngine.SteamEngineRenderer;
 import com.simibubi.create.content.kinetics.steamEngine.SteamEngineVisual;
+import com.simibubi.create.foundation.block.connected.CTModel;
 import dev.engine_room.flywheel.lib.visualization.SimpleBlockEntityVisualizer;
 import io.github.boosterproject.booster.Booster;
 import io.github.boosterproject.booster.registry.BoosterBlockEntityTypes;
@@ -27,6 +28,9 @@ public final class BoosterClient {
             .register(ResourceLocation.fromNamespaceAndPath(Booster.MOD_ID, "powerful_mechanical_pump"), PipeAttachmentModel::withAO);
         CreateClient.MODEL_SWAPPER.getCustomBlockModels()
             .register(ResourceLocation.fromNamespaceAndPath(Booster.MOD_ID, "netherite_fluid_tank"), NetheriteFluidTankModel::standard);
+        CreateClient.MODEL_SWAPPER.getCustomBlockModels()
+            .register(ResourceLocation.fromNamespaceAndPath(Booster.MOD_ID, "netherite_item_vault"),
+                model -> new CTModel(model, new NetheriteItemVaultCTBehaviour()));
     }
 
     private static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
