@@ -1,5 +1,6 @@
 package io.github.boosterproject.booster.registry;
 
+import com.simibubi.create.content.logistics.vault.ItemVaultItem;
 import io.github.boosterproject.booster.Booster;
 import io.github.boosterproject.booster.content.fluids.pump.PowerfulMechanicalPumpBlockItem;
 import io.github.boosterproject.booster.content.fluids.tank.NetheriteFluidTankBlockItem;
@@ -32,6 +33,12 @@ public final class BoosterItems {
     public static final RegistryObject<Item> NETHERITE_STEAM_ENGINE =
         ITEMS.register("netherite_steam_engine", () -> new BlockItem(
             BoosterBlocks.NETHERITE_STEAM_ENGINE.get(),
+            new Item.Properties()
+        ));
+
+    public static final RegistryObject<Item> NETHERITE_ITEM_VAULT =
+        ITEMS.register("netherite_item_vault", () -> new ItemVaultItem(
+            BoosterBlocks.NETHERITE_ITEM_VAULT.get(),
             new Item.Properties()
         ));
 

@@ -2,6 +2,8 @@ package io.github.boosterproject.booster;
 
 import com.mojang.logging.LogUtils;
 import com.simibubi.create.api.stress.BlockStressValues;
+import com.simibubi.create.AllMountedStorageTypes;
+import com.simibubi.create.api.contraption.storage.item.MountedItemStorageType;
 import io.github.boosterproject.booster.client.BoosterClient;
 import io.github.boosterproject.booster.config.BoosterConfigs;
 import io.github.boosterproject.booster.registry.BoosterBlockEntityTypes;
@@ -48,6 +50,10 @@ public class Booster {
             Block netheriteSteamEngine = BoosterBlocks.NETHERITE_STEAM_ENGINE.get();
             BlockStressValues.CAPACITIES.register(netheriteSteamEngine, () -> 2048.0D);
             BlockStressValues.setGeneratorSpeed(64, true).accept(netheriteSteamEngine);
+            MountedItemStorageType.REGISTRY.register(
+                BoosterBlocks.NETHERITE_ITEM_VAULT.get(),
+                AllMountedStorageTypes.VAULT.get()
+            );
         });
     }
 }
