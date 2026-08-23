@@ -10,6 +10,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler.FluidAction;
 
 public class NetheriteFluidTankBlockEntity extends FluidTankBlockEntity {
@@ -30,6 +31,10 @@ public class NetheriteFluidTankBlockEntity extends FluidTankBlockEntity {
 
     public int getNetheriteCapacityMultiplier() {
         return getNetheriteCapacityMultiplierValue();
+    }
+
+    public IFluidHandler getFluidCapability() {
+        return fluidCapability;
     }
 
     @Override

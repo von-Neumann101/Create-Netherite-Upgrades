@@ -47,6 +47,11 @@ public final class BoosterBlockEntityTypes {
 
     private static void registerCapabilities(RegisterCapabilitiesEvent event) {
         event.registerBlockEntity(
+            Capabilities.FluidHandler.BLOCK,
+            NETHERITE_FLUID_TANK.get(),
+            (tank, side) -> tank.getFluidCapability()
+        );
+        event.registerBlockEntity(
             Capabilities.ItemHandler.BLOCK,
             NETHERITE_ITEM_VAULT.get(),
             (vault, side) -> vault.getItemCapability()
