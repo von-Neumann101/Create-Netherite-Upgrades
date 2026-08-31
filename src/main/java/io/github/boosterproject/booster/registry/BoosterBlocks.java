@@ -2,6 +2,7 @@ package io.github.boosterproject.booster.registry;
 
 import com.simibubi.create.AllBlocks;
 import io.github.boosterproject.booster.Booster;
+import io.github.boosterproject.booster.content.contraptions.elevator.NetheriteElevatorPulleyBlock;
 import io.github.boosterproject.booster.content.fluids.pump.PowerfulMechanicalPumpBlock;
 import io.github.boosterproject.booster.content.fluids.tank.NetheriteFluidTankBlock;
 import io.github.boosterproject.booster.content.kinetics.steamEngine.NetheriteSteamEngineBlock;
@@ -39,6 +40,11 @@ public final class BoosterBlocks {
         BLOCKS.register("netherite_item_vault", () -> new NetheriteItemVaultBlock(
             BlockBehaviour.Properties.ofFullCopy(AllBlocks.ITEM_VAULT.get())
                 .explosionResistance(1200.0F)
+        ));
+
+    public static final DeferredBlock<NetheriteElevatorPulleyBlock> NETHERITE_ELEVATOR_PULLEY =
+        BLOCKS.register("netherite_elevator_pulley", () -> new NetheriteElevatorPulleyBlock(
+            BlockBehaviour.Properties.ofFullCopy(AllBlocks.ELEVATOR_PULLEY.get())
         ));
 
     private BoosterBlocks() {

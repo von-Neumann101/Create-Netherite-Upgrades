@@ -2,6 +2,7 @@
   "block.createnetherite.netherite_fluid_tank": "\u4e0b\u754c\u5408\u91d1\u6d41\u4f53\u50a8\u7f50",
   "block.createnetherite.netherite_steam_engine": "\u4e0b\u754c\u5408\u91d1\u84b8\u6c7d\u5f15\u64ce",
   "block.createnetherite.netherite_item_vault": "\u4e0b\u754c\u5408\u91d1\u7269\u54c1\u4fdd\u9669\u5e93",
+  "block.createnetherite.netherite_elevator_pulley": "\u4e0b\u754c\u5408\u91d1\u5347\u964d\u673a\u6ed1\u8f6e",
   "block.createnetherite.powerful_mechanical_pump": "\u5f3a\u529b\u673a\u68b0\u6cf5",
   "itemGroup.createnetherite.createnetherite": "Create Netherite",
   "item.createnetherite.netherite_sheet": "\u4e0b\u754c\u5408\u91d1\u677f",

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " N ",
+    "PPP",
+    " N "
+  ],
+  "key": {
+    "N": { "item": "createnetherite:netherite_sheet" },
+    "P": { "item": "create:elevator_pulley" }
+  },
+  "result": {
+    "id": "createnetherite:netherite_elevator_pulley",
+    "count": 3
+  }
+}
