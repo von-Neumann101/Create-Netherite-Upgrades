@@ -28,7 +28,7 @@ public abstract class ElevatorPulleyBlockEntityMixin {
             return original;
         }
         return Math.max(0, Math.min(
-            original * NetheriteElevatorPulleyBlockEntity.RANGE_MULTIPLIER,
+            NetheriteElevatorPulleyBlockEntity.getConfiguredMaxDistance(),
             pulley.getBlockPos().getY() - 1 - pulley.getLevel().getMinBuildHeight()
         ));
     }
