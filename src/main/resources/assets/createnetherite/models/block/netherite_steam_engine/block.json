@@ -1,7 +1,7 @@
 {
   "parent": "create:block/steam_engine/block",
   "textures": {
-    "1": "minecraft:block/netherite_block",
+    "1": "createnetherite:block/netherite_steam_engine/block",
     "particle": "minecraft:block/netherite_block"
   }
 }
