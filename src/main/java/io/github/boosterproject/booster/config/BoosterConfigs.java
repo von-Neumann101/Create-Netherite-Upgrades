@@ -25,6 +25,7 @@ public final class BoosterConfigs {
         public final ForgeConfigSpec.DoubleValue powerfulPumpStressImpact;
         public final ForgeConfigSpec.DoubleValue powerfulPumpPressureMultiplier;
         public final ForgeConfigSpec.IntValue netheriteFluidTankCapacityMultiplier;
+        public final ForgeConfigSpec.IntValue netheriteElevatorPulleyMaxDistance;
 
         private Server(ForgeConfigSpec.Builder builder) {
             powerfulPumpStressImpact = builder
@@ -54,6 +55,14 @@ public final class BoosterConfigs {
                     "Restart the world or server after changing this value to guarantee existing tank capacities are recalculated."
                 )
                 .defineInRange("netheriteFluidTankCapacityMultiplier", 16, 1, 1024);
+
+            netheriteElevatorPulleyMaxDistance = builder
+                .comment(
+                    "Maximum transport distance in blocks for createnetherite:netherite_elevator_pulley.",
+                    "The actual distance is still limited by the world's minimum build height.",
+                    "Restart the world or server after changing this value."
+                )
+                .defineInRange("netheriteElevatorPulleyMaxDistance", 768, 1, 4096);
         }
     }
 }

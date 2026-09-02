@@ -1,6 +1,8 @@
 package io.github.boosterproject.booster.client;
 
 import com.simibubi.create.CreateClient;
+import com.simibubi.create.content.contraptions.elevator.ElevatorPulleyRenderer;
+import com.simibubi.create.content.contraptions.elevator.ElevatorPulleyVisual;
 import com.simibubi.create.content.fluids.PipeAttachmentModel;
 import com.simibubi.create.content.kinetics.steamEngine.SteamEngineRenderer;
 import com.simibubi.create.content.kinetics.steamEngine.SteamEngineVisual;
@@ -46,6 +48,10 @@ public final class BoosterClient {
             BoosterBlockEntityTypes.NETHERITE_STEAM_ENGINE.get(),
             SteamEngineRenderer::new
         );
+        event.registerBlockEntityRenderer(
+            BoosterBlockEntityTypes.NETHERITE_ELEVATOR_PULLEY.get(),
+            ElevatorPulleyRenderer::new
+        );
     }
 
     private static void clientSetup(FMLClientSetupEvent event) {
@@ -58,6 +64,10 @@ public final class BoosterClient {
             SimpleBlockEntityVisualizer
                 .builder(BoosterBlockEntityTypes.NETHERITE_STEAM_ENGINE.get())
                 .factory(SteamEngineVisual::new)
+                .apply();
+            SimpleBlockEntityVisualizer
+                .builder(BoosterBlockEntityTypes.NETHERITE_ELEVATOR_PULLEY.get())
+                .factory(ElevatorPulleyVisual::new)
                 .apply();
         });
     }

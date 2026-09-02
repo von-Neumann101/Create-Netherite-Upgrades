@@ -42,6 +42,12 @@ public final class BoosterItems {
             new Item.Properties()
         ));
 
+    public static final RegistryObject<Item> NETHERITE_ELEVATOR_PULLEY =
+        ITEMS.register("netherite_elevator_pulley", () -> new BlockItem(
+            BoosterBlocks.NETHERITE_ELEVATOR_PULLEY.get(),
+            new Item.Properties()
+        ));
+
     private BoosterItems() {
     }
 

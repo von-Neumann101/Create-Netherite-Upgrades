@@ -6,6 +6,7 @@
   "refmap": "createnetherite.refmap.json",
   "mixins": [
     "BoilerDataMixin",
+    "ElevatorPulleyBlockEntityMixin",
     "FluidPropagatorMixin",
     "ItemVaultBlockEntityMixin",
     "ItemVaultBlockMixin",

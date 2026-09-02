@@ -1,6 +1,7 @@
 package io.github.boosterproject.booster;
 
 import com.mojang.logging.LogUtils;
+import com.simibubi.create.AllBlocks;
 import com.simibubi.create.api.stress.BlockStressValues;
 import com.simibubi.create.AllMountedStorageTypes;
 import com.simibubi.create.api.contraption.storage.item.MountedItemStorageType;
@@ -45,6 +46,10 @@ public class Booster {
             BlockStressValues.IMPACTS.register(
                 BoosterBlocks.POWERFUL_MECHANICAL_PUMP.get(),
                 () -> BoosterConfigs.SERVER.powerfulPumpStressImpact.get()
+            );
+            BlockStressValues.IMPACTS.register(
+                BoosterBlocks.NETHERITE_ELEVATOR_PULLEY.get(),
+                () -> BlockStressValues.getImpact(AllBlocks.ELEVATOR_PULLEY.get())
             );
 
             Block netheriteSteamEngine = BoosterBlocks.NETHERITE_STEAM_ENGINE.get();
