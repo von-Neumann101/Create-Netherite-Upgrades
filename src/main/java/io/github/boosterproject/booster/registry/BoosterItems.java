@@ -46,6 +46,12 @@ public final class BoosterItems {
             new Item.Properties()
         ));
 
+    public static final DeferredItem<Item> NETHERITE_MECHANICAL_PRESS =
+        ITEMS.register("netherite_mechanical_press", () -> new BlockItem(
+            BoosterBlocks.NETHERITE_MECHANICAL_PRESS.get(),
+            new Item.Properties()
+        ));
+
     private BoosterItems() {
     }
 

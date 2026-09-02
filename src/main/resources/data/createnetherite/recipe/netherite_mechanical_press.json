@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    { "item": "createnetherite:netherite_sheet" },
+    { "item": "create:mechanical_press" }
+  ],
+  "result": {
+    "id": "createnetherite:netherite_mechanical_press",
+    "count": 1
+  }
+}

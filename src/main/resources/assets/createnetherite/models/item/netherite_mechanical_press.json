@@ -1,0 +1,15 @@
+{
+  "parent": "create:block/mechanical_press/item",
+  "textures": {
+    "0": "minecraft:block/netherite_block",
+    "1": "minecraft:block/netherite_block",
+    "8": "minecraft:block/netherite_block",
+    "particle": "minecraft:block/netherite_block",
+    "mechanical_press_head": "minecraft:block/netherite_block",
+    "gearbox_top": "minecraft:block/netherite_block",
+    "mechanical_press_pole": "minecraft:block/netherite_block",
+    "gearbox": "minecraft:block/netherite_block",
+    "mechanical_press_top": "minecraft:block/netherite_block",
+    "mechanical_press_bottom": "minecraft:block/netherite_block"
+  }
+}

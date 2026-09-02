@@ -5,6 +5,7 @@ import io.github.boosterproject.booster.content.contraptions.elevator.NetheriteE
 import io.github.boosterproject.booster.content.fluids.pump.PowerfulMechanicalPumpBlockEntity;
 import io.github.boosterproject.booster.content.fluids.tank.NetheriteFluidTankBlockEntity;
 import io.github.boosterproject.booster.content.kinetics.steamEngine.NetheriteSteamEngineBlockEntity;
+import io.github.boosterproject.booster.content.kinetics.press.NetheriteMechanicalPressBlockEntity;
 import io.github.boosterproject.booster.content.logistics.vault.NetheriteItemVaultBlockEntity;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -41,6 +42,11 @@ public final class BoosterBlockEntityTypes {
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<NetheriteElevatorPulleyBlockEntity>> NETHERITE_ELEVATOR_PULLEY =
         BLOCK_ENTITY_TYPES.register("netherite_elevator_pulley", () -> BlockEntityType.Builder
             .of(NetheriteElevatorPulleyBlockEntity::new, BoosterBlocks.NETHERITE_ELEVATOR_PULLEY.get())
+            .build(null));
+
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<NetheriteMechanicalPressBlockEntity>> NETHERITE_MECHANICAL_PRESS =
+        BLOCK_ENTITY_TYPES.register("netherite_mechanical_press", () -> BlockEntityType.Builder
+            .of(NetheriteMechanicalPressBlockEntity::new, BoosterBlocks.NETHERITE_MECHANICAL_PRESS.get())
             .build(null));
 
     private BoosterBlockEntityTypes() {

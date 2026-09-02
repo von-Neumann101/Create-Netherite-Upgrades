@@ -1,0 +1,11 @@
+{
+  "parent": "create:block/mechanical_press/block",
+  "textures": {
+    "4": "minecraft:block/netherite_block",
+    "particle": "minecraft:block/netherite_block",
+    "gearbox_top": "minecraft:block/netherite_block",
+    "gearbox": "minecraft:block/netherite_block",
+    "mechanical_press_top": "minecraft:block/netherite_block",
+    "mechanical_press_bottom": "minecraft:block/netherite_block"
+  }
+}

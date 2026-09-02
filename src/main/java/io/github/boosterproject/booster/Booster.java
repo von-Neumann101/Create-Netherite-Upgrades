@@ -50,6 +50,10 @@ public class Booster {
                 BoosterBlocks.NETHERITE_ELEVATOR_PULLEY.get(),
                 () -> BlockStressValues.getImpact(AllBlocks.ELEVATOR_PULLEY.get())
             );
+            BlockStressValues.IMPACTS.register(
+                BoosterBlocks.NETHERITE_MECHANICAL_PRESS.get(),
+                () -> BlockStressValues.getImpact(AllBlocks.MECHANICAL_PRESS.get())
+            );
 
             Block netheriteSteamEngine = BoosterBlocks.NETHERITE_STEAM_ENGINE.get();
             BlockStressValues.CAPACITIES.register(netheriteSteamEngine, () -> 2048.0D);

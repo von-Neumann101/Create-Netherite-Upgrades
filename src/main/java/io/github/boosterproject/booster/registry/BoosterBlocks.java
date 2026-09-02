@@ -6,6 +6,7 @@ import io.github.boosterproject.booster.content.contraptions.elevator.NetheriteE
 import io.github.boosterproject.booster.content.fluids.pump.PowerfulMechanicalPumpBlock;
 import io.github.boosterproject.booster.content.fluids.tank.NetheriteFluidTankBlock;
 import io.github.boosterproject.booster.content.kinetics.steamEngine.NetheriteSteamEngineBlock;
+import io.github.boosterproject.booster.content.kinetics.press.NetheriteMechanicalPressBlock;
 import io.github.boosterproject.booster.content.logistics.vault.NetheriteItemVaultBlock;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -45,6 +46,11 @@ public final class BoosterBlocks {
     public static final DeferredBlock<NetheriteElevatorPulleyBlock> NETHERITE_ELEVATOR_PULLEY =
         BLOCKS.register("netherite_elevator_pulley", () -> new NetheriteElevatorPulleyBlock(
             BlockBehaviour.Properties.ofFullCopy(AllBlocks.ELEVATOR_PULLEY.get())
+        ));
+
+    public static final DeferredBlock<NetheriteMechanicalPressBlock> NETHERITE_MECHANICAL_PRESS =
+        BLOCKS.register("netherite_mechanical_press", () -> new NetheriteMechanicalPressBlock(
+            BlockBehaviour.Properties.ofFullCopy(AllBlocks.MECHANICAL_PRESS.get())
         ));
 
     private BoosterBlocks() {
