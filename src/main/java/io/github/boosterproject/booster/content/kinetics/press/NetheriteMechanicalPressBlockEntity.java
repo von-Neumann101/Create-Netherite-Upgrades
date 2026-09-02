@@ -14,4 +14,13 @@ public class NetheriteMechanicalPressBlockEntity extends MechanicalPressBlockEnt
     public boolean canProcessInBulk() {
         return true;
     }
+
+    @Override
+    public boolean tryProcessInBasin(boolean simulate) {
+        boolean processed = super.tryProcessInBasin(simulate);
+        while (matchBasinRecipe(currentRecipe)) {
+            applyBasinRecipe();
+        }
+        return processed;
+    }
 }
