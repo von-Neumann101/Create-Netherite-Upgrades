@@ -1,6 +1,6 @@
 # Create Netherite
 
-[Create Netherite](https://github.com/von-Neumann101/Create-Netherite-Upgrades) 是一个面向 Minecraft 1.20.1 Forge 的 [Create](https://github.com/Creators-of-Create/Create) 附属模组，为流体运输、储存和蒸汽动力提供下界合金强化版本。
+[Create Netherite](https://github.com/von-Neumann101/Create-Netherite-Upgrades) 是一个面向 Minecraft 1.20.1 Forge 的 [Create](https://github.com/Creators-of-Create/Create) 附属模组，为流体运输、储存、物品存储、蒸汽动力和升降机提供下界合金强化版本。当前模组版本为 `0.2.2`，与 NeoForge 版本一致。
 
 ## 功能
 
@@ -28,6 +28,21 @@
 - 每个锅炉等级需要 `12 mB/t` 水，原版锅炉为 `10 mB/t`。
 - 下界合金锅炉不能混用普通流体储罐或普通蒸汽引擎。
 
+### 下界合金物品保险库
+
+- 注册 ID：`createnetherite:netherite_item_vault`
+- 保留 Create 物品保险库的存储、多方块和移动结构行为。
+- 容量是普通物品保险库的 `16x`。
+- 具有下界合金级别的爆炸抗性。
+
+### 下界合金升降机滑轮
+
+- 注册 ID：`createnetherite:netherite_elevator_pulley`
+- 保留 Create 升降机滑轮的组装、控制器和移动结构行为。
+- 最大移动速度是普通升降机滑轮的 `2x`。
+- 默认最大运输距离为 `768` 格，可通过服务端配置调整。
+- 实际运输距离仍受世界最低建筑高度限制。
+
 ### 下界合金板
 
 - 注册 ID：`createnetherite:netherite_sheet`
@@ -42,11 +57,13 @@
 | 强力机械泵 | 3 个机械泵 + 2 个下界合金板 | 3 |
 | 下界合金流体储罐 | 3 个流体储罐 + 2 个下界合金板 | 3 |
 | 下界合金蒸汽引擎 | 3 个蒸汽引擎 + 2 个下界合金板 | 3 |
+| 下界合金物品保险库 | 3 个物品保险库 + 2 个下界合金板 | 3 |
+| 下界合金升降机滑轮 | 1 个升降机滑轮 + 1 个下界合金板 | 1 |
 
 ## 环境要求
 
 - Minecraft `1.20.1`
-- Forge `47.1.x`（开发版本为 `47.1.33`）
+- Forge `47.1.7+`（`47.1.x`）
 - Create `6.0.8+`
 - Java `17`
 
@@ -71,8 +88,9 @@ serverconfig/createnetherite-server.toml
 | `powerfulPumpStressImpact` | `16.0` | 强力机械泵的基础应力消耗 |
 | `powerfulPumpPressureMultiplier` | `8.0` | 强力机械泵的压力倍率 |
 | `netheriteFluidTankCapacityMultiplier` | `16` | 下界合金储罐相对普通储罐的容量倍率 |
+| `netheriteElevatorPulleyMaxDistance` | `768` | 下界合金升降机滑轮的最大运输距离 |
 
-修改配置后请重启世界或服务器，确保已有动能网络、流体管网和储罐重新计算。
+修改配置后请重启世界或服务器，确保已有动能网络、流体管网、储罐和升降机重新计算。
 
 ## 开发构建
 
