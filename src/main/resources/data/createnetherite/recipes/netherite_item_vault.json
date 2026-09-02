@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " N ",
+    "VVV",
+    " N "
+  ],
+  "key": {
+    "N": {
+      "item": "createnetherite:netherite_sheet"
+    },
+    "V": {
+      "item": "create:item_vault"
+    }
+  },
+  "result": {
+    "item": "createnetherite:netherite_item_vault",
+    "count": 3
+  }
+}

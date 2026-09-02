@@ -6,10 +6,17 @@
   "refmap": "createnetherite.refmap.json",
   "mixins": [
     "BoilerDataMixin",
+    "ElevatorPulleyBlockEntityMixin",
     "FluidPropagatorMixin",
+    "ItemVaultBlockEntityMixin",
+    "ItemVaultBlockMixin",
+    "ItemVaultItemMixin",
     "PumpBlockEntityMixin",
     "PumpFluidTransferBehaviourMixin",
     "SteamEngineBlockEntityMixin"
+  ],
+  "client": [
+    "FluidTankRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -2,6 +2,8 @@
   "replace": false,
   "values": [
     "createnetherite:netherite_fluid_tank",
-    "createnetherite:netherite_steam_engine"
+    "createnetherite:netherite_steam_engine",
+    "createnetherite:netherite_item_vault",
+    "createnetherite:netherite_elevator_pulley"
   ]
 }

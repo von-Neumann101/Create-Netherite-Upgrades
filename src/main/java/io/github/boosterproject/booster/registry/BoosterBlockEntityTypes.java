@@ -1,9 +1,11 @@
 package io.github.boosterproject.booster.registry;
 
 import io.github.boosterproject.booster.Booster;
+import io.github.boosterproject.booster.content.contraptions.elevator.NetheriteElevatorPulleyBlockEntity;
 import io.github.boosterproject.booster.content.fluids.pump.PowerfulMechanicalPumpBlockEntity;
 import io.github.boosterproject.booster.content.fluids.tank.NetheriteFluidTankBlockEntity;
 import io.github.boosterproject.booster.content.kinetics.steamEngine.NetheriteSteamEngineBlockEntity;
+import io.github.boosterproject.booster.content.logistics.vault.NetheriteItemVaultBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -27,6 +29,16 @@ public final class BoosterBlockEntityTypes {
     public static final RegistryObject<BlockEntityType<NetheriteSteamEngineBlockEntity>> NETHERITE_STEAM_ENGINE =
         BLOCK_ENTITY_TYPES.register("netherite_steam_engine", () -> BlockEntityType.Builder
             .of(NetheriteSteamEngineBlockEntity::new, BoosterBlocks.NETHERITE_STEAM_ENGINE.get())
+            .build(null));
+
+    public static final RegistryObject<BlockEntityType<NetheriteItemVaultBlockEntity>> NETHERITE_ITEM_VAULT =
+        BLOCK_ENTITY_TYPES.register("netherite_item_vault", () -> BlockEntityType.Builder
+            .of(NetheriteItemVaultBlockEntity::new, BoosterBlocks.NETHERITE_ITEM_VAULT.get())
+            .build(null));
+
+    public static final RegistryObject<BlockEntityType<NetheriteElevatorPulleyBlockEntity>> NETHERITE_ELEVATOR_PULLEY =
+        BLOCK_ENTITY_TYPES.register("netherite_elevator_pulley", () -> BlockEntityType.Builder
+            .of(NetheriteElevatorPulleyBlockEntity::new, BoosterBlocks.NETHERITE_ELEVATOR_PULLEY.get())
             .build(null));
 
     private BoosterBlockEntityTypes() {
