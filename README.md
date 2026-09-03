@@ -1,6 +1,6 @@
 # Create Netherite
 
-[Create Netherite](https://github.com/von-Neumann101/Create-Netherite-Upgrades) 是一个面向 Minecraft 1.20.1 Forge 的 [Create](https://github.com/Creators-of-Create/Create) 附属模组，为流体运输、储存、物品存储、蒸汽动力和升降机提供下界合金强化版本。当前模组版本为 `0.2.2`，与 NeoForge 版本一致。
+[Create Netherite](https://github.com/von-Neumann101/Create-Netherite-Upgrades) 是一个面向 Minecraft 1.20.1 Forge 的 [Create](https://github.com/Creators-of-Create/Create) 附属模组，为流体运输、储存、物品存储、蒸汽动力和升降机提供下界合金强化版本。当前模组版本为 `0.2.3`，与 NeoForge 版本一致。
 
 ## 功能
 
