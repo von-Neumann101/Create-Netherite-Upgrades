@@ -1,12 +1,15 @@
 package io.github.boosterproject.booster.registry;
 
+import com.simibubi.create.content.processing.burner.BlazeBurnerBlockEntity;
 import io.github.boosterproject.booster.Booster;
 import io.github.boosterproject.booster.content.contraptions.elevator.NetheriteElevatorPulleyBlockEntity;
 import io.github.boosterproject.booster.content.fluids.pump.PowerfulMechanicalPumpBlockEntity;
 import io.github.boosterproject.booster.content.fluids.tank.NetheriteFluidTankBlockEntity;
 import io.github.boosterproject.booster.content.kinetics.steamEngine.NetheriteSteamEngineBlockEntity;
 import io.github.boosterproject.booster.content.logistics.vault.NetheriteItemVaultBlockEntity;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -41,10 +44,19 @@ public final class BoosterBlockEntityTypes {
             .of(NetheriteElevatorPulleyBlockEntity::new, BoosterBlocks.NETHERITE_ELEVATOR_PULLEY.get())
             .build(null));
 
+    public static final RegistryObject<BlockEntityType<BlazeBurnerBlockEntity>> NETHERITE_BLAZE_BURNER =
+        BLOCK_ENTITY_TYPES.register("netherite_blaze_burner", () -> BlockEntityType.Builder
+            .of(BoosterBlockEntityTypes::createNetheriteBlazeBurner, BoosterBlocks.NETHERITE_BLAZE_BURNER.get())
+            .build(null));
+
     private BoosterBlockEntityTypes() {
     }
 
     public static void register(IEventBus eventBus) {
         BLOCK_ENTITY_TYPES.register(eventBus);
+    }
+
+    private static BlazeBurnerBlockEntity createNetheriteBlazeBurner(BlockPos pos, BlockState state) {
+        return new BlazeBurnerBlockEntity(NETHERITE_BLAZE_BURNER.get(), pos, state);
     }
 }

@@ -1,0 +1,10 @@
+{
+  "parent": "block/block",
+  "loader": "forge:obj",
+  "flip_v": true,
+  "model": "create:models/block/blaze_burner/blaze_cage.obj",
+  "textures": {
+    "0": "minecraft:block/netherite_block",
+    "particle": "minecraft:block/netherite_block"
+  }
+}

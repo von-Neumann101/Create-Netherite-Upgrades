@@ -7,6 +7,7 @@ import io.github.boosterproject.booster.content.fluids.pump.PowerfulMechanicalPu
 import io.github.boosterproject.booster.content.fluids.tank.NetheriteFluidTankBlock;
 import io.github.boosterproject.booster.content.kinetics.steamEngine.NetheriteSteamEngineBlock;
 import io.github.boosterproject.booster.content.logistics.vault.NetheriteItemVaultBlock;
+import io.github.boosterproject.booster.content.processing.burner.NetheriteBlazeBurnerBlock;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
@@ -47,6 +48,11 @@ public final class BoosterBlocks {
     public static final RegistryObject<NetheriteElevatorPulleyBlock> NETHERITE_ELEVATOR_PULLEY =
         BLOCKS.register("netherite_elevator_pulley", () -> new NetheriteElevatorPulleyBlock(
             BlockBehaviour.Properties.copy(AllBlocks.ELEVATOR_PULLEY.get())
+        ));
+
+    public static final RegistryObject<NetheriteBlazeBurnerBlock> NETHERITE_BLAZE_BURNER =
+        BLOCKS.register("netherite_blaze_burner", () -> new NetheriteBlazeBurnerBlock(
+            BlockBehaviour.Properties.copy(AllBlocks.BLAZE_BURNER.get())
         ));
 
     private BoosterBlocks() {
