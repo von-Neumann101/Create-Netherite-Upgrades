@@ -8,6 +8,7 @@ import io.github.boosterproject.booster.content.fluids.tank.NetheriteFluidTankBl
 import io.github.boosterproject.booster.content.kinetics.steamEngine.NetheriteSteamEngineBlock;
 import io.github.boosterproject.booster.content.kinetics.press.NetheriteMechanicalPressBlock;
 import io.github.boosterproject.booster.content.logistics.vault.NetheriteItemVaultBlock;
+import io.github.boosterproject.booster.content.processing.burner.NetheriteBlazeBurnerBlock;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
@@ -51,6 +52,11 @@ public final class BoosterBlocks {
     public static final DeferredBlock<NetheriteMechanicalPressBlock> NETHERITE_MECHANICAL_PRESS =
         BLOCKS.register("netherite_mechanical_press", () -> new NetheriteMechanicalPressBlock(
             BlockBehaviour.Properties.ofFullCopy(AllBlocks.MECHANICAL_PRESS.get())
+        ));
+
+    public static final DeferredBlock<NetheriteBlazeBurnerBlock> NETHERITE_BLAZE_BURNER =
+        BLOCKS.register("netherite_blaze_burner", () -> new NetheriteBlazeBurnerBlock(
+            BlockBehaviour.Properties.ofFullCopy(AllBlocks.BLAZE_BURNER.get())
         ));
 
     private BoosterBlocks() {

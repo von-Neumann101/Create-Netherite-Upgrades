@@ -1,6 +1,7 @@
 package io.github.boosterproject.booster.registry;
 
 import com.simibubi.create.content.logistics.vault.ItemVaultItem;
+import com.simibubi.create.content.processing.burner.BlazeBurnerBlockItem;
 import io.github.boosterproject.booster.Booster;
 import io.github.boosterproject.booster.content.fluids.pump.PowerfulMechanicalPumpBlockItem;
 import io.github.boosterproject.booster.content.fluids.tank.NetheriteFluidTankBlockItem;
@@ -49,6 +50,12 @@ public final class BoosterItems {
     public static final DeferredItem<Item> NETHERITE_MECHANICAL_PRESS =
         ITEMS.register("netherite_mechanical_press", () -> new BlockItem(
             BoosterBlocks.NETHERITE_MECHANICAL_PRESS.get(),
+            new Item.Properties()
+        ));
+
+    public static final DeferredItem<Item> NETHERITE_BLAZE_BURNER =
+        ITEMS.register("netherite_blaze_burner", () -> BlazeBurnerBlockItem.withBlaze(
+            BoosterBlocks.NETHERITE_BLAZE_BURNER.get(),
             new Item.Properties()
         ));
 

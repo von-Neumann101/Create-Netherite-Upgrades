@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    { "item": "createnetherite:netherite_sheet" },
+    { "item": "create:blaze_burner" }
+  ],
+  "result": {
+    "id": "createnetherite:netherite_blaze_burner",
+    "count": 1
+  }
+}

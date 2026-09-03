@@ -1,0 +1,11 @@
+{
+  "parent": "block/block",
+  "loader": "neoforge:obj",
+  "flip_v": true,
+  "model": "create:models/block/blaze_burner/item.obj",
+  "textures": {
+    "0": "minecraft:block/netherite_block",
+    "1": "create:block/blaze_idle",
+    "particle": "minecraft:block/netherite_block"
+  }
+}

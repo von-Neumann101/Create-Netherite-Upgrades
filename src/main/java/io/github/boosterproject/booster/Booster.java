@@ -4,9 +4,13 @@ import com.mojang.logging.LogUtils;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.api.stress.BlockStressValues;
 import com.simibubi.create.AllMountedStorageTypes;
+import com.simibubi.create.api.behaviour.movement.MovementBehaviour;
+import com.simibubi.create.api.boiler.BoilerHeater;
 import com.simibubi.create.api.contraption.storage.item.MountedItemStorageType;
+import com.simibubi.create.content.processing.burner.BlazeBurnerMovementBehaviour;
 import io.github.boosterproject.booster.client.BoosterClient;
 import io.github.boosterproject.booster.config.BoosterConfigs;
+import io.github.boosterproject.booster.content.processing.burner.NetheriteBlazeBurnerBlock;
 import io.github.boosterproject.booster.registry.BoosterBlockEntityTypes;
 import io.github.boosterproject.booster.registry.BoosterBlocks;
 import io.github.boosterproject.booster.registry.BoosterCreativeModeTabs;
@@ -62,6 +66,12 @@ public class Booster {
                 BoosterBlocks.NETHERITE_ITEM_VAULT.get(),
                 AllMountedStorageTypes.VAULT.get()
             );
+
+            Block netheriteBlazeBurner = BoosterBlocks.NETHERITE_BLAZE_BURNER.get();
+            BoilerHeater.REGISTRY.register(netheriteBlazeBurner,
+                (level, pos, state) -> NetheriteBlazeBurnerBlock.HEAT_MULTIPLIER
+                    * BoilerHeater.BLAZE_BURNER.getHeat(level, pos, state));
+            MovementBehaviour.REGISTRY.register(netheriteBlazeBurner, new BlazeBurnerMovementBehaviour());
         });
     }
 }

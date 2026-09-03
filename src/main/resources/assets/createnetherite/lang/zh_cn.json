@@ -4,6 +4,7 @@
   "block.createnetherite.netherite_item_vault": "\u4e0b\u754c\u5408\u91d1\u7269\u54c1\u4fdd\u9669\u5e93",
   "block.createnetherite.netherite_elevator_pulley": "\u4e0b\u754c\u5408\u91d1\u5347\u964d\u673a\u6ed1\u8f6e",
   "block.createnetherite.netherite_mechanical_press": "\u4e0b\u754c\u5408\u91d1\u52a8\u529b\u51b2\u538b\u673a",
+  "block.createnetherite.netherite_blaze_burner": "\u4e0b\u754c\u5408\u91d1\u70c8\u7130\u4eba\u71c3\u70e7\u5ba4",
   "block.createnetherite.powerful_mechanical_pump": "\u5f3a\u529b\u673a\u68b0\u6cf5",
   "itemGroup.createnetherite.createnetherite": "Create Netherite",
   "item.createnetherite.netherite_sheet": "\u4e0b\u754c\u5408\u91d1\u677f",

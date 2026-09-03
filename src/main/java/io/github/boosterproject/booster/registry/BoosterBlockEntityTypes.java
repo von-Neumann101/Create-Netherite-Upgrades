@@ -1,5 +1,6 @@
 package io.github.boosterproject.booster.registry;
 
+import com.simibubi.create.content.processing.burner.BlazeBurnerBlockEntity;
 import io.github.boosterproject.booster.Booster;
 import io.github.boosterproject.booster.content.contraptions.elevator.NetheriteElevatorPulleyBlockEntity;
 import io.github.boosterproject.booster.content.fluids.pump.PowerfulMechanicalPumpBlockEntity;
@@ -8,7 +9,9 @@ import io.github.boosterproject.booster.content.kinetics.steamEngine.NetheriteSt
 import io.github.boosterproject.booster.content.kinetics.press.NetheriteMechanicalPressBlockEntity;
 import io.github.boosterproject.booster.content.logistics.vault.NetheriteItemVaultBlockEntity;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
@@ -49,6 +52,11 @@ public final class BoosterBlockEntityTypes {
             .of(NetheriteMechanicalPressBlockEntity::new, BoosterBlocks.NETHERITE_MECHANICAL_PRESS.get())
             .build(null));
 
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BlazeBurnerBlockEntity>> NETHERITE_BLAZE_BURNER =
+        BLOCK_ENTITY_TYPES.register("netherite_blaze_burner", () -> BlockEntityType.Builder
+            .of(BoosterBlockEntityTypes::createNetheriteBlazeBurner, BoosterBlocks.NETHERITE_BLAZE_BURNER.get())
+            .build(null));
+
     private BoosterBlockEntityTypes() {
     }
 
@@ -68,5 +76,9 @@ public final class BoosterBlockEntityTypes {
             NETHERITE_ITEM_VAULT.get(),
             (vault, side) -> vault.getItemCapability()
         );
+    }
+
+    private static BlazeBurnerBlockEntity createNetheriteBlazeBurner(BlockPos pos, BlockState state) {
+        return new BlazeBurnerBlockEntity(NETHERITE_BLAZE_BURNER.get(), pos, state);
     }
 }

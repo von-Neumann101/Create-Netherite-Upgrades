@@ -8,6 +8,8 @@ import com.simibubi.create.content.kinetics.steamEngine.SteamEngineRenderer;
 import com.simibubi.create.content.kinetics.steamEngine.SteamEngineVisual;
 import com.simibubi.create.content.kinetics.press.MechanicalPressRenderer;
 import com.simibubi.create.content.kinetics.press.PressVisual;
+import com.simibubi.create.content.processing.burner.BlazeBurnerRenderer;
+import com.simibubi.create.content.processing.burner.BlazeBurnerVisual;
 import com.simibubi.create.foundation.block.connected.CTModel;
 import dev.engine_room.flywheel.lib.visualization.SimpleBlockEntityVisualizer;
 import io.github.boosterproject.booster.Booster;
@@ -58,6 +60,10 @@ public final class BoosterClient {
             BoosterBlockEntityTypes.NETHERITE_MECHANICAL_PRESS.get(),
             MechanicalPressRenderer::new
         );
+        event.registerBlockEntityRenderer(
+            BoosterBlockEntityTypes.NETHERITE_BLAZE_BURNER.get(),
+            BlazeBurnerRenderer::new
+        );
     }
 
     private static void clientSetup(FMLClientSetupEvent event) {
@@ -78,6 +84,10 @@ public final class BoosterClient {
             SimpleBlockEntityVisualizer
                 .builder(BoosterBlockEntityTypes.NETHERITE_MECHANICAL_PRESS.get())
                 .factory(PressVisual::new)
+                .apply();
+            SimpleBlockEntityVisualizer
+                .builder(BoosterBlockEntityTypes.NETHERITE_BLAZE_BURNER.get())
+                .factory(BlazeBurnerVisual::new)
                 .apply();
         });
     }
