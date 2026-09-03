@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " S ",
+    "BBB",
+    " S "
+  ],
+  "key": {
+    "S": { "item": "createnetherite:netherite_sheet" },
+    "B": { "item": "create:blaze_burner" }
+  },
+  "result": {
+    "id": "createnetherite:netherite_blaze_burner",
+    "count": 3
+  }
+}
