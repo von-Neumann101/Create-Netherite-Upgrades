@@ -1,9 +1,10 @@
 {
   "parent": "create:block/encased_fan/item",
+  "render_type": "minecraft:cutout_mipped",
   "textures": {
-    "3": "minecraft:block/netherite_block",
-    "back": "minecraft:block/netherite_block",
-    "fan_casing": "minecraft:block/netherite_block",
-    "particle": "minecraft:block/netherite_block"
+    "2": "createnetherite:block/netherite_encased_fan/fan_back",
+    "fan_casing": "createnetherite:block/netherite_encased_fan/fan_casing",
+    "fan_side": "createnetherite:block/netherite_encased_fan/fan_side",
+    "particle": "createnetherite:block/netherite_encased_fan/fan_side"
   }
 }
