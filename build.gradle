@@ -78,6 +78,27 @@ configurations {
     runtimeClasspath.extendsFrom localRuntime
 }
 
+sourceSets {
+    boilerTest {
+        compileClasspath += sourceSets.main.output + sourceSets.main.compileClasspath
+        runtimeClasspath += sourceSets.main.output + sourceSets.main.compileClasspath
+    }
+}
+
+def boilerRegressionTest = tasks.register('boilerRegressionTest', JavaExec) {
+    group = 'verification'
+    description = 'Checks netherite boiler levels and vanilla boiler limits.'
+    classpath = sourceSets.boilerTest.runtimeClasspath
+    mainClass = 'io.github.boosterproject.booster.content.fluids.tank.BoilerLevelTest'
+    javaLauncher = javaToolchains.launcherFor {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+tasks.named('check') {
+    dependsOn boilerRegressionTest
+}
+
 dependencies {
     implementation("com.simibubi.create:create-${minecraft_version}:${create_version}:slim") {
         transitive = false
