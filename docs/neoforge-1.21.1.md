@@ -10,7 +10,7 @@
 
 - 分支：`1.21.1-NeoForge`
 - 源码核对日期：`2026-10-29`
-- 源码基线提交：`81c14f2eceb6aea7ea1289e313da94ddf339555a`（后续工作区修改包含本次锅炉等级调整）
+- 源码基线提交：`6c54287ca4ddc5518d3f1c09115487e2c79e9535`（后续工作区修改包含本次防爆调整）
 - 模组版本：`0.2.4`
 - Mod id：`createnetherite`
 - 主包名：`io.github.boosterproject.booster`
@@ -45,8 +45,9 @@
 
 ### 验证记录与范围
 
-- 2026-10-29 接手核对覆盖 `src/main/java` 的 39 个 Java 文件、注册、配置、Mixin、配方和资源路径；74 个资源 JSON 的语法解析通过。
+- 2026-10-29 源码核对覆盖 `src/main/java` 的 40 个 Java 文件、注册、配置、Mixin、配方和资源路径；74 个资源 JSON 的语法解析通过。
 - 2026-10-29 锅炉等级调整已通过 `.\gradlew.bat --offline --no-configuration-cache build`，其中 `check` 阶段执行了 15 项锅炉逻辑回归检查，覆盖超过 18 级的尺寸/供水、引擎效率、尺寸/供水/热量不足、无水、被动加热、18 级提示及原版锅炉限制。
+- 同日防爆调整通过相同构建命令及现有 15 项锅炉回归检查；另外核对了 NeoForge 伤害判定和爆炸受影响方块列表的调用路径。尚未进行游戏内爆破实测。
 - 本次未重新执行 `runClient` 或 `runServer`，未做游戏内行为验证。构建仍报告现有 API 和 Gradle 弃用提示；本次离线构建关闭配置缓存，以避开缓存序列化时对未缓存渲染依赖的解析。
 - 旧交接记录中的构建成功、客户端资源重载成功，对应 Create Netherite `0.1.0`、NeoForge `21.1.242`。当时未发现 Mixin 应用失败、模组加载失败或缺失模型错误；该记录仅是历史验证，不能代替当前 `0.2.4` 的构建和运行验证。
 
@@ -148,6 +149,7 @@ public Booster(IEventBus modEventBus, ModContainer modContainer)
 - 升降机滑轮、动力冲压机的基础应力 impact 通过 supplier 读取 Create 对应原版方块的值
 - 将下界合金保险库关联到 `AllMountedStorageTypes.VAULT`，复用 Create 的运动结构物品存储类型
 - 为下界合金燃烧室注册 `BoilerHeater`（原版热量乘 3）和 `BlazeBurnerMovementBehaviour`
+- 向 `NeoForge.EVENT_BUS` 注册 `BoosterExplosionProtection` 的方块爆炸及实体无敌判定监听器
 
 不要使用 1.20.1 的：
 
@@ -172,7 +174,7 @@ NeoForge 1.21.1 使用 NeoForge DeferredRegister 新类型，不再使用 Forge 
 - `DeferredBlock<NetheriteMechanicalPressBlock> NETHERITE_MECHANICAL_PRESS`
 - `DeferredBlock<NetheriteBlazeBurnerBlock> NETHERITE_BLAZE_BURNER`
 
-属性大多复制 Create 对应方块；保险库额外设置爆炸抗性 `1200.0F`。强力泵基于铜块属性，储罐和蒸汽引擎基于下界合金块属性。
+属性大多复制 Create 对应方块。七种方块的基础爆炸抗性统一为 `1200.0F`：储罐和蒸汽引擎继承下界合金块属性，其余方块显式设置。强力泵基于铜块属性。
 
 1.21.1 API 差异：
 
@@ -466,6 +468,15 @@ multiBlockCapacity = blockCount * singleBlockCapacity
 ```
 
 该任务运行实际的 Create `BoilerData` 和当前 `NetheriteBoilerData`，无需启动游戏或额外测试库，并已接入 `check` / `build`。它验证计算和等级提示；不代替世界中的热源扫描、管道注水和多方块行为验证。
+
+## 防爆实现
+
+文件：`content/BoosterExplosionProtection.java`。当前覆盖本模组全部七种方块与八种物品，包括强力机械泵和下界合金板。
+
+- `Booster` 构造时通过 `NeoForge.EVENT_BUS.addListener(...)` 注册两个监听器。
+- `ExplosionEvent.Detonate`：从 `getAffectedBlocks()` 中排除注册命名空间为 `createnetherite` 的方块位置，保留放置后的方块及其 BE 数据。储罐流体和保险库存货随方块保留。
+- `EntityInvulnerabilityCheckEvent`：仅当实体为 `ItemEntity`、物品属于 `createnetherite`，且伤害源带有 `DamageTypeTags.IS_EXPLOSION` 时，调用 `setInvulnerable(true)`。因此下界合金板和所有方块掉落物都受到保护。
+- 保护范围按注册命名空间识别，沿用现有 Create 方块与物品类，不新增 Mixin。普通 Create 和 Minecraft 内容不在此保护范围内。
 
 ## 下界合金物品保险库实现
 

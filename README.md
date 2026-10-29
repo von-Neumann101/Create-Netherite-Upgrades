@@ -41,6 +41,8 @@ Minecraft `1.20.1` Forge 的 `main` 分支暂停更新，保留现有代码和�
 
 下界合金板由下界合金锭经 Create 冲压制成，用作上述机械的升级材料。
 
+上述全部物品（含强力机械泵和下界合金板）的掉落物均免疫爆炸伤害；七种方块放置后均不被爆炸破坏，储罐与保险库中的内容也因此保留。方块基础爆炸抗性统一为 `1200`。
+
 # 环境要求
 
 - Minecraft `1.21.1`
@@ -119,6 +121,8 @@ The Netherite Mechanical Press supports bulk pressing and repeatedly processes t
 The Netherite Blaze Burner provides `3` times the regular burner's boiler heat while retaining Create's fuel and heat-state behavior.
 
 Netherite Sheets are pressed from Netherite Ingots using Create and serve as upgrade materials for these machines.
+
+All items listed above, including the Powerful Mechanical Pump and Netherite Sheet, are immune to explosion damage when dropped. All seven placed blocks are protected from explosion destruction, preserving tank and vault contents. Their base blast resistance is `1200`.
 
 # Requirements
 

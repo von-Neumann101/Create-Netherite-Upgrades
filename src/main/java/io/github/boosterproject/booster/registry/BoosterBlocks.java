@@ -23,6 +23,7 @@ public final class BoosterBlocks {
         BLOCKS.register("powerful_mechanical_pump", () -> new PowerfulMechanicalPumpBlock(
             BlockBehaviour.Properties.ofFullCopy(Blocks.COPPER_BLOCK)
                 .mapColor(MapColor.STONE)
+                .explosionResistance(1200.0F)
         ));
 
     public static final DeferredBlock<NetheriteFluidTankBlock> NETHERITE_FLUID_TANK =
@@ -47,16 +48,19 @@ public final class BoosterBlocks {
     public static final DeferredBlock<NetheriteElevatorPulleyBlock> NETHERITE_ELEVATOR_PULLEY =
         BLOCKS.register("netherite_elevator_pulley", () -> new NetheriteElevatorPulleyBlock(
             BlockBehaviour.Properties.ofFullCopy(AllBlocks.ELEVATOR_PULLEY.get())
+                .explosionResistance(1200.0F)
         ));
 
     public static final DeferredBlock<NetheriteMechanicalPressBlock> NETHERITE_MECHANICAL_PRESS =
         BLOCKS.register("netherite_mechanical_press", () -> new NetheriteMechanicalPressBlock(
             BlockBehaviour.Properties.ofFullCopy(AllBlocks.MECHANICAL_PRESS.get())
+                .explosionResistance(1200.0F)
         ));
 
     public static final DeferredBlock<NetheriteBlazeBurnerBlock> NETHERITE_BLAZE_BURNER =
         BLOCKS.register("netherite_blaze_burner", () -> new NetheriteBlazeBurnerBlock(
             BlockBehaviour.Properties.ofFullCopy(AllBlocks.BLAZE_BURNER.get())
+                .explosionResistance(1200.0F)
         ));
 
     private BoosterBlocks() {

@@ -10,6 +10,7 @@ import com.simibubi.create.api.contraption.storage.item.MountedItemStorageType;
 import com.simibubi.create.content.processing.burner.BlazeBurnerMovementBehaviour;
 import io.github.boosterproject.booster.client.BoosterClient;
 import io.github.boosterproject.booster.config.BoosterConfigs;
+import io.github.boosterproject.booster.content.BoosterExplosionProtection;
 import io.github.boosterproject.booster.content.processing.burner.NetheriteBlazeBurnerBlock;
 import io.github.boosterproject.booster.registry.BoosterBlockEntityTypes;
 import io.github.boosterproject.booster.registry.BoosterBlocks;
@@ -22,6 +23,7 @@ import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.loading.FMLEnvironment;
+import net.neoforged.neoforge.common.NeoForge;
 import org.slf4j.Logger;
 
 @Mod(Booster.MOD_ID)
@@ -35,6 +37,9 @@ public class Booster {
         BoosterItems.register(modEventBus);
         BoosterCreativeModeTabs.register(modEventBus);
         BoosterBlockEntityTypes.register(modEventBus);
+
+        NeoForge.EVENT_BUS.addListener(BoosterExplosionProtection::onExplosionDetonate);
+        NeoForge.EVENT_BUS.addListener(BoosterExplosionProtection::onEntityInvulnerabilityCheck);
 
         modEventBus.addListener(this::commonSetup);
         if (FMLEnvironment.dist == Dist.CLIENT) {
