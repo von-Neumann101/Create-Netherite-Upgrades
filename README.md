@@ -25,6 +25,8 @@ Minecraft `1.20.1` Forge 的 `main` 分支暂停更新，保留现有代码和�
 - `createnetherite:netherite_elevator_pulley`
 - `createnetherite:netherite_mechanical_press`
 - `createnetherite:netherite_blaze_burner`
+- `createnetherite:netherite_encased_fan`
+- `createnetherite:netherite_filter`
 - `createnetherite:netherite_sheet`
 
 强力机械泵接入 Create 原版流体管网，默认基础应力消耗为 `16.0`、压力倍率为 `8.0`。压力倍率提高吞吐，不增加管道传播距离。
@@ -41,9 +43,23 @@ Minecraft `1.20.1` Forge 的 `main` 分支暂停更新，保留现有代码和�
 
 下界合金板由下界合金锭经 Create 冲压制成，用作上述机械的升级材料。
 
-上述全部物品（含强力机械泵和下界合金板）的掉落物均免疫爆炸伤害；七种方块放置后均不被爆炸破坏，储罐与保险库中的内容也因此保留。方块基础爆炸抗性统一为 `1200`。
+# 下界合金鼓风机与过滤器
 
-全部八种物品也具有下界合金物品的防火属性，掉落在火焰或岩浆中不会被烧毁。
+下界合金鼓风机可以内置选择水洗、岩浆熔炼、灵魂火缠魂或火焰烟熏，无须在风口前放置水、岩浆等介质。支持地面掉落物、传送带和置物台，沿用 Create 的配方与加工规则。默认加工进度为原版的 `4` 倍，气流计算风速为原版的 `2` 倍，风距和动能网络转速沿用原版规则。
+
+使用方式：
+
+1. 主手持下界合金过滤器并右键，打开四个加工区域，每区可放 `9` 种物品样本。
+2. 从背包拖入样本格，或鼠标悬停物品按 `1`～`4` 分别分配水洗、熔炼、缠魂、烟熏。样本不消耗真实物品；右键或空手点击样本格清除。同种物品改放到另一区域时移动原规则，目标区域满时保留原规则。
+3. 右键鼓风机，将过滤器放入专用插槽，并选择统一加工模式。**匹配过滤器的物品使用其指定方式，未匹配的物品使用鼓风机当前模式**；装有过滤器时也能随时切换统一模式。
+
+一个下界合金板加一个原版鼓风机或过滤器，分别无序合成一个对应升级品。拆除鼓风机会掉落所装过滤器并保留规则。过滤器也能作为 Create 物流设备的物品白名单使用。
+
+# 防爆与防火
+
+上述全部物品（含强力机械泵和下界合金板）的掉落物均免疫爆炸伤害；八种方块放置后均不被爆炸破坏，储罐与保险库中的内容也因此保留。方块基础爆炸抗性统一为 `1200`。
+
+全部十种物品也具有下界合金物品的防火属性，掉落在火焰或岩浆中不会被烧毁。
 
 # 环境要求
 
@@ -66,6 +82,8 @@ createnetherite-server.toml
 - `powerfulPumpPressureMultiplier`：默认 `8.0`，强力泵压力倍率
 - `netheriteFluidTankCapacityMultiplier`：默认 `16`，储罐单方块容量倍率
 - `netheriteElevatorPulleyMaxDistance`：默认 `768`，升降机最大运输距离（格）
+- `netheriteFanProcessingSpeedMultiplier`：默认 `4`，鼓风机每 tick 的加工进度倍率
+- `netheriteFanWindSpeedMultiplier`：默认 `2.0`，鼓风机的气流计算风速倍率
 
 注意：已经创建过的世界会保留自己的 `serverconfig/createnetherite-server.toml`。如果修改了默认值，旧世界需要手动修改对应世界目录下的配置文件，并重启世界或服务器。
 
@@ -108,6 +126,8 @@ The mod currently adds several Create-compatible entries:
 - `createnetherite:netherite_elevator_pulley`
 - `createnetherite:netherite_mechanical_press`
 - `createnetherite:netherite_blaze_burner`
+- `createnetherite:netherite_encased_fan`
+- `createnetherite:netherite_filter`
 - `createnetherite:netherite_sheet`
 
 The Powerful Mechanical Pump uses Create's native fluid network, with a default base stress impact of `16.0` and a pressure multiplier of `8.0`. The pressure multiplier increases throughput without extending pipe propagation distance.
@@ -124,9 +144,23 @@ The Netherite Blaze Burner provides `3` times the regular burner's boiler heat w
 
 Netherite Sheets are pressed from Netherite Ingots using Create and serve as upgrade materials for these machines.
 
-All items listed above, including the Powerful Mechanical Pump and Netherite Sheet, are immune to explosion damage when dropped. All seven placed blocks are protected from explosion destruction, preserving tank and vault contents. Their base blast resistance is `1200`.
+# Netherite Fan and Filter
 
-All eight items also have the fire resistance of netherite items: dropped items cannot be burned by fire or lava.
+The Netherite Encased Fan provides built-in Washing, Blasting, Haunting, and Smoking modes without requiring water, lava, soul fire, or fire in front of it. It processes dropped items, items on belts, and items on depots using Create's recipes and processing rules. Processing advances at `4` times the normal rate by default, and air-current speed calculations use a `2` times multiplier. Airflow range and kinetic network RPM follow Create's normal rules.
+
+To use it:
+
+1. Hold a Netherite Filter in your main hand and right-click. Its four processing areas each hold `9` item samples.
+2. Drag an inventory item into a sample slot, or hover an item and press `1` through `4` to assign Washing, Blasting, Haunting, or Smoking. Samples consume no real items. Right-click or click with an empty cursor to clear a sample. Moving an item kind to another area moves its rule; a full destination area leaves the previous rule unchanged.
+3. Right-click the fan, insert the filter into its slot, and select the default processing mode. **Matching items use their filter rule; unmatched items use the fan's selected mode.** The default mode remains selectable while a filter is installed.
+
+Craft one Netherite Sheet with a regular Encased Fan or Filter to obtain the corresponding upgrade. Breaking the fan drops its installed filter with its rules preserved. The filter also works as an item allow list in Create logistics devices.
+
+# Blast and Fire Protection
+
+All items listed above, including the Powerful Mechanical Pump and Netherite Sheet, are immune to explosion damage when dropped. All eight placed blocks are protected from explosion destruction, preserving tank and vault contents. Their base blast resistance is `1200`.
+
+All ten items also have the fire resistance of netherite items: dropped items cannot be burned by fire or lava.
 
 # Requirements
 
@@ -149,6 +183,8 @@ Main config entries:
 - `powerfulPumpPressureMultiplier`: default `8.0`, pressure multiplier of the powerful pump
 - `netheriteFluidTankCapacityMultiplier`: default `16`, tank capacity multiplier per block
 - `netheriteElevatorPulleyMaxDistance`: default `768`, maximum elevator travel distance in blocks
+- `netheriteFanProcessingSpeedMultiplier`: default `4`, fan processing progress multiplier per tick
+- `netheriteFanWindSpeedMultiplier`: default `2.0`, fan air-current speed multiplier
 
 Existing worlds keep their own `serverconfig/createnetherite-server.toml`. If default values are changed, older worlds need their world-specific config updated manually, then the world or server must be restarted.
 

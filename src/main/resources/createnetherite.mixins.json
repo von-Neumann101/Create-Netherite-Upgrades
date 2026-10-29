@@ -10,6 +10,7 @@
     "ItemVaultBlockEntityMixin",
     "ItemVaultBlockMixin",
     "ItemVaultItemMixin",
+    "NetheriteAirCurrentMixin",
     "PumpBlockEntityMixin",
     "PumpFluidTransferBehaviourMixin",
     "SteamEngineBlockEntityMixin"

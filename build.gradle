@@ -99,6 +99,21 @@ tasks.named('check') {
     dependsOn boilerRegressionTest
 }
 
+def minecraftResources = tasks.named('createMinecraftArtifacts').flatMap { it.resourcesArtifact }
+def filterRegressionTest = tasks.register('filterRegressionTest', JavaExec) {
+    group = 'verification'
+    description = 'Checks netherite filter samples, fallback modes, and persistence.'
+    classpath = sourceSets.boilerTest.runtimeClasspath + files(minecraftResources)
+    mainClass = 'io.github.boosterproject.booster.content.logistics.filter.NetheriteFilterDataTest'
+    javaLauncher = javaToolchains.launcherFor {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+tasks.named('check') {
+    dependsOn filterRegressionTest
+}
+
 dependencies {
     implementation("com.simibubi.create:create-${minecraft_version}:${create_version}:slim") {
         transitive = false

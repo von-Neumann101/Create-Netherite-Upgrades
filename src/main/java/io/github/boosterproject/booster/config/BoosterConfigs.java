@@ -26,8 +26,17 @@ public final class BoosterConfigs {
         public final ModConfigSpec.DoubleValue powerfulPumpPressureMultiplier;
         public final ModConfigSpec.IntValue netheriteFluidTankCapacityMultiplier;
         public final ModConfigSpec.IntValue netheriteElevatorPulleyMaxDistance;
+        public final ModConfigSpec.IntValue netheriteFanProcessingSpeedMultiplier;
+        public final ModConfigSpec.DoubleValue netheriteFanWindSpeedMultiplier;
 
         private Server(ModConfigSpec.Builder builder) {
+            netheriteFanProcessingSpeedMultiplier = builder
+                .comment("Native fan-processing steps performed each tick by the Netherite Encased Fan.")
+                .defineInRange("netheriteFanProcessingSpeedMultiplier", 4, 1, 64);
+            netheriteFanWindSpeedMultiplier = builder
+                .comment("Air-current speed multiplier for the Netherite Encased Fan. Does not change kinetic network RPM.")
+                .defineInRange("netheriteFanWindSpeedMultiplier", 2.0D, 1.0D, 16.0D);
+
             powerfulPumpStressImpact = builder
                 .comment(
                     "Create base stress impact for createnetherite:powerful_mechanical_pump at 1 RPM.",

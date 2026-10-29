@@ -1,0 +1,9 @@
+{
+  "parent": "create:block/encased_fan/block",
+  "textures": {
+    "3": "minecraft:block/netherite_block",
+    "back": "minecraft:block/netherite_block",
+    "fan_casing": "minecraft:block/netherite_block",
+    "particle": "minecraft:block/netherite_block"
+  }
+}

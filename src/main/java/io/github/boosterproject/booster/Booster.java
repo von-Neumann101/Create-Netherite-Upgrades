@@ -16,6 +16,7 @@ import io.github.boosterproject.booster.registry.BoosterBlockEntityTypes;
 import io.github.boosterproject.booster.registry.BoosterBlocks;
 import io.github.boosterproject.booster.registry.BoosterCreativeModeTabs;
 import io.github.boosterproject.booster.registry.BoosterItems;
+import io.github.boosterproject.booster.registry.BoosterMenuTypes;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
@@ -37,6 +38,7 @@ public class Booster {
         BoosterItems.register(modEventBus);
         BoosterCreativeModeTabs.register(modEventBus);
         BoosterBlockEntityTypes.register(modEventBus);
+        BoosterMenuTypes.register(modEventBus);
 
         NeoForge.EVENT_BUS.addListener(BoosterExplosionProtection::onExplosionDetonate);
         NeoForge.EVENT_BUS.addListener(BoosterExplosionProtection::onEntityInvulnerabilityCheck);
@@ -65,6 +67,10 @@ public class Booster {
             );
 
             Block netheriteSteamEngine = BoosterBlocks.NETHERITE_STEAM_ENGINE.get();
+            BlockStressValues.IMPACTS.register(
+                BoosterBlocks.NETHERITE_ENCASED_FAN.get(),
+                () -> BlockStressValues.getImpact(AllBlocks.ENCASED_FAN.get())
+            );
             BlockStressValues.CAPACITIES.register(netheriteSteamEngine, () -> 2048.0D);
             BlockStressValues.setGeneratorSpeed(64, true).accept(netheriteSteamEngine);
             MountedItemStorageType.REGISTRY.register(

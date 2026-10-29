@@ -9,5 +9,16 @@
   "itemGroup.createnetherite.createnetherite": "Create Netherite",
   "item.createnetherite.netherite_sheet": "\u4e0b\u754c\u5408\u91d1\u677f",
   "tooltip.createnetherite.netherite_fluid_tank": "\u5bb9\u91cf\u662f\u666e\u901a\u6d41\u4f53\u50a8\u7f50\u7684 %s \u500d\u3002",
-  "tooltip.createnetherite.powerful_mechanical_pump": "\u9ad8\u541e\u5410\u91cf\u6d41\u4f53\u6cf5"
+  "tooltip.createnetherite.powerful_mechanical_pump": "\u9ad8\u541e\u5410\u91cf\u6d41\u4f53\u6cf5",
+  "block.createnetherite.netherite_encased_fan": "下界合金鼓风机",
+  "item.createnetherite.netherite_filter": "下界合金过滤器",
+  "processing.createnetherite.washing": "水洗",
+  "processing.createnetherite.blasting": "熔炼",
+  "processing.createnetherite.haunting": "缠魂",
+  "processing.createnetherite.smoking": "烟熏",
+  "gui.booster.netherite_filter.mouse_hint": "拖入或左键设置；右键或空手清除",
+  "gui.booster.netherite_filter.key_hint": "悬停物品，按 1～4 分配加工方式",
+  "tooltip.booster.netherite_filter.rules": "%s：%s 种物品",
+  "gui.booster.netherite_fan.filter": "下界合金过滤器",
+  "gui.booster.netherite_fan.fallback": "未匹配物品使用当前选择的加工方式"
 }

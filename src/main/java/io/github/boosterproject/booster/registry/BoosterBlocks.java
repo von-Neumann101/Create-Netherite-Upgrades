@@ -7,6 +7,7 @@ import io.github.boosterproject.booster.content.fluids.pump.PowerfulMechanicalPu
 import io.github.boosterproject.booster.content.fluids.tank.NetheriteFluidTankBlock;
 import io.github.boosterproject.booster.content.kinetics.steamEngine.NetheriteSteamEngineBlock;
 import io.github.boosterproject.booster.content.kinetics.press.NetheriteMechanicalPressBlock;
+import io.github.boosterproject.booster.content.kinetics.fan.NetheriteEncasedFanBlock;
 import io.github.boosterproject.booster.content.logistics.vault.NetheriteItemVaultBlock;
 import io.github.boosterproject.booster.content.processing.burner.NetheriteBlazeBurnerBlock;
 import net.minecraft.world.level.block.Blocks;
@@ -60,6 +61,12 @@ public final class BoosterBlocks {
     public static final DeferredBlock<NetheriteBlazeBurnerBlock> NETHERITE_BLAZE_BURNER =
         BLOCKS.register("netherite_blaze_burner", () -> new NetheriteBlazeBurnerBlock(
             BlockBehaviour.Properties.ofFullCopy(AllBlocks.BLAZE_BURNER.get())
+                .explosionResistance(1200.0F)
+        ));
+
+    public static final DeferredBlock<NetheriteEncasedFanBlock> NETHERITE_ENCASED_FAN =
+        BLOCKS.register("netherite_encased_fan", () -> new NetheriteEncasedFanBlock(
+            BlockBehaviour.Properties.ofFullCopy(AllBlocks.ENCASED_FAN.get())
                 .explosionResistance(1200.0F)
         ));
 

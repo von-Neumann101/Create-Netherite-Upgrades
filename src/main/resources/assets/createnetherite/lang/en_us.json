@@ -9,5 +9,16 @@
   "itemGroup.createnetherite.createnetherite": "Create Netherite",
   "item.createnetherite.netherite_sheet": "Netherite Sheet",
   "tooltip.createnetherite.netherite_fluid_tank": "Stores %sx as much fluid as a regular Fluid Tank.",
-  "tooltip.createnetherite.powerful_mechanical_pump": "High-capacity fluid pump"
+  "tooltip.createnetherite.powerful_mechanical_pump": "High-capacity fluid pump",
+  "block.createnetherite.netherite_encased_fan": "Netherite Encased Fan",
+  "item.createnetherite.netherite_filter": "Netherite Filter",
+  "processing.createnetherite.washing": "Washing",
+  "processing.createnetherite.blasting": "Blasting",
+  "processing.createnetherite.haunting": "Haunting",
+  "processing.createnetherite.smoking": "Smoking",
+  "gui.booster.netherite_filter.mouse_hint": "Drag / left-click: set; right / empty: clear",
+  "gui.booster.netherite_filter.key_hint": "Hover an item and press 1-4 to assign its mode",
+  "tooltip.booster.netherite_filter.rules": "%s: %s item types",
+  "gui.booster.netherite_fan.filter": "Netherite Filter",
+  "gui.booster.netherite_fan.fallback": "Unmatched items use the selected mode"
 }

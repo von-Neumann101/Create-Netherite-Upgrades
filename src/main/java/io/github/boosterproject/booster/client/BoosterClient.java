@@ -8,6 +8,8 @@ import com.simibubi.create.content.kinetics.steamEngine.SteamEngineRenderer;
 import com.simibubi.create.content.kinetics.steamEngine.SteamEngineVisual;
 import com.simibubi.create.content.kinetics.press.MechanicalPressRenderer;
 import com.simibubi.create.content.kinetics.press.PressVisual;
+import com.simibubi.create.content.kinetics.fan.EncasedFanRenderer;
+import com.simibubi.create.content.kinetics.fan.FanVisual;
 import com.simibubi.create.content.processing.burner.BlazeBurnerRenderer;
 import com.simibubi.create.content.processing.burner.BlazeBurnerVisual;
 import com.simibubi.create.foundation.block.connected.CTModel;
@@ -15,12 +17,14 @@ import dev.engine_room.flywheel.lib.visualization.SimpleBlockEntityVisualizer;
 import io.github.boosterproject.booster.Booster;
 import io.github.boosterproject.booster.registry.BoosterBlockEntityTypes;
 import io.github.boosterproject.booster.registry.BoosterBlocks;
+import io.github.boosterproject.booster.registry.BoosterMenuTypes;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 
 public final class BoosterClient {
     private BoosterClient() {
@@ -30,6 +34,7 @@ public final class BoosterClient {
         BoosterPartialModels.init();
         modEventBus.addListener(BoosterClient::registerRenderers);
         modEventBus.addListener(BoosterClient::clientSetup);
+        modEventBus.addListener(BoosterClient::registerScreens);
         CreateClient.MODEL_SWAPPER.getCustomBlockModels()
             .register(ResourceLocation.fromNamespaceAndPath(Booster.MOD_ID, "powerful_mechanical_pump"), PipeAttachmentModel::withAO);
         CreateClient.MODEL_SWAPPER.getCustomBlockModels()
@@ -40,6 +45,7 @@ public final class BoosterClient {
     }
 
     private static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
+        event.registerBlockEntityRenderer(BoosterBlockEntityTypes.NETHERITE_ENCASED_FAN.get(), EncasedFanRenderer::new);
         event.registerBlockEntityRenderer(
             BoosterBlockEntityTypes.POWERFUL_MECHANICAL_PUMP.get(),
             PowerfulMechanicalPumpRenderer::new
@@ -66,8 +72,15 @@ public final class BoosterClient {
         );
     }
 
+    private static void registerScreens(RegisterMenuScreensEvent event) {
+        event.register(BoosterMenuTypes.NETHERITE_FILTER.get(), NetheriteFilterScreen::new);
+        event.register(BoosterMenuTypes.NETHERITE_FAN.get(), NetheriteFanScreen::new);
+    }
+
     private static void clientSetup(FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
+            SimpleBlockEntityVisualizer.builder(BoosterBlockEntityTypes.NETHERITE_ENCASED_FAN.get())
+                .factory(FanVisual::new).apply();
             ItemBlockRenderTypes.setRenderLayer(BoosterBlocks.NETHERITE_FLUID_TANK.get(), RenderType.cutoutMipped());
             SimpleBlockEntityVisualizer
                 .builder(BoosterBlockEntityTypes.POWERFUL_MECHANICAL_PUMP.get())

@@ -5,6 +5,7 @@ import com.simibubi.create.content.processing.burner.BlazeBurnerBlockItem;
 import io.github.boosterproject.booster.Booster;
 import io.github.boosterproject.booster.content.fluids.pump.PowerfulMechanicalPumpBlockItem;
 import io.github.boosterproject.booster.content.fluids.tank.NetheriteFluidTankBlockItem;
+import io.github.boosterproject.booster.content.logistics.filter.NetheriteFilterItem;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.neoforged.bus.api.IEventBus;
@@ -58,6 +59,14 @@ public final class BoosterItems {
             BoosterBlocks.NETHERITE_BLAZE_BURNER.get(),
             new Item.Properties().fireResistant()
         ));
+
+    public static final DeferredItem<Item> NETHERITE_ENCASED_FAN =
+        ITEMS.register("netherite_encased_fan", () -> new BlockItem(
+            BoosterBlocks.NETHERITE_ENCASED_FAN.get(), new Item.Properties().fireResistant()
+        ));
+
+    public static final DeferredItem<Item> NETHERITE_FILTER =
+        ITEMS.register("netherite_filter", () -> new NetheriteFilterItem(new Item.Properties().fireResistant()));
 
     private BoosterItems() {
     }

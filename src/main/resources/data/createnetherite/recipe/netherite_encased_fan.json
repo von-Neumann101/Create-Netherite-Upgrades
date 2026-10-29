@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "createnetherite:netherite_sheet"
+    },
+    {
+      "item": "create:encased_fan"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "createnetherite:netherite_encased_fan"
+  }
+}

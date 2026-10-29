@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "createnetherite:block/netherite_encased_fan/block",
+      "x": 180
+    },
+    "facing=east": {
+      "x": 90,
+      "y": 90,
+      "model": "createnetherite:block/netherite_encased_fan/block"
+    },
+    "facing=north": {
+      "model": "createnetherite:block/netherite_encased_fan/block",
+      "x": 90
+    },
+    "facing=south": {
+      "x": 90,
+      "y": 180,
+      "model": "createnetherite:block/netherite_encased_fan/block"
+    },
+    "facing=up": {
+      "model": "createnetherite:block/netherite_encased_fan/block"
+    },
+    "facing=west": {
+      "x": 90,
+      "y": 270,
+      "model": "createnetherite:block/netherite_encased_fan/block"
+    }
+  }
+}
