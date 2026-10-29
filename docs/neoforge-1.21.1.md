@@ -10,7 +10,7 @@
 
 - 分支：`1.21.1-NeoForge`
 - 源码核对日期：`2026-10-29`
-- 源码基线提交：`6c54287ca4ddc5518d3f1c09115487e2c79e9535`（后续工作区修改包含本次防爆调整）
+- 源码基线提交：`7a6147c28c5698335dfa669f506c88b1ad93ae15`（后续工作区修改包含本次掉落物防火调整）
 - 模组版本：`0.2.4`
 - Mod id：`createnetherite`
 - 主包名：`io.github.boosterproject.booster`
@@ -48,6 +48,7 @@
 - 2026-10-29 源码核对覆盖 `src/main/java` 的 40 个 Java 文件、注册、配置、Mixin、配方和资源路径；74 个资源 JSON 的语法解析通过。
 - 2026-10-29 锅炉等级调整已通过 `.\gradlew.bat --offline --no-configuration-cache build`，其中 `check` 阶段执行了 15 项锅炉逻辑回归检查，覆盖超过 18 级的尺寸/供水、引擎效率、尺寸/供水/热量不足、无水、被动加热、18 级提示及原版锅炉限制。
 - 同日防爆调整通过相同构建命令及现有 15 项锅炉回归检查；另外核对了 NeoForge 伤害判定和爆炸受影响方块列表的调用路径。尚未进行游戏内爆破实测。
+- 同日掉落物防火调整通过相同构建命令及现有 15 项锅炉回归检查；核对了八种物品的注册属性及原版 `ItemEntity` / `ItemStack` 防火路径。尚未进行游戏内火焰、岩浆实测。
 - 本次未重新执行 `runClient` 或 `runServer`，未做游戏内行为验证。构建仍报告现有 API 和 Gradle 弃用提示；本次离线构建关闭配置缓存，以避开缓存序列化时对未缓存渲染依赖的解析。
 - 旧交接记录中的构建成功、客户端资源重载成功，对应 Create Netherite `0.1.0`、NeoForge `21.1.242`。当时未发现 Mixin 应用失败、模组加载失败或缺失模型错误；该记录仅是历史验证，不能代替当前 `0.2.4` 的构建和运行验证。
 
@@ -194,6 +195,8 @@ NeoForge 1.21.1 使用 NeoForge DeferredRegister 新类型，不再使用 Forge 
 - `DeferredItem<Item> NETHERITE_ELEVATOR_PULLEY`：普通 `BlockItem`
 - `DeferredItem<Item> NETHERITE_MECHANICAL_PRESS`：普通 `BlockItem`
 - `DeferredItem<Item> NETHERITE_BLAZE_BURNER`：使用 `BlazeBurnerBlockItem.withBlaze(...)`
+
+上述八种物品的 `Item.Properties` 均设置 `.fireResistant()`，使用原版下界合金物品的火焰与岩浆伤害保护。
 
 ### BlockEntityType
 
@@ -477,6 +480,12 @@ multiBlockCapacity = blockCount * singleBlockCapacity
 - `ExplosionEvent.Detonate`：从 `getAffectedBlocks()` 中排除注册命名空间为 `createnetherite` 的方块位置，保留放置后的方块及其 BE 数据。储罐流体和保险库存货随方块保留。
 - `EntityInvulnerabilityCheckEvent`：仅当实体为 `ItemEntity`、物品属于 `createnetherite`，且伤害源带有 `DamageTypeTags.IS_EXPLOSION` 时，调用 `setInvulnerable(true)`。因此下界合金板和所有方块掉落物都受到保护。
 - 保护范围按注册命名空间识别，沿用现有 Create 方块与物品类，不新增 Mixin。普通 Create 和 Minecraft 内容不在此保护范围内。
+
+## 掉落物防火实现
+
+文件：`registry/BoosterItems.java`。全部八种物品的注册属性均调用 `Item.Properties.fireResistant()`，包括强力机械泵和下界合金板。
+
+该原版属性设置 `DataComponents.FIRE_RESISTANT`：`ItemEntity.fireImmune()` 据此返回免疫，`ItemStack.canBeHurtBy(...)` 也会拒绝带有 `DamageTypeTags.IS_FIRE` 的伤害。因此掉落物不会被火焰或岩浆烧毁。防爆仍由独立的 `BoosterExplosionProtection` 事件监听器处理。
 
 ## 下界合金物品保险库实现
 

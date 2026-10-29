@@ -43,6 +43,8 @@ Minecraft `1.20.1` Forge 的 `main` 分支暂停更新，保留现有代码和�
 
 上述全部物品（含强力机械泵和下界合金板）的掉落物均免疫爆炸伤害；七种方块放置后均不被爆炸破坏，储罐与保险库中的内容也因此保留。方块基础爆炸抗性统一为 `1200`。
 
+全部八种物品也具有下界合金物品的防火属性，掉落在火焰或岩浆中不会被烧毁。
+
 # 环境要求
 
 - Minecraft `1.21.1`
@@ -123,6 +125,8 @@ The Netherite Blaze Burner provides `3` times the regular burner's boiler heat w
 Netherite Sheets are pressed from Netherite Ingots using Create and serve as upgrade materials for these machines.
 
 All items listed above, including the Powerful Mechanical Pump and Netherite Sheet, are immune to explosion damage when dropped. All seven placed blocks are protected from explosion destruction, preserving tank and vault contents. Their base blast resistance is `1200`.
+
+All eight items also have the fire resistance of netherite items: dropped items cannot be burned by fire or lava.
 
 # Requirements
 
