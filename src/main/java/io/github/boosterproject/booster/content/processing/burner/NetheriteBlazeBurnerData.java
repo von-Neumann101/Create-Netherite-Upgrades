@@ -1,5 +1,6 @@
 package io.github.boosterproject.booster.content.processing.burner;
 
+import com.simibubi.create.api.boiler.BoilerHeater;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.util.Mth;
@@ -13,7 +14,7 @@ public final class NetheriteBlazeBurnerData {
     private NetheriteBlazeBurnerData() {}
 
     public static int clampCount(int count) {
-        return Mth.clamp(count, 1, MAX_BLAZES);
+        return Mth.clamp(count, 0, MAX_BLAZES);
     }
 
     public static int getCount(ItemStack stack) {
@@ -42,6 +43,9 @@ public final class NetheriteBlazeBurnerData {
     }
 
     public static float scaleHeat(float heat, int count) {
+        if (clampCount(count) == 0) {
+            return BoilerHeater.NO_HEAT;
+        }
         return heat > 0 ? heat * clampCount(count) : heat;
     }
 

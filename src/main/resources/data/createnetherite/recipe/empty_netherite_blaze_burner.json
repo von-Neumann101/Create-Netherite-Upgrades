@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    { "item": "createnetherite:netherite_sheet" },
+    { "item": "create:empty_blaze_burner" }
+  ],
+  "result": {
+    "id": "createnetherite:netherite_blaze_burner",
+    "count": 1,
+    "components": {
+      "minecraft:custom_data": { "BlazeCount": 0 }
+    }
+  }
+}

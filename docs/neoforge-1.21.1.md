@@ -10,7 +10,7 @@
 
 - 分支：`1.21.1-NeoForge`
 - 源码核对日期：`2026-10-30`
-- 源码基线提交：`ebdf02aa24634eb1afcc53058a26b33ab962cbd3`（本次后续修改加入四烈焰人燃烧室）
+- 源码基线提交：`f5a380a4cf47ef7f3bd161c1288c7befdc93e916`（本次后续修改补充空燃烧室升级）
 - 模组版本：`0.2.4`
 - Mod id：`createnetherite`
 - 主包名：`io.github.boosterproject.booster`
@@ -56,6 +56,7 @@
 - 2026-10-30 锅炉门槛与引擎输出调整通过 `.\gradlew.bat --offline --no-configuration-cache --no-daemon --console=plain build`：29 项锅炉检查和 15 项过滤器检查共 44 项通过。新增锅炉用例先在旧实现上失败，修改后通过；引擎 256 倍容量供应器及最终网络输出公式已对照锁定版本的 `SteamEngineBlockEntity` / `PoweredShaftBlockEntity` 源码核对。本次未重新启动客户端或服务端，也未进行游戏内输出实测。
 - 同日四烈焰人燃烧室通过完整离线构建：29 项锅炉、59 项燃烧室、15 项过滤器共 103 项检查通过；81 个资源 JSON 解析通过，当前包含 59 个 Java 源文件。新增用例先复现数量/燃料功能缺失，以及生存单件、创造模式副本和蓝图数量保留问题，修复后通过。独立审查发现的问题均已处理，并补齐机械手识别；贴图及封面没有变更。
 - 最终版本客户端已完成模组加载和资源重载，未发现本模组注册或 Mixin 应用错误。此次仍跳过未完成的原版资源下载，日志有原版主菜单纹理缺失警告。没有进入世界手动验证实体捕获、机械手喂料或多头渲染，测试结束后停止了客户端。
+- 同日空容器补充通过完整离线构建：29 项锅炉、94 项燃烧室、15 项过滤器共 138 项检查通过，84 个资源 JSON 解析通过。新增检查先复现 0 被当作 1 的问题，再验证 0→4 连续捕获、空堆叠首捕、创造模式首捕、空热量/保存、无 BE 空状态识别及蓝图匹配。两个真实空配方的 result 经 ItemStack CODEC 解码验证组件和数量，独立环境仅把结果物品 ID 替换为已注册原版物品；不等于在世界中实际合成。独立审查未发现重要问题，本次未重新启动客户端或进行游戏内操作实测。
 
 按当前配置生成的主 jar：
 
@@ -546,15 +547,17 @@ max(0, min(configuredMaxDistance, pulleyY - 1 - worldMinBuildHeight))
 
 文件：`content/processing/burner/NetheriteBlazeBurner{Block,BlockEntity,Item,Data,MovementBehaviour}.java`。
 
-- 方块和 BE 分别继承 Create `BlazeBurnerBlock` / `BlazeBurnerBlockEntity`，沿用自己的 BE 注册 ID。旧物品、旧存档中缺少 `BlazeCount` 时视为 1 只，数量限制在 `1..4`。
+- 方块和 BE 分别继承 Create `BlazeBurnerBlock` / `BlazeBurnerBlockEntity`，沿用自己的 BE 注册 ID。数量范围为 `0..4`，显式 `BlazeCount=0` 表示空；旧物品、旧存档中缺少该字段时仍视为 1 只。空和非空共用 `createnetherite:netherite_blaze_burner` 物品 ID，通过组件区分，不增加注册物品 ID。
 - 物品是自定义 `BlockItem`。捕获沿用 `create:blaze_burner_capturable` 实体标签；手持右键实体时只在服务端完成捕获。单件直接修改原手持对象，以兼容 `Player.interactOn` 在旧对象变空时清空手部的处理；创造模式下该 API 传入的是副本，因此显式使用 `player.getItemInHand(hand)` 的真实物品。堆叠物品则拆出一份交付背包，其余数量数据不变。满 4 只时拒绝捕获，不移除实体。此功能针对实际实体，不从刷怪笼直接增加数量。
 - 物品数量保存在 `DataComponents.CUSTOM_DATA.BlazeCount`，修改时保留其他物品数据。放置时写入 BE；掉落表照常生成自己的物品，再由方块 `getDrops` 附加数量。中键复制保留数量；拆除只保留烈焰人，不保留可重复利用的燃料。`writeSafe` 向蓝图仅额外保存数量，`BlazeCountRequirement.matches` 同时比较物品种类和数量，避免蓝图炮消耗数量不符的物品造成烈焰人丢失或复制。
+- 放置 0 只的物品使用 `HeatLevel.NONE`，沿用原版不创建 BE 的规则；`getBlazeCount(state, be)` 优先识别空状态，因此空容器的掉落、复制和蓝图物料需求都保留显式 0，不会因没有 BE 而回退成 1。空状态不接受燃料，且屏蔽父类会把笼体替换为普通 Create 方块的打火石操作。移动结构在空状态下直接跳过头部渲染，不读取可能为空的 BE 数据。
 - BE NBT 保存 `BlazeCount` 与 `FuelHalfTick`（`0..1`）。每个服务端 tick 增加 `BlazeCount` 个半燃料 tick，整数部分用于扣除原版燃烧时间，余数保存到下一次。因此 1～4 只的耗料倍率依次为 `0.5 / 1 / 1.5 / 2`，包括半 tick 进度的存档往返。
 - 父类 `tick` 每 tick 只调用一次：在调用前调整燃烧时间，以抵消/补足父类自带的一次扣减；特殊燃料用完时未付清的一次消耗从原版正常热量余热中扣除。客户端与创造燃料不走耗料调整。燃料识别、数据映射、容器返回、模拟插入、手动/机械手喂料、普通/超级加热及烈焰蛋糕余热切换继续由原版处理。
 - `BoosterArmInteractionPointTypes` 使用 DeferredRegister 向 Create 的 `ARM_INTERACTION_POINT_TYPE` 注册 `createnetherite:netherite_blaze_burner`，继承原生 `BlazeBurnerType`，仅扩展方块识别；`BlazeBurnerPoint` 继续调用原生 `tryInsert`，处理机械手的模拟插入与燃料容器返回。没有覆盖普通燃烧室的交互类型。
-- `Booster.commonSetup` 注册 `NetheriteBlazeBurnerBlock::getBoilerHeat`：原版正热量乘 BE 数量；`NO_HEAT=-1` 和 `PASSIVE_HEAT=0` 原样返回。普通加热每只 1 级、超级加热每只 2 级，满载分别提供 4 / 8 级。该倍率用于锅炉，工作盆仍使用 Create 原生加热状态。
+- `Booster.commonSetup` 注册 `NetheriteBlazeBurnerBlock::getBoilerHeat`：空容器始终返回 `NO_HEAT=-1`；非空时原版正热量乘数量，`NO_HEAT=-1` 和 `PASSIVE_HEAT=0` 原样返回。普通加热每只 1 级、超级加热每只 2 级，满载分别提供 4 / 8 级。该倍率用于锅炉，工作盆仍使用 Create 原生加热状态。
 - `NetheriteBlazeBurnerRenderer` 按数量排列原版烈焰人模型；1 只时保持原版大小，2～4 只时以半尺寸排列。该 BE 使用常规 renderer 而非原版单头 Flywheel visual。客户端 `NetheriteBlazeBurnerAnimationMixin` 只让该子类继续更新原生头部动画，普通燃烧室不变。移动结构通过自定义 movement behaviour 保留同样的数量渲染与原版列车行为。没有修改贴图。
 - 物品说明和工程师护目镜显示捕获数量、热量和耗料倍率。
+- `NetheriteBlazeBurnerItem.getName` 在 0 只时显示空容器名称。`BoosterClient` 在客户端初始化队列注册 `createnetherite:empty` 物品属性，空状态选用 `models/item/empty_netherite_blaze_burner.json`；该模型复用原版空笼体几何和已有下界合金笼体贴图。创造栏同时提供 0 只与默认 1 只的变体。
 
 `burnerRegressionTest` 使用实际 Minecraft 物品、原版热状态函数及自定义 BE 检查数量、单份捕获数据、元数据保护、倍率和存档；已接入 `check` / `build`。测试状态定义使用已注册原版方块作为所有者，避免向冻结的注册表写入测试方块；不替代世界中的捕获交互、自动喂料和渲染验证。
 
@@ -697,6 +700,7 @@ Minecraft 1.21.1 数据路径使用 singular registry path：
 - 下界合金升降机滑轮：一个下界合金板 + 一个 `create:elevator_pulley`，无序合成 1 个
 - 下界合金动力冲压机：一个下界合金板 + 一个 `create:mechanical_press`，无序合成 1 个
 - 下界合金烈焰人燃烧室：一个下界合金板 + 一个 `create:blaze_burner`，无序合成 1 个；另有两个板 + 三个原版燃烧室批量合成 3 个的有序配方
+- 空的下界合金烈焰人燃烧室：对应使用 `create:empty_blaze_burner` 的单个与批量升级配方，输出同一物品 ID 并在 `result.components.minecraft:custom_data` 中写入 `BlazeCount: 0`。原有装填配方仍缺省为 1 只。
 - 下界合金鼓风机：一个下界合金板 + 一个 `create:encased_fan`，无序合成 1 个
 - 下界合金过滤器：一个下界合金板 + 一个 `create:filter`，无序合成 1 个
 - 下界合金板：Create pressing，输入 `c:ingots/netherite`，输出 `createnetherite:netherite_sheet`

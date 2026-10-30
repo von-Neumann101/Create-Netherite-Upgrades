@@ -48,6 +48,13 @@ public class NetheriteBlazeBurnerItem extends BlockItem {
     }
 
     @Override
+    public Component getName(ItemStack stack) {
+        return NetheriteBlazeBurnerData.getCount(stack) == 0
+            ? Component.translatable("item.createnetherite.empty_netherite_blaze_burner")
+            : super.getName(stack);
+    }
+
+    @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, context, tooltip, flag);
         int count = NetheriteBlazeBurnerData.getCount(stack);

@@ -7,5 +7,11 @@
     "0": "createnetherite:block/netherite_blaze_burner/blaze_heater_brazier",
     "1": "create:block/blaze_idle",
     "particle": "minecraft:block/netherite_block"
-  }
+  },
+  "overrides": [
+    {
+      "predicate": { "createnetherite:empty": 1 },
+      "model": "createnetherite:item/empty_netherite_blaze_burner"
+    }
+  ]
 }

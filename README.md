@@ -41,10 +41,13 @@ Minecraft `1.20.1` Forge 的 `main` 分支暂停更新，保留现有代码和�
 
 下界合金动力冲压机支持批量冲压，并在工作盆中连续处理当前可匹配的配方；基础应力消耗沿用普通动力冲压机。
 
-下界合金烈焰人燃烧室合成后装有 `1` 只烈焰人。手持它右键烈焰人可以继续捕获，最多关 `4` 只；物品说明和工程师护目镜会显示数量与倍率，放置后也会显示对应数量的烈焰人。拆除、扳手拾取、重新放置和存档均保留数量，旧燃烧室默认按 `1` 只处理。
+下界合金烈焰人燃烧室支持空、满两条升级路径：一个下界合金板加一个原版空燃烧室，合成空的下界合金燃烧室（`0` 只）；使用原版已装烈焰人的燃烧室升级，则保留 `1` 只。也可用两个板加三个对应原版燃烧室批量升级。手持空容器连续右键烈焰人，可以从 `0` 只依次装到 `4` 只。
+
+空容器有独立名称和空笼模型，不消耗燃料、不提供热量，放置和拆下后仍保持为空。物品说明和工程师护目镜会显示非空燃烧室的数量与倍率，放置后也会显示对应数量的烈焰人。拆除、扳手拾取、重新放置和存档均保留数量，旧燃烧室默认按 `1` 只处理。
 
 | 烈焰人数量 | 锅炉热量倍率 | 燃料消耗倍率 |
 | --- | --- | --- |
+| 0（空） | 无热量 | 0× |
 | 1 | 1× | 0.5× |
 | 2 | 2× | 1× |
 | 3 | 3× | 1.5× |
@@ -153,10 +156,13 @@ The Netherite Elevator Pulley uses twice the rotational speed in Create's moveme
 
 The Netherite Mechanical Press supports bulk pressing and repeatedly processes the current matching basin recipe. Its base stress impact follows the regular Mechanical Press.
 
-The Netherite Blaze Burner starts with `1` Blaze after crafting. Hold it and right-click a Blaze to capture another, up to `4`. Item tooltips and Engineer's Goggles show the count and rates; the placed burner renders the corresponding number of Blazes. Breaking, wrench pickup, placement, and saves retain the count. Existing burners default to `1` Blaze.
+The Netherite Blaze Burner has empty and filled upgrade recipes: one Netherite Sheet plus a regular Empty Blaze Burner produces an empty netherite burner (`0` Blazes); upgrading a filled regular burner retains its `1` Blaze. Two sheets and three corresponding regular burners provide the bulk upgrade. Hold an empty burner and repeatedly right-click Blazes to fill it from `0` to `4`.
+
+The empty variant has its own name and cage model, consumes no fuel, supplies no heat, and stays empty through placement and pickup. Item tooltips and Engineer's Goggles show filled burners' counts and rates; placed burners render the corresponding number of Blazes. Breaking, wrench pickup, placement, and saves retain the count. Existing burners default to `1` Blaze.
 
 | Blazes | Boiler heat multiplier | Fuel consumption multiplier |
 | --- | --- | --- |
+| 0 (empty) | No heat | 0× |
 | 1 | 1× | 0.5× |
 | 2 | 2× | 1× |
 | 3 | 3× | 1.5× |

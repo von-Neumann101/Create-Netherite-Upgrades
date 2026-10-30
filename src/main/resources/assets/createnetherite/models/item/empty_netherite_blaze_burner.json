@@ -1,0 +1,7 @@
+{
+  "parent": "create:block/blaze_burner/block",
+  "textures": {
+    "0": "createnetherite:block/netherite_blaze_burner/blaze_heater_brazier",
+    "particle": "minecraft:block/netherite_block"
+  }
+}

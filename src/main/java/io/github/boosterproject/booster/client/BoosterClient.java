@@ -16,8 +16,11 @@ import io.github.boosterproject.booster.Booster;
 import io.github.boosterproject.booster.registry.BoosterBlockEntityTypes;
 import io.github.boosterproject.booster.registry.BoosterBlocks;
 import io.github.boosterproject.booster.registry.BoosterMenuTypes;
+import io.github.boosterproject.booster.registry.BoosterItems;
+import io.github.boosterproject.booster.content.processing.burner.NetheriteBlazeBurnerData;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
@@ -77,6 +80,9 @@ public final class BoosterClient {
 
     private static void clientSetup(FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
+            ItemProperties.register(BoosterItems.NETHERITE_BLAZE_BURNER.get(),
+                ResourceLocation.fromNamespaceAndPath(Booster.MOD_ID, "empty"),
+                (stack, level, entity, seed) -> NetheriteBlazeBurnerData.getCount(stack) == 0 ? 1 : 0);
             SimpleBlockEntityVisualizer.builder(BoosterBlockEntityTypes.NETHERITE_ENCASED_FAN.get())
                 .factory(FanVisual::new).apply();
             ItemBlockRenderTypes.setRenderLayer(BoosterBlocks.NETHERITE_FLUID_TANK.get(), RenderType.cutoutMipped());
