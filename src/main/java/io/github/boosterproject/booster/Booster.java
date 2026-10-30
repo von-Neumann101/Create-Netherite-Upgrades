@@ -71,7 +71,8 @@ public class Booster {
                 BoosterBlocks.NETHERITE_ENCASED_FAN.get(),
                 () -> BlockStressValues.getImpact(AllBlocks.ENCASED_FAN.get())
             );
-            BlockStressValues.CAPACITIES.register(netheriteSteamEngine, () -> 2048.0D);
+            BlockStressValues.CAPACITIES.register(netheriteSteamEngine,
+                () -> BlockStressValues.getCapacity(AllBlocks.STEAM_ENGINE.get()) * 256.0D);
             BlockStressValues.setGeneratorSpeed(64, true).accept(netheriteSteamEngine);
             MountedItemStorageType.REGISTRY.register(
                 BoosterBlocks.NETHERITE_ITEM_VAULT.get(),

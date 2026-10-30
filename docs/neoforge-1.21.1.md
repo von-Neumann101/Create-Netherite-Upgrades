@@ -9,8 +9,8 @@
 ## 版本与分支
 
 - 分支：`1.21.1-NeoForge`
-- 源码核对日期：`2026-10-29`
-- 源码基线提交：`e0dde3f21c41b6c3bf4539ed8125a2e7adab6ce6`（后续工作区修改包含下界合金鼓风机与过滤器）
+- 源码核对日期：`2026-10-30`
+- 源码基线提交：`e970174669d2f2819ec5a2e36aa43cd6c7de1bb6`（本次后续修改调整锅炉尺寸门槛与引擎容量倍率）
 - 模组版本：`0.2.4`
 - Mod id：`createnetherite`
 - 主包名：`io.github.boosterproject.booster`
@@ -53,6 +53,7 @@
 - 当前 `0.2.4` 已用 `runClient` 启动并进入新建的独立创造测试世界，未发现模组加载失败或 Mixin 应用失败。资源下载未全部完成，因此此次启动跳过 `downloadAssets` 并复用已下载资源，主菜单背景出现原版纹理缺失；未发现新增模型加载错误。界面操作因同时输入而停止，尚未完成两个菜单、鼠标拖拽、数字键以及真实气流加工的游戏内验证；未启动独立服务端。
 - 构建仍报告现有 API 和 Gradle 弃用提示；本次离线构建关闭配置缓存，以避开缓存序列化时对未缓存渲染依赖的解析。
 - 旧交接记录中的构建成功、客户端资源重载成功，对应 Create Netherite `0.1.0`、NeoForge `21.1.242`。当时未发现 Mixin 应用失败、模组加载失败或缺失模型错误；该记录仅是历史验证，不能代替当前 `0.2.4` 的构建和运行验证。
+- 2026-10-30 锅炉门槛与引擎输出调整通过 `.\gradlew.bat --offline --no-configuration-cache --no-daemon --console=plain build`：29 项锅炉检查和 15 项过滤器检查共 44 项通过。新增锅炉用例先在旧实现上失败，修改后通过；引擎 256 倍容量供应器及最终网络输出公式已对照锁定版本的 `SteamEngineBlockEntity` / `PoweredShaftBlockEntity` 源码核对。本次未重新启动客户端或服务端，也未进行游戏内输出实测。
 
 按当前配置生成的主 jar：
 
@@ -459,16 +460,16 @@ multiBlockCapacity = blockCount * singleBlockCapacity
 ## 下界合金锅炉与蒸汽引擎实现
 
 - `NetheriteFluidTankBlockEntity` 使用 `NetheriteBoilerData`，移除尺寸等级和供水等级的 18 级上限。
-- `getMaxHeatLevelForBoilerSize(int boilerSize)` 返回 `boilerSize / 4`（整数除法），尺寸等级随储罐方块总数增加。
+- `getMaxHeatLevelForBoilerSize(int boilerSize)` 以储罐方块总数判定门槛：不足 `45` 时返回 `boilerSize / 4`（整数除法）；达到 `3×3×5 = 45` 个方块后，返回 `max(18, min(供水等级, activeHeat))`。尺寸等级先达到原版满尺寸等级 18，之后随供水和热量的较低值上涨，不使用无穷大或极大整数作为显示等级。
 - `getMaxHeatLevelForWaterSupply()` 返回 `ceil(waterSupply) / 12`（整数除法），供水等级随平均注水速度增加；保留原有向上取整规则和每级 12 mB/t 的需求，Create 原版为每级 10 mB/t。
-- 实际锅炉等级仍由 Create 取尺寸、供水和热量等级的最低值，继续用于引擎效率、护目镜显示和读档后的仪表计算。例如 80 个储罐方块、240 mB/t 供水、20 级热量可达到 20 级；尺寸、供水或热量不足仍会降低等级。
-- 下界合金蒸汽引擎基础应力容量为 2048 SU，是 Create 原版蒸汽引擎的两倍。
+- 实际锅炉等级仍由 Create 取尺寸、供水和热量等级的最低值，用于引擎效率、护目镜显示和读档后的仪表计算。因此达到 45 个方块后，实际等级就是 `min(供水等级, 热量等级)`。例如 45 个储罐方块、240 mB/t 供水、20 级热量可达到 20 级；供水和热量均提升到 100 级时，无须再扩大锅炉。缩小到 44 个方块后恢复尺寸等级 11 的限制。无水、无热量和被动加热保留原版行为。
+- `Booster.commonSetup` 为下界合金蒸汽引擎注册的容量供应器动态读取 `BlockStressValues.getCapacity(AllBlocks.STEAM_ENGINE.get()) * 256`，使单个引擎的输出上限为当前原版引擎配置的 256 倍；最高转速仍为 64 RPM。
 - `NetheriteSteamEngineBlock` 和对应方块实体只允许连接下界合金流体储罐。
 - `BoilerDataMixin` 只让下界合金储罐识别下界合金蒸汽引擎，并修正护目镜中的应力与耗水显示。
 - `SteamEngineBlockEntityMixin` 让 Create 的活塞运动与目标角度逻辑识别自定义蒸汽引擎。
 - 普通 Create 储罐仍只识别普通蒸汽引擎，两种锅炉不能混搭。
 
-应力容量 `2048` 是注册给 Create 的基础值，最终网络供能由 Create 按实际转速和锅炉状态计算，不是整个锅炉固定输出 `2048 SU`。
+Create 默认原版引擎注册容量值为 `1024`，下界合金引擎为 `262144`。`PoweredShaftBlockEntity` 将注册容量乘以引擎效率，再除以转速档位系数作为网络基础容量，同时以 `16 × 档位系数` RPM 发电，所以单个引擎的网络输出为 `16 × 注册容量 × 引擎效率`。效率为 1 时，原版输出 `16384 SU`，下界合金引擎输出 `4194304 SU`，恰为 256 倍；不要直接把注册值乘以 64 当作最终输出。锅炉状态不足或连接引擎过多时，Create 仍按效率降低实际输出。修改原版蒸汽引擎的应力配置后，此倍率随之生效。
 
 护目镜显示修正位于 `BoilerDataMixin.addToGoggleTooltip`：针对 `NetheriteBoilerData` 替换容量查询的引擎方块，并把每级耗水常量从 `10.0` 改为 `12`。
 
@@ -482,7 +483,7 @@ multiBlockCapacity = blockCount * singleBlockCapacity
 .\gradlew.bat boilerRegressionTest
 ```
 
-该任务运行实际的 Create `BoilerData` 和当前 `NetheriteBoilerData`，无需启动游戏或额外测试库，并已接入 `check` / `build`。它验证计算和等级提示；不代替世界中的热源扫描、管道注水和多方块行为验证。
+该任务运行实际的 Create `BoilerData` 和当前 `NetheriteBoilerData`，无需启动游戏或额外测试库，并已接入 `check` / `build`。检查覆盖 44/45 个方块边界、尺寸随水量/热量变化、100 级锅炉效率、缩小后的限制、无水/无热量、被动加热、18 级提示及原版锅炉行为；不代替世界中的热源扫描、管道注水和多方块行为验证。
 
 ## 防爆实现
 

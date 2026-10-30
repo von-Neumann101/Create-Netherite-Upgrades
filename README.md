@@ -31,7 +31,9 @@ Minecraft `1.20.1` Forge 的 `main` 分支暂停更新，保留现有代码和�
 
 强力机械泵接入 Create 原版流体管网，默认基础应力消耗为 `16.0`、压力倍率为 `8.0`。压力倍率提高吞吐，不增加管道传播距离。
 
-下界合金流体储罐默认拥有普通储罐 `16` 倍的单方块容量，并支持搭配下界合金蒸汽引擎构建锅炉。尺寸等级和供水等级均没有原版的 `18` 级上限：每 `4` 个储罐方块提供 `1` 级尺寸等级，每级供水需求仍为 `12 mB/t`。实际锅炉等级取尺寸、供水和热量等级的最低值。下界合金蒸汽引擎基础应力容量为 `2048`，最高 `64 RPM`。普通与下界合金锅炉分别识别各自的蒸汽引擎。
+下界合金流体储罐默认拥有普通储罐 `16` 倍的单方块容量，并支持搭配下界合金蒸汽引擎构建锅炉。不足 `45` 个储罐方块时，每 `4` 个方块提供 `1` 级尺寸等级；达到 `3×3×5`（`45` 个方块）后，尺寸等级至少为 `18`，并随 `min(供水等级, 热量等级)` 继续上涨，不再限制实际锅炉等级。每级供水需求仍为 `12 mB/t`，供水等级没有 `18` 级上限。
+
+单个下界合金蒸汽引擎的输出上限为 Create 原版引擎的 `256` 倍；按 Create 默认配置，满额输出为 `4,194,304 SU`，最高 `64 RPM`。实际输出仍受锅炉状态和连接的引擎数量影响。普通与下界合金锅炉分别识别各自的蒸汽引擎。
 
 下界合金物品保险库拥有普通保险库 `16` 倍的槽位数，保留多方块和装配到运动结构上的存储行为。
 
@@ -132,7 +134,9 @@ The mod currently adds several Create-compatible entries:
 
 The Powerful Mechanical Pump uses Create's native fluid network, with a default base stress impact of `16.0` and a pressure multiplier of `8.0`. The pressure multiplier increases throughput without extending pipe propagation distance.
 
-The Netherite Fluid Tank defaults to `16` times the regular tank's capacity per block and supports boilers paired with Netherite Steam Engines. Size and water supply levels can exceed the vanilla cap of `18`: every `4` tank blocks provide one size level, and each water supply level still requires `12 mB/t`. The actual boiler level is the lowest of its size, water supply, and heat levels. The Netherite Steam Engine has a base stress capacity of `2048` and a maximum speed of `64 RPM`. Regular and netherite boilers each recognize their corresponding steam engines.
+The Netherite Fluid Tank defaults to `16` times the regular tank's capacity per block and supports boilers paired with Netherite Steam Engines. Below `45` tank blocks, every `4` blocks provide one size level. At `3×3×5` (`45` blocks) or larger, the size level is at least `18` and rises with `min(water supply level, heat level)`, so size no longer limits the actual boiler level. Each water supply level still requires `12 mB/t`, with no level `18` cap.
+
+Each Netherite Steam Engine has `256` times the output limit of Create's regular engine: `4,194,304 SU` at full output with Create's default configuration, with a maximum speed of `64 RPM`. Actual output still depends on boiler conditions and the number of attached engines. Regular and netherite boilers each recognize their corresponding steam engines.
 
 The Netherite Item Vault provides `16` times the regular vault's inventory slots while retaining multiblock and mounted storage behavior.
 

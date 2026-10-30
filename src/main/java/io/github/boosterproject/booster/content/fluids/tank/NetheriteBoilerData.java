@@ -8,10 +8,15 @@ import net.minecraft.util.Mth;
 
 public class NetheriteBoilerData extends BoilerData {
     public static final int WATER_SUPPLY_PER_LEVEL = 12;
+    private static final int FULL_SIZE_BLOCKS = 3 * 3 * 5;
+    private static final int FULL_SIZE_LEVEL = 18;
 
     @Override
     public int getMaxHeatLevelForBoilerSize(int boilerSize) {
-        return boilerSize / 4;
+        if (boilerSize < FULL_SIZE_BLOCKS) {
+            return boilerSize / 4;
+        }
+        return Math.max(FULL_SIZE_LEVEL, Math.min(getMaxHeatLevelForWaterSupply(), activeHeat));
     }
 
     @Override
