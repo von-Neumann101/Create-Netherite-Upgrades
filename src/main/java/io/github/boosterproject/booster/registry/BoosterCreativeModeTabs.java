@@ -30,6 +30,7 @@ public final class BoosterCreativeModeTabs {
                 NetheriteBlazeBurnerData.setCount(emptyBurner, 0);
                 output.accept(emptyBurner);
                 output.accept(BoosterItems.NETHERITE_ENCASED_FAN.get());
+                output.accept(BoosterItems.NETHERITE_MECHANICAL_ARM.get());
                 output.accept(BoosterItems.NETHERITE_FILTER.get());
                 output.accept(BoosterItems.NETHERITE_SHEET.get());
             })

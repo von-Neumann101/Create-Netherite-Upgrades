@@ -25,5 +25,6 @@
   "tooltip.createnetherite.netherite_blaze_burner.rates": "Heat: %sx; fuel use: %sx",
   "tooltip.createnetherite.netherite_blaze_burner.capture": "Hold and right-click a Blaze to capture another.",
   "message.createnetherite.netherite_blaze_burner.full": "This burner already holds four Blazes.",
-  "item.createnetherite.empty_netherite_blaze_burner": "Empty Netherite Blaze Burner"
+  "item.createnetherite.empty_netherite_blaze_burner": "Empty Netherite Blaze Burner",
+  "block.createnetherite.netherite_mechanical_arm": "Netherite Mechanical Arm"
 }

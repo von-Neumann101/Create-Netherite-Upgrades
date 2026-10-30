@@ -1,0 +1,9 @@
+{
+  "parent": "create:block/mechanical_arm/item",
+  "textures": {
+    "5": "createnetherite:block/netherite_mechanical_arm/arm",
+    "7": "minecraft:block/netherite_block",
+    "8": "minecraft:block/netherite_block",
+    "particle": "minecraft:block/netherite_block"
+  }
+}

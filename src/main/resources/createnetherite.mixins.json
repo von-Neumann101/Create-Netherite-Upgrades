@@ -11,13 +11,17 @@
     "ItemVaultBlockMixin",
     "ItemVaultItemMixin",
     "NetheriteAirCurrentMixin",
+    "NetheriteMechanicalArmMixin",
     "PumpBlockEntityMixin",
     "PumpFluidTransferBehaviourMixin",
     "SteamEngineBlockEntityMixin"
   ],
   "client": [
     "FluidTankRendererMixin",
-    "NetheriteBlazeBurnerAnimationMixin"
+    "NetheriteBlazeBurnerAnimationMixin",
+    "NetheriteArmSelectionMixin",
+    "NetheriteArmRendererMixin",
+    "NetheriteArmVisualMixin"
   ],
   "injectors": {
     "defaultRequire": 1

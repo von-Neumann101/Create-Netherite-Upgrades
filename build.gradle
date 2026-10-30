@@ -128,6 +128,20 @@ tasks.named('check') {
     dependsOn burnerRegressionTest
 }
 
+def armRegressionTest = tasks.register('armRegressionTest', JavaExec) {
+    group = 'verification'
+    description = 'Checks netherite arm movement, stress, and target range.'
+    classpath = sourceSets.boilerTest.runtimeClasspath
+    mainClass = 'io.github.boosterproject.booster.content.kinetics.mechanicalArm.NetheriteArmTest'
+    javaLauncher = javaToolchains.launcherFor {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+tasks.named('check') {
+    dependsOn armRegressionTest
+}
+
 dependencies {
     implementation("com.simibubi.create:create-${minecraft_version}:${create_version}:slim") {
         transitive = false

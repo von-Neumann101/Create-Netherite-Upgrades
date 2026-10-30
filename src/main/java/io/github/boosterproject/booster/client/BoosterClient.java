@@ -10,6 +10,8 @@ import com.simibubi.create.content.kinetics.press.MechanicalPressRenderer;
 import com.simibubi.create.content.kinetics.press.PressVisual;
 import com.simibubi.create.content.kinetics.fan.EncasedFanRenderer;
 import com.simibubi.create.content.kinetics.fan.FanVisual;
+import com.simibubi.create.content.kinetics.mechanicalArm.ArmRenderer;
+import com.simibubi.create.content.kinetics.mechanicalArm.ArmVisual;
 import com.simibubi.create.foundation.block.connected.CTModel;
 import dev.engine_room.flywheel.lib.visualization.SimpleBlockEntityVisualizer;
 import io.github.boosterproject.booster.Booster;
@@ -33,6 +35,7 @@ public final class BoosterClient {
 
     public static void register(IEventBus modEventBus) {
         BoosterPartialModels.init();
+        NetheriteArmModels.init();
         modEventBus.addListener(BoosterClient::registerRenderers);
         modEventBus.addListener(BoosterClient::clientSetup);
         modEventBus.addListener(BoosterClient::registerScreens);
@@ -47,6 +50,7 @@ public final class BoosterClient {
 
     private static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerBlockEntityRenderer(BoosterBlockEntityTypes.NETHERITE_ENCASED_FAN.get(), EncasedFanRenderer::new);
+        event.registerBlockEntityRenderer(BoosterBlockEntityTypes.NETHERITE_MECHANICAL_ARM.get(), ArmRenderer::new);
         event.registerBlockEntityRenderer(
             BoosterBlockEntityTypes.POWERFUL_MECHANICAL_PUMP.get(),
             PowerfulMechanicalPumpRenderer::new
@@ -80,6 +84,8 @@ public final class BoosterClient {
 
     private static void clientSetup(FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
+            SimpleBlockEntityVisualizer.builder(BoosterBlockEntityTypes.NETHERITE_MECHANICAL_ARM.get())
+                .factory(ArmVisual::new).apply();
             ItemProperties.register(BoosterItems.NETHERITE_BLAZE_BURNER.get(),
                 ResourceLocation.fromNamespaceAndPath(Booster.MOD_ID, "empty"),
                 (stack, level, entity, seed) -> NetheriteBlazeBurnerData.getCount(stack) == 0 ? 1 : 0);

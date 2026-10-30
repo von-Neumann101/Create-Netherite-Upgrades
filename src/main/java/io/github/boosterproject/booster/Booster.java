@@ -12,6 +12,7 @@ import io.github.boosterproject.booster.config.BoosterConfigs;
 import io.github.boosterproject.booster.content.BoosterExplosionProtection;
 import io.github.boosterproject.booster.content.processing.burner.NetheriteBlazeBurnerBlock;
 import io.github.boosterproject.booster.content.processing.burner.NetheriteBlazeBurnerMovementBehaviour;
+import io.github.boosterproject.booster.content.kinetics.mechanicalArm.NetheriteArmBehavior;
 import io.github.boosterproject.booster.registry.BoosterBlockEntityTypes;
 import io.github.boosterproject.booster.registry.BoosterBlocks;
 import io.github.boosterproject.booster.registry.BoosterCreativeModeTabs;
@@ -67,6 +68,9 @@ public class Booster {
                 BoosterBlocks.NETHERITE_MECHANICAL_PRESS.get(),
                 () -> BlockStressValues.getImpact(AllBlocks.MECHANICAL_PRESS.get())
             );
+
+            BlockStressValues.IMPACTS.register(BoosterBlocks.NETHERITE_MECHANICAL_ARM.get(),
+                () -> NetheriteArmBehavior.stressImpact(BlockStressValues.getImpact(AllBlocks.MECHANICAL_ARM.get())));
 
             Block netheriteSteamEngine = BoosterBlocks.NETHERITE_STEAM_ENGINE.get();
             BlockStressValues.IMPACTS.register(

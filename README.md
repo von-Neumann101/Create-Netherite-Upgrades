@@ -24,6 +24,7 @@ Minecraft `1.20.1` Forge 的 `main` 分支暂停更新，保留现有代码和�
 - `createnetherite:netherite_item_vault`
 - `createnetherite:netherite_elevator_pulley`
 - `createnetherite:netherite_mechanical_press`
+- `createnetherite:netherite_mechanical_arm`
 - `createnetherite:netherite_blaze_burner`
 - `createnetherite:netherite_encased_fan`
 - `createnetherite:netherite_filter`
@@ -40,6 +41,8 @@ Minecraft `1.20.1` Forge 的 `main` 分支暂停更新，保留现有代码和�
 下界合金升降机滑轮在原版移动速度计算中使用 `2` 倍转速，默认最大运输距离为 `768` 格，实际范围仍受世界最低建造高度限制。
 
 下界合金动力冲压机支持批量冲压，并在工作盆中连续处理当前可匹配的配方；基础应力消耗沿用普通动力冲压机。
+
+下界合金机械手的动作进度和动作速度上限均为原版的 `3` 倍，同转速下应力消耗为原版的 `1.5` 倍（默认基础值为 `3 SU/RPM`）。工作半径为 Create 机械手范围配置的 `3` 倍，默认从 `5` 格扩大到 `15` 格；沿用原版球形距离判定，目标距离须小于该半径。选点、分配模式、红石控制与自动喂料沿用原版。一个下界合金板加一个原版机械手，无序合成一个升级品。
 
 下界合金烈焰人燃烧室支持空、满两条升级路径：一个下界合金板加一个原版空燃烧室，合成空的下界合金燃烧室（`0` 只）；使用原版已装烈焰人的燃烧室升级，则保留 `1` 只。也可用两个板加三个对应原版燃烧室批量升级。手持空容器连续右键烈焰人，可以从 `0` 只依次装到 `4` 只。
 
@@ -71,9 +74,9 @@ Minecraft `1.20.1` Forge 的 `main` 分支暂停更新，保留现有代码和�
 
 # 防爆与防火
 
-上述全部物品（含强力机械泵和下界合金板）的掉落物均免疫爆炸伤害；八种方块放置后均不被爆炸破坏，储罐与保险库中的内容也因此保留。方块基础爆炸抗性统一为 `1200`。
+上述全部物品（含强力机械泵和下界合金板）的掉落物均免疫爆炸伤害；九种方块放置后均不被爆炸破坏，储罐与保险库中的内容也因此保留。方块基础爆炸抗性统一为 `1200`。
 
-全部十种物品也具有下界合金物品的防火属性，掉落在火焰或岩浆中不会被烧毁。
+全部十一种物品也具有下界合金物品的防火属性，掉落在火焰或岩浆中不会被烧毁。
 
 # 环境要求
 
@@ -139,6 +142,7 @@ The mod currently adds several Create-compatible entries:
 - `createnetherite:netherite_item_vault`
 - `createnetherite:netherite_elevator_pulley`
 - `createnetherite:netherite_mechanical_press`
+- `createnetherite:netherite_mechanical_arm`
 - `createnetherite:netherite_blaze_burner`
 - `createnetherite:netherite_encased_fan`
 - `createnetherite:netherite_filter`
@@ -155,6 +159,8 @@ The Netherite Item Vault provides `16` times the regular vault's inventory slots
 The Netherite Elevator Pulley uses twice the rotational speed in Create's movement speed calculation. Its default maximum travel distance is `768` blocks, also limited by the world's minimum build height.
 
 The Netherite Mechanical Press supports bulk pressing and repeatedly processes the current matching basin recipe. Its base stress impact follows the regular Mechanical Press.
+
+The Netherite Mechanical Arm advances movement at `3` times the normal rate with a `3` times movement speed cap. At the same RPM, it consumes `1.5` times the regular arm's stress (default base impact: `3 SU/RPM`). Its working radius is `3` times Create's mechanical arm range setting, expanding the default from `5` to `15` blocks. Targets must be strictly within this spherical radius, following Create's distance rule. Target selection, distribution modes, redstone control, and automated feeding follow Create. Craft one Netherite Sheet with a regular Mechanical Arm to obtain the upgrade.
 
 The Netherite Blaze Burner has empty and filled upgrade recipes: one Netherite Sheet plus a regular Empty Blaze Burner produces an empty netherite burner (`0` Blazes); upgrading a filled regular burner retains its `1` Blaze. Two sheets and three corresponding regular burners provide the bulk upgrade. Hold an empty burner and repeatedly right-click Blazes to fill it from `0` to `4`.
 
@@ -186,9 +192,9 @@ Craft one Netherite Sheet with a regular Encased Fan or Filter to obtain the cor
 
 # Blast and Fire Protection
 
-All items listed above, including the Powerful Mechanical Pump and Netherite Sheet, are immune to explosion damage when dropped. All eight placed blocks are protected from explosion destruction, preserving tank and vault contents. Their base blast resistance is `1200`.
+All items listed above, including the Powerful Mechanical Pump and Netherite Sheet, are immune to explosion damage when dropped. All nine placed blocks are protected from explosion destruction, preserving tank and vault contents. Their base blast resistance is `1200`.
 
-All ten items also have the fire resistance of netherite items: dropped items cannot be burned by fire or lava.
+All eleven items also have the fire resistance of netherite items: dropped items cannot be burned by fire or lava.
 
 # Requirements
 
