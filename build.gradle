@@ -142,6 +142,20 @@ tasks.named('check') {
     dependsOn armRegressionTest
 }
 
+def mixerRegressionTest = tasks.register('mixerRegressionTest', JavaExec) {
+    group = 'verification'
+    description = 'Checks netherite mixer batching and failed-application stopping.'
+    classpath = sourceSets.boilerTest.runtimeClasspath
+    mainClass = 'io.github.boosterproject.booster.content.kinetics.mixer.NetheriteMixerBatchingTest'
+    javaLauncher = javaToolchains.launcherFor {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+tasks.named('check') {
+    dependsOn mixerRegressionTest
+}
+
 dependencies {
     implementation("com.simibubi.create:create-${minecraft_version}:${create_version}:slim") {
         transitive = false

@@ -26,5 +26,6 @@
   "tooltip.createnetherite.netherite_blaze_burner.capture": "手持并右键烈焰人，可继续捕获。",
   "message.createnetherite.netherite_blaze_burner.full": "这个燃烧室已装有四个烈焰人。",
   "item.createnetherite.empty_netherite_blaze_burner": "空的下界合金烈焰人燃烧室",
-  "block.createnetherite.netherite_mechanical_arm": "下界合金机械手"
+  "block.createnetherite.netherite_mechanical_arm": "下界合金机械手",
+  "block.createnetherite.netherite_mechanical_mixer": "下界合金动力搅拌机"
 }

@@ -25,6 +25,7 @@ public final class BoosterCreativeModeTabs {
                 output.accept(BoosterItems.NETHERITE_ITEM_VAULT.get());
                 output.accept(BoosterItems.NETHERITE_ELEVATOR_PULLEY.get());
                 output.accept(BoosterItems.NETHERITE_MECHANICAL_PRESS.get());
+                output.accept(BoosterItems.NETHERITE_MECHANICAL_MIXER.get());
                 output.accept(BoosterItems.NETHERITE_BLAZE_BURNER.get());
                 ItemStack emptyBurner = new ItemStack(BoosterItems.NETHERITE_BLAZE_BURNER.get());
                 NetheriteBlazeBurnerData.setCount(emptyBurner, 0);

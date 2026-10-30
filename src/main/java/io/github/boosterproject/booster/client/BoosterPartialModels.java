@@ -11,6 +11,8 @@ public final class BoosterPartialModels {
         PartialModel.of(ResourceLocation.fromNamespaceAndPath(Booster.MOD_ID, "block/netherite_boiler/gauge"));
     public static final PartialModel NETHERITE_BOILER_GAUGE_DIAL =
         PartialModel.of(ResourceLocation.fromNamespaceAndPath(Booster.MOD_ID, "block/netherite_boiler/gauge_dial"));
+    public static final PartialModel NETHERITE_MIXER_HEAD =
+        PartialModel.of(ResourceLocation.fromNamespaceAndPath(Booster.MOD_ID, "block/netherite_mechanical_mixer/head"));
 
     private BoosterPartialModels() {
     }

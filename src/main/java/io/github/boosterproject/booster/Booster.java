@@ -68,6 +68,10 @@ public class Booster {
                 BoosterBlocks.NETHERITE_MECHANICAL_PRESS.get(),
                 () -> BlockStressValues.getImpact(AllBlocks.MECHANICAL_PRESS.get())
             );
+            BlockStressValues.IMPACTS.register(
+                BoosterBlocks.NETHERITE_MECHANICAL_MIXER.get(),
+                () -> BlockStressValues.getImpact(AllBlocks.MECHANICAL_MIXER.get())
+            );
 
             BlockStressValues.IMPACTS.register(BoosterBlocks.NETHERITE_MECHANICAL_ARM.get(),
                 () -> NetheriteArmBehavior.stressImpact(BlockStressValues.getImpact(AllBlocks.MECHANICAL_ARM.get())));

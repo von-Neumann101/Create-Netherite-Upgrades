@@ -1,0 +1,8 @@
+{
+  "parent": "create:block/mechanical_mixer/block",
+  "textures": {
+    "4": "createnetherite:block/netherite_mechanical_mixer/base_side",
+    "11": "minecraft:block/netherite_block",
+    "particle": "createnetherite:block/netherite_mechanical_mixer/base_side"
+  }
+}

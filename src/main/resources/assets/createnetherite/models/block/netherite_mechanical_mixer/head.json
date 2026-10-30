@@ -1,0 +1,6 @@
+{
+  "parent": "create:block/mechanical_mixer/head",
+  "textures": {
+    "6": "createnetherite:block/netherite_mechanical_mixer/head"
+  }
+}

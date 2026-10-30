@@ -10,6 +10,7 @@ import io.github.boosterproject.booster.content.kinetics.steamEngine.NetheriteSt
 import io.github.boosterproject.booster.content.kinetics.press.NetheriteMechanicalPressBlockEntity;
 import io.github.boosterproject.booster.content.kinetics.fan.NetheriteEncasedFanBlockEntity;
 import io.github.boosterproject.booster.content.kinetics.mechanicalArm.NetheriteMechanicalArmBlockEntity;
+import io.github.boosterproject.booster.content.kinetics.mixer.NetheriteMechanicalMixerBlockEntity;
 import io.github.boosterproject.booster.content.logistics.vault.NetheriteItemVaultBlockEntity;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.core.BlockPos;
@@ -68,6 +69,11 @@ public final class BoosterBlockEntityTypes {
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<NetheriteMechanicalArmBlockEntity>> NETHERITE_MECHANICAL_ARM =
         BLOCK_ENTITY_TYPES.register("netherite_mechanical_arm", () -> BlockEntityType.Builder
             .of(NetheriteMechanicalArmBlockEntity::new, BoosterBlocks.NETHERITE_MECHANICAL_ARM.get())
+            .build(null));
+
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<NetheriteMechanicalMixerBlockEntity>> NETHERITE_MECHANICAL_MIXER =
+        BLOCK_ENTITY_TYPES.register("netherite_mechanical_mixer", () -> BlockEntityType.Builder
+            .of(NetheriteMechanicalMixerBlockEntity::new, BoosterBlocks.NETHERITE_MECHANICAL_MIXER.get())
             .build(null));
 
     private BoosterBlockEntityTypes() {

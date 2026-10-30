@@ -9,6 +9,7 @@ import io.github.boosterproject.booster.content.kinetics.steamEngine.NetheriteSt
 import io.github.boosterproject.booster.content.kinetics.press.NetheriteMechanicalPressBlock;
 import io.github.boosterproject.booster.content.kinetics.fan.NetheriteEncasedFanBlock;
 import io.github.boosterproject.booster.content.kinetics.mechanicalArm.NetheriteMechanicalArmBlock;
+import io.github.boosterproject.booster.content.kinetics.mixer.NetheriteMechanicalMixerBlock;
 import io.github.boosterproject.booster.content.logistics.vault.NetheriteItemVaultBlock;
 import io.github.boosterproject.booster.content.processing.burner.NetheriteBlazeBurnerBlock;
 import net.minecraft.world.level.block.Blocks;
@@ -74,6 +75,12 @@ public final class BoosterBlocks {
     public static final DeferredBlock<NetheriteMechanicalArmBlock> NETHERITE_MECHANICAL_ARM =
         BLOCKS.register("netherite_mechanical_arm", () -> new NetheriteMechanicalArmBlock(
             BlockBehaviour.Properties.ofFullCopy(AllBlocks.MECHANICAL_ARM.get())
+                .explosionResistance(1200.0F)
+        ));
+
+    public static final DeferredBlock<NetheriteMechanicalMixerBlock> NETHERITE_MECHANICAL_MIXER =
+        BLOCKS.register("netherite_mechanical_mixer", () -> new NetheriteMechanicalMixerBlock(
+            BlockBehaviour.Properties.ofFullCopy(AllBlocks.MECHANICAL_MIXER.get())
                 .explosionResistance(1200.0F)
         ));
 

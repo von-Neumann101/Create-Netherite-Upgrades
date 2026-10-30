@@ -21,7 +21,9 @@
     "NetheriteBlazeBurnerAnimationMixin",
     "NetheriteArmSelectionMixin",
     "NetheriteArmRendererMixin",
-    "NetheriteArmVisualMixin"
+    "NetheriteArmVisualMixin",
+    "NetheriteMixerRendererMixin",
+    "NetheriteMixerVisualMixin"
   ],
   "injectors": {
     "defaultRequire": 1
