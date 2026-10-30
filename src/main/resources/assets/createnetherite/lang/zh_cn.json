@@ -20,5 +20,9 @@
   "gui.booster.netherite_filter.key_hint": "悬停物品，按 1～4 分配加工方式",
   "tooltip.booster.netherite_filter.rules": "%s：%s 种物品",
   "gui.booster.netherite_fan.filter": "下界合金过滤器",
-  "gui.booster.netherite_fan.fallback": "未匹配物品使用当前选择的加工方式"
+  "gui.booster.netherite_fan.fallback": "未匹配物品使用当前选择的加工方式",
+  "tooltip.createnetherite.netherite_blaze_burner.count": "烈焰人：%s / 4",
+  "tooltip.createnetherite.netherite_blaze_burner.rates": "热量：%s 倍；耗料：%s 倍",
+  "tooltip.createnetherite.netherite_blaze_burner.capture": "手持并右键烈焰人，可继续捕获。",
+  "message.createnetherite.netherite_blaze_burner.full": "这个燃烧室已装有四个烈焰人。"
 }

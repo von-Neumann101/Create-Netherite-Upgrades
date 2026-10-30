@@ -1,6 +1,7 @@
 package io.github.boosterproject.booster.registry;
 
 import com.simibubi.create.content.processing.burner.BlazeBurnerBlockEntity;
+import io.github.boosterproject.booster.content.processing.burner.NetheriteBlazeBurnerBlockEntity;
 import io.github.boosterproject.booster.Booster;
 import io.github.boosterproject.booster.content.contraptions.elevator.NetheriteElevatorPulleyBlockEntity;
 import io.github.boosterproject.booster.content.fluids.pump.PowerfulMechanicalPumpBlockEntity;
@@ -85,6 +86,6 @@ public final class BoosterBlockEntityTypes {
     }
 
     private static BlazeBurnerBlockEntity createNetheriteBlazeBurner(BlockPos pos, BlockState state) {
-        return new BlazeBurnerBlockEntity(NETHERITE_BLAZE_BURNER.get(), pos, state);
+        return new NetheriteBlazeBurnerBlockEntity(NETHERITE_BLAZE_BURNER.get(), pos, state);
     }
 }

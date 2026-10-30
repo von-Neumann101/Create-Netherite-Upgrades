@@ -41,7 +41,16 @@ Minecraft `1.20.1` Forge 的 `main` 分支暂停更新，保留现有代码和�
 
 下界合金动力冲压机支持批量冲压，并在工作盆中连续处理当前可匹配的配方；基础应力消耗沿用普通动力冲压机。
 
-下界合金烈焰人燃烧室提供普通烈焰人燃烧室 `3` 倍的锅炉热量，燃料和热状态沿用 Create 行为。
+下界合金烈焰人燃烧室合成后装有 `1` 只烈焰人。手持它右键烈焰人可以继续捕获，最多关 `4` 只；物品说明和工程师护目镜会显示数量与倍率，放置后也会显示对应数量的烈焰人。拆除、扳手拾取、重新放置和存档均保留数量，旧燃烧室默认按 `1` 只处理。
+
+| 烈焰人数量 | 锅炉热量倍率 | 燃料消耗倍率 |
+| --- | --- | --- |
+| 1 | 1× | 0.5× |
+| 2 | 2× | 1× |
+| 3 | 3× | 1.5× |
+| 4 | 4× | 2× |
+
+燃料种类、普通加热与超级加热状态沿用 Create。自动或手动喂料仍一次接收一个燃料，按上表倍率推进燃烧计时；例如装满 `4` 只后，同一个燃料的持续时间为原版的一半。超级加热同样按数量放大锅炉热量：满载普通加热提供 `4` 级，满载超级加热提供 `8` 级。无燃料时不产生主动热量。
 
 下界合金板由下界合金锭经 Create 冲压制成，用作上述机械的升级材料。
 
@@ -144,7 +153,16 @@ The Netherite Elevator Pulley uses twice the rotational speed in Create's moveme
 
 The Netherite Mechanical Press supports bulk pressing and repeatedly processes the current matching basin recipe. Its base stress impact follows the regular Mechanical Press.
 
-The Netherite Blaze Burner provides `3` times the regular burner's boiler heat while retaining Create's fuel and heat-state behavior.
+The Netherite Blaze Burner starts with `1` Blaze after crafting. Hold it and right-click a Blaze to capture another, up to `4`. Item tooltips and Engineer's Goggles show the count and rates; the placed burner renders the corresponding number of Blazes. Breaking, wrench pickup, placement, and saves retain the count. Existing burners default to `1` Blaze.
+
+| Blazes | Boiler heat multiplier | Fuel consumption multiplier |
+| --- | --- | --- |
+| 1 | 1× | 0.5× |
+| 2 | 2× | 1× |
+| 3 | 3× | 1.5× |
+| 4 | 4× | 2× |
+
+Fuel types and normal/superheated states follow Create. Manual and automated feeding still insert one fuel item at a time; its burn timer advances at the rate shown above. At `4` Blazes, each fuel lasts half as long as in a regular burner. Superheated boiler heat scales too: a full burner supplies `4` heat levels when heated and `8` when superheated. Without fuel, it supplies no active heat.
 
 Netherite Sheets are pressed from Netherite Ingots using Create and serve as upgrade materials for these machines.
 

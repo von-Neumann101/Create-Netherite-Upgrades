@@ -20,5 +20,9 @@
   "gui.booster.netherite_filter.key_hint": "Hover an item and press 1-4 to assign its mode",
   "tooltip.booster.netherite_filter.rules": "%s: %s item types",
   "gui.booster.netherite_fan.filter": "Netherite Filter",
-  "gui.booster.netherite_fan.fallback": "Unmatched items use the selected mode"
+  "gui.booster.netherite_fan.fallback": "Unmatched items use the selected mode",
+  "tooltip.createnetherite.netherite_blaze_burner.count": "Blazes: %s / 4",
+  "tooltip.createnetherite.netherite_blaze_burner.rates": "Heat: %sx; fuel use: %sx",
+  "tooltip.createnetherite.netherite_blaze_burner.capture": "Hold and right-click a Blaze to capture another.",
+  "message.createnetherite.netherite_blaze_burner.full": "This burner already holds four Blazes."
 }

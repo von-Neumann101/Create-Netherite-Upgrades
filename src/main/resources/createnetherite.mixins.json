@@ -16,7 +16,8 @@
     "SteamEngineBlockEntityMixin"
   ],
   "client": [
-    "FluidTankRendererMixin"
+    "FluidTankRendererMixin",
+    "NetheriteBlazeBurnerAnimationMixin"
   ],
   "injectors": {
     "defaultRequire": 1

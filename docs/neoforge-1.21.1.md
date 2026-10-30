@@ -10,7 +10,7 @@
 
 - 分支：`1.21.1-NeoForge`
 - 源码核对日期：`2026-10-30`
-- 源码基线提交：`e970174669d2f2819ec5a2e36aa43cd6c7de1bb6`（本次后续修改调整锅炉尺寸门槛与引擎容量倍率）
+- 源码基线提交：`ebdf02aa24634eb1afcc53058a26b33ab962cbd3`（本次后续修改加入四烈焰人燃烧室）
 - 模组版本：`0.2.4`
 - Mod id：`createnetherite`
 - 主包名：`io.github.boosterproject.booster`
@@ -54,6 +54,8 @@
 - 构建仍报告现有 API 和 Gradle 弃用提示；本次离线构建关闭配置缓存，以避开缓存序列化时对未缓存渲染依赖的解析。
 - 旧交接记录中的构建成功、客户端资源重载成功，对应 Create Netherite `0.1.0`、NeoForge `21.1.242`。当时未发现 Mixin 应用失败、模组加载失败或缺失模型错误；该记录仅是历史验证，不能代替当前 `0.2.4` 的构建和运行验证。
 - 2026-10-30 锅炉门槛与引擎输出调整通过 `.\gradlew.bat --offline --no-configuration-cache --no-daemon --console=plain build`：29 项锅炉检查和 15 项过滤器检查共 44 项通过。新增锅炉用例先在旧实现上失败，修改后通过；引擎 256 倍容量供应器及最终网络输出公式已对照锁定版本的 `SteamEngineBlockEntity` / `PoweredShaftBlockEntity` 源码核对。本次未重新启动客户端或服务端，也未进行游戏内输出实测。
+- 同日四烈焰人燃烧室通过完整离线构建：29 项锅炉、59 项燃烧室、15 项过滤器共 103 项检查通过；81 个资源 JSON 解析通过，当前包含 59 个 Java 源文件。新增用例先复现数量/燃料功能缺失，以及生存单件、创造模式副本和蓝图数量保留问题，修复后通过。独立审查发现的问题均已处理，并补齐机械手识别；贴图及封面没有变更。
+- 最终版本客户端已完成模组加载和资源重载，未发现本模组注册或 Mixin 应用错误。此次仍跳过未完成的原版资源下载，日志有原版主菜单纹理缺失警告。没有进入世界手动验证实体捕获、机械手喂料或多头渲染，测试结束后停止了客户端。
 
 按当前配置生成的主 jar：
 
@@ -155,7 +157,7 @@ public Booster(IEventBus modEventBus, ModContainer modContainer)
 - 在 `FMLCommonSetupEvent` 中注册下界合金蒸汽引擎的 2048 SU 基础容量和最高 64 RPM
 - 升降机滑轮、动力冲压机的基础应力 impact 通过 supplier 读取 Create 对应原版方块的值
 - 将下界合金保险库关联到 `AllMountedStorageTypes.VAULT`，复用 Create 的运动结构物品存储类型
-- 为下界合金燃烧室注册 `BoilerHeater`（原版热量乘 3）和 `BlazeBurnerMovementBehaviour`
+- 为下界合金燃烧室注册按烈焰人数量放大正热量的 `BoilerHeater` 和 `NetheriteBlazeBurnerMovementBehaviour`
 - 下界合金鼓风机的基础应力 impact 使用 Create 原版鼓风机的值，风力倍率不改变动能网络 RPM
 - 向 `NeoForge.EVENT_BUS` 注册 `BoosterExplosionProtection` 的方块爆炸及实体无敌判定监听器
 
@@ -202,7 +204,7 @@ NeoForge 1.21.1 使用 NeoForge DeferredRegister 新类型，不再使用 Forge 
 - `DeferredItem<Item> NETHERITE_ITEM_VAULT`：复用 Create `ItemVaultItem`，支持一键铺层
 - `DeferredItem<Item> NETHERITE_ELEVATOR_PULLEY`：普通 `BlockItem`
 - `DeferredItem<Item> NETHERITE_MECHANICAL_PRESS`：普通 `BlockItem`
-- `DeferredItem<Item> NETHERITE_BLAZE_BURNER`：使用 `BlazeBurnerBlockItem.withBlaze(...)`
+- `DeferredItem<Item> NETHERITE_BLAZE_BURNER`：使用 `NetheriteBlazeBurnerItem`，默认 1 只，可逐只捕获至 4 只
 - `DeferredItem<Item> NETHERITE_ENCASED_FAN`：普通 `BlockItem`
 - `DeferredItem<Item> NETHERITE_FILTER`：`NetheriteFilterItem`，继承 Create `FilterItem`
 
@@ -220,7 +222,7 @@ NeoForge 1.21.1 使用 NeoForge DeferredRegister 新类型，不再使用 Forge 
 - `NETHERITE_ITEM_VAULT` 绑定 `NetheriteItemVaultBlockEntity`
 - `NETHERITE_ELEVATOR_PULLEY` 绑定 `NetheriteElevatorPulleyBlockEntity`
 - `NETHERITE_MECHANICAL_PRESS` 绑定 `NetheriteMechanicalPressBlockEntity`
-- `NETHERITE_BLAZE_BURNER` 直接使用 Create `BlazeBurnerBlockEntity`，构造时传入自己的 BE type
+- `NETHERITE_BLAZE_BURNER` 的注册泛型保留 `BlazeBurnerBlockEntity`，实际工厂创建 `NetheriteBlazeBurnerBlockEntity`
 - `NETHERITE_ENCASED_FAN` 绑定 `NetheriteEncasedFanBlockEntity`
 
 `BoosterBlockEntityTypes.register(...)` 同时监听 `RegisterCapabilitiesEvent`：
@@ -259,7 +261,7 @@ createnetherite-server.toml
 
 已有世界会保留自己的 `serverconfig/createnetherite-server.toml`。修改默认值不会覆盖已有世界配置；修改世界配置后重启世界或服务器，使已有动能、管网、储罐和升降机按新值重新计算。
 
-保险库的 16 倍槽位、升降机的 2 倍转速系数和燃烧室的 3 倍热量目前是代码常量，不是配置项。
+保险库的 16 倍槽位、升降机的 2 倍转速系数，以及燃烧室最多 4 只、每只 1 倍热量 / 0.5 倍耗料，目前是代码规则，不是配置项。
 
 ## 强力机械泵实现
 
@@ -542,13 +544,19 @@ max(0, min(configuredMaxDistance, pulleyY - 1 - worldMinBuildHeight))
 
 ## 下界合金烈焰人燃烧室实现
 
-文件：`content/processing/burner/NetheriteBlazeBurnerBlock.java`
+文件：`content/processing/burner/NetheriteBlazeBurner{Block,BlockEntity,Item,Data,MovementBehaviour}.java`。
 
-- 继承 Create `BlazeBurnerBlock`，BE 复用 `BlazeBurnerBlockEntity` 并绑定自己的 BE type。
-- `HEAT_MULTIPLIER = 3`；`Booster.commonSetup` 向 `BoilerHeater.REGISTRY` 注册原版燃烧室热量乘 3 的供应逻辑。
-- 燃料消耗和热状态由 Create 原版 BE 处理；3 倍修正在锅炉热源查询处，不是新的热状态或燃料系统。
-- 物品使用 `BlazeBurnerBlockItem.withBlaze(...)`，中键拾取返回自己的燃烧室物品。
-- 注册 `BlazeBurnerMovementBehaviour`，客户端复用原版 renderer 和 Flywheel visual。
+- 方块和 BE 分别继承 Create `BlazeBurnerBlock` / `BlazeBurnerBlockEntity`，沿用自己的 BE 注册 ID。旧物品、旧存档中缺少 `BlazeCount` 时视为 1 只，数量限制在 `1..4`。
+- 物品是自定义 `BlockItem`。捕获沿用 `create:blaze_burner_capturable` 实体标签；手持右键实体时只在服务端完成捕获。单件直接修改原手持对象，以兼容 `Player.interactOn` 在旧对象变空时清空手部的处理；创造模式下该 API 传入的是副本，因此显式使用 `player.getItemInHand(hand)` 的真实物品。堆叠物品则拆出一份交付背包，其余数量数据不变。满 4 只时拒绝捕获，不移除实体。此功能针对实际实体，不从刷怪笼直接增加数量。
+- 物品数量保存在 `DataComponents.CUSTOM_DATA.BlazeCount`，修改时保留其他物品数据。放置时写入 BE；掉落表照常生成自己的物品，再由方块 `getDrops` 附加数量。中键复制保留数量；拆除只保留烈焰人，不保留可重复利用的燃料。`writeSafe` 向蓝图仅额外保存数量，`BlazeCountRequirement.matches` 同时比较物品种类和数量，避免蓝图炮消耗数量不符的物品造成烈焰人丢失或复制。
+- BE NBT 保存 `BlazeCount` 与 `FuelHalfTick`（`0..1`）。每个服务端 tick 增加 `BlazeCount` 个半燃料 tick，整数部分用于扣除原版燃烧时间，余数保存到下一次。因此 1～4 只的耗料倍率依次为 `0.5 / 1 / 1.5 / 2`，包括半 tick 进度的存档往返。
+- 父类 `tick` 每 tick 只调用一次：在调用前调整燃烧时间，以抵消/补足父类自带的一次扣减；特殊燃料用完时未付清的一次消耗从原版正常热量余热中扣除。客户端与创造燃料不走耗料调整。燃料识别、数据映射、容器返回、模拟插入、手动/机械手喂料、普通/超级加热及烈焰蛋糕余热切换继续由原版处理。
+- `BoosterArmInteractionPointTypes` 使用 DeferredRegister 向 Create 的 `ARM_INTERACTION_POINT_TYPE` 注册 `createnetherite:netherite_blaze_burner`，继承原生 `BlazeBurnerType`，仅扩展方块识别；`BlazeBurnerPoint` 继续调用原生 `tryInsert`，处理机械手的模拟插入与燃料容器返回。没有覆盖普通燃烧室的交互类型。
+- `Booster.commonSetup` 注册 `NetheriteBlazeBurnerBlock::getBoilerHeat`：原版正热量乘 BE 数量；`NO_HEAT=-1` 和 `PASSIVE_HEAT=0` 原样返回。普通加热每只 1 级、超级加热每只 2 级，满载分别提供 4 / 8 级。该倍率用于锅炉，工作盆仍使用 Create 原生加热状态。
+- `NetheriteBlazeBurnerRenderer` 按数量排列原版烈焰人模型；1 只时保持原版大小，2～4 只时以半尺寸排列。该 BE 使用常规 renderer 而非原版单头 Flywheel visual。客户端 `NetheriteBlazeBurnerAnimationMixin` 只让该子类继续更新原生头部动画，普通燃烧室不变。移动结构通过自定义 movement behaviour 保留同样的数量渲染与原版列车行为。没有修改贴图。
+- 物品说明和工程师护目镜显示捕获数量、热量和耗料倍率。
+
+`burnerRegressionTest` 使用实际 Minecraft 物品、原版热状态函数及自定义 BE 检查数量、单份捕获数据、元数据保护、倍率和存档；已接入 `check` / `build`。测试状态定义使用已注册原版方块作为所有者，避免向冻结的注册表写入测试方块；不替代世界中的捕获交互、自动喂料和渲染验证。
 
 ## 下界合金鼓风机与过滤器
 
@@ -603,14 +611,14 @@ BE 替换 `airCurrent` 为 `NetheriteAirCurrent`。它复用 Create 的碰撞与
   - 下界合金蒸汽引擎：复用 Create `SteamEngineRenderer`
   - 下界合金升降机滑轮：复用 Create `ElevatorPulleyRenderer`
   - 下界合金动力冲压机：复用 Create `MechanicalPressRenderer`
-  - 下界合金烈焰人燃烧室：复用 Create `BlazeBurnerRenderer`
+  - 下界合金烈焰人燃烧室：`NetheriteBlazeBurnerRenderer` 复用原生模型并按数量排列
   - 下界合金鼓风机：复用 Create `EncasedFanRenderer`
 - 使用 `CreateClient.MODEL_SWAPPER.getCustomBlockModels()`：
   - 强力泵：`PipeAttachmentModel::withAO`
   - 储罐：`NetheriteFluidTankModel::standard`
   - 保险库：`CTModel` + `NetheriteItemVaultCTBehaviour`
 - 储罐渲染层：`ItemBlockRenderTypes.setRenderLayer(..., RenderType.cutoutMipped())`
-- Flywheel visual：强力泵使用 `PowerfulMechanicalPumpVisual`；蒸汽引擎、升降机、冲压机、燃烧室和鼓风机分别复用 `SteamEngineVisual`、`ElevatorPulleyVisual`、`PressVisual`、`BlazeBurnerVisual`、`FanVisual`
+- Flywheel visual：强力泵使用 `PowerfulMechanicalPumpVisual`；蒸汽引擎、升降机、冲压机和鼓风机分别复用 `SteamEngineVisual`、`ElevatorPulleyVisual`、`PressVisual`、`FanVisual`。燃烧室采用常规 renderer 以显示实际数量。
 
 1.21.1 API 差异：
 
@@ -709,7 +717,7 @@ minecraft:netherite_ingot
 
 ## 当前 Mixin 清单
 
-以 `src/main/resources/createnetherite.mixins.json` 为准：9 个通用 Mixin，1 个客户端 Mixin。配置使用 `required: true`、`JAVA_21` 和 `defaultRequire: 1`。
+以 `src/main/resources/createnetherite.mixins.json` 为准：9 个通用 Mixin，2 个客户端 Mixin。配置使用 `required: true`、`JAVA_21` 和 `defaultRequire: 1`。
 
 | Mixin | 目标方法 | 作用 |
 | --- | --- | --- |
@@ -723,6 +731,7 @@ minecraft:netherite_ingot
 | `ItemVaultItemMixin` | `ItemVaultItem.tryMultiPlace` | 一键铺层使用对应 BE type |
 | `NetheriteAirCurrentMixin` | `AirCurrent.tickAffectedEntities` | 新风机掉落物加工规则、加工步进和气流风速 |
 | `FluidTankRendererMixin`（客户端） | `FluidTankRenderer.renderAsBoiler` | 替换锅炉仪表模型 |
+| `NetheriteBlazeBurnerAnimationMixin`（客户端） | `BlazeBurnerBlockEntity.shouldTickAnimation` | 自定义多头 renderer 继续使用原生动画 |
 
 ## 与 Forge 1.20.1 分支的关键差异
 

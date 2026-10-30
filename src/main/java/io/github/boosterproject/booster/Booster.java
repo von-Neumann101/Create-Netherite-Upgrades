@@ -7,16 +7,17 @@ import com.simibubi.create.AllMountedStorageTypes;
 import com.simibubi.create.api.behaviour.movement.MovementBehaviour;
 import com.simibubi.create.api.boiler.BoilerHeater;
 import com.simibubi.create.api.contraption.storage.item.MountedItemStorageType;
-import com.simibubi.create.content.processing.burner.BlazeBurnerMovementBehaviour;
 import io.github.boosterproject.booster.client.BoosterClient;
 import io.github.boosterproject.booster.config.BoosterConfigs;
 import io.github.boosterproject.booster.content.BoosterExplosionProtection;
 import io.github.boosterproject.booster.content.processing.burner.NetheriteBlazeBurnerBlock;
+import io.github.boosterproject.booster.content.processing.burner.NetheriteBlazeBurnerMovementBehaviour;
 import io.github.boosterproject.booster.registry.BoosterBlockEntityTypes;
 import io.github.boosterproject.booster.registry.BoosterBlocks;
 import io.github.boosterproject.booster.registry.BoosterCreativeModeTabs;
 import io.github.boosterproject.booster.registry.BoosterItems;
 import io.github.boosterproject.booster.registry.BoosterMenuTypes;
+import io.github.boosterproject.booster.registry.BoosterArmInteractionPointTypes;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
@@ -39,6 +40,7 @@ public class Booster {
         BoosterCreativeModeTabs.register(modEventBus);
         BoosterBlockEntityTypes.register(modEventBus);
         BoosterMenuTypes.register(modEventBus);
+        BoosterArmInteractionPointTypes.register(modEventBus);
 
         NeoForge.EVENT_BUS.addListener(BoosterExplosionProtection::onExplosionDetonate);
         NeoForge.EVENT_BUS.addListener(BoosterExplosionProtection::onEntityInvulnerabilityCheck);
@@ -80,10 +82,8 @@ public class Booster {
             );
 
             Block netheriteBlazeBurner = BoosterBlocks.NETHERITE_BLAZE_BURNER.get();
-            BoilerHeater.REGISTRY.register(netheriteBlazeBurner,
-                (level, pos, state) -> NetheriteBlazeBurnerBlock.HEAT_MULTIPLIER
-                    * BoilerHeater.BLAZE_BURNER.getHeat(level, pos, state));
-            MovementBehaviour.REGISTRY.register(netheriteBlazeBurner, new BlazeBurnerMovementBehaviour());
+            BoilerHeater.REGISTRY.register(netheriteBlazeBurner, NetheriteBlazeBurnerBlock::getBoilerHeat);
+            MovementBehaviour.REGISTRY.register(netheriteBlazeBurner, new NetheriteBlazeBurnerMovementBehaviour());
         });
     }
 }
