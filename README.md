@@ -49,7 +49,7 @@ Minecraft `1.20.1` Forge 的 `main` 分支暂停更新，保留现有代码和�
 
 下界合金烈焰人燃烧室支持空、满两条升级路径：一个下界合金板加一个原版空燃烧室，合成空的下界合金燃烧室（`0` 只）；使用原版已装烈焰人的燃烧室升级，则保留 `1` 只。也可用两个板加三个对应原版燃烧室批量升级。手持空容器连续右键烈焰人，可以从 `0` 只依次装到 `4` 只。
 
-空容器有独立名称和空笼模型，不消耗燃料、不提供热量，放置和拆下后仍保持为空。物品说明和工程师护目镜会显示非空燃烧室的数量与倍率，放置后也会显示对应数量的烈焰人。拆除、扳手拾取、重新放置和存档均保留数量，旧燃烧室默认按 `1` 只处理。
+空容器有独立名称和空笼模型，不消耗燃料、不提供热量，放置和拆下后仍保持为空。物品的数量与倍率可按住 `Shift` 查看；工程师护目镜会显示非空燃烧室的数量与倍率，放置后也会显示对应数量的烈焰人。拆除、扳手拾取、重新放置和存档均保留数量，旧燃烧室默认按 `1` 只处理。
 
 | 烈焰人数量 | 锅炉热量倍率 | 燃料消耗倍率 |
 | --- | --- | --- |
@@ -76,6 +76,8 @@ Minecraft `1.20.1` Forge 的 `main` 分支暂停更新，保留现有代码和�
 一个下界合金板加一个原版鼓风机或过滤器，分别无序合成一个对应升级品。拆除鼓风机会掉落所装过滤器并保留规则。过滤器也能作为 Create 物流设备的物品白名单使用。
 
 **思索教程：** 在背包中悬停下界合金鼓风机，按住思索键（默认 `W`），可查看“内置加工模式”和“过滤器规则与统一模式”两段用法动画，学习接入动力、选择模式、放入待加工物品和配置过滤器。下界合金过滤器也可打开规则教程。字幕支持中文和英文。
+
+**物品说明：** 已有思索的物品沿用 Create 原生思索入口；其余物品使用原生“按住 Shift 查看概要”。储罐容量倍率与燃烧室当前数量、倍率均在 Shift 展开后显示。
 
 # 防爆与防火
 
@@ -172,7 +174,7 @@ The Netherite Mechanical Arm advances movement at `3` times the normal rate with
 
 The Netherite Blaze Burner has empty and filled upgrade recipes: one Netherite Sheet plus a regular Empty Blaze Burner produces an empty netherite burner (`0` Blazes); upgrading a filled regular burner retains its `1` Blaze. Two sheets and three corresponding regular burners provide the bulk upgrade. Hold an empty burner and repeatedly right-click Blazes to fill it from `0` to `4`.
 
-The empty variant has its own name and cage model, consumes no fuel, supplies no heat, and stays empty through placement and pickup. Item tooltips and Engineer's Goggles show filled burners' counts and rates; placed burners render the corresponding number of Blazes. Breaking, wrench pickup, placement, and saves retain the count. Existing burners default to `1` Blaze.
+The empty variant has its own name and cage model, consumes no fuel, supplies no heat, and stays empty through placement and pickup. Hold `Shift` over the item to see its count and rates. Engineer's Goggles show filled burners' counts and rates; placed burners render the corresponding number of Blazes. Breaking, wrench pickup, placement, and saves retain the count. Existing burners default to `1` Blaze.
 
 | Blazes | Boiler heat multiplier | Fuel consumption multiplier |
 | --- | --- | --- |
@@ -199,6 +201,8 @@ To use it:
 Craft one Netherite Sheet with a regular Encased Fan or Filter to obtain the corresponding upgrade. Breaking the fan drops its installed filter with its rules preserved. The filter also works as an item allow list in Create logistics devices.
 
 **Ponder tutorials:** Hover over the Netherite Encased Fan in your inventory and hold the Ponder key (default: `W`) to watch two usage tutorials covering power connections, mode selection, item placement, and filter configuration. The Netherite Filter also opens the filter tutorial. Captions are available in English and Chinese.
+
+**Item descriptions:** Items with Ponder scenes keep Create's native Ponder entry. Other items use the native hold-Shift summary. Tank capacity multipliers and the burner's current count and rates appear when holding Shift.
 
 # Blast and Fire Protection
 

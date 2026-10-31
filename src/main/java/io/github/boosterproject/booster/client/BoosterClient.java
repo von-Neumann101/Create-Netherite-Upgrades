@@ -90,6 +90,7 @@ public final class BoosterClient {
     private static void clientSetup(FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
             PonderIndex.addPlugin(new BoosterPonderPlugin());
+            BoosterTooltips.register();
             SimpleBlockEntityVisualizer.builder(BoosterBlockEntityTypes.NETHERITE_MECHANICAL_MIXER.get())
                 .factory(MixerVisual::new).apply();
             SimpleBlockEntityVisualizer.builder(BoosterBlockEntityTypes.NETHERITE_MECHANICAL_ARM.get())

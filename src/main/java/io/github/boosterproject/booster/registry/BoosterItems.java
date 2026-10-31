@@ -5,7 +5,6 @@ import io.github.boosterproject.booster.content.processing.burner.NetheriteBlaze
 import com.simibubi.create.content.kinetics.mechanicalArm.ArmItem;
 import com.simibubi.create.content.processing.AssemblyOperatorBlockItem;
 import io.github.boosterproject.booster.Booster;
-import io.github.boosterproject.booster.content.fluids.pump.PowerfulMechanicalPumpBlockItem;
 import io.github.boosterproject.booster.content.fluids.tank.NetheriteFluidTankBlockItem;
 import io.github.boosterproject.booster.content.logistics.filter.NetheriteFilterItem;
 import net.minecraft.world.item.BlockItem;
@@ -18,7 +17,7 @@ public final class BoosterItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Booster.MOD_ID);
 
     public static final DeferredItem<Item> POWERFUL_MECHANICAL_PUMP =
-        ITEMS.register("powerful_mechanical_pump", () -> new PowerfulMechanicalPumpBlockItem(
+        ITEMS.register("powerful_mechanical_pump", () -> new BlockItem(
             BoosterBlocks.POWERFUL_MECHANICAL_PUMP.get(),
             new Item.Properties().fireResistant()
         ));

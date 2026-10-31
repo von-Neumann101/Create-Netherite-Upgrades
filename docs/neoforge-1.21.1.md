@@ -10,7 +10,7 @@
 
 - 分支：`1.21.1-NeoForge`
 - 源码核对日期：`2026-10-31`
-- 源码基线提交：`eff30f5958e28d09dfda96fdc4478a73bfbfd55e`（本次后续修改精简思索用法并添加安山机壳支撑）
+- 源码基线提交：`136c2e73c70b4b2913c7d09a1e4cc42fcda3e664`（本次后续修改统一原生物品概要提示）
 - 模组版本：`0.2.4`
 - Mod id：`createnetherite`
 - 主包名：`io.github.boosterproject.booster`
@@ -68,6 +68,8 @@
 - 2026-10-31 下界合金鼓风机思索通过完整离线构建和现有 172 项回归。独立审查发现置物台与风口同高会挡风，已把风机/轴抬至 y=2，置物台保留 y=1，修正后重新构建通过。当前 74 个 Java 源文件；103 个 JSON 解析通过，两种语言的 18 条 sharedText 与 3 个标题均齐全，jar 中结构、语言资源和场景类核对通过。
 - 在独立 `Netherite Fan QA 2026-10-29` 测试世界中，实际通过原生 `/ponder` 入口打开鼓风机三段教程，检查英文标题/字幕、场景切换、示例物品变化、规则优先与回退及速度对比；过滤器物品入口也成功打开共用教程。未发现场景加载或播放异常。本地测试客户端原版资源未下载完整，语言列表为空，中文仅做字幕资源校对，尚未验证中文界面播放；该次验证不替代真实世界加工实测。
 - 同日按用户要求将思索精简为两段用法教程，补上风机下方的安山机壳，并把禁止使用 RTX 5060 写入项目约定。修订版在 `-Djava.awt.headless=true` 下完整构建通过，现有 172 项检查全部通过；核对结构只新增一个支撑块、原有 55 个方块未改，15 条双语字幕和两个标题齐全，最终 jar 与源码资源一致。此次未启动游戏客户端，修订版未做新的播放实测。
+
+- 同日物品提示统一为原生 Ponder / Shift 概要：在 `-Djava.awt.headless=true` 下完整离线构建通过，现有 172 项回归全部通过；103 个资源 JSON 解析通过，十种无思索物品的中英文概要齐全，原有保留翻译与思索字幕未变。核对最终 jar 包含概要修饰器与相同语言资源，已移除旧机械泵物品类。未启动客户端、未使用显卡，尚未实测本次概要界面。
 
 按当前配置生成的主 jar：
 
@@ -306,15 +308,11 @@ createnetherite-server.toml
 
 ### Item 与 tooltip
 
-文件：`PowerfulMechanicalPumpBlockItem.java`
+强力机械泵使用普通 `BlockItem`，不再通过 `appendHoverText` 默认展开介绍。
 
-NeoForge 1.21.1 tooltip 签名：
+客户端 `BoosterTooltips.register()` 使用 Create 6.0.10 的 `TooltipModifier.REGISTRY` 与 `ItemDescription.Modifier`。已有思索的下界合金鼓风机和过滤器保留原生 Ponder 入口；其余十种物品提供中英文 `<物品 description id>.tooltip.summary`，由 Create 生成 Shift 提示、折叠、换行及重点配色。燃烧室捕获用法使用原生 `.condition1` / `.behaviour1`。
 
-```java
-appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag)
-```
-
-不要使用 1.20.1 的 `Level level` 签名。
+储罐的当前配置容量倍率、燃烧室堆叠保存的数量与倍率，只在按住 Shift 时追加到原生概要后。相关代码仅在客户端加载；捕获、放置、燃烧以及工程师护目镜信息保持原有逻辑。过滤器的已配置规则预览沿用 Create `FilterItem` 的原生显示行为。
 
 ## 强力机械泵应力实现
 
@@ -453,7 +451,7 @@ multiBlockCapacity = blockCount * singleBlockCapacity
 
 职责：
 
-- tooltip 显示容量倍率
+- 容量倍率由客户端原生 Shift 概要显示
 - 覆盖 `place(BlockPlaceContext)`，成功放置后尝试补齐一整层
 - 使用 `ConnectivityHandler.partAt(...)` 找到同类储罐 controller
 - 只在上下方向、非潜行、热栏无对称法杖时触发

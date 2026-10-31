@@ -1,8 +1,6 @@
 package io.github.boosterproject.booster.content.processing.burner;
 
 import com.simibubi.create.AllTags.AllEntityTags;
-import java.util.List;
-import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -12,7 +10,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.block.Block;
 
 public class NetheriteBlazeBurnerItem extends BlockItem {
@@ -54,15 +51,4 @@ public class NetheriteBlazeBurnerItem extends BlockItem {
             : super.getName(stack);
     }
 
-    @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
-        super.appendHoverText(stack, context, tooltip, flag);
-        int count = NetheriteBlazeBurnerData.getCount(stack);
-        tooltip.add(Component.translatable("tooltip.createnetherite.netherite_blaze_burner.count", count)
-            .withStyle(ChatFormatting.GOLD));
-        tooltip.add(Component.translatable("tooltip.createnetherite.netherite_blaze_burner.rates", count, count / 2F)
-            .withStyle(ChatFormatting.GRAY));
-        tooltip.add(Component.translatable("tooltip.createnetherite.netherite_blaze_burner.capture")
-            .withStyle(ChatFormatting.DARK_GRAY));
-    }
 }
