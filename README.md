@@ -4,7 +4,7 @@
 
 当前分支：`1.21.1-NeoForge`
 
-当前模组版本：`0.2.4`
+当前模组版本：`0.2.5`
 
 # 维护状态
 
@@ -120,7 +120,7 @@ createnetherite-server.toml
 构建产物：
 
 ```text
-build/libs/createnetherite-1.21.1-0.2.4.jar
+build/libs/createnetherite-1.21.1-0.2.5.jar
 ```
 
 # Introduction
@@ -129,7 +129,7 @@ build/libs/createnetherite-1.21.1-0.2.4.jar
 
 Current branch: `1.21.1-NeoForge`
 
-Current mod version: `0.2.4`
+Current mod version: `0.2.5`
 
 # Maintenance status
 
@@ -245,5 +245,5 @@ Existing worlds keep their own `serverconfig/createnetherite-server.toml`. If de
 Build output:
 
 ```text
-build/libs/createnetherite-1.21.1-0.2.4.jar
+build/libs/createnetherite-1.21.1-0.2.5.jar
 ```

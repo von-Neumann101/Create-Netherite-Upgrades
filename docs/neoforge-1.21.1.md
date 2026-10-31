@@ -11,7 +11,7 @@
 - 分支：`1.21.1-NeoForge`
 - 源码核对日期：`2026-10-31`
 - 源码基线提交：`136c2e73c70b4b2913c7d09a1e4cc42fcda3e664`（本次后续修改统一原生物品概要提示）
-- 模组版本：`0.2.4`
+- 模组版本：`0.2.5`
 - Mod id：`createnetherite`
 - 主包名：`io.github.boosterproject.booster`
 - Minecraft：`1.21.1`
@@ -74,7 +74,7 @@
 按当前配置生成的主 jar：
 
 ```text
-build/libs/createnetherite-1.21.1-0.2.4.jar
+build/libs/createnetherite-1.21.1-0.2.5.jar
 ```
 
 ## Gradle 与依赖
