@@ -22,6 +22,8 @@ import io.github.boosterproject.booster.registry.BoosterBlocks;
 import io.github.boosterproject.booster.registry.BoosterMenuTypes;
 import io.github.boosterproject.booster.registry.BoosterItems;
 import io.github.boosterproject.booster.content.processing.burner.NetheriteBlazeBurnerData;
+import io.github.boosterproject.booster.client.ponder.BoosterPonderPlugin;
+import net.createmod.ponder.foundation.PonderIndex;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.item.ItemProperties;
@@ -87,6 +89,7 @@ public final class BoosterClient {
 
     private static void clientSetup(FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
+            PonderIndex.addPlugin(new BoosterPonderPlugin());
             SimpleBlockEntityVisualizer.builder(BoosterBlockEntityTypes.NETHERITE_MECHANICAL_MIXER.get())
                 .factory(MixerVisual::new).apply();
             SimpleBlockEntityVisualizer.builder(BoosterBlockEntityTypes.NETHERITE_MECHANICAL_ARM.get())

@@ -75,6 +75,8 @@ Minecraft `1.20.1` Forge 的 `main` 分支暂停更新，保留现有代码和�
 
 一个下界合金板加一个原版鼓风机或过滤器，分别无序合成一个对应升级品。拆除鼓风机会掉落所装过滤器并保留规则。过滤器也能作为 Create 物流设备的物品白名单使用。
 
+**思索教程：** 在背包中悬停下界合金鼓风机，按住思索键（默认 `W`），可查看“内置加工模式”“过滤器规则与统一模式”“更快的加工与气流”三段动画。下界合金过滤器也可打开规则教程。字幕支持中文和英文。
+
 # 防爆与防火
 
 上述全部物品（含强力机械泵和下界合金板）的掉落物均免疫爆炸伤害；十种方块放置后均不被爆炸破坏，储罐与保险库中的内容也因此保留。方块基础爆炸抗性统一为 `1200`。
@@ -195,6 +197,8 @@ To use it:
 3. Right-click the fan, insert the filter into its slot, and select the default processing mode. **Matching items use their filter rule; unmatched items use the fan's selected mode.** The default mode remains selectable while a filter is installed.
 
 Craft one Netherite Sheet with a regular Encased Fan or Filter to obtain the corresponding upgrade. Breaking the fan drops its installed filter with its rules preserved. The filter also works as an item allow list in Create logistics devices.
+
+**Ponder tutorials:** Hover over the Netherite Encased Fan in your inventory and hold the Ponder key (default: `W`) to watch three scenes covering built-in modes, filter rules and the selected mode, and faster processing and airflow. The Netherite Filter also opens the filter tutorial. Captions are available in English and Chinese.
 
 # Blast and Fire Protection
 

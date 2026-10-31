@@ -9,8 +9,8 @@
 ## 版本与分支
 
 - 分支：`1.21.1-NeoForge`
-- 源码核对日期：`2026-10-30`
-- 源码基线提交：`236da18f137489703b0a9918749ef4dd4f7ec044`（本次后续修改新增下界合金动力搅拌机）
+- 源码核对日期：`2026-10-31`
+- 源码基线提交：`7dc8d951399f769a580bf0cd13fb13bd91ee9b0a`（本次后续修改新增下界合金鼓风机思索）
 - 模组版本：`0.2.4`
 - Mod id：`createnetherite`
 - 主包名：`io.github.boosterproject.booster`
@@ -65,6 +65,8 @@
 - 同日下界合金动力搅拌机通过完整离线构建：新增 11 项批量控制检查，加上现有 161 项，共 172 项通过。当前 72 个 Java 源文件、103 个资源 JSON；JSON 解析与 Create 模型 parent 路径检查通过。独立只读审查未发现重要问题，并据原生侧向输出缓存语义修正文档。本次检查尚不等同于世界中真实物品/流体配方加工。
 - 搅拌机专用 `base_side.png` 与 `head.png` 由既有美术对话以 `aaf6c8a` 单独提交、推送，本任务只接入模型引用。两张最终 PNG 均为原生 16×16，alpha 通道与原图一致；103 个 JSON、模型 parent 和本模组纹理路径最终检查通过。
 - 最终含贴图版本通过 `jar` 打包，核对其中搅拌机类、两个客户端 Mixin、全部新资源与源文件一致。随后 `runClient -x downloadAssets` 完成模组加载、资源重载与图集构建，未发现模组注册、Mixin 或模型加载错误，测试后停止客户端。此次仍有未下载的原版主菜单资源缺失警告；未进入世界实测混合、酿造、加热、真实流体或批量侧向输出，也未启动独立服务端。
+- 2026-10-31 下界合金鼓风机思索通过完整离线构建和现有 172 项回归。独立审查发现置物台与风口同高会挡风，已把风机/轴抬至 y=2，置物台保留 y=1，修正后重新构建通过。当前 74 个 Java 源文件；103 个 JSON 解析通过，两种语言的 18 条 sharedText 与 3 个标题均齐全，jar 中结构、语言资源和场景类核对通过。
+- 在独立 `Netherite Fan QA 2026-10-29` 测试世界中，实际通过原生 `/ponder` 入口打开鼓风机三段教程，检查英文标题/字幕、场景切换、示例物品变化、规则优先与回退及速度对比；过滤器物品入口也成功打开共用教程。未发现场景加载或播放异常。本地测试客户端原版资源未下载完整，语言列表为空，中文仅做字幕资源校对，尚未验证中文界面播放；该次验证不替代真实世界加工实测。
 
 按当前配置生成的主 jar：
 
@@ -653,6 +655,20 @@ BE 替换 `airCurrent` 为 `NetheriteAirCurrent`。它复用 Create 的碰撞与
 ```
 
 该任务已接入 `check` / `build`。目前它检查物品规则，不等价于完整游戏内界面和气流加工验证。
+
+## 下界合金鼓风机思索
+
+客户端 setup 中调用 `PonderIndex.addPlugin(new BoosterPonderPlugin())`，使用 Ponder `1.0.82` 的 `PonderPlugin` / `PonderSceneRegistrationHelper`，不使用旧版 `PonderRegistry` API。仅为本模组物品注册教程：鼓风机三段，过滤器共用规则段，不覆盖 Create 的原版教程。
+
+- `client/ponder/BoosterPonderPlugin.java`：注册场景和 18 条命名 sharedText。
+- `client/ponder/NetheriteFanScenes.java`：四模式加工示例、过滤规则/回退与切换、默认速度对比。
+- `assets/createnetherite/ponder/fan/tutorial.nbt`：三段共用的原生 gzip NBT 结构。舞台为 7×7，结构高度 3；风机 `(1,2,3)` 向东，轴在其西侧，四个置物台位于 `(3..6,1,3)`。风口抬高一格，气流越过置物台碰撞形状，并通过原生下方一格的 handler 搜索找到物品。
+
+场景 ID 为 `netherite_fan_modes`、`netherite_fan_filter`、`netherite_fan_speed`。标题键为 `createnetherite.ponder.<scene_id>.header`，字幕键为 `createnetherite.ponder.shared.<key>`，全部提供中英文。复用同一个结构注册多个 storyboard 受到当前 Ponder 注册表支持。
+
+模式演示使用确定性配方：红羊毛水洗为白羊毛、粗铁熔炼为铁锭、沙子缠魂为灵魂沙、生牛肉烟熏为牛排。过滤器记录前三项，牛肉使用统一烟熏模式；统一模式切换为水洗后，未列出的蓝羊毛洗白，粗铁仍按专属熔炼规则加工。
+
+速度对比在相同 64 RPM 下编排默认 4:1 的加工进度示意，说明默认加工 4 倍、风速 2 倍均可配置，风距与动能 RPM 沿用原版。与原生 Ponder 场景一致，加工结果由 storyboard 编排；该动画不充当真实配方计时或世界内加工回归测试。未新增或修改任何贴图，也不改变机器加工逻辑。
 
 ## 客户端渲染与模型
 
