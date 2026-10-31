@@ -17,15 +17,14 @@ public class BoosterPonderPlugin implements PonderPlugin {
     public void registerScenes(PonderSceneRegistrationHelper<ResourceLocation> helper) {
         helper.forComponents(BoosterItems.NETHERITE_ENCASED_FAN.getId())
             .addStoryBoard("fan/tutorial", NetheriteFanScenes::modes)
-            .addStoryBoard("fan/tutorial", NetheriteFanScenes::filter)
-            .addStoryBoard("fan/tutorial", NetheriteFanScenes::speed);
+            .addStoryBoard("fan/tutorial", NetheriteFanScenes::filter);
         helper.forComponents(BoosterItems.NETHERITE_FILTER.getId())
             .addStoryBoard("fan/tutorial", NetheriteFanScenes::filter);
     }
 
     @Override
     public void registerSharedText(SharedTextRegistrationHelper helper) {
-        helper.registerSharedText("fan_power", "Connect rotational power to create an air current.");
+        helper.registerSharedText("fan_power", "Connect rotational power to the shaft at the back of the fan.");
         helper.registerSharedText("fan_no_media", "Right-click the fan to choose a processing mode. No water, lava or fire block is needed in front of it.");
         helper.registerSharedText("fan_washing", "Washing: coloured wool becomes white wool.");
         helper.registerSharedText("fan_blasting", "Blasting: raw iron becomes an iron ingot.");
@@ -39,9 +38,6 @@ public class BoosterPonderPlugin implements PonderPlugin {
         helper.registerSharedText("fan_filter_fallback", "Unlisted items use the fan's selected mode. This beef is smoked.");
         helper.registerSharedText("fan_filter_switch", "You can still change the selected mode with a filter installed. Listed items keep their rules.");
         helper.registerSharedText("fan_filter_result", "Unlisted blue wool now uses Washing; the listed raw iron is still blasted.");
-        helper.registerSharedText("fan_speed_compare", "At the same RPM, a Netherite Fan advances processing four times as fast by default.");
-        helper.registerSharedText("fan_speed_wind", "Default processing: 4×. Default wind speed: 2×. Both multipliers are configurable.");
-        helper.registerSharedText("fan_speed_range", "Airflow range and kinetic network RPM still follow Create's normal rules.");
-        helper.registerSharedText("fan_transport", "The fan can process items on depots, on belts, or dropped into its air current.");
+        helper.registerSharedText("fan_transport", "Place items on a depot or belt in the air current, or drop them into the airflow.");
     }
 }

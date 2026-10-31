@@ -1,13 +1,10 @@
 package io.github.boosterproject.booster.client.ponder;
 
-import com.simibubi.create.AllBlocks;
-import com.simibubi.create.content.kinetics.fan.EncasedFanBlock;
 import com.simibubi.create.content.logistics.depot.DepotBlockEntity;
 import com.simibubi.create.foundation.ponder.CreateSceneBuilder;
 import io.github.boosterproject.booster.content.kinetics.fan.FanProcessingMode;
 import io.github.boosterproject.booster.content.kinetics.fan.NetheriteEncasedFanBlockEntity;
 import io.github.boosterproject.booster.content.logistics.filter.NetheriteFilterData;
-import io.github.boosterproject.booster.registry.BoosterBlocks;
 import io.github.boosterproject.booster.registry.BoosterItems;
 import net.createmod.catnip.math.Pointing;
 import net.createmod.ponder.api.PonderPalette;
@@ -20,8 +17,6 @@ import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.Vec3;
 
 public final class NetheriteFanScenes {
@@ -55,6 +50,8 @@ public final class NetheriteFanScenes {
             clear(scene, DEPOT);
             scene.idle(10);
         }
+        text(scene, "fan_transport", DEPOT, 100);
+        scene.idle(110);
         scene.markAsFinished();
     }
 
@@ -120,61 +117,13 @@ public final class NetheriteFanScenes {
         scene.markAsFinished();
     }
 
-    public static void speed(SceneBuilder builder, SceneBuildingUtil util) {
-        CreateSceneBuilder scene = new CreateSceneBuilder(builder);
-        scene.title("netherite_fan_speed", "Faster processing and stronger airflow");
-        scene.configureBasePlate(0, 0, 7);
-        scene.scaleSceneView(.85f);
-        scene.world().setBlocks(util.select().fromTo(0, 1, 0, 6, 2, 6), Blocks.AIR.defaultBlockState(), false);
-        BlockPos fast = new BlockPos(1, 2, 1);
-        BlockPos regular = new BlockPos(1, 2, 5);
-        BlockPos fastDepot = fast.east(3).below();
-        BlockPos regularDepot = regular.east(3).below();
-        scene.world().setBlock(fast, BoosterBlocks.NETHERITE_ENCASED_FAN.get().defaultBlockState()
-            .setValue(EncasedFanBlock.FACING, Direction.EAST), false);
-        scene.world().setBlock(regular, AllBlocks.ENCASED_FAN.getDefaultState()
-            .setValue(EncasedFanBlock.FACING, Direction.EAST), false);
-        for (BlockPos fan : new BlockPos[] {fast, regular}) {
-            scene.world().setBlock(fan.west(), AllBlocks.SHAFT.getDefaultState()
-                .setValue(BlockStateProperties.AXIS, Direction.Axis.X), false);
-            scene.world().setBlock(fan.east(3).below(), AllBlocks.DEPOT.getDefaultState(), false);
-        }
-        scene.world().setBlock(regular.east(), Blocks.WATER.defaultBlockState(), false);
-        scene.world().setKineticSpeed(util.select().everywhere(), 64);
-        scene.showBasePlate();
-        scene.world().showSection(util.select().fromTo(0, 1, 0, 6, 2, 6), Direction.DOWN);
-        scene.idle(20);
-        text(scene, "fan_speed_compare", fast, 120);
-        scene.effects().rotationSpeedIndicator(fast.west());
-        scene.effects().rotationSpeedIndicator(regular.west());
-        scene.idle(130);
-
-        // Ponder illustrates the default 4:1 progress ratio, rather than timing a live recipe.
-        item(scene, fastDepot, Items.RED_WOOL);
-        item(scene, regularDepot, Items.RED_WOOL);
-        particles(scene, fastDepot, FanProcessingMode.WASHING, 40);
-        particles(scene, regularDepot, FanProcessingMode.WASHING, 160);
-        scene.idle(40);
-        item(scene, fastDepot, Items.WHITE_WOOL);
-        scene.effects().indicateSuccess(fastDepot);
-        scene.idle(120);
-        item(scene, regularDepot, Items.WHITE_WOOL);
-        scene.effects().indicateSuccess(regularDepot);
-        scene.idle(20);
-        text(scene, "fan_speed_wind", fast, 110);
-        scene.idle(120);
-        text(scene, "fan_speed_range", fast.east(2), 110);
-        scene.idle(120);
-        text(scene, "fan_transport", fastDepot, 100);
-        scene.idle(110);
-        scene.markAsFinished();
-    }
-
     private static void setup(CreateSceneBuilder scene, SceneBuildingUtil util, boolean allDepots) {
         scene.configureBasePlate(0, 0, 7);
         scene.scaleSceneView(.85f);
         scene.showBasePlate();
         scene.world().setKineticSpeed(util.select().everywhere(), 64);
+        scene.world().showSection(util.select().position(FAN.below()), Direction.UP);
+        scene.idle(5);
         scene.world().showSection(util.select().fromTo(FAN.west(), FAN), Direction.DOWN);
         scene.world().showSection(allDepots ? util.select().fromTo(FAN.east(2).below(), FAN.east(5).below())
             : util.select().position(DEPOT), Direction.UP);

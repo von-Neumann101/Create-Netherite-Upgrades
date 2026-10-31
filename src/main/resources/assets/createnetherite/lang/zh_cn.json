@@ -28,7 +28,7 @@
   "item.createnetherite.empty_netherite_blaze_burner": "空的下界合金烈焰人燃烧室",
   "block.createnetherite.netherite_mechanical_arm": "下界合金机械手",
   "block.createnetherite.netherite_mechanical_mixer": "下界合金动力搅拌机",
-  "createnetherite.ponder.shared.fan_power": "接入旋转动力，让鼓风机产生气流。",
+  "createnetherite.ponder.shared.fan_power": "将旋转动力接入鼓风机背面的传动轴。",
   "createnetherite.ponder.shared.fan_no_media": "右键鼓风机选择加工模式，风口前无需放置水、岩浆或火焰。",
   "createnetherite.ponder.shared.fan_washing": "水洗：有色羊毛洗成白色羊毛。",
   "createnetherite.ponder.shared.fan_blasting": "熔炼：粗铁加工成铁锭。",
@@ -42,11 +42,7 @@
   "createnetherite.ponder.shared.fan_filter_fallback": "未列入过滤器的物品采用鼓风机当前模式：这里将生牛肉烟熏成牛排。",
   "createnetherite.ponder.shared.fan_filter_switch": "装有过滤器时仍可切换统一模式，已匹配的物品保留其专属规则。",
   "createnetherite.ponder.shared.fan_filter_result": "未列出的蓝色羊毛改用水洗；已列出的粗铁仍然熔炼成铁锭。",
-  "createnetherite.ponder.shared.fan_speed_compare": "相同转速下，下界合金鼓风机的默认加工进度为原版的 4 倍。",
-  "createnetherite.ponder.shared.fan_speed_wind": "默认加工进度 4 倍、风速 2 倍，两个倍率都可在服务端配置中调整。",
-  "createnetherite.ponder.shared.fan_speed_range": "气流距离和动能网络转速仍遵循 Create 原版规则。",
-  "createnetherite.ponder.shared.fan_transport": "气流中的掉落物、传送带和置物台上的物品都能加工。",
+  "createnetherite.ponder.shared.fan_transport": "将待加工物品放在气流中的置物台或传送带上，也可以直接丢进气流。",
   "createnetherite.ponder.netherite_fan_modes.header": "内置加工模式",
-  "createnetherite.ponder.netherite_fan_filter.header": "过滤器规则与统一模式",
-  "createnetherite.ponder.netherite_fan_speed.header": "更快的加工与气流"
+  "createnetherite.ponder.netherite_fan_filter.header": "过滤器规则与统一模式"
 }

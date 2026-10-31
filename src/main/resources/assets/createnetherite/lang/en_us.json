@@ -28,7 +28,7 @@
   "item.createnetherite.empty_netherite_blaze_burner": "Empty Netherite Blaze Burner",
   "block.createnetherite.netherite_mechanical_arm": "Netherite Mechanical Arm",
   "block.createnetherite.netherite_mechanical_mixer": "Netherite Mechanical Mixer",
-  "createnetherite.ponder.shared.fan_power": "Connect rotational power to create an air current.",
+  "createnetherite.ponder.shared.fan_power": "Connect rotational power to the shaft at the back of the fan.",
   "createnetherite.ponder.shared.fan_no_media": "Right-click the fan to choose a processing mode. No water, lava or fire block is needed in front of it.",
   "createnetherite.ponder.shared.fan_washing": "Washing: coloured wool becomes white wool.",
   "createnetherite.ponder.shared.fan_blasting": "Blasting: raw iron becomes an iron ingot.",
@@ -42,11 +42,7 @@
   "createnetherite.ponder.shared.fan_filter_fallback": "Unlisted items use the fan's selected mode. This beef is smoked.",
   "createnetherite.ponder.shared.fan_filter_switch": "You can still change the selected mode with a filter installed. Listed items keep their rules.",
   "createnetherite.ponder.shared.fan_filter_result": "Unlisted blue wool now uses Washing; the listed raw iron is still blasted.",
-  "createnetherite.ponder.shared.fan_speed_compare": "At the same RPM, a Netherite Fan advances processing four times as fast by default.",
-  "createnetherite.ponder.shared.fan_speed_wind": "Default processing: 4×. Default wind speed: 2×. Both multipliers are configurable.",
-  "createnetherite.ponder.shared.fan_speed_range": "Airflow range and kinetic network RPM still follow Create's normal rules.",
-  "createnetherite.ponder.shared.fan_transport": "The fan can process items on depots, on belts, or dropped into its air current.",
+  "createnetherite.ponder.shared.fan_transport": "Place items on a depot or belt in the air current, or drop them into the airflow.",
   "createnetherite.ponder.netherite_fan_modes.header": "Built-in processing modes",
-  "createnetherite.ponder.netherite_fan_filter.header": "Filter rules and the selected mode",
-  "createnetherite.ponder.netherite_fan_speed.header": "Faster processing and stronger airflow"
+  "createnetherite.ponder.netherite_fan_filter.header": "Filter rules and the selected mode"
 }
