@@ -85,7 +85,7 @@ public class NetheriteFilterItem extends FilterItem {
                 return false;
             }
             for (ItemStack sample : samples) {
-                if (stack.is(sample.getItem())) {
+                if (NetheriteFilterData.matches(level, sample, stack)) {
                     return true;
                 }
             }

@@ -146,7 +146,7 @@ public class NetheriteFilterMenu extends HeldItemGhostItemMenu {
         }
         for (int slot = 0; slot < ghostInventory.getSlots(); slot++) {
             ItemStack existing = ghostInventory.getStackInSlot(slot);
-            if (!existing.isEmpty() && existing.is(sample.getItem())) {
+            if (!existing.isEmpty() && NetheriteFilterData.sameSample(existing, sample)) {
                 return ItemStack.EMPTY;
             }
         }

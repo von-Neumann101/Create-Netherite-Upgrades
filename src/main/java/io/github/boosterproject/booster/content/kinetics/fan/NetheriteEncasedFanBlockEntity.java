@@ -75,7 +75,7 @@ public class NetheriteEncasedFanBlockEntity extends EncasedFanBlockEntity implem
     }
 
     public FanProcessingMode resolveProcessingMode(ItemStack stack) {
-        return NetheriteFilterData.resolve(filterInventory.getStackInSlot(0), stack, processingMode);
+        return NetheriteFilterData.resolve(level, filterInventory.getStackInSlot(0), stack, processingMode);
     }
 
     public int getProcessingSpeedMultiplier() {

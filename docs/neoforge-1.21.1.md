@@ -11,7 +11,7 @@
 - 分支：`1.21.1-NeoForge`
 - 源码核对日期：`2026-11-02`
 - 源码基线提交：`258581732409c92bd271c783fff83fe993a5a4ca`（后续新增无线终端与管理器；贴图提交 `7326d31`）
-- 模组版本：`0.3.3`
+- 模组版本：`0.3.4`
 - Mod id：`createnetherite`
 - 主包名：`io.github.boosterproject.booster`
 - Minecraft：`1.21.1`
@@ -74,7 +74,7 @@
 按当前配置生成的主 jar：
 
 ```text
-build/libs/createnetherite-1.21.1-0.3.3.jar
+build/libs/createnetherite-1.21.1-0.3.4.jar
 ```
 
 ## Gradle 与依赖
@@ -625,7 +625,7 @@ max(0, min(configuredMaxDistance, pulleyY - 1 - worldMinBuildHeight))
 四种方式依次为水洗、岩浆熔炼、灵魂火缠魂和火焰烟熏，对应 `AllFanProcessingTypes.SPLASHING` / `BLASTING` / `HAUNTING` / `SMOKING`。默认水洗，模式可以随时切换，风口前不需要实体介质。优先规则是：
 
 ```text
-匹配过滤器中的物品种类 -> 该区域指定方式
+匹配过滤器中的物品种类或嵌套原版过滤规则 -> 该区域指定方式
 未匹配或未装过滤器 -> 鼓风机所选统一方式
 ```
 
@@ -637,7 +637,7 @@ BE 替换 `airCurrent` 为 `NetheriteAirCurrent`。它复用 Create 的碰撞与
 
 ### 过滤器数据与两个菜单
 
-- 四个区域各有 9 格，共 36 个物品种类样本。`NetheriteFilterData` 将物品 ID 存入 `DataComponents.CUSTOM_DATA` 的 `FanRules` 字符串列表，索引除以 9 得到区域。不保存原物品数量或嵌套数据；保留其他 CUSTOM_DATA 字段。
+- 四个区域各有 9 格，共 36 条规则。`NetheriteFilterData` 保留 `CUSTOM_DATA.FanRules` 的物品 ID 字符串列表及原有区域索引；普通样本仍只按物品种类保存。原版 `FilterItem` 样本的完整组件另外保存在 `DataComponents.CONTAINER` 相同槽位，以保留原版清单及匹配选项。原有过滤器数据直接可读，其他 CUSTOM_DATA 字段保留。
 - 鼠标设置及数字键设置共用 `assign` / `assignToGroup`：同种物品只保留一个区域规则，跨区重新分配会移动，满区拒绝且不删除旧规则。未匹配回退统一方式是用户明确要求。
 - `NetheriteFilterMenu` 继承 Create `HeldItemGhostItemMenu`。主手持过滤器右键配置，玩家槽 0..35、样本槽 36..71，主手过滤器锁定。样本不能被拾取为真实物品。
 - `NetheriteFilterScreen` 支持一次按下背包物品、拖到样本、松开：使用原版 PICKUP 消息设置样本，并把原堆叠放回源槽；已有光标物品不消耗。样本左键设置、右键或空手清除。
@@ -645,7 +645,7 @@ BE 替换 `airCurrent` 为 `NetheriteAirCurrent`。它复用 Create 的碰撞与
 - `NetheriteFanMenu` 提供一个真实过滤器槽，限制一个下界合金过滤器；用 `DataSlot` 同步模式、原版 `clickMenuButton` 消息选择 0..3。服务端核对玩家、距离和 BE 身份，过滤器存在时仍允许切换模式。
 - `BoosterMenuTypes` 注册两个 MenuType，客户端在 `RegisterMenuScreensEvent` 注册 `NetheriteFilterScreen` 与 `NetheriteFanScreen`；没有新增自定义网络 payload。
 
-鼓风机将模式名称保存在 NBT `Mode`，过滤器库存保存在 `Filter`；客户端同步使用同一读写路径。BE `destroy()` 在服务器侧取出并掉落过滤器，保留其规则。`NetheriteFilterItem` 在普通 Create 物流过滤场景中把全部区域样本作为物品白名单。
+鼓风机将模式名称保存在 NBT `Mode`，过滤器库存保存在 `Filter`；客户端同步使用同一读写路径。BE `destroy()` 在服务器侧取出并掉落过滤器，保留其规则。`NetheriteFilterItem` 在普通 Create 物流过滤场景中对全部区域规则取并集，嵌套原版过滤器也通过原生匹配器判断。
 
 ### 合成、外观与检查
 
@@ -896,3 +896,15 @@ minecraft:netherite_ingot
 新增 `WirelessTerminalPlacementGameTest`：通过真实方块物品点击墙面先复现平放形状；然后覆盖四面墙、四向平放、四向倒挂、通断电保留朝向与身份、状态保存重载、旧格式存档默认平放，以及贴墙支撑方块连接真实红石灯的电路。只运行无图形服务端，未启动客户端或使用 RTX 5060。
 
 2026-11-02 修复验证：实际方块物品贴墙测试先在形状断言失败，修正后两项无图形 GameTest 均通过，覆盖 12 种安装/朝向组合、旧存档和墙面灯电路；完整构建的 205 项回归通过。113 个 JSON 解析通过，24 个模型状态完整，贴墙父模型及旋转与锁定 Create 一致。审查另修正了贴墙模型的 `redstone_bridge_side` 材质覆盖字段，随后重新打包并逐字节核对 0.3.3 jar 全部生产资源；未改动任何 PNG，测试类未打包。未启动客户端，模型未进行实际图形渲染检查。
+
+
+## 原版过滤器嵌入加工分组（0.3.4）
+
+- 下界合金过滤器分组可放入配置好的 Create 原版过滤器。普通列表、黑名单、匹配数据选项、原版嵌套列表及属性过滤器均保留组件，并使用原版 `FilterItemStack` 判断；鼓风机传入实际世界对象，未匹配物品仍走当前统一模式。
+- `FanRules` 继续记录 36 个物品 ID，原版过滤器完整快照额外使用原版 `CONTAINER` 组件，以相同槽号关联。只复制一件作为样本，不消耗源物品。`getComponentType()` 保持 `CUSTOM_DATA`，原版过滤器复制合成可沿用既有检测并一并复制嵌套组件。清空移除 `FanRules` 和本功能的 `CONTAINER`，保留其他数据。
+- 普通物品继续按种类去重；原版过滤器按物品及组件去重。不同配置可以分处不同分组，移动相同配置只移走同一条规则。鼠标、1～4 分配和 Shift 快捷放入使用相同判定。
+- 重叠规则沿用固定优先级：水洗、熔炼、缠魂、烟熏，同组按槽位，取第一项匹配。过滤器配置是放入时的快照，外部修改原版过滤器后需重新放入。
+- `NetheriteFilterItem` 的物流过滤包装使用同一匹配逻辑。原版匹配器会裁剪临时过滤堆栈的部分组件，因此调用时传副本，避免改变保存的快照。
+- 新增 `NetheriteNestedFilterGameTest`，复用现有无图形 `runWirelessGameTestServer`：真实原版过滤器、物品/BE 序列化、复制合成、两种原料的真实配方输出、三种菜单输入方式、不同清单去重、黑白名单/数据匹配/原版嵌套/属性规则及清空。测试先复现配置丢失和菜单错误，再在实现后通过；不启动客户端或使用 RTX 5060。
+
+2026-11-02 嵌套过滤验证：新增两项 GameTest 先在“原版清单保留”和“不同配置分组”断言失败，实现后连同原有两项共四项全部通过。验证使用实际 Create 过滤器、风机解析、菜单服务端操作和原版加工 API，并核对粗铁/粗金的真实配方产物；未进行客户端鼠标或真实气流的图形实测。完整离线构建的 205 项回归通过，113 个资源 JSON、双语键及最终 0.3.4 元数据、全部生产资源字节和测试代码排除检查通过。一次独立审查未发现问题，未修改贴图、启动客户端或使用 RTX 5060。
