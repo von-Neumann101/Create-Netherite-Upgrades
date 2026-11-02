@@ -3,13 +3,13 @@
   "textures": {
     "0": "minecraft:block/netherite_block",
     "1": "minecraft:block/netherite_block",
-    "8": "minecraft:block/netherite_block",
+    "8": "createnetherite:block/netherite_mechanical_press/side",
     "particle": "minecraft:block/netherite_block",
     "mechanical_press_head": "minecraft:block/netherite_block",
-    "gearbox_top": "minecraft:block/netherite_block",
+    "gearbox_top": "createnetherite:block/brass_framed_netherite",
     "mechanical_press_pole": "minecraft:block/netherite_block",
-    "gearbox": "minecraft:block/netherite_block",
-    "mechanical_press_top": "minecraft:block/netherite_block",
+    "gearbox": "createnetherite:block/brass_framed_netherite",
+    "mechanical_press_top": "createnetherite:block/brass_framed_netherite",
     "mechanical_press_bottom": "minecraft:block/netherite_block"
   }
 }

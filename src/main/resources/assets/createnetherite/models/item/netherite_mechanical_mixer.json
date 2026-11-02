@@ -3,7 +3,7 @@
   "textures": {
     "4": "createnetherite:block/netherite_mechanical_mixer/base_side",
     "6": "createnetherite:block/netherite_mechanical_mixer/head",
-    "11": "minecraft:block/netherite_block",
+    "11": "createnetherite:block/brass_framed_netherite",
     "particle": "createnetherite:block/netherite_mechanical_mixer/base_side"
   }
 }
