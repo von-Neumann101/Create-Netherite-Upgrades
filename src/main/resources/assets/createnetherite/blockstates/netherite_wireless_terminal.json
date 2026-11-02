@@ -1,36 +1,116 @@
 {
   "variants": {
-    "facing=north,powered=false": {
+    "face=floor,facing=north,powered=false": {
       "model": "createnetherite:block/netherite_wireless_terminal",
       "y": 0
     },
-    "facing=north,powered=true": {
+    "face=floor,facing=north,powered=true": {
       "model": "createnetherite:block/netherite_wireless_terminal_powered",
       "y": 0
     },
-    "facing=east,powered=false": {
+    "face=floor,facing=east,powered=false": {
       "model": "createnetherite:block/netherite_wireless_terminal",
       "y": 90
     },
-    "facing=east,powered=true": {
+    "face=floor,facing=east,powered=true": {
       "model": "createnetherite:block/netherite_wireless_terminal_powered",
       "y": 90
     },
-    "facing=south,powered=false": {
+    "face=floor,facing=south,powered=false": {
       "model": "createnetherite:block/netherite_wireless_terminal",
       "y": 180
     },
-    "facing=south,powered=true": {
+    "face=floor,facing=south,powered=true": {
       "model": "createnetherite:block/netherite_wireless_terminal_powered",
       "y": 180
     },
-    "facing=west,powered=false": {
+    "face=floor,facing=west,powered=false": {
       "model": "createnetherite:block/netherite_wireless_terminal",
       "y": 270
     },
-    "facing=west,powered=true": {
+    "face=floor,facing=west,powered=true": {
       "model": "createnetherite:block/netherite_wireless_terminal_powered",
       "y": 270
+    },
+    "face=wall,facing=north,powered=false": {
+      "model": "createnetherite:block/netherite_wireless_terminal_vertical",
+      "x": 270,
+      "y": 180
+    },
+    "face=wall,facing=north,powered=true": {
+      "model": "createnetherite:block/netherite_wireless_terminal_vertical_powered",
+      "x": 270,
+      "y": 180
+    },
+    "face=wall,facing=east,powered=false": {
+      "model": "createnetherite:block/netherite_wireless_terminal_vertical",
+      "x": 270,
+      "y": 270
+    },
+    "face=wall,facing=east,powered=true": {
+      "model": "createnetherite:block/netherite_wireless_terminal_vertical_powered",
+      "x": 270,
+      "y": 270
+    },
+    "face=wall,facing=south,powered=false": {
+      "model": "createnetherite:block/netherite_wireless_terminal_vertical",
+      "x": 270,
+      "y": 0
+    },
+    "face=wall,facing=south,powered=true": {
+      "model": "createnetherite:block/netherite_wireless_terminal_vertical_powered",
+      "x": 270,
+      "y": 0
+    },
+    "face=wall,facing=west,powered=false": {
+      "model": "createnetherite:block/netherite_wireless_terminal_vertical",
+      "x": 270,
+      "y": 90
+    },
+    "face=wall,facing=west,powered=true": {
+      "model": "createnetherite:block/netherite_wireless_terminal_vertical_powered",
+      "x": 270,
+      "y": 90
+    },
+    "face=ceiling,facing=north,powered=false": {
+      "model": "createnetherite:block/netherite_wireless_terminal",
+      "x": 180,
+      "y": 180
+    },
+    "face=ceiling,facing=north,powered=true": {
+      "model": "createnetherite:block/netherite_wireless_terminal_powered",
+      "x": 180,
+      "y": 180
+    },
+    "face=ceiling,facing=east,powered=false": {
+      "model": "createnetherite:block/netherite_wireless_terminal",
+      "x": 180,
+      "y": 270
+    },
+    "face=ceiling,facing=east,powered=true": {
+      "model": "createnetherite:block/netherite_wireless_terminal_powered",
+      "x": 180,
+      "y": 270
+    },
+    "face=ceiling,facing=south,powered=false": {
+      "model": "createnetherite:block/netherite_wireless_terminal",
+      "x": 180,
+      "y": 0
+    },
+    "face=ceiling,facing=south,powered=true": {
+      "model": "createnetherite:block/netherite_wireless_terminal_powered",
+      "x": 180,
+      "y": 0
+    },
+    "face=ceiling,facing=west,powered=false": {
+      "model": "createnetherite:block/netherite_wireless_terminal",
+      "x": 180,
+      "y": 90
+    },
+    "face=ceiling,facing=west,powered=true": {
+      "model": "createnetherite:block/netherite_wireless_terminal_powered",
+      "x": 180,
+      "y": 90
     }
   }
 }

@@ -4,7 +4,7 @@
 
 当前分支：`1.21.1-NeoForge`
 
-当前模组版本：`0.3.2`
+当前模组版本：`0.3.3`
 
 # 维护状态
 
@@ -83,7 +83,7 @@ Minecraft `1.20.1` Forge 的 `main` 分支暂停更新，保留现有代码和�
 
 # 无线红石
 
-下界合金无线红石信号终端（无线红石加载器）放置后默认私有。所有者右键终端可命名和设置公开状态，显示名称为“放置玩家名的终端名”。管理器同时显示坐标和所在维度；同名终端仍是独立目标。
+下界合金无线红石信号终端（无线红石加载器）可平放、贴墙或倒挂；点击哪个面就安装到哪个面，平放和倒挂时按玩家朝向旋转。放置后默认私有。所有者右键终端可命名和设置公开状态，显示名称为“放置玩家名的终端名”。管理器同时显示坐标和所在维度；同名终端仍是独立目标。
 
 手持下界合金无限管理器并右键，查看自己放置的终端和其他玩家公开的终端。点击条目勾选，支持跨页多选、“全选本页”、“清空选择”及同时激活所选终端；也可以直接编辑自己的终端。
 
@@ -132,7 +132,7 @@ createnetherite-server.toml
 构建产物：
 
 ```text
-build/libs/createnetherite-1.21.1-0.3.2.jar
+build/libs/createnetherite-1.21.1-0.3.3.jar
 ```
 
 # Introduction
@@ -141,7 +141,7 @@ build/libs/createnetherite-1.21.1-0.3.2.jar
 
 Current branch: `1.21.1-NeoForge`
 
-Current mod version: `0.3.2`
+Current mod version: `0.3.3`
 
 # Maintenance status
 
@@ -220,7 +220,7 @@ Craft one Netherite Sheet with a regular Encased Fan or Filter to obtain the cor
 
 # Wireless Redstone
 
-The Netherite Wireless Redstone Terminal starts private. Its owner can right-click to name it or make it public. Names display as “placing player's name + terminal name”; the manager also shows coordinates and dimension. Duplicate display names remain separate targets.
+The Netherite Wireless Redstone Terminal mounts on floors, walls, and ceilings according to the clicked face. Floor and ceiling placement follows the player's horizontal direction. It starts private. Its owner can right-click to name it or make it public. Names display as “placing player's name + terminal name”; the manager also shows coordinates and dimension. Duplicate display names remain separate targets.
 
 Right-click while holding a Netherite Infinite Manager to list your terminals and public terminals placed by others. Click rows to select, keep selections across pages, select the current page, clear selections, or activate selected terminals together. You can also edit your own terminals remotely.
 
@@ -269,5 +269,5 @@ Existing worlds keep their own `serverconfig/createnetherite-server.toml`. If de
 Build output:
 
 ```text
-build/libs/createnetherite-1.21.1-0.3.2.jar
+build/libs/createnetherite-1.21.1-0.3.3.jar
 ```

@@ -63,7 +63,7 @@ public class WirelessTerminalBlockEntity extends BlockEntity {
         if (level == null || level.isClientSide || getBlockState().getValue(WirelessTerminalBlock.POWERED) == powered) return;
         level.setBlock(worldPosition, getBlockState().setValue(WirelessTerminalBlock.POWERED, powered), 3);
         level.updateNeighborsAt(worldPosition, getBlockState().getBlock());
-        level.updateNeighborsAt(worldPosition.below(), getBlockState().getBlock());
+        level.updateNeighborsAt(worldPosition.relative(WirelessTerminalBlock.getAttachedDirection(getBlockState()).getOpposite()), getBlockState().getBlock());
     }
 
     @Override

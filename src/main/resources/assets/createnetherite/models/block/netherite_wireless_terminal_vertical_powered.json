@@ -1,0 +1,7 @@
+{
+  "parent": "create:block/redstone_link/receiver_vertical_powered",
+  "textures": {
+    "redstone_bridge_side": "createnetherite:block/netherite_wireless_terminal_powered",
+    "particle": "createnetherite:block/netherite_wireless_terminal_powered"
+  }
+}
