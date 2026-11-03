@@ -1,16 +1,21 @@
 package io.github.boosterproject.booster.client;
 
 import com.mojang.blaze3d.platform.InputConstants;
+import io.github.boosterproject.booster.Booster;
 import io.github.boosterproject.booster.content.kinetics.fan.FanProcessingMode;
 import io.github.boosterproject.booster.content.logistics.filter.NetheriteFilterMenu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.Slot;
 
 public class NetheriteFilterScreen extends AbstractContainerScreen<NetheriteFilterMenu> {
+    private static final ResourceLocation BACKGROUND = ResourceLocation.fromNamespaceAndPath(
+        Booster.MOD_ID, "textures/gui/netherite_filter.png");
+
     private Slot draggedPlayerSlot;
     private int sampleClickButton = -1;
 
@@ -24,27 +29,14 @@ public class NetheriteFilterScreen extends AbstractContainerScreen<NetheriteFilt
 
     @Override
     protected void renderBg(GuiGraphics graphics, float partialTick, int mouseX, int mouseY) {
-        graphics.fill(leftPos, topPos, leftPos + imageWidth, topPos + imageHeight, 0xFF17181B);
-        graphics.fill(leftPos + 2, topPos + 2, leftPos + imageWidth - 2, topPos + imageHeight - 2, 0xFF34363C);
-        graphics.fill(leftPos + 3, topPos + 3, leftPos + imageWidth - 3, topPos + 20, 0xFF45484F);
+        graphics.blit(BACKGROUND, leftPos, topPos, 0, 0, imageWidth, imageHeight, imageWidth, imageHeight);
         for (FanProcessingMode mode : FanProcessingMode.values()) {
             int x = leftPos + NetheriteFilterMenu.GROUP_X + mode.ordinal() * NetheriteFilterMenu.GROUP_SPACING;
             int color = 0xFF000000 | mode.color();
-            graphics.fill(x - 4, topPos + 22, x + 58, topPos + 112, 0xFF25272C);
-            graphics.fill(x - 4, topPos + 22, x + 58, topPos + 24, color);
             graphics.renderItem(mode.icon(), x + 8, topPos + 25);
             graphics.drawString(font, Integer.toString(mode.ordinal() + 1), x + 35, topPos + 29, 0xFFE1E3E8, false);
             graphics.drawCenteredString(font, font.plainSubstrByWidth(mode.displayName().getString(), 60), x + 27, topPos + 43, color);
         }
-        for (Slot slot : menu.slots) {
-            drawSlot(graphics, leftPos + slot.x, topPos + slot.y);
-        }
-    }
-
-    private static void drawSlot(GuiGraphics graphics, int x, int y) {
-        graphics.fill(x - 1, y - 1, x + 17, y + 17, 0xFF111216);
-        graphics.fill(x, y, x + 17, y + 17, 0xFF73767F);
-        graphics.fill(x, y, x + 16, y + 16, 0xFF22242A);
     }
 
     @Override

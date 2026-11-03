@@ -4,7 +4,7 @@
 
 当前分支：`1.21.1-NeoForge`
 
-当前模组版本：`0.3.4`
+当前模组版本：`0.3.5`
 
 # 维护状态
 
@@ -83,6 +83,8 @@ Minecraft `1.20.1` Forge 的 `main` 分支暂停更新，保留现有代码和�
 
 **物品说明：** 已有思索的物品沿用 Create 原生思索入口；其余物品使用原生“按住 Shift 查看概要”。储罐容量倍率与燃烧室当前数量、倍率均在 Shift 展开后显示。
 
+**界面贴图：** 过滤器、鼓风机与无限管理器使用独立 PNG，位于 jar 内的 `assets/createnetherite/textures/gui/`。资源包可在相同路径替换贴图；保持原尺寸、槽位及按钮位置，文字和物品图标仍由游戏绘制。详细尺寸见技术文档的“独立 GUI 贴图”一节。
+
 # 无线红石
 
 下界合金无线红石信号终端（无线红石加载器）可平放、贴墙或倒挂；点击哪个面就安装到哪个面，平放和倒挂时按玩家朝向旋转。放置后默认私有。所有者右键终端可命名和设置公开状态，显示名称为“放置玩家名的终端名”。管理器同时显示坐标和所在维度；同名终端仍是独立目标。
@@ -134,7 +136,7 @@ createnetherite-server.toml
 构建产物：
 
 ```text
-build/libs/createnetherite-1.21.1-0.3.4.jar
+build/libs/createnetherite-1.21.1-0.3.5.jar
 ```
 
 # Introduction
@@ -143,7 +145,7 @@ build/libs/createnetherite-1.21.1-0.3.4.jar
 
 Current branch: `1.21.1-NeoForge`
 
-Current mod version: `0.3.4`
+Current mod version: `0.3.5`
 
 # Maintenance status
 
@@ -222,6 +224,8 @@ Craft one Netherite Sheet with a regular Encased Fan or Filter to obtain the cor
 
 **Item descriptions:** Items with Ponder scenes keep Create's native Ponder entry. Other items use the native hold-Shift summary. Tank capacity multipliers and the burner's current count and rates appear when holding Shift.
 
+**GUI textures:** The filter, fan, and infinite manager use separate PNGs under `assets/createnetherite/textures/gui/` inside the jar. Resource packs can replace them at the same paths while preserving image dimensions and slot/button positions. The game still draws text and item icons. See the technical documentation for texture sizes and the button atlas layout.
+
 # Wireless Redstone
 
 The Netherite Wireless Redstone Terminal mounts on floors, walls, and ceilings according to the clicked face. Floor and ceiling placement follows the player's horizontal direction. It starts private. Its owner can right-click to name it or make it public. Names display as “placing player's name + terminal name”; the manager also shows coordinates and dimension. Duplicate display names remain separate targets.
@@ -273,5 +277,5 @@ Existing worlds keep their own `serverconfig/createnetherite-server.toml`. If de
 Build output:
 
 ```text
-build/libs/createnetherite-1.21.1-0.3.4.jar
+build/libs/createnetherite-1.21.1-0.3.5.jar
 ```

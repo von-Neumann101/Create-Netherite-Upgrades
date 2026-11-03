@@ -1,5 +1,6 @@
 package io.github.boosterproject.booster.client;
 
+import io.github.boosterproject.booster.Booster;
 import io.github.boosterproject.booster.content.kinetics.fan.FanProcessingMode;
 import io.github.boosterproject.booster.content.kinetics.fan.NetheriteFanMenu;
 import net.minecraft.client.gui.GuiGraphics;
@@ -7,10 +8,15 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.inventory.Slot;
 
 public class NetheriteFanScreen extends AbstractContainerScreen<NetheriteFanMenu> {
+    private static final ResourceLocation BACKGROUND = ResourceLocation.fromNamespaceAndPath(
+        Booster.MOD_ID, "textures/gui/netherite_fan.png");
+    private static final ResourceLocation MODE_BUTTONS = ResourceLocation.fromNamespaceAndPath(
+        Booster.MOD_ID, "textures/gui/netherite_fan_buttons.png");
+
     public NetheriteFanScreen(NetheriteFanMenu menu, Inventory inventory, Component title) {
         super(menu, inventory, title);
         imageWidth = 288;
@@ -29,16 +35,7 @@ public class NetheriteFanScreen extends AbstractContainerScreen<NetheriteFanMenu
 
     @Override
     protected void renderBg(GuiGraphics graphics, float partialTick, int mouseX, int mouseY) {
-        graphics.fill(leftPos, topPos, leftPos + imageWidth, topPos + imageHeight, 0xFF17181B);
-        graphics.fill(leftPos + 2, topPos + 2, leftPos + imageWidth - 2, topPos + imageHeight - 2, 0xFF34363C);
-        graphics.fill(leftPos + 3, topPos + 3, leftPos + imageWidth - 3, topPos + 20, 0xFF45484F);
-        for (Slot slot : menu.slots) {
-            int x = leftPos + slot.x;
-            int y = topPos + slot.y;
-            graphics.fill(x - 1, y - 1, x + 17, y + 17, 0xFF111216);
-            graphics.fill(x, y, x + 17, y + 17, 0xFF73767F);
-            graphics.fill(x, y, x + 16, y + 16, 0xFF22242A);
-        }
+        graphics.blit(BACKGROUND, leftPos, topPos, 0, 0, imageWidth, imageHeight, imageWidth, imageHeight);
     }
 
     @Override
@@ -72,10 +69,9 @@ public class NetheriteFanScreen extends AbstractContainerScreen<NetheriteFanMenu
         protected void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
             int color = 0xFF000000 | mode.color();
             boolean selected = menu.getProcessingMode() == mode;
-            graphics.fill(getX(), getY(), getX() + width, getY() + height,
-                selected ? color : isHoveredOrFocused() ? 0xFFB9BDC6 : 0xFF111216);
-            graphics.fill(getX() + 1, getY() + 1, getX() + width - 1, getY() + height - 1,
-                selected ? 0xFF454952 : 0xFF26292F);
+            int state = selected ? 2 : isHoveredOrFocused() ? 1 : 0;
+            graphics.blit(MODE_BUTTONS, getX(), getY(), mode.ordinal() * width, state * height,
+                width, height, 248, 114);
             graphics.renderItem(mode.icon(), getX() + (width - 16) / 2, getY() + 3);
             graphics.drawCenteredString(font, font.plainSubstrByWidth(mode.displayName().getString(), width - 4),
                 getX() + width / 2, getY() + 24, selected ? color : 0xFFE1E3E8);

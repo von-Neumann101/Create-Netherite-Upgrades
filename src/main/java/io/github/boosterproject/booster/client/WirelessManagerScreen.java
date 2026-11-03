@@ -3,6 +3,7 @@ package io.github.boosterproject.booster.client;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import io.github.boosterproject.booster.Booster;
 import io.github.boosterproject.booster.content.redstone.wireless.WirelessActionPayload;
 import io.github.boosterproject.booster.content.redstone.wireless.WirelessManagerMenu;
 import io.github.boosterproject.booster.content.redstone.wireless.WirelessPagePayload;
@@ -12,10 +13,14 @@ import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 public class WirelessManagerScreen extends AbstractContainerScreen<WirelessManagerMenu> {
+    private static final ResourceLocation BACKGROUND = ResourceLocation.fromNamespaceAndPath(
+        Booster.MOD_ID, "textures/gui/netherite_wireless_manager.png");
+
     private final List<Button> rows = new ArrayList<>();
     private final List<Button> edits = new ArrayList<>();
     private EditBox name;
@@ -104,8 +109,7 @@ public class WirelessManagerScreen extends AbstractContainerScreen<WirelessManag
 
     @Override
     protected void renderBg(GuiGraphics graphics, float partialTick, int mouseX, int mouseY) {
-        graphics.fill(leftPos, topPos, leftPos + imageWidth, topPos + imageHeight, 0xFF26292F);
-        graphics.fill(leftPos + 2, topPos + 2, leftPos + imageWidth - 2, topPos + 19, 0xFF45484F);
+        graphics.blit(BACKGROUND, leftPos, topPos, 0, 0, imageWidth, imageHeight, imageWidth, imageHeight);
     }
 
     @Override
