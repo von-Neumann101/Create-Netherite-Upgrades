@@ -1,6 +1,8 @@
 package io.github.boosterproject.booster.client;
 
 import com.simibubi.create.CreateClient;
+import com.simibubi.create.content.kinetics.deployer.DeployerRenderer;
+import com.simibubi.create.content.kinetics.deployer.DeployerVisual;
 import com.simibubi.create.content.logistics.depot.EjectorRenderer;
 import com.simibubi.create.content.logistics.depot.EjectorVisual;
 import net.neoforged.neoforge.common.NeoForge;
@@ -58,6 +60,7 @@ public final class BoosterClient {
     }
 
     private static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
+        event.registerBlockEntityRenderer(BoosterBlockEntityTypes.NETHERITE_DEPLOYER.get(), DeployerRenderer::new);
         event.registerBlockEntityRenderer(BoosterBlockEntityTypes.NETHERITE_WEIGHTED_EJECTOR.get(), EjectorRenderer::new);
         event.registerBlockEntityRenderer(BoosterBlockEntityTypes.NETHERITE_SMART_CHUTE.get(), SmartChuteRenderer::new);
         event.registerBlockEntityRenderer(BoosterBlockEntityTypes.NETHERITE_ENCASED_FAN.get(), EncasedFanRenderer::new);
@@ -98,6 +101,7 @@ public final class BoosterClient {
 
     private static void clientSetup(FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
+            SimpleBlockEntityVisualizer.builder(BoosterBlockEntityTypes.NETHERITE_DEPLOYER.get()).factory(DeployerVisual::new).apply();
             PonderIndex.addPlugin(new BoosterPonderPlugin());
             BoosterTooltips.register();
             SimpleBlockEntityVisualizer.builder(BoosterBlockEntityTypes.NETHERITE_WEIGHTED_EJECTOR.get()).factory(EjectorVisual::new).apply();

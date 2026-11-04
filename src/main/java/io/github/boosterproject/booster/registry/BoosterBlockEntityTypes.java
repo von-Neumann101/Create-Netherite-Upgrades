@@ -14,6 +14,8 @@ import io.github.boosterproject.booster.content.kinetics.mixer.NetheriteMechanic
 import io.github.boosterproject.booster.content.logistics.vault.NetheriteItemVaultBlockEntity;
 import io.github.boosterproject.booster.content.logistics.chute.NetheriteSmartChuteBlockEntity;
 import io.github.boosterproject.booster.content.logistics.depot.NetheriteEjectorBlockEntity;
+import io.github.boosterproject.booster.content.kinetics.deployer.NetheriteDeployerBlockEntity;
+import io.github.boosterproject.booster.mixin.NetheriteDeployerInventoryAccess;
 import com.simibubi.create.content.logistics.depot.DepotBehaviour;
 import io.github.boosterproject.booster.content.redstone.wireless.WirelessTerminalBlockEntity;
 import net.minecraft.core.registries.Registries;
@@ -87,6 +89,10 @@ public final class BoosterBlockEntityTypes {
     private BoosterBlockEntityTypes() {
     }
 
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<NetheriteDeployerBlockEntity>> NETHERITE_DEPLOYER =
+        BLOCK_ENTITY_TYPES.register("netherite_deployer", () -> BlockEntityType.Builder
+            .of(NetheriteDeployerBlockEntity::new, BoosterBlocks.NETHERITE_DEPLOYER.get()).build(null));
+
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<NetheriteEjectorBlockEntity>> NETHERITE_WEIGHTED_EJECTOR =
         BLOCK_ENTITY_TYPES.register("netherite_weighted_ejector", () -> BlockEntityType.Builder
             .of(NetheriteEjectorBlockEntity::new, BoosterBlocks.NETHERITE_WEIGHTED_EJECTOR.get()).build(null));
@@ -101,6 +107,11 @@ public final class BoosterBlockEntityTypes {
     }
 
     private static void registerCapabilities(RegisterCapabilitiesEvent event) {
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, NETHERITE_DEPLOYER.get(), (be, side) -> {
+            var access = (NetheriteDeployerInventoryAccess) be;
+            access.booster$initHandler();
+            return access.booster$getInventory();
+        });
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, NETHERITE_WEIGHTED_EJECTOR.get(), (ejector, side) -> ejector.getBehaviour(DepotBehaviour.TYPE).itemHandler);
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, NETHERITE_SMART_CHUTE.get(), (chute, side) -> chute.getTransportInventory());
         event.registerBlockEntity(

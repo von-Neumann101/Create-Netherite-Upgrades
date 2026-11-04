@@ -4,7 +4,7 @@
 
 当前分支：`1.21.1-NeoForge`
 
-当前模组版本：`0.3.9`
+当前模组版本：`0.3.10`
 
 # 维护状态
 
@@ -34,6 +34,7 @@ Minecraft `1.20.1` Forge 的 `main` 分支暂停更新，保留现有代码和�
 - `createnetherite:netherite_smart_chute`
 - `createnetherite:netherite_weighted_ejector`
 - `createnetherite:netherite_extendo_grip`
+- `createnetherite:netherite_deployer`
 - `createnetherite:netherite_sheet`
 
 强力机械泵接入 Create 原版流体管网，默认基础应力消耗为 `16.0`、压力倍率为 `8.0`。压力倍率提高吞吐，不增加管道传播距离。
@@ -50,7 +51,7 @@ Minecraft `1.20.1` Forge 的 `main` 分支暂停更新，保留现有代码和�
 
 下界合金动力搅拌机采用与下界合金冲压机相同的批量加速方式：一次搅拌周期结束时，连续处理工作盆中当前仍可匹配的配方。搅拌动作和每周期等待时间沿用原版，批量处理的吞吐提升取决于盆内材料数量。应力消耗为普通搅拌机的 `1` 倍（默认基础值 `4 SU/RPM`）；配方、加热、超级加热、无序合成、酿造、过滤和工作盆输出规则沿用 Create。一个下界合金板加一个原版动力搅拌机，无序合成一个升级品。
 
-下界合金机械手的动作进度和动作速度上限均为原版的 `3` 倍，同转速下应力消耗为原版的 `1.5` 倍（默认基础值为 `3 SU/RPM`）。工作半径为 Create 机械手范围配置的 `3` 倍，默认从 `5` 格扩大到 `15` 格；沿用原版球形距离判定，目标距离须小于该半径。选点、分配模式、红石控制与自动喂料沿用原版。一个下界合金板加一个原版机械手，无序合成一个升级品。
+下界合金动力臂的动作进度和动作速度上限均为原版的 `3` 倍，同转速下应力消耗为原版的 `1.5` 倍（默认基础值为 `3 SU/RPM`）。工作半径为 Create 机械手范围配置的 `3` 倍，默认从 `5` 格扩大到 `15` 格；沿用原版球形距离判定，目标距离须小于该半径。选点、分配模式、红石控制与自动喂料沿用原版。一个下界合金板加一个原版机械手，无序合成一个升级品。
 
 下界合金烈焰人燃烧室支持空、满两条升级路径：一个下界合金板加一个原版空燃烧室，合成空的下界合金燃烧室（`0` 只）；使用原版已装烈焰人的燃烧室升级，则保留 `1` 只。也可用两个板加三个对应原版燃烧室批量升级。手持空容器连续右键烈焰人，可以从 `0` 只依次装到 `4` 只。
 
@@ -124,11 +125,19 @@ Minecraft `1.20.1` Forge 的 `main` 分支暂停更新，保留现有代码和�
 
 耐久上限沿用原版的 `200`。成功取一桶扣一次资源，供能开始扣一次，随后每 `20 tick` 扣一次；优先消耗已装备背罐的压缩空气，没有空气时消耗 `1` 点耐久。普通远距破坏、放置和攻击继续沿用 Create 的消耗规则与配置。下界合金板加原版伸缩机械手无序升级；防火、防爆，并提供原生 Shift 概要。
 
+# 下界合金机械手（加工）
+
+下界合金机械手（`netherite_deployer`）在一次伸出动作中，批量加工传送带或置物台上当前同组物品。逐件应用当前配方、消耗对应材料或工具耐久，并返还容器；材料耗尽、工具损坏或不再匹配时停止，保留未加工输入。支持普通机械手配方、砂纸打磨和序列组装，每件只推进当前一个步骤，产物不会在同一次动作内被递归加工。置物台输出缓存放不下时，沿用原版掉落剩余产物的规则。
+
+动作速度和应力消耗沿用原版；加速来自批量处理，不是固定动作倍率。筛选、红石、使用/攻击模式、动力臂给料和移动结构交互保留原生用法；世界放置、攻击、挖掘仍按原版单次动作执行。下界合金板加原版机械手无序升级，具备防火、防爆与原生 Shift 概要。
+
+原有负责搬运的 `netherite_mechanical_arm` 按官方名称显示为“下界合金动力臂”，原ID、性能与存档保持不变。
+
 # 防爆与防火
 
-上述全部物品（含强力机械泵和下界合金板）的掉落物均免疫爆炸伤害；十三种方块放置后均不被爆炸破坏，储罐与保险库中的内容也因此保留。方块基础爆炸抗性统一为 `1200`。
+上述全部物品（含强力机械泵和下界合金板）的掉落物均免疫爆炸伤害；十四种方块放置后均不被爆炸破坏，储罐与保险库中的内容也因此保留。方块基础爆炸抗性统一为 `1200`。
 
-全部十七种物品也具有下界合金物品的防火属性，掉落在火焰或岩浆中不会被烧毁。
+全部十八种物品也具有下界合金物品的防火属性，掉落在火焰或岩浆中不会被烧毁。
 
 # 环境要求
 
@@ -165,7 +174,7 @@ createnetherite-server.toml
 构建产物：
 
 ```text
-build/libs/createnetherite-1.21.1-0.3.9.jar
+build/libs/createnetherite-1.21.1-0.3.10.jar
 ```
 
 # Introduction
@@ -174,7 +183,7 @@ build/libs/createnetherite-1.21.1-0.3.9.jar
 
 Current branch: `1.21.1-NeoForge`
 
-Current mod version: `0.3.9`
+Current mod version: `0.3.10`
 
 # Maintenance status
 
@@ -204,6 +213,7 @@ The mod currently adds several Create-compatible entries:
 - `createnetherite:netherite_smart_chute`
 - `createnetherite:netherite_weighted_ejector`
 - `createnetherite:netherite_extendo_grip`
+- `createnetherite:netherite_deployer`
 - `createnetherite:netherite_sheet`
 
 The Powerful Mechanical Pump uses Create's native fluid network, with a default base stress impact of `16.0` and a pressure multiplier of `8.0`. The pressure multiplier increases throughput without extending pipe propagation distance.
@@ -292,11 +302,19 @@ With the upgrade in the offhand and an empty bucket in the main hand, survival p
 
 Keeps the original `200` durability. A successful bucket fill costs one action; hand power costs one action initially and every `20 ticks` afterward. Equipped backtank air is used first, then `1` durability without air. Native remote breaking, placement, and attacks keep Create's cost rules and settings. Craft one Netherite Sheet with an original Extendo Grip in a shapeless recipe. Includes fire and blast protection and a native Shift summary.
 
+# Netherite Deployer
+
+The Netherite Deployer (`netherite_deployer`) batch-processes the current stack on a belt or depot in one extending action. Each input uses the current recipe, consumes its application material or tool durability, and returns its container. Stops when supplies or tools run out or matching changes, preserving unprocessed inputs. Supports normal deploying, sandpaper polishing, and sequenced assembly; each input advances only one step, and outputs are not recursively processed in the same action. Excess depot outputs follow the original drop behavior when its output buffer is full.
+
+Movement speed and stress consumption match the original; acceleration comes from batching rather than a fixed animation multiplier. Native filters, redstone, use/punch modes, Mechanical Arm feeding, and moving-contraption interactions remain available. World placement, attacks, and mining still perform one native action. Craft one Netherite Sheet with an original Deployer in a shapeless recipe. Includes fire and blast protection and a native Shift summary.
+
+The existing item-moving `netherite_mechanical_arm` keeps its ID, behavior, and saved data; its Chinese name is corrected to match Create's Mechanical Arm terminology.
+
 # Blast and Fire Protection
 
-All items listed above, including the Powerful Mechanical Pump and Netherite Sheet, are immune to explosion damage when dropped. All thirteen placed blocks are protected from explosion destruction, preserving tank and vault contents. Their base blast resistance is `1200`.
+All items listed above, including the Powerful Mechanical Pump and Netherite Sheet, are immune to explosion damage when dropped. All fourteen placed blocks are protected from explosion destruction, preserving tank and vault contents. Their base blast resistance is `1200`.
 
-All seventeen items also have the fire resistance of netherite items: dropped items cannot be burned by fire or lava.
+All eighteen items also have the fire resistance of netherite items: dropped items cannot be burned by fire or lava.
 
 # Requirements
 
@@ -333,5 +351,5 @@ Existing worlds keep their own `serverconfig/createnetherite-server.toml`. If de
 Build output:
 
 ```text
-build/libs/createnetherite-1.21.1-0.3.9.jar
+build/libs/createnetherite-1.21.1-0.3.10.jar
 ```

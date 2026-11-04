@@ -1,0 +1,52 @@
+{
+  "variants": {
+    "axis_along_first=false,facing=down": {
+      "model": "createnetherite:block/netherite_deployer/horizontal",
+      "x": 270,
+      "y": 90
+    },
+    "axis_along_first=false,facing=east": {
+      "model": "createnetherite:block/netherite_deployer/horizontal",
+      "y": 270
+    },
+    "axis_along_first=false,facing=north": {
+      "model": "createnetherite:block/netherite_deployer/vertical",
+      "y": 180
+    },
+    "axis_along_first=false,facing=south": {
+      "model": "createnetherite:block/netherite_deployer/vertical"
+    },
+    "axis_along_first=false,facing=up": {
+      "model": "createnetherite:block/netherite_deployer/horizontal",
+      "x": 90,
+      "y": 90
+    },
+    "axis_along_first=false,facing=west": {
+      "model": "createnetherite:block/netherite_deployer/horizontal",
+      "y": 90
+    },
+    "axis_along_first=true,facing=down": {
+      "model": "createnetherite:block/netherite_deployer/horizontal",
+      "x": 270
+    },
+    "axis_along_first=true,facing=east": {
+      "model": "createnetherite:block/netherite_deployer/vertical",
+      "y": 270
+    },
+    "axis_along_first=true,facing=north": {
+      "model": "createnetherite:block/netherite_deployer/horizontal",
+      "y": 180
+    },
+    "axis_along_first=true,facing=south": {
+      "model": "createnetherite:block/netherite_deployer/horizontal"
+    },
+    "axis_along_first=true,facing=up": {
+      "model": "createnetherite:block/netherite_deployer/horizontal",
+      "x": 90
+    },
+    "axis_along_first=true,facing=west": {
+      "model": "createnetherite:block/netherite_deployer/vertical",
+      "y": 90
+    }
+  }
+}

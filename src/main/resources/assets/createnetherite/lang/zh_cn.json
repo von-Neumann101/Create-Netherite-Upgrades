@@ -24,7 +24,7 @@
   "tooltip.createnetherite.netherite_blaze_burner.rates": "热量：%s 倍；耗料：%s 倍",
   "message.createnetherite.netherite_blaze_burner.full": "这个燃烧室已装有四个烈焰人。",
   "item.createnetherite.empty_netherite_blaze_burner": "空的下界合金烈焰人燃烧室",
-  "block.createnetherite.netherite_mechanical_arm": "下界合金机械手",
+  "block.createnetherite.netherite_mechanical_arm": "下界合金动力臂",
   "block.createnetherite.netherite_mechanical_mixer": "下界合金动力搅拌机",
   "createnetherite.ponder.shared.fan_power": "将旋转动力接入鼓风机背面的传动轴。",
   "createnetherite.ponder.shared.fan_no_media": "右键鼓风机选择加工模式，风口前无需放置水、岩浆或火焰。",
@@ -52,7 +52,7 @@
   "block.createnetherite.netherite_blaze_burner.tooltip.summary": "最多容纳_4 只烈焰人_，为机器和锅炉供热。每只烈焰人提供普通燃烧室_1 倍_的锅炉热量，消耗_0.5 倍_燃料。",
   "block.createnetherite.netherite_blaze_burner.tooltip.condition1": "手持并右键烈焰人时",
   "block.createnetherite.netherite_blaze_burner.tooltip.behaviour1": "每次捕获_1 只烈焰人_，直至装满 4 只。空燃烧室不提供热量，也不消耗燃料。",
-  "block.createnetherite.netherite_mechanical_arm.tooltip.summary": "在选定的输入和输出位置之间搬运物品。动作速度、动作速度上限和工作半径均为普通机械手的_3 倍_，应力消耗为_1.5 倍_。",
+  "block.createnetherite.netherite_mechanical_arm.tooltip.summary": "在选定的输入和输出位置之间搬运物品。动作速度、动作速度上限和工作半径均为普通动力臂的_3 倍_，应力消耗为_1.5 倍_。",
   "block.createnetherite.netherite_mechanical_mixer.tooltip.summary": "搅拌工作盆中的配方。采用_批量加工_，在一个搅拌周期中连续处理当前匹配的配方；动作、加热要求和应力消耗沿用普通动力搅拌机。",
   "item.createnetherite.netherite_sheet.tooltip.summary": "用于制作 Create 机器下界合金升级品的_合成材料_。",
   "block.createnetherite.netherite_wireless_terminal": "下界合金无线红石信号终端",
@@ -94,5 +94,7 @@
   "ejector.createnetherite.busy": "请等待在途物品抵达后再改变目标",
   "item.createnetherite.netherite_extendo_grip": "下界合金伸缩机械手",
   "item.createnetherite.netherite_extendo_grip.tooltip.summary": "比原版_额外增加3格_方块触及距离。副手持有时，主手空桶可直接从储罐取液；主手长按右键直接驱动工作方块，Shift开始可反转，松开即停。仅驱动当前方块，输出恰好足够一台强力机械泵；成功取液和持续供能消耗背罐空气，没有空气时消耗耐久。",
-  "grip.createnetherite.cannot_power": "无法手动驱动：方块已有动力、属于发电机，或所需应力超过%s SU。"
+  "grip.createnetherite.cannot_power": "无法手动驱动：方块已有动力、属于发电机，或所需应力超过%s SU。",
+  "block.createnetherite.netherite_deployer": "下界合金机械手",
+  "block.createnetherite.netherite_deployer.tooltip.summary": "一次动作_批量加工_传送带或置物台上的同组物品。材料、工具耐久和容器返还仍按_实际加工数量_结算；材料不足或工具损坏即停止并保留余料。序列组装每件只推进当前一步，动作速度和应力消耗沿用原版。"
 }

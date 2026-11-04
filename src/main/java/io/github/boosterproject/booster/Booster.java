@@ -2,6 +2,9 @@ package io.github.boosterproject.booster;
 
 import com.mojang.logging.LogUtils;
 import com.simibubi.create.AllBlocks;
+import com.simibubi.create.content.kinetics.deployer.DeployerMovementBehaviour;
+import com.simibubi.create.content.kinetics.deployer.DeployerMovingInteraction;
+import com.simibubi.create.api.behaviour.interaction.MovingInteractionBehaviour;
 import com.simibubi.create.api.stress.BlockStressValues;
 import com.simibubi.create.AllMountedStorageTypes;
 import com.simibubi.create.api.behaviour.movement.MovementBehaviour;
@@ -62,6 +65,9 @@ public class Booster {
 
     private void commonSetup(FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
+            BlockStressValues.IMPACTS.register(BoosterBlocks.NETHERITE_DEPLOYER.get(), () -> BlockStressValues.getImpact(AllBlocks.DEPLOYER.get()));
+            MovementBehaviour.REGISTRY.register(BoosterBlocks.NETHERITE_DEPLOYER.get(), new DeployerMovementBehaviour());
+            MovingInteractionBehaviour.REGISTRY.register(BoosterBlocks.NETHERITE_DEPLOYER.get(), new DeployerMovingInteraction());
             BlockStressValues.IMPACTS.register(
                 BoosterBlocks.NETHERITE_WEIGHTED_EJECTOR.get(),
                 () -> BlockStressValues.getImpact(AllBlocks.WEIGHTED_EJECTOR.get())

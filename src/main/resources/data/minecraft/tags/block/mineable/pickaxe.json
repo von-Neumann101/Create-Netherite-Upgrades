@@ -13,6 +13,7 @@
     "createnetherite:netherite_mechanical_mixer",
     "createnetherite:netherite_wireless_terminal",
     "createnetherite:netherite_smart_chute",
-    "createnetherite:netherite_weighted_ejector"
+    "createnetherite:netherite_weighted_ejector",
+    "createnetherite:netherite_deployer"
   ]
 }

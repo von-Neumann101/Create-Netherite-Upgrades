@@ -92,6 +92,9 @@ public final class BoosterItems {
     private BoosterItems() {
     }
 
+    public static final DeferredItem<Item> NETHERITE_DEPLOYER = ITEMS.register("netherite_deployer",
+        () -> new AssemblyOperatorBlockItem(BoosterBlocks.NETHERITE_DEPLOYER.get(), new Item.Properties().fireResistant()));
+
     public static final DeferredItem<Item> NETHERITE_WEIGHTED_EJECTOR = ITEMS.register("netherite_weighted_ejector",
         () -> new NetheriteEjectorItem(BoosterBlocks.NETHERITE_WEIGHTED_EJECTOR.get(), new Item.Properties().fireResistant()));
 

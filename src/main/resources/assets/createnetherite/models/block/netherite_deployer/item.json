@@ -1,0 +1,12 @@
+{
+  "parent": "create:block/deployer/item",
+  "textures": {
+    "6": "createnetherite:block/netherite_deployer/piston_bottom",
+    "7": "createnetherite:block/netherite_deployer/piston_inner",
+    "gearbox_top": "createnetherite:block/netherite_deployer/gearbox_top",
+    "gearbox": "createnetherite:block/netherite_deployer/gearbox",
+    "andesite_casing_short": "createnetherite:block/netherite_deployer/andesite_casing_short",
+    "particle": "createnetherite:block/netherite_deployer/gearbox_top",
+    "10": "createnetherite:block/netherite_deployer/andesite_casing_piston"
+  }
+}

@@ -2,6 +2,7 @@ package io.github.boosterproject.booster.registry;
 
 import com.simibubi.create.api.registry.CreateBuiltInRegistries;
 import com.simibubi.create.content.kinetics.mechanicalArm.AllArmInteractionPointTypes.BlazeBurnerType;
+import com.simibubi.create.content.kinetics.mechanicalArm.AllArmInteractionPointTypes.DeployerType;
 import com.simibubi.create.content.kinetics.mechanicalArm.ArmInteractionPointType;
 import io.github.boosterproject.booster.Booster;
 import net.minecraft.core.BlockPos;
@@ -24,6 +25,13 @@ public final class BoosterArmInteractionPointTypes {
         });
 
     private BoosterArmInteractionPointTypes() {}
+
+    public static final DeferredHolder<ArmInteractionPointType, DeployerType> NETHERITE_DEPLOYER =
+        TYPES.register("netherite_deployer", () -> new DeployerType() {
+            @Override public boolean canCreatePoint(Level level, BlockPos pos, BlockState state) {
+                return state.is(BoosterBlocks.NETHERITE_DEPLOYER.get());
+            }
+        });
 
     public static void register(IEventBus bus) {
         TYPES.register(bus);

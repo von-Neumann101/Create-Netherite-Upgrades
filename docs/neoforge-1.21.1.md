@@ -11,7 +11,7 @@
 - 分支：`1.21.1-NeoForge`
 - 源码核对日期：`2026-11-02`
 - 源码基线提交：`258581732409c92bd271c783fff83fe993a5a4ca`（后续新增无线终端与管理器；贴图提交 `7326d31`）
-- 模组版本：`0.3.9`
+- 模组版本：`0.3.10`
 - Mod id：`createnetherite`
 - 主包名：`io.github.boosterproject.booster`
 - Minecraft：`1.21.1`
@@ -74,7 +74,7 @@
 按当前配置生成的主 jar：
 
 ```text
-build/libs/createnetherite-1.21.1-0.3.9.jar
+build/libs/createnetherite-1.21.1-0.3.10.jar
 ```
 
 ## Gradle 与依赖
@@ -143,6 +143,7 @@ MixinConfigs: createnetherite.mixins.json
 - `createnetherite:netherite_smart_chute`
 - `createnetherite:netherite_weighted_ejector`
 - `createnetherite:netherite_extendo_grip`
+- `createnetherite:netherite_deployer`
 - `createnetherite:netherite_sheet`
 
 创造模式标签页：
@@ -150,7 +151,7 @@ MixinConfigs: createnetherite.mixins.json
 - 注册位置：`BoosterCreativeModeTabs`
 - 标签页 ID：`createnetherite:createnetherite`
 - 图标：强力机械泵
-- 包含：上述十三种方块的物品、下界合金无限管理器和下界合金板，共十六种在用物品；另保留旧下界合金过滤器注册以兼容存档，注册物品总数为十七。空燃烧室是同一物品 ID 的组件变体
+- 包含：上述十四种方块的物品、下界合金无限管理器和下界合金板，共十七种在用物品；另保留旧下界合金过滤器注册以兼容存档，注册物品总数为十八。空燃烧室是同一物品 ID 的组件变体
 
 ## 主类与初始化
 
@@ -210,8 +211,9 @@ NeoForge 1.21.1 使用 NeoForge DeferredRegister 新类型，不再使用 Forge 
 - `DeferredBlock<NetheriteEncasedFanBlock> NETHERITE_ENCASED_FAN`
 - `DeferredBlock<NetheriteSmartChuteBlock> NETHERITE_SMART_CHUTE`
 - `DeferredBlock<NetheriteEjectorBlock> NETHERITE_WEIGHTED_EJECTOR`
+- `DeferredBlock<NetheriteDeployerBlock> NETHERITE_DEPLOYER`
 
-属性大多复制 Create 对应方块。十三种方块的基础爆炸抗性统一为 `1200.0F`：储罐和蒸汽引擎继承下界合金块属性，其余方块显式设置。强力泵基于铜块属性。
+属性大多复制 Create 对应方块。十四种方块的基础爆炸抗性统一为 `1200.0F`：储罐和蒸汽引擎继承下界合金块属性，其余方块显式设置。强力泵基于铜块属性。
 
 1.21.1 API 差异：
 
@@ -238,10 +240,11 @@ NeoForge 1.21.1 使用 NeoForge DeferredRegister 新类型，不再使用 Forge 
 - `DeferredItem<Item> NETHERITE_WIRELESS_TERMINAL`：普通 `BlockItem`
 - `DeferredItem<Item> NETHERITE_INFINITE_MANAGER`：`InfiniteManagerItem`，手持右键打开分页管理器
 - `DeferredItem<Item> NETHERITE_SMART_CHUTE`：普通防火 `BlockItem`，打开方向规则菜单
+- `DeferredItem<Item> NETHERITE_DEPLOYER`：原生 `AssemblyOperatorBlockItem`，批量加工机械手
 - `DeferredItem<Item> NETHERITE_EXTENDO_GRIP`：继承 `ExtendoGripItem`，200耐久、额外触及、取液与直接手动供能
 - `DeferredItem<Item> NETHERITE_WEIGHTED_EJECTOR`：`NetheriteEjectorItem`，Shift右键选点，放置或右键已有升级置物台应用目标
 
-上述十七种物品的 `Item.Properties` 均设置 `.fireResistant()`，使用原版下界合金物品的火焰与岩浆伤害保护。
+上述十八种物品的 `Item.Properties` 均设置 `.fireResistant()`，使用原版下界合金物品的火焰与岩浆伤害保护。
 
 ### BlockEntityType
 
@@ -261,6 +264,7 @@ NeoForge 1.21.1 使用 NeoForge DeferredRegister 新类型，不再使用 Forge 
 - `NETHERITE_ENCASED_FAN` 绑定 `NetheriteEncasedFanBlockEntity`
 - `NETHERITE_SMART_CHUTE` 绑定 `NetheriteSmartChuteBlockEntity`
 - `NETHERITE_WEIGHTED_EJECTOR` 绑定 `NetheriteEjectorBlockEntity`
+- `NETHERITE_DEPLOYER` 绑定 `NetheriteDeployerBlockEntity`
 
 `BoosterBlockEntityTypes.register(...)` 同时监听 `RegisterCapabilitiesEvent`：
 
@@ -326,7 +330,7 @@ createnetherite-server.toml
 
 强力机械泵使用普通 `BlockItem`，不再通过 `appendHoverText` 默认展开介绍。
 
-客户端 `BoosterTooltips.register()` 使用 Create 6.0.10 的 `TooltipModifier.REGISTRY` 与 `ItemDescription.Modifier`。下界合金鼓风机保留原生 Ponder 入口；其余十六种物品（含旧过滤器）提供中英文 `<物品 description id>.tooltip.summary`，由 Create 生成 Shift 提示、折叠、换行及重点配色。燃烧室捕获用法使用原生 `.condition1` / `.behaviour1`。
+客户端 `BoosterTooltips.register()` 使用 Create 6.0.10 的 `TooltipModifier.REGISTRY` 与 `ItemDescription.Modifier`。下界合金鼓风机保留原生 Ponder 入口；其余十七种物品（含旧过滤器）提供中英文 `<物品 description id>.tooltip.summary`，由 Create 生成 Shift 提示、折叠、换行及重点配色。燃烧室捕获用法使用原生 `.condition1` / `.behaviour1`。
 
 储罐的当前配置容量倍率、燃烧室堆叠保存的数量与倍率，只在按住 Shift 时追加到原生概要后。相关代码仅在客户端加载；捕获、放置、燃烧以及工程师护目镜信息保持原有逻辑。过滤器的已配置规则预览沿用 Create `FilterItem` 的原生显示行为。
 
@@ -592,7 +596,7 @@ max(0, min(configuredMaxDistance, pulleyY - 1 - worldMinBuildHeight))
 
 `mixerRegressionTest` 使用现有轻量源集并接入 `check` / `build`。11 项检查覆盖批量处理、材料消耗、匹配条件失效及实际应用失败停止；先在单次处理基线上失败，批量控制实现后通过。此测试验证批量控制，不代替真实工作盆的物品/流体、加热或侧向输出实测。
 
-## 下界合金机械手实现
+## 下界合金动力臂实现
 
 文件：`content/kinetics/mechanicalArm/NetheriteArmBehavior.java`、`NetheriteMechanicalArmBlock.java`、`NetheriteMechanicalArmBlockEntity.java`。
 
@@ -1011,3 +1015,20 @@ minecraft:netherite_ingot
 验证：新增5项 `NetheriteExtendoGripGameTest`，先复现物品未注册，再验证真实单/混合/双持范围与移除恢复、原生破坏消耗与空气优先；生存空桶从原版水罐取液；下界合金储罐岩浆、堆叠桶、不足1000mB与权限失败不消耗、背罐空气取液；手动强力泵实际输水、持续耐久、松开停机与保存重载无动力；多人抢用拒绝、空气供能、切换/移开停止、反向RPM、真实齿轮和创造马达保持64RPM及配置容量不足拒绝。完整离线构建的205项原有回归及全部22项无图形GameTest通过。模拟玩家测试同步头部视线、马达测试采用真实小齿轮连接，避免将无效测试布置误判为生产缺陷。独立只读审查未发现可操作问题。
 
 发布核对：132个资源JSON，中英文各96个语言键，旧93个值和格式保留。新增物品及4个动态模型均继承原生几何、实际纹理键为4。最终0.3.9 jar 的184个生产资源和全部生产类与源码/编译输出逐字节一致，元数据版本0.3.9，测试代码/结构未打包；旧过滤器配方仍不存在。SHA-256：`fb1421c5ac64e75a05ecd87826e75bed822e45b2432f168c8155b201d1904ec1`。未启动客户端或使用RTX5060，伸缩动画、新材质与长按交互的客户端显示仍待图形实测。
+
+
+## 下界合金机械手 / Deployer（0.3.10）
+
+2026-11-04 新增 `createnetherite:netherite_deployer`，对应Create官方名称“机械手”。原有搬运方块 `netherite_mechanical_arm` 的中文名称及概要更正为“下界合金动力臂”；原注册ID、倍率、配方和存档不变。
+
+- `NetheriteDeployerBlock` / `NetheriteDeployerBlockEntity` 继承原生实现，保留动作周期、过滤、红石、使用/攻击模式、FakePlayer库存和保存。应力supplier读取原生deployer impact，倍率1，默认4SU/RPM。覆盖移动向量，避免原生按 `AllBlocks.DEPLOYER` 的注册ID检查返回零向量。
+- `NetheriteDeployerBatchMixin` 仅拦截新BE的 `BeltDeployerCallbacks.activate`。外层批量记录本次输入堆叠，内部防递归标记允许逐件调用原生activate；每件重新匹配同一recipe ID，材料耗尽、工具损坏或配方不匹配立即停止。批量最多处理输入本身的堆叠上限，产物不进入本轮输入。
+- 临时 `TransportedItemStackHandlerBehaviour` 捕获原生逐件产物和余料，按物品/组件及堆叠上限合并产物，最后一次提交原始传送带或置物台handler。原生无产物随机结果的 `convertTo(left)` 仅作为未加工余料，不误当成产物。序列组装逐件保留其原生组件，只推进当前一步；不堆叠过渡物保留各自堆叠上限。
+- 材料消耗、工具耐久、keepHeldItem规则、随机产物、容器返还和进度均调用原生逐件路径，不按整堆扣一次材料。置物台缓存满时沿用原生掉落剩余产物的处理。普通世界放置、攻击、挖掘和移动结构行为仍按原生单次动作，不增加交互次数。
+- `NetheriteDeployerInventoryAccess` 复用原生惰性 `initHandler` 和 `DeployerItemHandler`，对外注册真实物品能力。专属 `DeployerType` 动力臂交互点只匹配新方块，沿用原生给料/抽取；同时注册 `DeployerMovementBehaviour`、`DeployerMovingInteraction` 和 `create:contraption_controlled` 物品标签，保留运动结构上的使用/攻击切换、玩家交换手持物和控制器识别。
+- 下界合金板加原版deployer无序升级；注册掉落、创造栏、镐/钻石工具标签、防火、防爆及中英文原生Shift概要。物品使用原生 `AssemblyOperatorBlockItem`。
+- 横向、竖向及物品模型继承原生几何，12种朝向/轴组合沿用原生状态。机身的 `andesite_casing_piston`（方块键5、物品键10）、`piston_bottom`（6）、`piston_inner`（7）、`gearbox_top`、`gearbox`、`andesite_casing_short` 使用指定美术对话提供的六张16×16新增贴图；888个灰色金属像素变更，其他648个RGBA像素及全部alpha保留，51张既有仓库PNG字节不变。动态传动轴、压杆和共享黄铜手掌继续原版，复用 `DeployerRenderer` / `DeployerVisual`。
+
+新增7项真实服务端GameTest：置物台32件整批；材料不足保留余料与原版单件对照；砂纸只剩2次耐久、keepHeld催化剂；4个玻璃瓶容器返回、确定性无产物结果；16件不堆叠序列过渡物分别推进step1并核对缓存及溢出掉落计数；真实动力臂交互点、模拟/实际给料、抽取及库存重载和移动注册；真实三格传送带32件加工。未注册基线先失败，实现后完整离线build与205项原有回归、全部29项GameTest通过。独立审查发现的移动交互和动力臂给料注册遗漏已补齐并复核。序列测试按真实不堆叠产物及原生溢出掉落核对，测试配方的无产物情况通过清空仅QA配方的结果列表确定性复现（Create不接受JSON chance=0）。
+
+发布核对：140个生产资源JSON，中英文各98个语言键；除动力臂中文名称与概要两项外，旧语言值和格式保留。三个模型的原生parent/几何及全部实际使用纹理路径核对通过。最终0.3.10 jar 的198个生产资源与全部生产类均和源码/编译结果逐字节一致，元数据版本0.3.10，QA配方、测试类和结构未打包，旧专用过滤器配方仍不存在。SHA-256：`a0ec64a56a044fd6a44278d9d6880909661c82a325b271da662957015414d373`。未启动客户端或使用RTX5060，新增模型的实际渲染和移动结构内的玩家手动操作仍未进行图形实测。

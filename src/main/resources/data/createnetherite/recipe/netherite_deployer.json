@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "redstone",
+  "ingredients": [
+    {
+      "item": "createnetherite:netherite_sheet"
+    },
+    {
+      "item": "create:deployer"
+    }
+  ],
+  "result": {
+    "id": "createnetherite:netherite_deployer",
+    "count": 1
+  }
+}
