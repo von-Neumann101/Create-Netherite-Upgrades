@@ -4,7 +4,7 @@
 
 当前分支：`1.21.1-NeoForge`
 
-当前模组版本：`0.3.5`
+当前模组版本：`0.3.6`
 
 # 维护状态
 
@@ -31,6 +31,7 @@ Minecraft `1.20.1` Forge 的 `main` 分支暂停更新，保留现有代码和�
 - `createnetherite:netherite_filter`
 - `createnetherite:netherite_wireless_terminal`
 - `createnetherite:netherite_infinite_manager`
+- `createnetherite:netherite_smart_chute`
 - `createnetherite:netherite_sheet`
 
 强力机械泵接入 Create 原版流体管网，默认基础应力消耗为 `16.0`、压力倍率为 `8.0`。压力倍率提高吞吐，不增加管道传播距离。
@@ -83,7 +84,7 @@ Minecraft `1.20.1` Forge 的 `main` 分支暂停更新，保留现有代码和�
 
 **物品说明：** 已有思索的物品沿用 Create 原生思索入口；其余物品使用原生“按住 Shift 查看概要”。储罐容量倍率与燃烧室当前数量、倍率均在 Shift 展开后显示。
 
-**界面贴图：** 过滤器、鼓风机与无限管理器使用独立 PNG，位于 jar 内的 `assets/createnetherite/textures/gui/`。资源包可在相同路径替换贴图；保持原尺寸、槽位及按钮位置，文字和物品图标仍由游戏绘制。详细尺寸见技术文档的“独立 GUI 贴图”一节。
+**界面贴图：** 过滤器、鼓风机、无限管理器和智能溜槽使用独立 PNG，位于 jar 内的 `assets/createnetherite/textures/gui/`。资源包可在相同路径替换贴图；保持原尺寸、槽位及按钮位置，文字和物品图标仍由游戏绘制。详细尺寸见技术文档的“独立 GUI 贴图”一节。
 
 # 无线红石
 
@@ -95,11 +96,21 @@ Minecraft `1.20.1` Forge 的 `main` 分支暂停更新，保留现有代码和�
 
 合成方式：下界合金板 + Create 无线红石信号终端（`create:redstone_link`）获得下界合金终端；下界合金板 + Create 无线红石遥控器（`create:linked_controller`）获得管理器，均为无序合成。
 
+# 下界合金智能溜槽
+
+无需鼓风机即可按物品规则向上、向下输送。机身原生过滤槽控制哪些物品可以进入，支持原版过滤表、属性过滤与抽取数量设置；红石信号暂停输送。
+
+空手右键主体打开设置，将物品或配置好的原版过滤表拖入“上行、下行”两个样本槽，也可悬停背包物品按 `1 / 2` 分配。样本不消耗物品，右键或空手点击清除。多个物品可先放进同一个原版过滤表；重叠规则优先上行，未匹配的物品按界面选定方向输送，初始默认下行。
+
+两种方向分别缓存一个堆叠，支持同一列中不同物品相向输送；每段按各自规则处理，搭建长列时需为各段配置对应方向。堵塞会保留物品，保存重载保留缓存与规则；已进入缓存的物品完成原方向。Shift 空手右键取出缓存，拆除时掉落真实缓存，方向样本不会变成实物。连接原版溜槽时，原版段仍按其气流方向及红石状态自行输出。
+
+一个下界合金板加一个原版智能溜槽，无序合成一个下界合金智能溜槽。物品沿用防火、防爆与原生 Shift 概要，GUI 使用独立 `netherite_smart_chute.png`。
+
 # 防爆与防火
 
-上述全部物品（含强力机械泵和下界合金板）的掉落物均免疫爆炸伤害；十一种方块放置后均不被爆炸破坏，储罐与保险库中的内容也因此保留。方块基础爆炸抗性统一为 `1200`。
+上述全部物品（含强力机械泵和下界合金板）的掉落物均免疫爆炸伤害；十二种方块放置后均不被爆炸破坏，储罐与保险库中的内容也因此保留。方块基础爆炸抗性统一为 `1200`。
 
-全部十四种物品也具有下界合金物品的防火属性，掉落在火焰或岩浆中不会被烧毁。
+全部十五种物品也具有下界合金物品的防火属性，掉落在火焰或岩浆中不会被烧毁。
 
 # 环境要求
 
@@ -136,7 +147,7 @@ createnetherite-server.toml
 构建产物：
 
 ```text
-build/libs/createnetherite-1.21.1-0.3.5.jar
+build/libs/createnetherite-1.21.1-0.3.6.jar
 ```
 
 # Introduction
@@ -145,7 +156,7 @@ build/libs/createnetherite-1.21.1-0.3.5.jar
 
 Current branch: `1.21.1-NeoForge`
 
-Current mod version: `0.3.5`
+Current mod version: `0.3.6`
 
 # Maintenance status
 
@@ -172,6 +183,7 @@ The mod currently adds several Create-compatible entries:
 - `createnetherite:netherite_filter`
 - `createnetherite:netherite_wireless_terminal`
 - `createnetherite:netherite_infinite_manager`
+- `createnetherite:netherite_smart_chute`
 - `createnetherite:netherite_sheet`
 
 The Powerful Mechanical Pump uses Create's native fluid network, with a default base stress impact of `16.0` and a pressure multiplier of `8.0`. The pressure multiplier increases throughput without extending pipe propagation distance.
@@ -224,7 +236,7 @@ Craft one Netherite Sheet with a regular Encased Fan or Filter to obtain the cor
 
 **Item descriptions:** Items with Ponder scenes keep Create's native Ponder entry. Other items use the native hold-Shift summary. Tank capacity multipliers and the burner's current count and rates appear when holding Shift.
 
-**GUI textures:** The filter, fan, and infinite manager use separate PNGs under `assets/createnetherite/textures/gui/` inside the jar. Resource packs can replace them at the same paths while preserving image dimensions and slot/button positions. The game still draws text and item icons. See the technical documentation for texture sizes and the button atlas layout.
+**GUI textures:** The filter, fan, infinite manager, and smart chute use separate PNGs under `assets/createnetherite/textures/gui/` inside the jar. Resource packs can replace them at the same paths while preserving image dimensions and slot/button positions. The game still draws text and item icons. See the technical documentation for texture sizes and the button atlas layout.
 
 # Wireless Redstone
 
@@ -236,11 +248,21 @@ No frequencies are needed. Terminals work across dimensions at any distance, inc
 
 Craft a Netherite Sheet with a Create Redstone Link (`create:redstone_link`) for the terminal, or with a Linked Controller (`create:linked_controller`) for the manager. Both recipes are shapeless.
 
+# Netherite Smart Chute
+
+Routes items up or down without a fan. The native filter on the casing controls admission, including Create filters, attribute filters, and extraction counts. Redstone pauses transport.
+
+Right-click empty-handed to configure the Up and Down sample slots. Drag an item or a configured original Create filter into a slot, or hover an inventory item and press `1 / 2`. Samples consume no items; right-click or click with an empty cursor to clear. Use an original filter to match multiple item types. Up rules win overlaps; unmatched items use the selected default direction, initially Down.
+
+Each direction buffers one stack independently, allowing opposing traffic in a column. Configure each segment for its intended routes. Blocked outputs retain items, and saves retain buffers and rules. Buffered items finish their original direction. Sneak-right-click empty-handed to retrieve buffers; breaking drops real buffered items without creating sample items. Connected original chutes keep their own airflow direction and redstone control.
+
+Craft one Netherite Sheet with an original Smart Chute in a shapeless recipe. The upgrade has fire and blast protection, a native Shift summary, and a separate `netherite_smart_chute.png` GUI texture.
+
 # Blast and Fire Protection
 
-All items listed above, including the Powerful Mechanical Pump and Netherite Sheet, are immune to explosion damage when dropped. All eleven placed blocks are protected from explosion destruction, preserving tank and vault contents. Their base blast resistance is `1200`.
+All items listed above, including the Powerful Mechanical Pump and Netherite Sheet, are immune to explosion damage when dropped. All twelve placed blocks are protected from explosion destruction, preserving tank and vault contents. Their base blast resistance is `1200`.
 
-All fourteen items also have the fire resistance of netherite items: dropped items cannot be burned by fire or lava.
+All fifteen items also have the fire resistance of netherite items: dropped items cannot be burned by fire or lava.
 
 # Requirements
 
@@ -277,5 +299,5 @@ Existing worlds keep their own `serverconfig/createnetherite-server.toml`. If de
 Build output:
 
 ```text
-build/libs/createnetherite-1.21.1-0.3.5.jar
+build/libs/createnetherite-1.21.1-0.3.6.jar
 ```

@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "createnetherite:netherite_smart_chute"
+        }
+      ]
+    }
+  ],
+  "random_sequence": "createnetherite:blocks/netherite_smart_chute"
+}

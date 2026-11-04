@@ -11,7 +11,7 @@
 - 分支：`1.21.1-NeoForge`
 - 源码核对日期：`2026-11-02`
 - 源码基线提交：`258581732409c92bd271c783fff83fe993a5a4ca`（后续新增无线终端与管理器；贴图提交 `7326d31`）
-- 模组版本：`0.3.5`
+- 模组版本：`0.3.6`
 - Mod id：`createnetherite`
 - 主包名：`io.github.boosterproject.booster`
 - Minecraft：`1.21.1`
@@ -74,7 +74,7 @@
 按当前配置生成的主 jar：
 
 ```text
-build/libs/createnetherite-1.21.1-0.3.5.jar
+build/libs/createnetherite-1.21.1-0.3.6.jar
 ```
 
 ## Gradle 与依赖
@@ -140,6 +140,7 @@ MixinConfigs: createnetherite.mixins.json
 - `createnetherite:netherite_filter`
 - `createnetherite:netherite_wireless_terminal`
 - `createnetherite:netherite_infinite_manager`
+- `createnetherite:netherite_smart_chute`
 - `createnetherite:netherite_sheet`
 
 创造模式标签页：
@@ -147,7 +148,7 @@ MixinConfigs: createnetherite.mixins.json
 - 注册位置：`BoosterCreativeModeTabs`
 - 标签页 ID：`createnetherite:createnetherite`
 - 图标：强力机械泵
-- 包含：上述十一种方块的物品、下界合金过滤器、下界合金无限管理器和下界合金板，共十四种注册物品；空燃烧室是同一物品 ID 的组件变体
+- 包含：上述十二种方块的物品、下界合金过滤器、下界合金无限管理器和下界合金板，共十五种注册物品；空燃烧室是同一物品 ID 的组件变体
 
 ## 主类与初始化
 
@@ -205,8 +206,9 @@ NeoForge 1.21.1 使用 NeoForge DeferredRegister 新类型，不再使用 Forge 
 - `DeferredBlock<NetheriteMechanicalArmBlock> NETHERITE_MECHANICAL_ARM`
 - `DeferredBlock<NetheriteBlazeBurnerBlock> NETHERITE_BLAZE_BURNER`
 - `DeferredBlock<NetheriteEncasedFanBlock> NETHERITE_ENCASED_FAN`
+- `DeferredBlock<NetheriteSmartChuteBlock> NETHERITE_SMART_CHUTE`
 
-属性大多复制 Create 对应方块。十一种方块的基础爆炸抗性统一为 `1200.0F`：储罐和蒸汽引擎继承下界合金块属性，其余方块显式设置。强力泵基于铜块属性。
+属性大多复制 Create 对应方块。十二种方块的基础爆炸抗性统一为 `1200.0F`：储罐和蒸汽引擎继承下界合金块属性，其余方块显式设置。强力泵基于铜块属性。
 
 1.21.1 API 差异：
 
@@ -232,8 +234,9 @@ NeoForge 1.21.1 使用 NeoForge DeferredRegister 新类型，不再使用 Forge 
 - `DeferredItem<Item> NETHERITE_FILTER`：`NetheriteFilterItem`，继承 Create `FilterItem`
 - `DeferredItem<Item> NETHERITE_WIRELESS_TERMINAL`：普通 `BlockItem`
 - `DeferredItem<Item> NETHERITE_INFINITE_MANAGER`：`InfiniteManagerItem`，手持右键打开分页管理器
+- `DeferredItem<Item> NETHERITE_SMART_CHUTE`：普通防火 `BlockItem`，打开方向规则菜单
 
-上述十四种物品的 `Item.Properties` 均设置 `.fireResistant()`，使用原版下界合金物品的火焰与岩浆伤害保护。
+上述十五种物品的 `Item.Properties` 均设置 `.fireResistant()`，使用原版下界合金物品的火焰与岩浆伤害保护。
 
 ### BlockEntityType
 
@@ -251,11 +254,13 @@ NeoForge 1.21.1 使用 NeoForge DeferredRegister 新类型，不再使用 Forge 
 - `NETHERITE_MECHANICAL_ARM` 绑定 `NetheriteMechanicalArmBlockEntity`
 - `NETHERITE_BLAZE_BURNER` 的注册泛型保留 `BlazeBurnerBlockEntity`，实际工厂创建 `NetheriteBlazeBurnerBlockEntity`
 - `NETHERITE_ENCASED_FAN` 绑定 `NetheriteEncasedFanBlockEntity`
+- `NETHERITE_SMART_CHUTE` 绑定 `NetheriteSmartChuteBlockEntity`
 
 `BoosterBlockEntityTypes.register(...)` 同时监听 `RegisterCapabilitiesEvent`：
 
 - 为储罐注册 `Capabilities.FluidHandler.BLOCK`，返回 `getFluidCapability()`
 - 为保险库注册 `Capabilities.ItemHandler.BLOCK`，返回 `getItemCapability()`
+- 为智能溜槽注册 `Capabilities.ItemHandler.BLOCK`，返回上下行两个真实缓存；不暴露方向样本
 
 这些能力注册用于外部管道和物流访问自定义库存。
 
@@ -931,3 +936,20 @@ minecraft:netherite_ingot
 - 管理器布局保持原样：五条终端记录、跨页选择、改名与公开、批量激活。没有改变菜单数据或服务端权限处理。
 
 2026-11-03 GUI 接入验证：完整无图形离线构建通过，现有 205 项回归全部通过。贴图到位后再次运行 `jar` 成功；四张 PNG 尺寸及不透明度、12 个按钮图集区域与三态区分核对通过，109 个槽框与菜单坐标逐像素对齐，39 张已有 PNG 与基线字节一致。最终 0.3.5 jar 中 157 个生产资源与源码逐字节一致，界面类和四张 PNG 齐全，测试类与测试结构未打入发布包。一次独立审查未发现问题。未启动客户端或使用 RTX 5060；客户端实际显示、资源重载和鼠标操作尚未实测。
+
+
+## 下界合金智能溜槽（0.3.6）
+
+- 方块、物品、BE 与菜单 ID 均为 `netherite_smart_chute`。`NetheriteSmartChuteBlock` 继承原版 `SmartChuteBlock`，保留 `POWERED` 及红石计划刻。原版 `ChuteShapes` 仅按注册 ID 特判智能溜槽，新方块覆盖形状与碰撞为相同的整方块，避免读取不存在的斜溜槽属性。
+- `NetheriteSmartChuteBlockEntity` 继承原版智能溜槽，复用机身 `FilteringBehaviour`、原版过滤项实际安装/返还、黑白名单、属性/组件匹配与数量设置。方向样本是另行复制的两个 count=1 堆叠，不消耗原件，使用 `FilterItemStack.of(sample.copy()).test(level, target)`，不改变原过滤表的组件。
+- `NetheriteSmartChuteMixin` 仅对新 BE 生效：在 `SmartBlockEntity.tick()` 完成行为 tick 后改用双向输送，原版溜槽完整执行原实现。上/下行各一个真实堆叠缓存，入站后等待 5 tick 输出，堵塞保持原件，部分插入仅保留真实余量。原版 `item` 字段不存放这两个缓存，原生机身 renderer 继续呈现过滤槽，护目镜分别显示两个缓存数量。
+- 上行样本优先，其次下行样本，最后使用默认方向（初始下行，可选上行）。每段独立配置，进入缓存时确定方向；规则修改只影响新进入物品。相邻溜槽依赖自身主动输出，输入抽取跳过全部 `ChuteBlockEntity`，防止反向抢取或绕过原版红石暂停。新溜槽之间两个通道可以相向交换；原版段仍需其自身的气流条件才能上行。
+- 相邻容器使用原生物品能力与 `ItemHelper.extract`，按原生 EXACTLY/UPTO 数量模式抽取；支持原生直接物品输入、相邻掉落物及下方传送物品行为。红石暂停时停止内部输入、运动与输出；外部主动取物能力沿用原版库存语义。
+- NBT 的 `DirectionFilters` 保存两个样本，`DefaultDirection` 保存回退方向，`Transport` 与 `TransportTicks` 保存两缓存和剩余等待。保存重载保留原生机身过滤与数量。Shift 空手右键取出两个真实缓存；拆除先掉落真实缓存，再由原生行为返还实际安装的机身过滤器。方向样本始终不掉落。
+- `NetheriteSmartChuteMenu` 将玩家背包置于前 36 槽，后两槽为只读样本，复制点击/1、2键输入由服务端从真实来源取样；样本不能克隆、投掷或拖出。服务器验证当前玩家、BE 身份与 8 格距离，模式按钮同样校验。未增加自定义网络包。
+- `NetheriteSmartChuteScreen` 复用已有样本拖拽方式；未匹配方向使用原生按钮，当前默认方向按钮显示为禁用态。独立 GUI `textures/gui/netherite_smart_chute.png` 为 230×206，样本内区左上为 `(48,43)`、`(166,43)`，玩家背包从 `(35,123)` 开始，快捷栏 `y=181`，共 38 个槽框。
+- 模型继承锁定 Create 的 `smart_chute/block`，覆盖键 `7`、`9` 及 particle；通电模型覆盖关闭的漏斗内部与 side_powered。三张机身 PNG 与一张 GUI 均由指定美术对话提供，43 张既有 PNG 字节未变。下界合金板加原版智能溜槽无序升级；防火、防爆、挖掘标签及原生 Shift 概要齐全。
+
+验证入口仍为 `runWirelessGameTestServer` 的独立无图形源集，测试类和结构不进入发布 jar。`NetheriteSmartChuteGameTest` 覆盖相向柱、原生准入、真实红石暂停、双缓存保存、样本菜单、原版连接、部分余量、拆除计数、黑名单和 EXACTLY/UPTO 数量。独立审查发现原版缓存会被主动反向抽取，新增用例先真实复现，再通过跳过原版溜槽主动抽取修正。禁止使用 RTX 5060，不启动客户端；实际显示和客户端鼠标操作需单独实测。
+
+2026-11-04 最终验证：完整离线构建、205 项原有回归及全部 9 项无图形 GameTest 通过，其中新增 5 项。原版反向抢取用例先失败，修正后连同原有无线、过滤与放置用例一起通过。119 个资源 JSON、中英文各 82 个键、GUI 的 38 个槽框及原生 alpha 检查通过；43 张既有 PNG 和既有翻译不变。核对 0.3.6 jar 中 167 个生产资源逐字节一致，5 个新生产类与 Mixin 齐全，模型父级和实际纹理变量均解析，测试类/结构未打包。修正后的独立审查无未解决问题，全程未启动客户端或使用 RTX 5060。

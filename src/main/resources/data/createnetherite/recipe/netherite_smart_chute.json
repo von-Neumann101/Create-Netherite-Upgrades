@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "createnetherite:netherite_sheet"
+    },
+    {
+      "item": "create:smart_chute"
+    }
+  ],
+  "result": {
+    "id": "createnetherite:netherite_smart_chute",
+    "count": 1
+  }
+}

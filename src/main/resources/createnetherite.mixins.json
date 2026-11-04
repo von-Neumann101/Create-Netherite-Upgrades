@@ -12,6 +12,7 @@
     "ItemVaultItemMixin",
     "NetheriteAirCurrentMixin",
     "NetheriteMechanicalArmMixin",
+    "NetheriteSmartChuteMixin",
     "PumpBlockEntityMixin",
     "PumpFluidTransferBehaviourMixin",
     "SteamEngineBlockEntityMixin"

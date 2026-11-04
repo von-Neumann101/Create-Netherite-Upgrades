@@ -73,5 +73,12 @@
   "gui.createnetherite.wireless.activate": "Activate selected",
   "gui.createnetherite.wireless.visible": "Your terminals and public terminals",
   "gui.createnetherite.wireless.selected": "Selected: %s",
-  "gui.createnetherite.wireless.empty": "No terminals available. Place a terminal first."
+  "gui.createnetherite.wireless.empty": "No terminals available. Place a terminal first.",
+  "block.createnetherite.netherite_smart_chute": "Netherite Smart Chute",
+  "block.createnetherite.netherite_smart_chute.tooltip.summary": "Moves filtered items _up or down_ without a fan. The native filter and extraction count remain available. Right-click to assign two direction samples and choose the unmatched direction. Redstone _pauses transport_; sneak-right-click empty-handed to retrieve buffered items.",
+  "gui.createnetherite.smart_chute.up": "Up",
+  "gui.createnetherite.smart_chute.down": "Down",
+  "gui.createnetherite.smart_chute.hint": "Drag item/filter; keys 1 / 2",
+  "gui.createnetherite.smart_chute.fallback": "Unmatched",
+  "tooltip.createnetherite.smart_chute.buffer": "%s buffer: %s items"
 }

@@ -1,0 +1,8 @@
+{
+  "parent": "create:block/smart_chute/block",
+  "textures": {
+    "7": "createnetherite:block/netherite_smart_chute/side",
+    "9": "createnetherite:block/netherite_smart_chute/top",
+    "particle": "createnetherite:block/netherite_smart_chute/side"
+  }
+}

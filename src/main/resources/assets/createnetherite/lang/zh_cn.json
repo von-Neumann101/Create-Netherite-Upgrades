@@ -73,5 +73,12 @@
   "gui.createnetherite.wireless.activate": "激活所选终端",
   "gui.createnetherite.wireless.visible": "显示自己的终端和其他玩家公开的终端",
   "gui.createnetherite.wireless.selected": "已选择：%s",
-  "gui.createnetherite.wireless.empty": "暂无可用终端，请先放置一个终端。"
+  "gui.createnetherite.wireless.empty": "暂无可用终端，请先放置一个终端。",
+  "block.createnetherite.netherite_smart_chute": "下界合金智能溜槽",
+  "block.createnetherite.netherite_smart_chute.tooltip.summary": "无需鼓风机，按物品规则_向上或向下_输送。机身保留原生过滤与数量设置；右键配置两个方向样本和未匹配物品的默认方向。红石信号会_暂停输送_，Shift空手右键取出缓存物品。",
+  "gui.createnetherite.smart_chute.up": "上行",
+  "gui.createnetherite.smart_chute.down": "下行",
+  "gui.createnetherite.smart_chute.hint": "拖入物品/过滤表；按 1 / 2 分配",
+  "gui.createnetherite.smart_chute.fallback": "未匹配物品",
+  "tooltip.createnetherite.smart_chute.buffer": "%s缓存：%s 个"
 }

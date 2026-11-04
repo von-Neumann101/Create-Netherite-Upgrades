@@ -33,7 +33,8 @@ public final class BoosterTooltips {
             BoosterItems.NETHERITE_MECHANICAL_ARM.get(),
             BoosterItems.NETHERITE_MECHANICAL_MIXER.get(),
             BoosterItems.NETHERITE_WIRELESS_TERMINAL.get(),
-            BoosterItems.NETHERITE_INFINITE_MANAGER.get()
+            BoosterItems.NETHERITE_INFINITE_MANAGER.get(),
+            BoosterItems.NETHERITE_SMART_CHUTE.get()
         )) {
             TooltipModifier.REGISTRY.register(item, new ItemDescription.Modifier(item, Palette.STANDARD_CREATE));
         }

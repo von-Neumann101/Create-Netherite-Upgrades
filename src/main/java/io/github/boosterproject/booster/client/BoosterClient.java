@@ -1,6 +1,7 @@
 package io.github.boosterproject.booster.client;
 
 import com.simibubi.create.CreateClient;
+import com.simibubi.create.content.logistics.chute.SmartChuteRenderer;
 import com.simibubi.create.content.contraptions.elevator.ElevatorPulleyRenderer;
 import com.simibubi.create.content.contraptions.elevator.ElevatorPulleyVisual;
 import com.simibubi.create.content.fluids.PipeAttachmentModel;
@@ -53,6 +54,7 @@ public final class BoosterClient {
     }
 
     private static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
+        event.registerBlockEntityRenderer(BoosterBlockEntityTypes.NETHERITE_SMART_CHUTE.get(), SmartChuteRenderer::new);
         event.registerBlockEntityRenderer(BoosterBlockEntityTypes.NETHERITE_ENCASED_FAN.get(), EncasedFanRenderer::new);
         event.registerBlockEntityRenderer(BoosterBlockEntityTypes.NETHERITE_MECHANICAL_ARM.get(), ArmRenderer::new);
         event.registerBlockEntityRenderer(BoosterBlockEntityTypes.NETHERITE_MECHANICAL_MIXER.get(), MechanicalMixerRenderer::new);
@@ -83,6 +85,7 @@ public final class BoosterClient {
     }
 
     private static void registerScreens(RegisterMenuScreensEvent event) {
+        event.register(BoosterMenuTypes.NETHERITE_SMART_CHUTE.get(), NetheriteSmartChuteScreen::new);
         event.register(BoosterMenuTypes.NETHERITE_FILTER.get(), NetheriteFilterScreen::new);
         event.register(BoosterMenuTypes.NETHERITE_FAN.get(), NetheriteFanScreen::new);
         event.register(BoosterMenuTypes.NETHERITE_WIRELESS_MANAGER.get(), WirelessManagerScreen::new);

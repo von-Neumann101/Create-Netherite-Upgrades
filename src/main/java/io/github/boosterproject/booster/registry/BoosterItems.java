@@ -90,6 +90,9 @@ public final class BoosterItems {
     private BoosterItems() {
     }
 
+    public static final DeferredItem<Item> NETHERITE_SMART_CHUTE = ITEMS.register("netherite_smart_chute",
+        () -> new BlockItem(BoosterBlocks.NETHERITE_SMART_CHUTE.get(), new Item.Properties().fireResistant()));
+
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
     }

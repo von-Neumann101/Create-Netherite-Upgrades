@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "powered=false": {
+      "model": "createnetherite:block/netherite_smart_chute/block"
+    },
+    "powered=true": {
+      "model": "createnetherite:block/netherite_smart_chute/block_powered"
+    }
+  }
+}

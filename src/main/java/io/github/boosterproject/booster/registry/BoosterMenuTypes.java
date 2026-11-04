@@ -2,6 +2,7 @@ package io.github.boosterproject.booster.registry;
 
 import io.github.boosterproject.booster.Booster;
 import io.github.boosterproject.booster.content.kinetics.fan.NetheriteFanMenu;
+import io.github.boosterproject.booster.content.logistics.chute.NetheriteSmartChuteMenu;
 import io.github.boosterproject.booster.content.logistics.filter.NetheriteFilterMenu;
 import io.github.boosterproject.booster.content.redstone.wireless.WirelessManagerMenu;
 import net.minecraft.core.registries.Registries;
@@ -25,6 +26,9 @@ public final class BoosterMenuTypes {
 
     private BoosterMenuTypes() {
     }
+
+    public static final DeferredHolder<MenuType<?>, MenuType<NetheriteSmartChuteMenu>> NETHERITE_SMART_CHUTE =
+        MENU_TYPES.register("netherite_smart_chute", () -> IMenuTypeExtension.create(NetheriteSmartChuteMenu::new));
 
     public static void register(IEventBus eventBus) {
         MENU_TYPES.register(eventBus);

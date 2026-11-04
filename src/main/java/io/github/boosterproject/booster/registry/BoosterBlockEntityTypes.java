@@ -12,6 +12,7 @@ import io.github.boosterproject.booster.content.kinetics.fan.NetheriteEncasedFan
 import io.github.boosterproject.booster.content.kinetics.mechanicalArm.NetheriteMechanicalArmBlockEntity;
 import io.github.boosterproject.booster.content.kinetics.mixer.NetheriteMechanicalMixerBlockEntity;
 import io.github.boosterproject.booster.content.logistics.vault.NetheriteItemVaultBlockEntity;
+import io.github.boosterproject.booster.content.logistics.chute.NetheriteSmartChuteBlockEntity;
 import io.github.boosterproject.booster.content.redstone.wireless.WirelessTerminalBlockEntity;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.core.BlockPos;
@@ -84,12 +85,17 @@ public final class BoosterBlockEntityTypes {
     private BoosterBlockEntityTypes() {
     }
 
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<NetheriteSmartChuteBlockEntity>> NETHERITE_SMART_CHUTE =
+        BLOCK_ENTITY_TYPES.register("netherite_smart_chute", () -> BlockEntityType.Builder
+            .of(NetheriteSmartChuteBlockEntity::new, BoosterBlocks.NETHERITE_SMART_CHUTE.get()).build(null));
+
     public static void register(IEventBus eventBus) {
         BLOCK_ENTITY_TYPES.register(eventBus);
         eventBus.addListener(BoosterBlockEntityTypes::registerCapabilities);
     }
 
     private static void registerCapabilities(RegisterCapabilitiesEvent event) {
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, NETHERITE_SMART_CHUTE.get(), (chute, side) -> chute.getTransportInventory());
         event.registerBlockEntity(
             Capabilities.FluidHandler.BLOCK,
             NETHERITE_FLUID_TANK.get(),
