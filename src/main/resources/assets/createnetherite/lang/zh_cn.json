@@ -91,5 +91,8 @@
   "ejector.createnetherite.applied": "弹射目标已设为：%s, %s, %s",
   "ejector.createnetherite.cleared": "已清除目标，放置后使用默认方向。",
   "ejector.createnetherite.invalid": "目标无效：请选择当前维度内水平距离和高差不超过%s格的其他目标。",
-  "ejector.createnetherite.busy": "请等待在途物品抵达后再改变目标"
+  "ejector.createnetherite.busy": "请等待在途物品抵达后再改变目标",
+  "item.createnetherite.netherite_extendo_grip": "下界合金伸缩机械手",
+  "item.createnetherite.netherite_extendo_grip.tooltip.summary": "比原版_额外增加3格_方块触及距离。副手持有时，主手空桶可直接从储罐取液；主手长按右键直接驱动工作方块，Shift开始可反转，松开即停。仅驱动当前方块，输出恰好足够一台强力机械泵；成功取液和持续供能消耗背罐空气，没有空气时消耗耐久。",
+  "grip.createnetherite.cannot_power": "无法手动驱动：方块已有动力、属于发电机，或所需应力超过%s SU。"
 }

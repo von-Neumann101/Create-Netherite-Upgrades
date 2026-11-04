@@ -5,6 +5,9 @@
   "compatibilityLevel": "JAVA_21",
   "refmap": "createnetherite.refmap.json",
   "mixins": [
+    "NetheriteExtendoGripMixin",
+    "NetheriteGripTankMixin",
+    "HandheldKineticPowerMixin",
     "BoilerDataMixin",
     "ElevatorPulleyBlockEntityMixin",
     "NetheriteEjectorAccess",
@@ -20,6 +23,8 @@
     "SteamEngineBlockEntityMixin"
   ],
   "client": [
+    "NetheriteGripRenderHandlerMixin",
+    "NetheriteGripItemRendererMixin",
     "FluidTankRendererMixin",
     "NetheriteEjectorRendererMixin",
     "NetheriteEjectorVisualMixin",

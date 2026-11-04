@@ -36,7 +36,8 @@ public final class BoosterTooltips {
             BoosterItems.NETHERITE_INFINITE_MANAGER.get(),
             BoosterItems.NETHERITE_SMART_CHUTE.get(),
             BoosterItems.NETHERITE_FILTER.get(),
-            BoosterItems.NETHERITE_WEIGHTED_EJECTOR.get()
+            BoosterItems.NETHERITE_WEIGHTED_EJECTOR.get(),
+            BoosterItems.NETHERITE_EXTENDO_GRIP.get()
         )) {
             TooltipModifier.REGISTRY.register(item, new ItemDescription.Modifier(item, Palette.STANDARD_CREATE));
         }

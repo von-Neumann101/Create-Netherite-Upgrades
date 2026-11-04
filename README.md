@@ -4,7 +4,7 @@
 
 当前分支：`1.21.1-NeoForge`
 
-当前模组版本：`0.3.8`
+当前模组版本：`0.3.9`
 
 # 维护状态
 
@@ -33,6 +33,7 @@ Minecraft `1.20.1` Forge 的 `main` 分支暂停更新，保留现有代码和�
 - `createnetherite:netherite_infinite_manager`
 - `createnetherite:netherite_smart_chute`
 - `createnetherite:netherite_weighted_ejector`
+- `createnetherite:netherite_extendo_grip`
 - `createnetherite:netherite_sheet`
 
 强力机械泵接入 Create 原版流体管网，默认基础应力消耗为 `16.0`、压力倍率为 `8.0`。压力倍率提高吞吐，不增加管道传播距离。
@@ -115,11 +116,19 @@ Minecraft `1.20.1` Forge 的 `main` 分支暂停更新，保留现有代码和�
 
 一个下界合金板加一个原版弹射置物台，无序合成一个升级品。物品具备防火、防爆与原生 Shift 概要。
 
+# 下界合金伸缩机械手
+
+比 Create 原版伸缩机械手额外增加 `3` 格方块触及距离：单持总加成 `6` 格，混合双持 `8` 格，两只升级品双持 `11` 格。保留原生伸缩动作与远距实体交互。
+
+副手持有新机械手、主手持空桶，生存玩家右键原版或下界合金流体储罐即可装液体，每桶抽取 `1000 mB`。主手持新机械手，对工作方块长按右键可直接供能，松开或移开视线即停止；按住 Shift 开始可反向转动。仅驱动点击方块，沿用原生加工所需转速条件。默认 `16 RPM`、`256 SU`，容量跟随强力机械泵的基础应力配置，恰好够一台强力泵工作；超过此需求的方块不能启动，已有动力的方块仍使用其原有动力。
+
+耐久上限沿用原版的 `200`。成功取一桶扣一次资源，供能开始扣一次，随后每 `20 tick` 扣一次；优先消耗已装备背罐的压缩空气，没有空气时消耗 `1` 点耐久。普通远距破坏、放置和攻击继续沿用 Create 的消耗规则与配置。下界合金板加原版伸缩机械手无序升级；防火、防爆，并提供原生 Shift 概要。
+
 # 防爆与防火
 
 上述全部物品（含强力机械泵和下界合金板）的掉落物均免疫爆炸伤害；十三种方块放置后均不被爆炸破坏，储罐与保险库中的内容也因此保留。方块基础爆炸抗性统一为 `1200`。
 
-全部十六种物品也具有下界合金物品的防火属性，掉落在火焰或岩浆中不会被烧毁。
+全部十七种物品也具有下界合金物品的防火属性，掉落在火焰或岩浆中不会被烧毁。
 
 # 环境要求
 
@@ -156,7 +165,7 @@ createnetherite-server.toml
 构建产物：
 
 ```text
-build/libs/createnetherite-1.21.1-0.3.8.jar
+build/libs/createnetherite-1.21.1-0.3.9.jar
 ```
 
 # Introduction
@@ -165,7 +174,7 @@ build/libs/createnetherite-1.21.1-0.3.8.jar
 
 Current branch: `1.21.1-NeoForge`
 
-Current mod version: `0.3.8`
+Current mod version: `0.3.9`
 
 # Maintenance status
 
@@ -194,6 +203,7 @@ The mod currently adds several Create-compatible entries:
 - `createnetherite:netherite_infinite_manager`
 - `createnetherite:netherite_smart_chute`
 - `createnetherite:netherite_weighted_ejector`
+- `createnetherite:netherite_extendo_grip`
 - `createnetherite:netherite_sheet`
 
 The Powerful Mechanical Pump uses Create's native fluid network, with a default base stress impact of `16.0` and a pressure multiplier of `8.0`. The pressure multiplier increases throughput without extending pipe propagation distance.
@@ -274,11 +284,19 @@ Hold the upgraded ejector, `Shift + right-click` a target block, then place norm
 
 Craft one Netherite Sheet with an original Weighted Ejector in a shapeless recipe. The upgrade has fire and blast protection and a native Shift summary.
 
+# Netherite Extendo Grip
+
+Adds `3` more blocks of block reach than the original Create Extendo Grip: `6` bonus blocks with one upgrade, `8` with a mixed pair, and `11` with two upgrades. Keeps native extending animations and long-range entity interactions.
+
+With the upgrade in the offhand and an empty bucket in the main hand, survival players can right-click an original or Netherite Fluid Tank to fill a bucket, draining `1000 mB`. In the main hand, hold right-click on a working block to power it directly; release or look away to stop. Sneak when starting to reverse rotation. Only the clicked block is driven, and its native minimum speed still applies. Default output is `16 RPM` and `256 SU`; capacity follows the Powerful Mechanical Pump's stress setting, exactly enough for one pump. Blocks requiring more cannot start, and existing mechanical power remains in control.
+
+Keeps the original `200` durability. A successful bucket fill costs one action; hand power costs one action initially and every `20 ticks` afterward. Equipped backtank air is used first, then `1` durability without air. Native remote breaking, placement, and attacks keep Create's cost rules and settings. Craft one Netherite Sheet with an original Extendo Grip in a shapeless recipe. Includes fire and blast protection and a native Shift summary.
+
 # Blast and Fire Protection
 
 All items listed above, including the Powerful Mechanical Pump and Netherite Sheet, are immune to explosion damage when dropped. All thirteen placed blocks are protected from explosion destruction, preserving tank and vault contents. Their base blast resistance is `1200`.
 
-All sixteen items also have the fire resistance of netherite items: dropped items cannot be burned by fire or lava.
+All seventeen items also have the fire resistance of netherite items: dropped items cannot be burned by fire or lava.
 
 # Requirements
 
@@ -315,5 +333,5 @@ Existing worlds keep their own `serverconfig/createnetherite-server.toml`. If de
 Build output:
 
 ```text
-build/libs/createnetherite-1.21.1-0.3.8.jar
+build/libs/createnetherite-1.21.1-0.3.9.jar
 ```

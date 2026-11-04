@@ -91,5 +91,8 @@
   "ejector.createnetherite.applied": "Launch target set: %s, %s, %s",
   "ejector.createnetherite.cleared": "Target cleared. Placement will use the default direction.",
   "ejector.createnetherite.invalid": "Invalid target: select another target in this dimension within %s blocks horizontally and vertically.",
-  "ejector.createnetherite.busy": "Wait for flying items to arrive before changing the target"
+  "ejector.createnetherite.busy": "Wait for flying items to arrive before changing the target",
+  "item.createnetherite.netherite_extendo_grip": "Netherite Extendo Grip",
+  "item.createnetherite.netherite_extendo_grip.tooltip.summary": "Adds _3 more blocks_ of block reach than the original. Hold it in the offhand to fill a main-hand empty bucket from a tank. In the main hand, hold right-click to drive a working block; sneak when starting to reverse, release to stop. Drives only the selected block, with capacity for one Powerful Mechanical Pump. Successful bucket fills and sustained power use backtank air, then durability.",
+  "grip.createnetherite.cannot_power": "Cannot drive: this block already has power, generates power, or needs more than %s SU."
 }

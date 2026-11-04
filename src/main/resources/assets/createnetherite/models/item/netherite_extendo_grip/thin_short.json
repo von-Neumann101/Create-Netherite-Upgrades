@@ -1,0 +1,6 @@
+{
+  "parent": "create:item/extendo_grip/thin_short",
+  "textures": {
+    "4": "createnetherite:item/netherite_extendo_grip"
+  }
+}

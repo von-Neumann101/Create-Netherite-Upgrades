@@ -5,6 +5,10 @@ import io.github.boosterproject.booster.Booster;
 import net.minecraft.resources.ResourceLocation;
 
 public final class BoosterPartialModels {
+    public static final PartialModel NETHERITE_GRIP_THIN_SHORT = PartialModel.of(ResourceLocation.fromNamespaceAndPath(Booster.MOD_ID, "item/netherite_extendo_grip/thin_short"));
+    public static final PartialModel NETHERITE_GRIP_WIDE_SHORT = PartialModel.of(ResourceLocation.fromNamespaceAndPath(Booster.MOD_ID, "item/netherite_extendo_grip/wide_short"));
+    public static final PartialModel NETHERITE_GRIP_THIN_LONG = PartialModel.of(ResourceLocation.fromNamespaceAndPath(Booster.MOD_ID, "item/netherite_extendo_grip/thin_long"));
+    public static final PartialModel NETHERITE_GRIP_WIDE_LONG = PartialModel.of(ResourceLocation.fromNamespaceAndPath(Booster.MOD_ID, "item/netherite_extendo_grip/wide_long"));
     public static final PartialModel POWERFUL_MECHANICAL_PUMP_COG =
         PartialModel.of(ResourceLocation.fromNamespaceAndPath(Booster.MOD_ID, "block/powerful_mechanical_pump/cog"));
     public static final PartialModel NETHERITE_BOILER_GAUGE =

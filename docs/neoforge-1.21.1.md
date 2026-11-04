@@ -11,7 +11,7 @@
 - 分支：`1.21.1-NeoForge`
 - 源码核对日期：`2026-11-02`
 - 源码基线提交：`258581732409c92bd271c783fff83fe993a5a4ca`（后续新增无线终端与管理器；贴图提交 `7326d31`）
-- 模组版本：`0.3.8`
+- 模组版本：`0.3.9`
 - Mod id：`createnetherite`
 - 主包名：`io.github.boosterproject.booster`
 - Minecraft：`1.21.1`
@@ -74,7 +74,7 @@
 按当前配置生成的主 jar：
 
 ```text
-build/libs/createnetherite-1.21.1-0.3.8.jar
+build/libs/createnetherite-1.21.1-0.3.9.jar
 ```
 
 ## Gradle 与依赖
@@ -142,6 +142,7 @@ MixinConfigs: createnetherite.mixins.json
 - `createnetherite:netherite_infinite_manager`
 - `createnetherite:netherite_smart_chute`
 - `createnetherite:netherite_weighted_ejector`
+- `createnetherite:netherite_extendo_grip`
 - `createnetherite:netherite_sheet`
 
 创造模式标签页：
@@ -149,7 +150,7 @@ MixinConfigs: createnetherite.mixins.json
 - 注册位置：`BoosterCreativeModeTabs`
 - 标签页 ID：`createnetherite:createnetherite`
 - 图标：强力机械泵
-- 包含：上述十三种方块的物品、下界合金无限管理器和下界合金板，共十五种在用物品；另保留旧下界合金过滤器注册以兼容存档，注册物品总数为十六。空燃烧室是同一物品 ID 的组件变体
+- 包含：上述十三种方块的物品、下界合金无限管理器和下界合金板，共十六种在用物品；另保留旧下界合金过滤器注册以兼容存档，注册物品总数为十七。空燃烧室是同一物品 ID 的组件变体
 
 ## 主类与初始化
 
@@ -237,9 +238,10 @@ NeoForge 1.21.1 使用 NeoForge DeferredRegister 新类型，不再使用 Forge 
 - `DeferredItem<Item> NETHERITE_WIRELESS_TERMINAL`：普通 `BlockItem`
 - `DeferredItem<Item> NETHERITE_INFINITE_MANAGER`：`InfiniteManagerItem`，手持右键打开分页管理器
 - `DeferredItem<Item> NETHERITE_SMART_CHUTE`：普通防火 `BlockItem`，打开方向规则菜单
+- `DeferredItem<Item> NETHERITE_EXTENDO_GRIP`：继承 `ExtendoGripItem`，200耐久、额外触及、取液与直接手动供能
 - `DeferredItem<Item> NETHERITE_WEIGHTED_EJECTOR`：`NetheriteEjectorItem`，Shift右键选点，放置或右键已有升级置物台应用目标
 
-上述十六种物品的 `Item.Properties` 均设置 `.fireResistant()`，使用原版下界合金物品的火焰与岩浆伤害保护。
+上述十七种物品的 `Item.Properties` 均设置 `.fireResistant()`，使用原版下界合金物品的火焰与岩浆伤害保护。
 
 ### BlockEntityType
 
@@ -324,7 +326,7 @@ createnetherite-server.toml
 
 强力机械泵使用普通 `BlockItem`，不再通过 `appendHoverText` 默认展开介绍。
 
-客户端 `BoosterTooltips.register()` 使用 Create 6.0.10 的 `TooltipModifier.REGISTRY` 与 `ItemDescription.Modifier`。下界合金鼓风机保留原生 Ponder 入口；其余十五种物品（含旧过滤器）提供中英文 `<物品 description id>.tooltip.summary`，由 Create 生成 Shift 提示、折叠、换行及重点配色。燃烧室捕获用法使用原生 `.condition1` / `.behaviour1`。
+客户端 `BoosterTooltips.register()` 使用 Create 6.0.10 的 `TooltipModifier.REGISTRY` 与 `ItemDescription.Modifier`。下界合金鼓风机保留原生 Ponder 入口；其余十六种物品（含旧过滤器）提供中英文 `<物品 description id>.tooltip.summary`，由 Create 生成 Shift 提示、折叠、换行及重点配色。燃烧室捕获用法使用原生 `.condition1` / `.behaviour1`。
 
 储罐的当前配置容量倍率、燃烧室堆叠保存的数量与倍率，只在按住 Shift 时追加到原生概要后。相关代码仅在客户端加载；捕获、放置、燃烧以及工程师护目镜信息保持原有逻辑。过滤器的已配置规则预览沿用 Create `FilterItem` 的原生显示行为。
 
@@ -993,3 +995,19 @@ minecraft:netherite_ingot
 新增5项 `NetheriteEjectorGameTest`：实际斜上方输送及飞行途中保存重载；真实选点/最后一件放置/重设与两倍射程边界；两个创造马达驱动下的64RPM蓄力、原机对照、红石暂停及活体斜向/纯上弹射和鞘翅朝向；障碍物及拆除时真实带组件物品计数；旧碰撞库存装满后重设到新目标的实际输送。测试先复现未注册、在途改向、旧缓存、拆除碰撞箱及鞘翅朝向问题，修正后完整离线 `build runWirelessGameTestServer` 通过：205项原有回归和全部17项GameTest通过。独立源码审查发现的两项问题已修正并复核。未启动客户端或使用RTX5060，客户端Mixin实际加载、预览和两种上盖渲染尚未进行图形实测。
 
 发布核对：125个资源JSON解析通过，中英文各93个语言键，旧86个键的值与原始格式保留。8种平放朝向/含水状态完整，三个模型继承原生几何且全部实际使用的纹理引用可解析。最终0.3.8 jar 的176个生产资源及全部生产类与源码/编译结果逐字节一致，模组元数据版本为0.3.8；测试代码和结构未打包，旧专用过滤器配方仍不存在。jar SHA-256：`833667574298a97283f0ccb54ab4af5095e2a3dd9c023d88d658bd0e5a5a0c71`。
+
+## 下界合金伸缩机械手（0.3.9）
+
+2026-11-04 新增物品 `createnetherite:netherite_extendo_grip`，由下界合金板和原版伸缩机械手无序升级，沿用防火、防爆和原生Shift概要；不新增方块或永久动力源。
+
+- `NetheriteExtendoGripItem` 继承 `ExtendoGripItem`，保留原生200耐久、背罐空气、耐久条和客户端渲染入口。限定 `NetheriteExtendoGripMixin` 让原生单/双持检测、资源扣除和远距实体交互识别新物品；原生3/5格基础上，每只升级品额外增加3格方块触及距离，单持6、混合8、升级双持11。额外属性使用独立ID和临时修饰符，移除工具后清除；原版单持/双持范围不变。
+- `NetheriteGripTankMixin` 仅接入生存玩家主手空桶、副手新工具的储罐交互，原版和下界合金储罐均沿用真实流体能力。使用NeoForge `FluidUtil.tryFillContainerAndStow` 抽取1000mB、替换单桶或保存堆叠桶产物；背包满时沿用原生返还/掉落规则。服务器执行实际转移，客户端仅模拟；成功才扣一次工具资源。检查非旁观者、建造权限、实际触及和 `mayInteract`；没有工具、液体不足或权限不允许时不扣资源。此入口只开放空桶取液。
+- `HandheldKineticPower` 从主手 `onItemUseFirst` 开始持续使用，读取玩家正在操作的目标，逐tick校验工具、维度、目标BE身份、距离、视线与权限。开始时消耗一次资源，此后每20tick再消耗一次；优先 `BacktankUtil.canAbsorbDamage`，没有空气时扣1点耐久，沿用Create动作消耗配置及创造模式规则。取液和普通远距操作使用相同资源体系。
+- 手动供能为16RPM，Shift开始可用-16RPM。容量为 `BlockStressValues.getImpact(POWERFUL_MECHANICAL_PUMP)` 乘绝对RPM，默认16×16=256SU，恰好带动一个强力泵。超过容量的工作方块、发电机和已有原生转速的机器拒绝启动；其他玩家不能抢用正在手动驱动的同一方块。
+- 当前选择只驱动点击方块，未把手持工具接成轴网络。`HandheldKineticPowerMixin` 仅在活动目标且原生转速为0时提供临时 `getSpeed()`，工作逻辑和渲染能读取；`getTheoreticalSpeed()`、网络和永久速度字段保持原生。松开立即停止；移开视线、换工具、失去玩家或到期时也停止，2tick租期用于中断回收。临时RPM只写客户端同步包，不写世界存档，重载后没有免费动力。
+- `NetheriteGripRenderHandlerMixin` 让原生主副手伸缩动作识别新工具；`NetheriteGripItemRendererMixin` 为四种连杆替换对应PartialModel。物品主体和四种连杆模型继承Create6.0.10原生几何并覆盖纹理键4，木质齿轮、通用端盖和共享手掌保留原版。
+- 新增 `textures/item/netherite_extendo_grip.png` 由指定美术对话提供，16×16，UV与所有alpha值保留；68个结构金属像素改为本项目下界合金色调，其余188个RGBA像素保留。49张既有生产PNG字节未变。
+
+验证：新增5项 `NetheriteExtendoGripGameTest`，先复现物品未注册，再验证真实单/混合/双持范围与移除恢复、原生破坏消耗与空气优先；生存空桶从原版水罐取液；下界合金储罐岩浆、堆叠桶、不足1000mB与权限失败不消耗、背罐空气取液；手动强力泵实际输水、持续耐久、松开停机与保存重载无动力；多人抢用拒绝、空气供能、切换/移开停止、反向RPM、真实齿轮和创造马达保持64RPM及配置容量不足拒绝。完整离线构建的205项原有回归及全部22项无图形GameTest通过。模拟玩家测试同步头部视线、马达测试采用真实小齿轮连接，避免将无效测试布置误判为生产缺陷。独立只读审查未发现可操作问题。
+
+发布核对：132个资源JSON，中英文各96个语言键，旧93个值和格式保留。新增物品及4个动态模型均继承原生几何、实际纹理键为4。最终0.3.9 jar 的184个生产资源和全部生产类与源码/编译输出逐字节一致，元数据版本0.3.9，测试代码/结构未打包；旧过滤器配方仍不存在。SHA-256：`fb1421c5ac64e75a05ecd87826e75bed822e45b2432f168c8155b201d1904ec1`。未启动客户端或使用RTX5060，伸缩动画、新材质与长按交互的客户端显示仍待图形实测。
