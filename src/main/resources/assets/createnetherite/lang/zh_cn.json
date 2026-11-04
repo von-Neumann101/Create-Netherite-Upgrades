@@ -84,5 +84,12 @@
   "gui.booster.netherite_fan.filter_slot": "%s：仅接受 Create 原版过滤器",
   "gui.booster.netherite_fan.default_mode": "未匹配物品使用%s",
   "gui.booster.netherite_fan.legacy_returned": "旧下界合金过滤器已退还，请在四个槽中安装原版过滤表。",
-  "item.createnetherite.netherite_filter.tooltip.summary": "用于兼容_旧存档_。鼓风机现使用_四个原版过滤器槽_；旧机器内的专用过滤器会在打开界面时退还，原规则可继续查看。"
+  "item.createnetherite.netherite_filter.tooltip.summary": "用于兼容_旧存档_。鼓风机现使用_四个原版过滤器槽_；旧机器内的专用过滤器会在打开界面时退还，原规则可继续查看。",
+  "block.createnetherite.netherite_weighted_ejector": "下界合金弹射置物台",
+  "block.createnetherite.netherite_weighted_ejector.tooltip.summary": "射程为原版的_2倍_，蓄力进度为_8倍_，可选择_任意斜向与高低目标_。手持它Shift右键选目标，再放置；也可手持已选目标的物品右键已有置物台重新设定。原版库存、数量和红石暂停仍可使用，应力消耗不变。",
+  "ejector.createnetherite.selected": "已选目标：%s, %s, %s。放置或右键已有置物台应用。",
+  "ejector.createnetherite.applied": "弹射目标已设为：%s, %s, %s",
+  "ejector.createnetherite.cleared": "已清除目标，放置后使用默认方向。",
+  "ejector.createnetherite.invalid": "目标无效：请选择当前维度内水平距离和高差不超过%s格的其他目标。",
+  "ejector.createnetherite.busy": "请等待在途物品抵达后再改变目标"
 }

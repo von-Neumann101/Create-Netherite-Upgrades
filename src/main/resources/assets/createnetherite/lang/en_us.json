@@ -84,5 +84,12 @@
   "gui.booster.netherite_fan.filter_slot": "%s: original Create filter only",
   "gui.booster.netherite_fan.default_mode": "Use %s for unmatched items",
   "gui.booster.netherite_fan.legacy_returned": "Your old Netherite Filter was returned. Install original Create filters in the four slots.",
-  "item.createnetherite.netherite_filter.tooltip.summary": "Retained for _old saves_. New fans use _four original Create filters_. Old installed Netherite Filters are returned when opening the fan; their saved rules remain available to view."
+  "item.createnetherite.netherite_filter.tooltip.summary": "Retained for _old saves_. New fans use _four original Create filters_. Old installed Netherite Filters are returned when opening the fan; their saved rules remain available to view.",
+  "block.createnetherite.netherite_weighted_ejector": "Netherite Weighted Ejector",
+  "block.createnetherite.netherite_weighted_ejector.tooltip.summary": "Provides _2 times_ the range and _8 times_ the winding progress. Choose _any diagonal or elevated target_ by sneak-right-clicking while holding it, then place it. Right-click an existing platform with a selected-target item to retarget it. Native inventory, stack settings, redstone pause and stress usage remain.",
+  "ejector.createnetherite.selected": "Target selected: %s, %s, %s. Place or right-click an existing platform to apply.",
+  "ejector.createnetherite.applied": "Launch target set: %s, %s, %s",
+  "ejector.createnetherite.cleared": "Target cleared. Placement will use the default direction.",
+  "ejector.createnetherite.invalid": "Invalid target: select another target in this dimension within %s blocks horizontally and vertically.",
+  "ejector.createnetherite.busy": "Wait for flying items to arrive before changing the target"
 }

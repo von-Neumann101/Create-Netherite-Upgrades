@@ -17,6 +17,9 @@ public final class BoosterPartialModels {
     private BoosterPartialModels() {
     }
 
+    public static final PartialModel NETHERITE_EJECTOR_TOP =
+        PartialModel.of(ResourceLocation.fromNamespaceAndPath(Booster.MOD_ID, "block/netherite_weighted_ejector/top"));
+
     public static void init() {
         // Loads the class early so Flywheel sees the partial model before model baking.
     }

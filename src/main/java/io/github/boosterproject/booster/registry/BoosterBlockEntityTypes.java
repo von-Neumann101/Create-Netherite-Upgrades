@@ -13,6 +13,8 @@ import io.github.boosterproject.booster.content.kinetics.mechanicalArm.Netherite
 import io.github.boosterproject.booster.content.kinetics.mixer.NetheriteMechanicalMixerBlockEntity;
 import io.github.boosterproject.booster.content.logistics.vault.NetheriteItemVaultBlockEntity;
 import io.github.boosterproject.booster.content.logistics.chute.NetheriteSmartChuteBlockEntity;
+import io.github.boosterproject.booster.content.logistics.depot.NetheriteEjectorBlockEntity;
+import com.simibubi.create.content.logistics.depot.DepotBehaviour;
 import io.github.boosterproject.booster.content.redstone.wireless.WirelessTerminalBlockEntity;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.core.BlockPos;
@@ -85,6 +87,10 @@ public final class BoosterBlockEntityTypes {
     private BoosterBlockEntityTypes() {
     }
 
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<NetheriteEjectorBlockEntity>> NETHERITE_WEIGHTED_EJECTOR =
+        BLOCK_ENTITY_TYPES.register("netherite_weighted_ejector", () -> BlockEntityType.Builder
+            .of(NetheriteEjectorBlockEntity::new, BoosterBlocks.NETHERITE_WEIGHTED_EJECTOR.get()).build(null));
+
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<NetheriteSmartChuteBlockEntity>> NETHERITE_SMART_CHUTE =
         BLOCK_ENTITY_TYPES.register("netherite_smart_chute", () -> BlockEntityType.Builder
             .of(NetheriteSmartChuteBlockEntity::new, BoosterBlocks.NETHERITE_SMART_CHUTE.get()).build(null));
@@ -95,6 +101,7 @@ public final class BoosterBlockEntityTypes {
     }
 
     private static void registerCapabilities(RegisterCapabilitiesEvent event) {
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, NETHERITE_WEIGHTED_EJECTOR.get(), (ejector, side) -> ejector.getBehaviour(DepotBehaviour.TYPE).itemHandler);
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, NETHERITE_SMART_CHUTE.get(), (chute, side) -> chute.getTransportInventory());
         event.registerBlockEntity(
             Capabilities.FluidHandler.BLOCK,

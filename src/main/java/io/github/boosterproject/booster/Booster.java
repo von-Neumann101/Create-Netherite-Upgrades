@@ -63,6 +63,10 @@ public class Booster {
     private void commonSetup(FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
             BlockStressValues.IMPACTS.register(
+                BoosterBlocks.NETHERITE_WEIGHTED_EJECTOR.get(),
+                () -> BlockStressValues.getImpact(AllBlocks.WEIGHTED_EJECTOR.get())
+            );
+            BlockStressValues.IMPACTS.register(
                 BoosterBlocks.POWERFUL_MECHANICAL_PUMP.get(),
                 () -> BoosterConfigs.SERVER.powerfulPumpStressImpact.get()
             );

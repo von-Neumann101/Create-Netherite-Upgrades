@@ -11,7 +11,7 @@
 - 分支：`1.21.1-NeoForge`
 - 源码核对日期：`2026-11-02`
 - 源码基线提交：`258581732409c92bd271c783fff83fe993a5a4ca`（后续新增无线终端与管理器；贴图提交 `7326d31`）
-- 模组版本：`0.3.7`
+- 模组版本：`0.3.8`
 - Mod id：`createnetherite`
 - 主包名：`io.github.boosterproject.booster`
 - Minecraft：`1.21.1`
@@ -74,7 +74,7 @@
 按当前配置生成的主 jar：
 
 ```text
-build/libs/createnetherite-1.21.1-0.3.7.jar
+build/libs/createnetherite-1.21.1-0.3.8.jar
 ```
 
 ## Gradle 与依赖
@@ -141,6 +141,7 @@ MixinConfigs: createnetherite.mixins.json
 - `createnetherite:netherite_wireless_terminal`
 - `createnetherite:netherite_infinite_manager`
 - `createnetherite:netherite_smart_chute`
+- `createnetherite:netherite_weighted_ejector`
 - `createnetherite:netherite_sheet`
 
 创造模式标签页：
@@ -148,7 +149,7 @@ MixinConfigs: createnetherite.mixins.json
 - 注册位置：`BoosterCreativeModeTabs`
 - 标签页 ID：`createnetherite:createnetherite`
 - 图标：强力机械泵
-- 包含：上述十二种方块的物品、下界合金无限管理器和下界合金板，共十四种在用物品；另保留旧下界合金过滤器注册以兼容存档，注册物品总数仍为十五。空燃烧室是同一物品 ID 的组件变体
+- 包含：上述十三种方块的物品、下界合金无限管理器和下界合金板，共十五种在用物品；另保留旧下界合金过滤器注册以兼容存档，注册物品总数为十六。空燃烧室是同一物品 ID 的组件变体
 
 ## 主类与初始化
 
@@ -207,8 +208,9 @@ NeoForge 1.21.1 使用 NeoForge DeferredRegister 新类型，不再使用 Forge 
 - `DeferredBlock<NetheriteBlazeBurnerBlock> NETHERITE_BLAZE_BURNER`
 - `DeferredBlock<NetheriteEncasedFanBlock> NETHERITE_ENCASED_FAN`
 - `DeferredBlock<NetheriteSmartChuteBlock> NETHERITE_SMART_CHUTE`
+- `DeferredBlock<NetheriteEjectorBlock> NETHERITE_WEIGHTED_EJECTOR`
 
-属性大多复制 Create 对应方块。十二种方块的基础爆炸抗性统一为 `1200.0F`：储罐和蒸汽引擎继承下界合金块属性，其余方块显式设置。强力泵基于铜块属性。
+属性大多复制 Create 对应方块。十三种方块的基础爆炸抗性统一为 `1200.0F`：储罐和蒸汽引擎继承下界合金块属性，其余方块显式设置。强力泵基于铜块属性。
 
 1.21.1 API 差异：
 
@@ -235,8 +237,9 @@ NeoForge 1.21.1 使用 NeoForge DeferredRegister 新类型，不再使用 Forge 
 - `DeferredItem<Item> NETHERITE_WIRELESS_TERMINAL`：普通 `BlockItem`
 - `DeferredItem<Item> NETHERITE_INFINITE_MANAGER`：`InfiniteManagerItem`，手持右键打开分页管理器
 - `DeferredItem<Item> NETHERITE_SMART_CHUTE`：普通防火 `BlockItem`，打开方向规则菜单
+- `DeferredItem<Item> NETHERITE_WEIGHTED_EJECTOR`：`NetheriteEjectorItem`，Shift右键选点，放置或右键已有升级置物台应用目标
 
-上述十五种物品的 `Item.Properties` 均设置 `.fireResistant()`，使用原版下界合金物品的火焰与岩浆伤害保护。
+上述十六种物品的 `Item.Properties` 均设置 `.fireResistant()`，使用原版下界合金物品的火焰与岩浆伤害保护。
 
 ### BlockEntityType
 
@@ -255,12 +258,14 @@ NeoForge 1.21.1 使用 NeoForge DeferredRegister 新类型，不再使用 Forge 
 - `NETHERITE_BLAZE_BURNER` 的注册泛型保留 `BlazeBurnerBlockEntity`，实际工厂创建 `NetheriteBlazeBurnerBlockEntity`
 - `NETHERITE_ENCASED_FAN` 绑定 `NetheriteEncasedFanBlockEntity`
 - `NETHERITE_SMART_CHUTE` 绑定 `NetheriteSmartChuteBlockEntity`
+- `NETHERITE_WEIGHTED_EJECTOR` 绑定 `NetheriteEjectorBlockEntity`
 
 `BoosterBlockEntityTypes.register(...)` 同时监听 `RegisterCapabilitiesEvent`：
 
 - 为储罐注册 `Capabilities.FluidHandler.BLOCK`，返回 `getFluidCapability()`
 - 为保险库注册 `Capabilities.ItemHandler.BLOCK`，返回 `getItemCapability()`
 - 为智能溜槽注册 `Capabilities.ItemHandler.BLOCK`，返回上下行两个真实缓存；不暴露方向样本
+- 为弹射置物台注册 `Capabilities.ItemHandler.BLOCK`，返回原生 `DepotBehaviour.itemHandler`
 
 这些能力注册用于外部管道和物流访问自定义库存。
 
@@ -319,7 +324,7 @@ createnetherite-server.toml
 
 强力机械泵使用普通 `BlockItem`，不再通过 `appendHoverText` 默认展开介绍。
 
-客户端 `BoosterTooltips.register()` 使用 Create 6.0.10 的 `TooltipModifier.REGISTRY` 与 `ItemDescription.Modifier`。已有思索的下界合金鼓风机和过滤器保留原生 Ponder 入口；其余十二种物品提供中英文 `<物品 description id>.tooltip.summary`，由 Create 生成 Shift 提示、折叠、换行及重点配色。燃烧室捕获用法使用原生 `.condition1` / `.behaviour1`。
+客户端 `BoosterTooltips.register()` 使用 Create 6.0.10 的 `TooltipModifier.REGISTRY` 与 `ItemDescription.Modifier`。下界合金鼓风机保留原生 Ponder 入口；其余十五种物品（含旧过滤器）提供中英文 `<物品 description id>.tooltip.summary`，由 Create 生成 Shift 提示、折叠、换行及重点配色。燃烧室捕获用法使用原生 `.condition1` / `.behaviour1`。
 
 储罐的当前配置容量倍率、燃烧室堆叠保存的数量与倍率，只在按住 Shift 时追加到原生概要后。相关代码仅在客户端加载；捕获、放置、燃烧以及工程师护目镜信息保持原有逻辑。过滤器的已配置规则预览沿用 Create `FilterItem` 的原生显示行为。
 
@@ -971,3 +976,20 @@ minecraft:netherite_ingot
 - 仅修改已有 `textures/gui/netherite_fan.png` 的过滤器行 `x=[14,274),y=[68,102)`，保持288×224及不透明，按钮图集、玩家槽位和其他贴图不变；图片由指定美术对话提供。版本0.3.7，不修改加工/风速倍率。
 
 2026-11-04 四槽验证：两项新增用例先在槽位数量及菜单结构断言失败，实现后完整离线构建、205项原有回归与全部12项无图形GameTest通过（新增3项）。验证四种匹配、回退、重叠优先、原版属性与组件、真实物品转移/满槽/拆除，以及旧过滤器完整配置持久、重复打开仅退还一次、未打开拆除返还原物。独立审查未发现问题。118个JSON、中英文各86个键及15条思索字幕齐全，两段场景和原结构核对通过。四槽GUI坐标匹配，矩形外55672个RGBA像素与其他46张PNG字节不变。最终0.3.7 jar 的166个生产资源与源码逐字节一致，旧配方不存在、兼容类保留、测试代码及结构未打包。未启动客户端或使用RTX5060，实际GUI与鼠标操作、修订思索播放未实测。
+
+## 下界合金弹射置物台（0.3.8）
+
+2026-11-04 新增 `createnetherite:netherite_weighted_ejector`，保持平放，目标支持完整三维相对偏移、斜向及纯竖直方向。
+
+- `NetheriteEjectorBlockEntity` 继承原生 `EjectorBlockEntity`，复用库存、数量设置、红石暂停、碰撞扫描和虚拟飞行队列。`NetheriteEntityLauncher` 复用 Create 的动力学，将水平标量映射到完整XZ向量，并使虚拟物品轨迹准确结束于目标方块中心。实体初速按目标向量旋转，斜向鞘翅部署也按目标向量设置朝向，纯竖直保留原生方块朝向回退。
+- 射程跟随 `AllConfigs.server().kinetics.maxEjectorDistance` 的2倍，默认64格。水平按欧氏半径、竖直按绝对高度差分别校验；禁止零偏移和世界边界外目标。存档 `TargetOffset` 保存3个整数，避免重载被原版32格截断；扳手和结构变换同步变换相对目标。
+- `getWindUpSpeed()` 返回原生值的8倍。真实动力网络转速和应力冲击沿用原版，未供能不蓄力。同RPM、同距离的蓄力阶段约缩短至1/8，整tick和原版弹射动作仍存在。
+- `NetheriteEjectorItem` 的 `CUSTOM_DATA.NetheriteEjectorTarget` 保存维度和绝对坐标。手持Shift右键选点，重复选同一点清除；正常放置时在物品消耗前应用目标，包括手中最后一件。右键已有升级置物台可重设而不消耗物品。原版库存交互及数量调节继续使用原生机制。
+- 服务端验证当前维度、射程、世界范围、建造权限、非旁观者、8格编辑距离及 `mayInteract`；拒绝无法表达三维目标的原版两整数设置接口。飞行中拒绝改向和扳手旋转，同目标设置幂等。空闲重设清除 `earlyTarget`、时间与扫描冷却，防止使用旧碰撞库存而停机或误投。
+- 拆除时在每件在途物品的实际位置构建掉落实体，保留数量、组件和运动；修正原生实现调用 `setPosRaw` 后碰撞箱仍留在原点的问题。此调整仅覆盖新置物台。
+- `NetheriteEjectorTargetHandler` 在客户端后置tick显示选点/扳手轨迹，使用相同三维轨迹计算；仅对新机器抑制原生基数方向预览。静态/物品模型继承原生几何，普通渲染和Flywheel动态上盖通过各自Mixin使用专用材质，原生数量框方向也限定修正新机器。
+- 下界合金板加原版弹射置物台无序升级，配方、掉落、创造栏、物品能力、镐/钻石工具标签、防火、防爆与中英文原生Shift概要均已接入。三张新增PNG由指定美术对话提供：casing为32×32，top/inner为16×16，尺寸与逐像素透明度保持原生，木头和轴引用保留原版；46张既有PNG字节未变。
+
+新增5项 `NetheriteEjectorGameTest`：实际斜上方输送及飞行途中保存重载；真实选点/最后一件放置/重设与两倍射程边界；两个创造马达驱动下的64RPM蓄力、原机对照、红石暂停及活体斜向/纯上弹射和鞘翅朝向；障碍物及拆除时真实带组件物品计数；旧碰撞库存装满后重设到新目标的实际输送。测试先复现未注册、在途改向、旧缓存、拆除碰撞箱及鞘翅朝向问题，修正后完整离线 `build runWirelessGameTestServer` 通过：205项原有回归和全部17项GameTest通过。独立源码审查发现的两项问题已修正并复核。未启动客户端或使用RTX5060，客户端Mixin实际加载、预览和两种上盖渲染尚未进行图形实测。
+
+发布核对：125个资源JSON解析通过，中英文各93个语言键，旧86个键的值与原始格式保留。8种平放朝向/含水状态完整，三个模型继承原生几何且全部实际使用的纹理引用可解析。最终0.3.8 jar 的176个生产资源及全部生产类与源码/编译结果逐字节一致，模组元数据版本为0.3.8；测试代码和结构未打包，旧专用过滤器配方仍不存在。jar SHA-256：`833667574298a97283f0ccb54ab4af5095e2a3dd9c023d88d658bd0e5a5a0c71`。

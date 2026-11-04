@@ -1,6 +1,9 @@
 package io.github.boosterproject.booster.client;
 
 import com.simibubi.create.CreateClient;
+import com.simibubi.create.content.logistics.depot.EjectorRenderer;
+import com.simibubi.create.content.logistics.depot.EjectorVisual;
+import net.neoforged.neoforge.common.NeoForge;
 import com.simibubi.create.content.logistics.chute.SmartChuteRenderer;
 import com.simibubi.create.content.contraptions.elevator.ElevatorPulleyRenderer;
 import com.simibubi.create.content.contraptions.elevator.ElevatorPulleyVisual;
@@ -39,6 +42,7 @@ public final class BoosterClient {
     }
 
     public static void register(IEventBus modEventBus) {
+        NeoForge.EVENT_BUS.addListener(NetheriteEjectorTargetHandler::tick);
         BoosterPartialModels.init();
         NetheriteArmModels.init();
         modEventBus.addListener(BoosterClient::registerRenderers);
@@ -54,6 +58,7 @@ public final class BoosterClient {
     }
 
     private static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
+        event.registerBlockEntityRenderer(BoosterBlockEntityTypes.NETHERITE_WEIGHTED_EJECTOR.get(), EjectorRenderer::new);
         event.registerBlockEntityRenderer(BoosterBlockEntityTypes.NETHERITE_SMART_CHUTE.get(), SmartChuteRenderer::new);
         event.registerBlockEntityRenderer(BoosterBlockEntityTypes.NETHERITE_ENCASED_FAN.get(), EncasedFanRenderer::new);
         event.registerBlockEntityRenderer(BoosterBlockEntityTypes.NETHERITE_MECHANICAL_ARM.get(), ArmRenderer::new);
@@ -95,6 +100,7 @@ public final class BoosterClient {
         event.enqueueWork(() -> {
             PonderIndex.addPlugin(new BoosterPonderPlugin());
             BoosterTooltips.register();
+            SimpleBlockEntityVisualizer.builder(BoosterBlockEntityTypes.NETHERITE_WEIGHTED_EJECTOR.get()).factory(EjectorVisual::new).apply();
             SimpleBlockEntityVisualizer.builder(BoosterBlockEntityTypes.NETHERITE_MECHANICAL_MIXER.get())
                 .factory(MixerVisual::new).apply();
             SimpleBlockEntityVisualizer.builder(BoosterBlockEntityTypes.NETHERITE_MECHANICAL_ARM.get())

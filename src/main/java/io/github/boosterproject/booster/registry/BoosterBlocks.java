@@ -12,6 +12,7 @@ import io.github.boosterproject.booster.content.kinetics.mechanicalArm.Netherite
 import io.github.boosterproject.booster.content.kinetics.mixer.NetheriteMechanicalMixerBlock;
 import io.github.boosterproject.booster.content.logistics.vault.NetheriteItemVaultBlock;
 import io.github.boosterproject.booster.content.logistics.chute.NetheriteSmartChuteBlock;
+import io.github.boosterproject.booster.content.logistics.depot.NetheriteEjectorBlock;
 import io.github.boosterproject.booster.content.processing.burner.NetheriteBlazeBurnerBlock;
 import io.github.boosterproject.booster.content.redstone.wireless.WirelessTerminalBlock;
 import net.minecraft.world.level.block.Blocks;
@@ -94,6 +95,10 @@ public final class BoosterBlocks {
 
     private BoosterBlocks() {
     }
+
+    public static final DeferredBlock<NetheriteEjectorBlock> NETHERITE_WEIGHTED_EJECTOR =
+        BLOCKS.register("netherite_weighted_ejector", () -> new NetheriteEjectorBlock(
+            BlockBehaviour.Properties.ofFullCopy(AllBlocks.WEIGHTED_EJECTOR.get()).explosionResistance(1200.0F)));
 
     public static final DeferredBlock<NetheriteSmartChuteBlock> NETHERITE_SMART_CHUTE =
         BLOCKS.register("netherite_smart_chute", () -> new NetheriteSmartChuteBlock(

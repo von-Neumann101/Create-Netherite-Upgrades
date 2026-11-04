@@ -1,0 +1,10 @@
+{
+  "parent": "create:block/weighted_ejector/item",
+  "textures": {
+    "3": "createnetherite:block/netherite_weighted_ejector/casing",
+    "4": "createnetherite:block/netherite_weighted_ejector/top",
+    "5": "createnetherite:block/netherite_weighted_ejector/inner",
+    "particle": "createnetherite:block/netherite_weighted_ejector/top",
+    "7": "createnetherite:block/brass_framed_netherite"
+  }
+}

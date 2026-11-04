@@ -4,7 +4,7 @@
 
 当前分支：`1.21.1-NeoForge`
 
-当前模组版本：`0.3.7`
+当前模组版本：`0.3.8`
 
 # 维护状态
 
@@ -32,6 +32,7 @@ Minecraft `1.20.1` Forge 的 `main` 分支暂停更新，保留现有代码和�
 - `createnetherite:netherite_wireless_terminal`
 - `createnetherite:netherite_infinite_manager`
 - `createnetherite:netherite_smart_chute`
+- `createnetherite:netherite_weighted_ejector`
 - `createnetherite:netherite_sheet`
 
 强力机械泵接入 Create 原版流体管网，默认基础应力消耗为 `16.0`、压力倍率为 `8.0`。压力倍率提高吞吐，不增加管道传播距离。
@@ -106,11 +107,19 @@ Minecraft `1.20.1` Forge 的 `main` 分支暂停更新，保留现有代码和�
 
 一个下界合金板加一个原版智能溜槽，无序合成一个下界合金智能溜槽。物品沿用防火、防爆与原生 Shift 概要，GUI 使用独立 `netherite_smart_chute.png`。
 
+# 下界合金弹射置物台
+
+保持平放，可自由选择斜向及不同高度的目标，也可纯向上或向下弹射。水平直线射程和垂直高度差上限均为 Create 弹射距离配置的 `2` 倍，默认 `64` 格；斜向按水平直线距离判定。相同转速和距离下，蓄力进度为原版的 `8` 倍，蓄力阶段约为原来的 `1/8`，仍受整 tick 和原版弹射动作时间影响；应力消耗沿用原版。
+
+手持下界合金弹射置物台，`Shift + 右键`目标方块，再正常放置。选点后会预览轨迹，重复选中同一目标可清除。手持已选目标的置物台右键已有下界合金置物台，可以重新设定且不消耗手中物品；在途物品抵达后才能改向。工程师扳手可旋转目标，悬停时显示现有轨迹。保留原生数量设置、库存和红石暂停，实体与物品均可弹射，实体方块会阻挡物品轨迹。
+
+一个下界合金板加一个原版弹射置物台，无序合成一个升级品。物品具备防火、防爆与原生 Shift 概要。
+
 # 防爆与防火
 
-上述全部物品（含强力机械泵和下界合金板）的掉落物均免疫爆炸伤害；十二种方块放置后均不被爆炸破坏，储罐与保险库中的内容也因此保留。方块基础爆炸抗性统一为 `1200`。
+上述全部物品（含强力机械泵和下界合金板）的掉落物均免疫爆炸伤害；十三种方块放置后均不被爆炸破坏，储罐与保险库中的内容也因此保留。方块基础爆炸抗性统一为 `1200`。
 
-全部十五种物品也具有下界合金物品的防火属性，掉落在火焰或岩浆中不会被烧毁。
+全部十六种物品也具有下界合金物品的防火属性，掉落在火焰或岩浆中不会被烧毁。
 
 # 环境要求
 
@@ -147,7 +156,7 @@ createnetherite-server.toml
 构建产物：
 
 ```text
-build/libs/createnetherite-1.21.1-0.3.7.jar
+build/libs/createnetherite-1.21.1-0.3.8.jar
 ```
 
 # Introduction
@@ -156,7 +165,7 @@ build/libs/createnetherite-1.21.1-0.3.7.jar
 
 Current branch: `1.21.1-NeoForge`
 
-Current mod version: `0.3.7`
+Current mod version: `0.3.8`
 
 # Maintenance status
 
@@ -184,6 +193,7 @@ The mod currently adds several Create-compatible entries:
 - `createnetherite:netherite_wireless_terminal`
 - `createnetherite:netherite_infinite_manager`
 - `createnetherite:netherite_smart_chute`
+- `createnetherite:netherite_weighted_ejector`
 - `createnetherite:netherite_sheet`
 
 The Powerful Mechanical Pump uses Create's native fluid network, with a default base stress impact of `16.0` and a pressure multiplier of `8.0`. The pressure multiplier increases throughput without extending pipe propagation distance.
@@ -256,11 +266,19 @@ Each direction buffers one stack independently, allowing opposing traffic in a c
 
 Craft one Netherite Sheet with an original Smart Chute in a shapeless recipe. The upgrade has fire and blast protection, a native Shift summary, and a separate `netherite_smart_chute.png` GUI texture.
 
+# Netherite Weighted Ejector
+
+Stays flat while targeting diagonally, at different heights, or straight up/down. Its horizontal radius and vertical offset limits are twice Create's ejector distance setting, `64` blocks by default; diagonals use horizontal straight-line distance. At matching speed and distance, charge progress is `8` times the original, making the charging phase about `1/8` as long, subject to whole ticks and the original launch animation. Stress consumption follows the original.
+
+Hold the upgraded ejector, `Shift + right-click` a target block, then place normally. A trajectory preview appears after selection; select the same target again to clear it. Right-click an existing upgraded ejector with a target selected to retarget it without consuming the held item; wait for flying items to arrive before changing direction. Wrench rotation rotates the target, and hovering with a wrench previews the current trajectory. Native stack-size settings, inventory, and redstone pause remain available. Both entities and items can launch; solid blocks obstruct item trajectories.
+
+Craft one Netherite Sheet with an original Weighted Ejector in a shapeless recipe. The upgrade has fire and blast protection and a native Shift summary.
+
 # Blast and Fire Protection
 
-All items listed above, including the Powerful Mechanical Pump and Netherite Sheet, are immune to explosion damage when dropped. All twelve placed blocks are protected from explosion destruction, preserving tank and vault contents. Their base blast resistance is `1200`.
+All items listed above, including the Powerful Mechanical Pump and Netherite Sheet, are immune to explosion damage when dropped. All thirteen placed blocks are protected from explosion destruction, preserving tank and vault contents. Their base blast resistance is `1200`.
 
-All fifteen items also have the fire resistance of netherite items: dropped items cannot be burned by fire or lava.
+All sixteen items also have the fire resistance of netherite items: dropped items cannot be burned by fire or lava.
 
 # Requirements
 
@@ -297,5 +315,5 @@ Existing worlds keep their own `serverconfig/createnetherite-server.toml`. If de
 Build output:
 
 ```text
-build/libs/createnetherite-1.21.1-0.3.7.jar
+build/libs/createnetherite-1.21.1-0.3.8.jar
 ```
