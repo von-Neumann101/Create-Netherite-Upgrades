@@ -4,8 +4,10 @@ import com.simibubi.create.content.logistics.depot.DepotBlockEntity;
 import com.simibubi.create.foundation.ponder.CreateSceneBuilder;
 import io.github.boosterproject.booster.content.kinetics.fan.FanProcessingMode;
 import io.github.boosterproject.booster.content.kinetics.fan.NetheriteEncasedFanBlockEntity;
-import io.github.boosterproject.booster.content.logistics.filter.NetheriteFilterData;
-import io.github.boosterproject.booster.registry.BoosterItems;
+import com.simibubi.create.AllItems;
+import com.simibubi.create.AllDataComponents;
+import java.util.List;
+import net.minecraft.world.item.component.ItemContainerContents;
 import net.createmod.catnip.math.Pointing;
 import net.createmod.ponder.api.PonderPalette;
 import net.createmod.ponder.api.scene.SceneBuilder;
@@ -59,17 +61,10 @@ public final class NetheriteFanScenes {
         CreateSceneBuilder scene = new CreateSceneBuilder(builder);
         scene.title("netherite_fan_filter", "Filter rules and the selected mode");
         setup(scene, util, true);
-        ItemStack filter = new ItemStack(BoosterItems.NETHERITE_FILTER.get());
-        var rules = NetheriteFilterData.inventory(filter);
-        for (FanProcessingMode mode : new FanProcessingMode[] {
-            FanProcessingMode.WASHING, FanProcessingMode.BLASTING, FanProcessingMode.HAUNTING
-        }) {
-            NetheriteFilterData.assignToGroup(rules, mode, new ItemStack(input(mode)));
-        }
-        NetheriteFilterData.save(filter, rules);
+        ItemStack filter = processingFilter(Items.RAW_IRON);
 
         scene.overlay().showControls(util.vector().topOf(FAN), Pointing.DOWN, 80)
-            .rightClick().withItem(new ItemStack(BoosterItems.NETHERITE_FILTER.get()));
+            .rightClick().withItem(filter);
         text(scene, "fan_filter_open", FAN, 85);
         scene.idle(95);
         text(scene, "fan_filter_keys", DEPOT, 120);
@@ -79,7 +74,12 @@ public final class NetheriteFanScenes {
         scene.overlay().showControls(util.vector().topOf(FAN), Pointing.DOWN, 80).rightClick().withItem(filter);
         text(scene, "fan_filter_install", FAN, 90);
         scene.world().modifyBlockEntity(FAN, NetheriteEncasedFanBlockEntity.class,
-            fan -> fan.getFilterInventory().setStackInSlot(0, filter.copy()));
+            fan -> {
+                for (FanProcessingMode processing : FanProcessingMode.values()) {
+                    fan.getFilterInventory().setStackInSlot(processing.ordinal(),
+                        processingFilter(processing == FanProcessingMode.SMOKING ? Items.POTATO : input(processing)));
+                }
+            });
         mode(scene, FanProcessingMode.SMOKING);
         scene.idle(100);
 
@@ -115,6 +115,12 @@ public final class NetheriteFanScenes {
         text(scene, "fan_filter_result", fallback, 110);
         scene.idle(120);
         scene.markAsFinished();
+    }
+
+    private static ItemStack processingFilter(Item item) {
+        ItemStack filter = new ItemStack(AllItems.FILTER.get());
+        filter.set(AllDataComponents.FILTER_ITEMS, ItemContainerContents.fromItems(List.of(new ItemStack(item))));
+        return filter;
     }
 
     private static void setup(CreateSceneBuilder scene, SceneBuildingUtil util, boolean allDepots) {

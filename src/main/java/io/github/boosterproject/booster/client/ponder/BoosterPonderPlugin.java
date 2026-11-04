@@ -18,8 +18,6 @@ public class BoosterPonderPlugin implements PonderPlugin {
         helper.forComponents(BoosterItems.NETHERITE_ENCASED_FAN.getId())
             .addStoryBoard("fan/tutorial", NetheriteFanScenes::modes)
             .addStoryBoard("fan/tutorial", NetheriteFanScenes::filter);
-        helper.forComponents(BoosterItems.NETHERITE_FILTER.getId())
-            .addStoryBoard("fan/tutorial", NetheriteFanScenes::filter);
     }
 
     @Override
@@ -30,13 +28,13 @@ public class BoosterPonderPlugin implements PonderPlugin {
         helper.registerSharedText("fan_blasting", "Blasting: raw iron becomes an iron ingot.");
         helper.registerSharedText("fan_haunting", "Haunting: sand becomes soul sand.");
         helper.registerSharedText("fan_smoking", "Smoking: raw beef becomes steak.");
-        helper.registerSharedText("fan_filter_open", "Hold a Netherite Filter and right-click to edit its four processing groups.");
-        helper.registerSharedText("fan_filter_keys", "Drag in samples, or hover an inventory item and press 1–4: Washing, Blasting, Haunting, Smoking.");
-        helper.registerSharedText("fan_filter_samples", "Each group holds nine item samples. Samples do not consume real items.");
-        helper.registerSharedText("fan_filter_install", "Right-click the fan, then place the configured filter into its filter slot.");
+        helper.registerSharedText("fan_filter_open", "Configure original Create filters by holding them and right-clicking.");
+        helper.registerSharedText("fan_filter_keys", "The fan has one filter slot each for Washing, Blasting, Haunting and Smoking.");
+        helper.registerSharedText("fan_filter_samples", "Each slot holds one real original filter. Remove it to edit its list.");
+        helper.registerSharedText("fan_filter_install", "Right-click the fan and install each configured filter below its matching mode.");
         helper.registerSharedText("fan_filter_override", "Listed items follow their filter rules, even in the same air current.");
         helper.registerSharedText("fan_filter_fallback", "Unlisted items use the fan's selected mode. This beef is smoked.");
-        helper.registerSharedText("fan_filter_switch", "You can still change the selected mode with a filter installed. Listed items keep their rules.");
+        helper.registerSharedText("fan_filter_switch", "The mode buttons change unmatched-item processing; installed filters keep their assigned modes.");
         helper.registerSharedText("fan_filter_result", "Unlisted blue wool now uses Washing; the listed raw iron is still blasted.");
         helper.registerSharedText("fan_transport", "Place items on a depot or belt in the air current, or drop them into the airflow.");
     }

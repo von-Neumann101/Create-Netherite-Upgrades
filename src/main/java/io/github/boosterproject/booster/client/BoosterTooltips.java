@@ -22,7 +22,7 @@ public final class BoosterTooltips {
     }
 
     public static void register() {
-        // The fan and filter already have native Ponder entries.
+        // The fan has native Ponder entries; other items use native Shift descriptions.
         for (Item item : List.of(
             BoosterItems.POWERFUL_MECHANICAL_PUMP.get(),
             BoosterItems.NETHERITE_SHEET.get(),
@@ -34,7 +34,8 @@ public final class BoosterTooltips {
             BoosterItems.NETHERITE_MECHANICAL_MIXER.get(),
             BoosterItems.NETHERITE_WIRELESS_TERMINAL.get(),
             BoosterItems.NETHERITE_INFINITE_MANAGER.get(),
-            BoosterItems.NETHERITE_SMART_CHUTE.get()
+            BoosterItems.NETHERITE_SMART_CHUTE.get(),
+            BoosterItems.NETHERITE_FILTER.get()
         )) {
             TooltipModifier.REGISTRY.register(item, new ItemDescription.Modifier(item, Palette.STANDARD_CREATE));
         }

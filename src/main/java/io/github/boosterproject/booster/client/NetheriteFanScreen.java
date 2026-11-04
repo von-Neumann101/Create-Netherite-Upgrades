@@ -41,7 +41,7 @@ public class NetheriteFanScreen extends AbstractContainerScreen<NetheriteFanMenu
     @Override
     protected void renderLabels(GuiGraphics graphics, int mouseX, int mouseY) {
         graphics.drawString(font, title, titleLabelX, titleLabelY, 0xFFE1E3E8, false);
-        graphics.drawString(font, Component.translatable("gui.booster.netherite_fan.filter"), 48, 84, 0xFFE1E3E8, false);
+        graphics.drawCenteredString(font, Component.translatable("gui.booster.netherite_fan.filter"), imageWidth / 2, 70, 0xFFE1E3E8);
         graphics.drawString(font, Component.translatable("gui.booster.netherite_fan.fallback"), 12, 108, 0xFFBFC3CC, false);
         graphics.drawString(font, playerInventoryTitle, inventoryLabelX, inventoryLabelY, 0xFFE1E3E8, false);
     }
@@ -50,6 +50,10 @@ public class NetheriteFanScreen extends AbstractContainerScreen<NetheriteFanMenu
     public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
         super.render(graphics, mouseX, mouseY, partialTick);
         renderTooltip(graphics, mouseX, mouseY);
+        if (hoveredSlot != null && hoveredSlot.index < 4 && !hoveredSlot.hasItem()) {
+            graphics.renderTooltip(font, Component.translatable("gui.booster.netherite_fan.filter_slot",
+                FanProcessingMode.byIndex(hoveredSlot.index).displayName()), mouseX, mouseY);
+        }
     }
 
     private class ModeButton extends Button {
@@ -62,7 +66,7 @@ public class NetheriteFanScreen extends AbstractContainerScreen<NetheriteFanMenu
                 }
             }, DEFAULT_NARRATION);
             this.mode = mode;
-            setTooltip(Tooltip.create(mode.displayName()));
+            setTooltip(Tooltip.create(Component.translatable("gui.booster.netherite_fan.default_mode", mode.displayName())));
         }
 
         @Override

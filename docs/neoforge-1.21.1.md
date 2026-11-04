@@ -11,7 +11,7 @@
 - 分支：`1.21.1-NeoForge`
 - 源码核对日期：`2026-11-02`
 - 源码基线提交：`258581732409c92bd271c783fff83fe993a5a4ca`（后续新增无线终端与管理器；贴图提交 `7326d31`）
-- 模组版本：`0.3.6`
+- 模组版本：`0.3.7`
 - Mod id：`createnetherite`
 - 主包名：`io.github.boosterproject.booster`
 - Minecraft：`1.21.1`
@@ -74,7 +74,7 @@
 按当前配置生成的主 jar：
 
 ```text
-build/libs/createnetherite-1.21.1-0.3.6.jar
+build/libs/createnetherite-1.21.1-0.3.7.jar
 ```
 
 ## Gradle 与依赖
@@ -137,7 +137,7 @@ MixinConfigs: createnetherite.mixins.json
 - `createnetherite:netherite_mechanical_arm`
 - `createnetherite:netherite_blaze_burner`
 - `createnetherite:netherite_encased_fan`
-- `createnetherite:netherite_filter`
+- `createnetherite:netherite_filter`（旧存档兼容，不再合成或在创造栏提供）
 - `createnetherite:netherite_wireless_terminal`
 - `createnetherite:netherite_infinite_manager`
 - `createnetherite:netherite_smart_chute`
@@ -148,7 +148,7 @@ MixinConfigs: createnetherite.mixins.json
 - 注册位置：`BoosterCreativeModeTabs`
 - 标签页 ID：`createnetherite:createnetherite`
 - 图标：强力机械泵
-- 包含：上述十二种方块的物品、下界合金过滤器、下界合金无限管理器和下界合金板，共十五种注册物品；空燃烧室是同一物品 ID 的组件变体
+- 包含：上述十二种方块的物品、下界合金无限管理器和下界合金板，共十四种在用物品；另保留旧下界合金过滤器注册以兼容存档，注册物品总数仍为十五。空燃烧室是同一物品 ID 的组件变体
 
 ## 主类与初始化
 
@@ -231,7 +231,7 @@ NeoForge 1.21.1 使用 NeoForge DeferredRegister 新类型，不再使用 Forge 
 - `DeferredItem<Item> NETHERITE_MECHANICAL_ARM`：复用 Create `ArmItem`，保留原生选点和放置请求
 - `DeferredItem<Item> NETHERITE_BLAZE_BURNER`：使用 `NetheriteBlazeBurnerItem`，默认 1 只，可逐只捕获至 4 只
 - `DeferredItem<Item> NETHERITE_ENCASED_FAN`：普通 `BlockItem`
-- `DeferredItem<Item> NETHERITE_FILTER`：`NetheriteFilterItem`，继承 Create `FilterItem`
+- `DeferredItem<Item> NETHERITE_FILTER`：保留 `NetheriteFilterItem` 注册和原规则查看以兼容旧存档，0.3.7起不再合成、列入创造栏或安装到鼓风机
 - `DeferredItem<Item> NETHERITE_WIRELESS_TERMINAL`：普通 `BlockItem`
 - `DeferredItem<Item> NETHERITE_INFINITE_MANAGER`：`InfiniteManagerItem`，手持右键打开分页管理器
 - `DeferredItem<Item> NETHERITE_SMART_CHUTE`：普通防火 `BlockItem`，打开方向规则菜单
@@ -621,7 +621,9 @@ max(0, min(configuredMaxDistance, pulleyY - 1 - worldMinBuildHeight))
 
 `burnerRegressionTest` 使用实际 Minecraft 物品、原版热状态函数及自定义 BE 检查数量、单份捕获数据、元数据保护、倍率和存档；已接入 `check` / `build`。测试状态定义使用已注册原版方块作为所有者，避免向冻结的注册表写入测试方块；不替代世界中的捕获交互、自动喂料和渲染验证。
 
-## 下界合金鼓风机与过滤器
+## 下界合金鼓风机与过滤器（0.3.6及以前，历史实现）
+
+本节保留旧专用过滤器的数据与菜单交接说明。当前鼓风机已改为四个原版过滤器槽，见本文“鼓风机四个原版过滤器槽（0.3.7）”；加工和风速倍率未变。
 
 主要文件：`content/kinetics/fan/FanProcessingMode`、`NetheriteEncasedFanBlock`、`NetheriteEncasedFanBlockEntity`、`NetheriteAirCurrent`、`content/logistics/filter/NetheriteFilterData`、`NetheriteFilterItem`。
 
@@ -666,7 +668,7 @@ BE 替换 `airCurrent` 为 `NetheriteAirCurrent`。它复用 Create 的碰撞与
 
 ## 下界合金鼓风机思索
 
-客户端 setup 中调用 `PonderIndex.addPlugin(new BoosterPonderPlugin())`，使用 Ponder `1.0.82` 的 `PonderPlugin` / `PonderSceneRegistrationHelper`，不使用旧版 `PonderRegistry` API。仅为本模组物品注册教程：鼓风机两段用法动画，过滤器共用规则段，不覆盖 Create 的原版教程。
+客户端 setup 中调用 `PonderIndex.addPlugin(new BoosterPonderPlugin())`，使用 Ponder `1.0.82` 的 `PonderPlugin` / `PonderSceneRegistrationHelper`，不使用旧版 `PonderRegistry` API。当前仅为下界合金鼓风机注册两段用法动画，不覆盖 Create 的原版教程；0.3.7已移除旧专用过滤器的共用入口。
 
 - `client/ponder/BoosterPonderPlugin.java`：注册场景和 15 条命名 sharedText。
 - `client/ponder/NetheriteFanScenes.java`：接入动力、选择四种加工模式、放入物品、设置过滤器、规则回退与切换，仅说明用法。
@@ -674,7 +676,7 @@ BE 替换 `airCurrent` 为 `NetheriteAirCurrent`。它复用 Create 的碰撞与
 
 场景 ID 为 `netherite_fan_modes`、`netherite_fan_filter`。标题键为 `createnetherite.ponder.<scene_id>.header`，字幕键为 `createnetherite.ponder.shared.<key>`，全部提供中英文。复用同一个结构注册多个 storyboard 受到当前 Ponder 注册表支持。
 
-模式演示使用确定性配方：红羊毛水洗为白羊毛、粗铁熔炼为铁锭、沙子缠魂为灵魂沙、生牛肉烟熏为牛排。过滤器记录前三项，牛肉使用统一烟熏模式；统一模式切换为水洗后，未列出的蓝羊毛洗白，粗铁仍按专属熔炼规则加工。
+模式演示使用确定性配方：红羊毛水洗为白羊毛、粗铁熔炼为铁锭、沙子缠魂为灵魂沙、生牛肉烟熏为牛排。四个原版过滤表分别记录红羊毛、粗铁、沙子与土豆，牛肉使用统一烟熏模式；统一模式切换为水洗后，未列出的蓝羊毛洗白，粗铁仍按专属熔炼规则加工。
 
 已移除速度对比场景及其注册、字幕和标题，思索不再介绍倍率或配置。与原生 Ponder 场景一致，加工结果由 storyboard 编排；该动画不充当真实世界加工回归测试。未新增或修改任何贴图，也不改变机器加工逻辑。
 
@@ -953,3 +955,19 @@ minecraft:netherite_ingot
 验证入口仍为 `runWirelessGameTestServer` 的独立无图形源集，测试类和结构不进入发布 jar。`NetheriteSmartChuteGameTest` 覆盖相向柱、原生准入、真实红石暂停、双缓存保存、样本菜单、原版连接、部分余量、拆除计数、黑名单和 EXACTLY/UPTO 数量。独立审查发现原版缓存会被主动反向抽取，新增用例先真实复现，再通过跳过原版溜槽主动抽取修正。禁止使用 RTX 5060，不启动客户端；实际显示和客户端鼠标操作需单独实测。
 
 2026-11-04 最终验证：完整离线构建、205 项原有回归及全部 9 项无图形 GameTest 通过，其中新增 5 项。原版反向抢取用例先失败，修正后连同原有无线、过滤与放置用例一起通过。119 个资源 JSON、中英文各 82 个键、GUI 的 38 个槽框及原生 alpha 检查通过；43 张既有 PNG 和既有翻译不变。核对 0.3.6 jar 中 167 个生产资源逐字节一致，5 个新生产类与 Mixin 齐全，模型父级和实际纹理变量均解析，测试类/结构未打包。修正后的独立审查无未解决问题，全程未启动客户端或使用 RTX 5060。
+
+
+## 鼓风机四个原版过滤器槽（0.3.7）
+
+本节覆盖上文0.3.4及更早的鼓风机过滤器用法；原有验证记录保留其历史版本。
+
+- `NetheriteEncasedFanBlockEntity` 保存四个真实过滤器槽，顺序为水洗、熔炼、缠魂、烟熏，每槽最多一件。限定 `FilterItem` 且注册命名空间为 `create`，拒绝普通物品、专用下界合金过滤器及其他模组过滤器。Create 普通、属性和包裹过滤器均沿用其原生匹配逻辑。
+- `resolveProcessingMode` 按四槽顺序跳过空槽，使用 `FilterItemStack.of(filter.copy()).test(level,target)`，第一个匹配决定加工方式；全部不匹配时使用手动 `processingMode`。黑白名单、组件、原版嵌套及属性条件不复制到其他容器，不修改原过滤器。
+- `NetheriteFanMenu` 前四槽为真实过滤器，玩家主背包从槽4开始、快捷栏从槽31开始，总40槽。正常放取、原生数字键交换与Shift转移均按真实物品计数，槽上限为1；快捷放入按第一个空加工槽顺序。所有点击、快捷移动和模式按钮均验证玩家、BE身份与8格距离。
+- 模式按钮保持原来的四列位置与按钮图集，只改变未匹配物品的回退方式。四个过滤器内区左上为 `(37+66*i,80)`，与上方按钮逐列对齐；行说明在y70，回退说明在y108，背包位置不变。空槽提示说明固定加工方式，按钮提示说明回退用途。
+- 新NBT用 `Filters` 保存四槽；旧 `Filter` 单槽中的原物及完整组件保存在 `LegacyFilter`。首次有效打开新菜单，将原物清出兼容缓存后交还玩家，背包满按原版回包行为掉落；重复打开不重复返还，未打开直接拆除则掉落旧原物。不会复制或生成四张原版过滤表，旧规则不会自动装入新槽。旧机四槽初始为空，按已有选定模式加工，用户需重新安装原版过滤表。
+- 旧专用过滤器保留ID、数据和查看菜单以避免旧存档丢物，移出创造栏、删除合成配方与Ponder入口，并使用原生Shift兼容概要。机内四个真实原版过滤器在拆除时分别返还。
+- 两段鼓风机思索改为原版过滤表和四槽操作，仍只讲用法，原结构和风机下方安山机壳不变。四槽示例分别过滤红羊毛、粗铁、沙子与土豆；未列入清单的生牛肉展示烟熏回退，随后蓝羊毛展示切换水洗回退。
+- 仅修改已有 `textures/gui/netherite_fan.png` 的过滤器行 `x=[14,274),y=[68,102)`，保持288×224及不透明，按钮图集、玩家槽位和其他贴图不变；图片由指定美术对话提供。版本0.3.7，不修改加工/风速倍率。
+
+2026-11-04 四槽验证：两项新增用例先在槽位数量及菜单结构断言失败，实现后完整离线构建、205项原有回归与全部12项无图形GameTest通过（新增3项）。验证四种匹配、回退、重叠优先、原版属性与组件、真实物品转移/满槽/拆除，以及旧过滤器完整配置持久、重复打开仅退还一次、未打开拆除返还原物。独立审查未发现问题。118个JSON、中英文各86个键及15条思索字幕齐全，两段场景和原结构核对通过。四槽GUI坐标匹配，矩形外55672个RGBA像素与其他46张PNG字节不变。最终0.3.7 jar 的166个生产资源与源码逐字节一致，旧配方不存在、兼容类保留、测试代码及结构未打包。未启动客户端或使用RTX5060，实际GUI与鼠标操作、修订思索播放未实测。

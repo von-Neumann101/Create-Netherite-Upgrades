@@ -50,7 +50,7 @@ public final class NetheriteNestedFilterGameTest {
         BlockPos pos = helper.absolutePos(new BlockPos(1, 1, 1));
         level.setBlock(pos, BoosterBlocks.NETHERITE_ENCASED_FAN.get().defaultBlockState(), 3);
         var fan = (NetheriteEncasedFanBlockEntity) level.getBlockEntity(pos);
-        fan.getFilterInventory().setStackInSlot(0, outer);
+        fan.getFilterInventory().setStackInSlot(FanProcessingMode.BLASTING.ordinal(), nativeFilter.copy());
         fan.setProcessingMode(FanProcessingMode.WASHING);
         helper.assertTrue(fan.resolveProcessingMode(new ItemStack(Items.RAW_IRON)) == FanProcessingMode.BLASTING, "first contained item selects blasting");
         helper.assertTrue(fan.resolveProcessingMode(new ItemStack(Items.RAW_GOLD)) == FanProcessingMode.BLASTING, "second contained item selects blasting");
@@ -119,7 +119,7 @@ public final class NetheriteNestedFilterGameTest {
             BlockPos pos = helper.absolutePos(new BlockPos(1, 1, 1));
             level.setBlock(pos, BoosterBlocks.NETHERITE_ENCASED_FAN.get().defaultBlockState(), 3);
             var fan = (NetheriteEncasedFanBlockEntity) level.getBlockEntity(pos);
-            fan.getFilterInventory().setStackInSlot(0, configured);
+            fan.getFilterInventory().setStackInSlot(FanProcessingMode.BLASTING.ordinal(), sample.copy());
             fan.setProcessingMode(FanProcessingMode.WASHING);
             for (ItemStack target : List.of(new ItemStack(Items.RAW_IRON), new ItemStack(Items.RAW_GOLD), strict, new ItemStack(Items.IRON_INGOT), new ItemStack(AllItems.FILTER.get()))) {
                 boolean expected = FilterItemStack.of(sample.copy()).test(level, target);
