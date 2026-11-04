@@ -1,0 +1,28 @@
+{
+  "parent": "minecraft:nether/root",
+  "display": {
+    "icon": {
+      "id": "createnetherite:netherite_netherite"
+    },
+    "title": {
+      "translate": "advancement.createnetherite.are_your_teeth_ok.title"
+    },
+    "description": {
+      "translate": "advancement.createnetherite.are_your_teeth_ok.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "chew": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "requirements": [
+    [
+      "chew"
+    ]
+  ]
+}

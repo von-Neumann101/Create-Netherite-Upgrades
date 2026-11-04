@@ -96,5 +96,9 @@
   "item.createnetherite.netherite_extendo_grip.tooltip.summary": "Adds _3 more blocks_ of block reach than the original. Hold it in the offhand to fill a main-hand empty bucket from a tank. In the main hand, hold right-click to drive a working block; sneak when starting to reverse, release to stop. Drives only the selected block, with capacity for one Powerful Mechanical Pump. Successful bucket fills and sustained power use backtank air, then durability.",
   "grip.createnetherite.cannot_power": "Cannot drive: this block already has power, generates power, or needs more than %s SU.",
   "block.createnetherite.netherite_deployer": "Netherite Deployer",
-  "block.createnetherite.netherite_deployer.tooltip.summary": "_Batch-processes_ the current stack on a belt or depot in one action. Materials, tool durability and returned containers are accounted for _per processed item_. Stops when supplies or tools run out and preserves unprocessed inputs. Advances each sequenced-assembly input by one step; native movement speed and stress consumption remain unchanged."
+  "block.createnetherite.netherite_deployer.tooltip.summary": "_Batch-processes_ the current stack on a belt or depot in one action. Materials, tool durability and returned containers are accounted for _per processed item_. Stops when supplies or tools run out and preserves unprocessed inputs. Advances each sequenced-assembly input by one step; native movement speed and stress consumption remain unchanged.",
+  "item.createnetherite.netherite_netherite": "Netherite Netherite",
+  "item.createnetherite.netherite_netherite.tooltip.summary": "Why would you make this?",
+  "advancement.createnetherite.are_your_teeth_ok.title": "Are your teeth okay?",
+  "advancement.createnetherite.are_your_teeth_ok.description": "Chew Netherite Netherite continuously for more than 10 seconds."
 }

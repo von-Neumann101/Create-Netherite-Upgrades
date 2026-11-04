@@ -4,7 +4,7 @@
 
 当前分支：`1.21.1-NeoForge`
 
-当前模组版本：`0.3.10`
+当前模组版本：`0.3.11`
 
 # 维护状态
 
@@ -35,6 +35,7 @@ Minecraft `1.20.1` Forge 的 `main` 分支暂停更新，保留现有代码和�
 - `createnetherite:netherite_weighted_ejector`
 - `createnetherite:netherite_extendo_grip`
 - `createnetherite:netherite_deployer`
+- `createnetherite:netherite_netherite`
 - `createnetherite:netherite_sheet`
 
 强力机械泵接入 Create 原版流体管网，默认基础应力消耗为 `16.0`、压力倍率为 `8.0`。压力倍率提高吞吐，不增加管道传播距离。
@@ -133,11 +134,17 @@ Minecraft `1.20.1` Forge 的 `main` 分支暂停更新，保留现有代码和�
 
 原有负责搬运的 `netherite_mechanical_arm` 按官方名称显示为“下界合金动力臂”，原ID、性能与存档保持不变。
 
+# 下界合金下界合金
+
+用一个下界合金锭和一个下界合金板无序合成。按住右键可持续播放食用动作，满饱食度也能使用；物品不会被吃掉，也不会增加饱食度、饱和度或生命值，松开即停。
+
+连续使用**超过10秒**（超过200个游戏tick）可获得紫色挑战进度**“你的牙还好吗？”**；松开或换物品后重新计时，短按不累计。支持主手与副手，获得进度后仍可继续啃。原生 Shift 概要为：**“你为什么要做这个？”**。沿用下界合金物品的防火、防爆属性。
+
 # 防爆与防火
 
 上述全部物品（含强力机械泵和下界合金板）的掉落物均免疫爆炸伤害；十四种方块放置后均不被爆炸破坏，储罐与保险库中的内容也因此保留。方块基础爆炸抗性统一为 `1200`。
 
-全部十八种物品也具有下界合金物品的防火属性，掉落在火焰或岩浆中不会被烧毁。
+全部十九种物品也具有下界合金物品的防火属性，掉落在火焰或岩浆中不会被烧毁。
 
 # 环境要求
 
@@ -174,7 +181,7 @@ createnetherite-server.toml
 构建产物：
 
 ```text
-build/libs/createnetherite-1.21.1-0.3.10.jar
+build/libs/createnetherite-1.21.1-0.3.11.jar
 ```
 
 # Introduction
@@ -183,7 +190,7 @@ build/libs/createnetherite-1.21.1-0.3.10.jar
 
 Current branch: `1.21.1-NeoForge`
 
-Current mod version: `0.3.10`
+Current mod version: `0.3.11`
 
 # Maintenance status
 
@@ -214,6 +221,7 @@ The mod currently adds several Create-compatible entries:
 - `createnetherite:netherite_weighted_ejector`
 - `createnetherite:netherite_extendo_grip`
 - `createnetherite:netherite_deployer`
+- `createnetherite:netherite_netherite`
 - `createnetherite:netherite_sheet`
 
 The Powerful Mechanical Pump uses Create's native fluid network, with a default base stress impact of `16.0` and a pressure multiplier of `8.0`. The pressure multiplier increases throughput without extending pipe propagation distance.
@@ -310,11 +318,17 @@ Movement speed and stress consumption match the original; acceleration comes fro
 
 The existing item-moving `netherite_mechanical_arm` keeps its ID, behavior, and saved data; its Chinese name is corrected to match Create's Mechanical Arm terminology.
 
+# Netherite Netherite
+
+Craft one Netherite Ingot with one Netherite Sheet in a shapeless recipe. Hold right-click to keep playing the eating animation, even at full hunger. The item is never consumed and grants no hunger, saturation, or health; release to stop.
+
+Using it continuously for **more than 10 seconds** (over 200 game ticks) grants the purple challenge **“Are your teeth okay?”**. Releasing or switching items resets the timer; separate short uses do not accumulate. Works in either hand and keeps chewing after the challenge is earned. Its native Shift summary is **“Why would you make this?”**. Includes fire and blast protection.
+
 # Blast and Fire Protection
 
 All items listed above, including the Powerful Mechanical Pump and Netherite Sheet, are immune to explosion damage when dropped. All fourteen placed blocks are protected from explosion destruction, preserving tank and vault contents. Their base blast resistance is `1200`.
 
-All eighteen items also have the fire resistance of netherite items: dropped items cannot be burned by fire or lava.
+All nineteen items also have the fire resistance of netherite items: dropped items cannot be burned by fire or lava.
 
 # Requirements
 
@@ -351,5 +365,5 @@ Existing worlds keep their own `serverconfig/createnetherite-server.toml`. If de
 Build output:
 
 ```text
-build/libs/createnetherite-1.21.1-0.3.10.jar
+build/libs/createnetherite-1.21.1-0.3.11.jar
 ```

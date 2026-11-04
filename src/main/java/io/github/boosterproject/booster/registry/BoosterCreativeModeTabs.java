@@ -38,6 +38,7 @@ public final class BoosterCreativeModeTabs {
                 output.accept(BoosterItems.NETHERITE_WEIGHTED_EJECTOR.get());
                 output.accept(BoosterItems.NETHERITE_EXTENDO_GRIP.get());
                 output.accept(BoosterItems.NETHERITE_DEPLOYER.get());
+                output.accept(BoosterItems.NETHERITE_NETHERITE.get());
                 output.accept(BoosterItems.NETHERITE_SHEET.get());
             })
             .build());

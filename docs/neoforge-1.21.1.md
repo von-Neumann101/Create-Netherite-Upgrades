@@ -11,7 +11,7 @@
 - 分支：`1.21.1-NeoForge`
 - 源码核对日期：`2026-11-02`
 - 源码基线提交：`258581732409c92bd271c783fff83fe993a5a4ca`（后续新增无线终端与管理器；贴图提交 `7326d31`）
-- 模组版本：`0.3.10`
+- 模组版本：`0.3.11`
 - Mod id：`createnetherite`
 - 主包名：`io.github.boosterproject.booster`
 - Minecraft：`1.21.1`
@@ -74,7 +74,7 @@
 按当前配置生成的主 jar：
 
 ```text
-build/libs/createnetherite-1.21.1-0.3.10.jar
+build/libs/createnetherite-1.21.1-0.3.11.jar
 ```
 
 ## Gradle 与依赖
@@ -144,6 +144,7 @@ MixinConfigs: createnetherite.mixins.json
 - `createnetherite:netherite_weighted_ejector`
 - `createnetherite:netherite_extendo_grip`
 - `createnetherite:netherite_deployer`
+- `createnetherite:netherite_netherite`
 - `createnetherite:netherite_sheet`
 
 创造模式标签页：
@@ -151,7 +152,7 @@ MixinConfigs: createnetherite.mixins.json
 - 注册位置：`BoosterCreativeModeTabs`
 - 标签页 ID：`createnetherite:createnetherite`
 - 图标：强力机械泵
-- 包含：上述十四种方块的物品、下界合金无限管理器和下界合金板，共十七种在用物品；另保留旧下界合金过滤器注册以兼容存档，注册物品总数为十八。空燃烧室是同一物品 ID 的组件变体
+- 包含：上述十四种方块的物品、下界合金无限管理器、下界合金伸缩机械手、下界合金下界合金和下界合金板，共十八种在用物品；另保留旧下界合金过滤器注册以兼容存档，注册物品总数为十九。空燃烧室是同一物品 ID 的组件变体
 
 ## 主类与初始化
 
@@ -240,11 +241,12 @@ NeoForge 1.21.1 使用 NeoForge DeferredRegister 新类型，不再使用 Forge 
 - `DeferredItem<Item> NETHERITE_WIRELESS_TERMINAL`：普通 `BlockItem`
 - `DeferredItem<Item> NETHERITE_INFINITE_MANAGER`：`InfiniteManagerItem`，手持右键打开分页管理器
 - `DeferredItem<Item> NETHERITE_SMART_CHUTE`：普通防火 `BlockItem`，打开方向规则菜单
+- `DeferredItem<Item> NETHERITE_NETHERITE`：`NetheriteNetheriteItem`，不消耗的循环啃食与10秒挑战进度
 - `DeferredItem<Item> NETHERITE_DEPLOYER`：原生 `AssemblyOperatorBlockItem`，批量加工机械手
 - `DeferredItem<Item> NETHERITE_EXTENDO_GRIP`：继承 `ExtendoGripItem`，200耐久、额外触及、取液与直接手动供能
 - `DeferredItem<Item> NETHERITE_WEIGHTED_EJECTOR`：`NetheriteEjectorItem`，Shift右键选点，放置或右键已有升级置物台应用目标
 
-上述十八种物品的 `Item.Properties` 均设置 `.fireResistant()`，使用原版下界合金物品的火焰与岩浆伤害保护。
+上述十九种物品的 `Item.Properties` 均设置 `.fireResistant()`，使用原版下界合金物品的火焰与岩浆伤害保护。
 
 ### BlockEntityType
 
@@ -330,7 +332,7 @@ createnetherite-server.toml
 
 强力机械泵使用普通 `BlockItem`，不再通过 `appendHoverText` 默认展开介绍。
 
-客户端 `BoosterTooltips.register()` 使用 Create 6.0.10 的 `TooltipModifier.REGISTRY` 与 `ItemDescription.Modifier`。下界合金鼓风机保留原生 Ponder 入口；其余十七种物品（含旧过滤器）提供中英文 `<物品 description id>.tooltip.summary`，由 Create 生成 Shift 提示、折叠、换行及重点配色。燃烧室捕获用法使用原生 `.condition1` / `.behaviour1`。
+客户端 `BoosterTooltips.register()` 使用 Create 6.0.10 的 `TooltipModifier.REGISTRY` 与 `ItemDescription.Modifier`。下界合金鼓风机保留原生 Ponder 入口；其余十八种物品（含旧过滤器）提供中英文 `<物品 description id>.tooltip.summary`，由 Create 生成 Shift 提示、折叠、换行及重点配色。燃烧室捕获用法使用原生 `.condition1` / `.behaviour1`。
 
 储罐的当前配置容量倍率、燃烧室堆叠保存的数量与倍率，只在按住 Shift 时追加到原生概要后。相关代码仅在客户端加载；捕获、放置、燃烧以及工程师护目镜信息保持原有逻辑。过滤器的已配置规则预览沿用 Create `FilterItem` 的原生显示行为。
 
@@ -1032,3 +1034,18 @@ minecraft:netherite_ingot
 新增7项真实服务端GameTest：置物台32件整批；材料不足保留余料与原版单件对照；砂纸只剩2次耐久、keepHeld催化剂；4个玻璃瓶容器返回、确定性无产物结果；16件不堆叠序列过渡物分别推进step1并核对缓存及溢出掉落计数；真实动力臂交互点、模拟/实际给料、抽取及库存重载和移动注册；真实三格传送带32件加工。未注册基线先失败，实现后完整离线build与205项原有回归、全部29项GameTest通过。独立审查发现的移动交互和动力臂给料注册遗漏已补齐并复核。序列测试按真实不堆叠产物及原生溢出掉落核对，测试配方的无产物情况通过清空仅QA配方的结果列表确定性复现（Create不接受JSON chance=0）。
 
 发布核对：140个生产资源JSON，中英文各98个语言键；除动力臂中文名称与概要两项外，旧语言值和格式保留。三个模型的原生parent/几何及全部实际使用纹理路径核对通过。最终0.3.10 jar 的198个生产资源与全部生产类均和源码/编译结果逐字节一致，元数据版本0.3.10，QA配方、测试类和结构未打包，旧专用过滤器配方仍不存在。SHA-256：`a0ec64a56a044fd6a44278d9d6880909661c82a325b271da662957015414d373`。未启动客户端或使用RTX5060，新增模型的实际渲染和移动结构内的玩家手动操作仍未进行图形实测。
+
+
+## 下界合金下界合金（0.3.11）
+
+2026-11-04 新增 `createnetherite:netherite_netherite`，名称、进度标题与概要按用户原文分别为“下界合金下界合金”“你的牙还好吗？”“你为什么要做这个？”。一个下界合金锭加一个下界合金板无序合成一个；沿用防火、防爆与原生Shift概要，加入创造栏。
+
+- `NetheriteNetheriteItem` 是无食物组件的普通物品，主副手均可在满饥饿时开始使用，返回原生 `UseAnim.EAT`、32tick周期。`finishUsingItem` 原样返回堆叠，既不消耗数量/组件，也不添加饥饿、饱和、生命或经验奖励。
+- `LivingEntityUseItemEvent.Tick` 监听器只在本物品剩余duration恰为1时设为33；原生随后递减为32，使原版食用动作保持循环，不用极长duration导致动画迟迟不开始，也不结束/重启使用。事件取消或非正duration的停止语义保留，其他食物不变。
+- 服务端 `use` 在实际开始使用后记录玩家本次起点，`onUseTick` 仅对当前使用的ServerPlayer计算游戏时间差；严格大于200tick才授予 `are_your_teeth_ok` 的 `chew` criterion。松开清理起点，新的使用覆盖起点，多次短按不累计；授予后清理计时，动画仍持续。
+- 真实进度位于 `data/createnetherite/advancement/are_your_teeth_ok.json`，父节点为 `minecraft:nether/root`，`frame=challenge` 对应原生紫色挑战显示，使用 `minecraft:impossible` criterion由服务端主动授予。标题/说明具备中英文，显示toast和原生聊天通告，无额外奖励。
+- 指定美术对话新增16×16透明物品贴图，表现锭与薄板复合造型，模型继承 `minecraft:item/generated`；57张旧仓库PNG字节未变。
+
+验证：未注册基线先失败。新增4项GameTest覆盖满饥饿开始/松开/完成路径不消耗，真实ServerPlayer使用循环跨越多个32tick周期，200tick尚未授予而201tick授予，260tick后仍持续且数量/组件/饥饿/饱和/生命不变，150tick松开后副手重启再独立等待201tick，真实配方、challenge类型及原生事件总线的1/0/负值边界和普通苹果不变。NeoForge明确拒绝给FakePlayer授予进度，因此进度验证改用真实ServerPlayer及不联网的测试连接；生产逻辑未为测试放开限制。完整构建的205项原有回归与全部33项服务端GameTest通过，独立只读审查未发现问题。
+
+发布核对：143个生产JSON、中英文各102键，旧98键值和格式保持；用户指定的三段中文逐字一致。最终0.3.11 jar 的202个生产资源和全部生产类与源码/编译输出逐字节一致，模组元数据版本0.3.11，测试类/QA配方/结构未打包，旧专用过滤器配方仍不存在。SHA-256：`d095624fc3a9481924471a74b78b7b72fe3aca5f7bb8b7296f9f8861b676a13d`。未启动客户端或使用RTX5060，手部动作及紫色toast的实际图形显示仍待实测。

@@ -96,5 +96,9 @@
   "item.createnetherite.netherite_extendo_grip.tooltip.summary": "比原版_额外增加3格_方块触及距离。副手持有时，主手空桶可直接从储罐取液；主手长按右键直接驱动工作方块，Shift开始可反转，松开即停。仅驱动当前方块，输出恰好足够一台强力机械泵；成功取液和持续供能消耗背罐空气，没有空气时消耗耐久。",
   "grip.createnetherite.cannot_power": "无法手动驱动：方块已有动力、属于发电机，或所需应力超过%s SU。",
   "block.createnetherite.netherite_deployer": "下界合金机械手",
-  "block.createnetherite.netherite_deployer.tooltip.summary": "一次动作_批量加工_传送带或置物台上的同组物品。材料、工具耐久和容器返还仍按_实际加工数量_结算；材料不足或工具损坏即停止并保留余料。序列组装每件只推进当前一步，动作速度和应力消耗沿用原版。"
+  "block.createnetherite.netherite_deployer.tooltip.summary": "一次动作_批量加工_传送带或置物台上的同组物品。材料、工具耐久和容器返还仍按_实际加工数量_结算；材料不足或工具损坏即停止并保留余料。序列组装每件只推进当前一步，动作速度和应力消耗沿用原版。",
+  "item.createnetherite.netherite_netherite": "下界合金下界合金",
+  "item.createnetherite.netherite_netherite.tooltip.summary": "你为什么要做这个？",
+  "advancement.createnetherite.are_your_teeth_ok.title": "你的牙还好吗？",
+  "advancement.createnetherite.are_your_teeth_ok.description": "连续啃下界合金下界合金超过10秒。"
 }

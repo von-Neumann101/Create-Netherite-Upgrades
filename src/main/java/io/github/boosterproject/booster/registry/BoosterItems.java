@@ -10,6 +10,7 @@ import io.github.boosterproject.booster.content.logistics.filter.NetheriteFilter
 import io.github.boosterproject.booster.content.redstone.wireless.InfiniteManagerItem;
 import io.github.boosterproject.booster.content.logistics.depot.NetheriteEjectorItem;
 import io.github.boosterproject.booster.content.equipment.NetheriteExtendoGripItem;
+import io.github.boosterproject.booster.content.equipment.NetheriteNetheriteItem;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.neoforged.bus.api.IEventBus;
@@ -91,6 +92,9 @@ public final class BoosterItems {
 
     private BoosterItems() {
     }
+
+    public static final DeferredItem<Item> NETHERITE_NETHERITE = ITEMS.register("netherite_netherite",
+        () -> new NetheriteNetheriteItem(new Item.Properties().fireResistant()));
 
     public static final DeferredItem<Item> NETHERITE_DEPLOYER = ITEMS.register("netherite_deployer",
         () -> new AssemblyOperatorBlockItem(BoosterBlocks.NETHERITE_DEPLOYER.get(), new Item.Properties().fireResistant()));
