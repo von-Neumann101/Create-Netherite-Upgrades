@@ -4,7 +4,7 @@
 
 当前分支：`1.21.1-NeoForge`
 
-当前模组版本：`0.3.11`
+当前模组版本：`0.3.12`
 
 # 维护状态
 
@@ -88,7 +88,7 @@ Minecraft `1.20.1` Forge 的 `main` 分支暂停更新，保留现有代码和�
 
 **思索教程：** 悬停下界合金鼓风机并按住默认 `W`，查看“内置加工模式”和“过滤器规则与统一模式”两段用法动画。教程现使用原版过滤表和四槽操作，支持中英文字幕。
 
-**物品说明与界面：** 鼓风机沿用原生思索入口，其余无思索物品使用原生 Shift 概要。界面 PNG 位于 jar 内 `assets/createnetherite/textures/gui/`，资源包可按相同路径及原尺寸替换，文字与物品由游戏绘制。
+**物品说明与界面：** 鼓风机和弹射置物台沿用原生思索入口，其余无思索物品使用原生 Shift 概要。界面 PNG 位于 jar 内 `assets/createnetherite/textures/gui/`，资源包可按相同路径及原尺寸替换，文字与物品由游戏绘制。
 
 # 无线红石
 
@@ -116,7 +116,9 @@ Minecraft `1.20.1` Forge 的 `main` 分支暂停更新，保留现有代码和�
 
 手持下界合金弹射置物台，`Shift + 右键`目标方块，再正常放置。选点后会预览轨迹，重复选中同一目标可清除。手持已选目标的置物台右键已有下界合金置物台，可以重新设定且不消耗手中物品；在途物品抵达后才能改向。工程师扳手可旋转目标，悬停时显示现有轨迹。保留原生数量设置、库存和红石暂停，实体与物品均可弹射，实体方块会阻挡物品轨迹。
 
-一个下界合金板加一个原版弹射置物台，无序合成一个升级品。物品具备防火、防爆与原生 Shift 概要。
+一个下界合金板加一个原版弹射置物台，无序合成一个升级品。物品具备防火、防爆。
+
+**思索教程：** 悬停下界合金弹射置物台并按住默认 `W`，查看“选定目标与弹射物品”和“改向、数量与红石控制”两段用法动画，支持中英文字幕。
 
 # 下界合金伸缩机械手
 
@@ -181,7 +183,7 @@ createnetherite-server.toml
 构建产物：
 
 ```text
-build/libs/createnetherite-1.21.1-0.3.11.jar
+build/libs/createnetherite-1.21.1-0.3.12.jar
 ```
 
 # Introduction
@@ -190,7 +192,7 @@ build/libs/createnetherite-1.21.1-0.3.11.jar
 
 Current branch: `1.21.1-NeoForge`
 
-Current mod version: `0.3.11`
+Current mod version: `0.3.12`
 
 # Maintenance status
 
@@ -272,7 +274,7 @@ Craft a Netherite Sheet with a regular Encased Fan to upgrade it. Breaking retur
 
 **Ponder:** Hover the fan and hold the default `W` key for two usage tutorials covering built-in modes, original filters in four slots, and selected-mode fallback. English and Chinese captions are available.
 
-**Descriptions and GUI:** The fan keeps its native Ponder entry; items without Ponder use native Shift summaries. GUI PNGs are under `assets/createnetherite/textures/gui/` inside the jar and can be replaced by resource packs at matching paths and dimensions; text and items remain game-rendered.
+**Descriptions and GUI:** The fan and ejector have native Ponder entries; items without Ponder use native Shift summaries. GUI PNGs are under `assets/createnetherite/textures/gui/` inside the jar and can be replaced by resource packs at matching paths and dimensions; text and items remain game-rendered.
 
 # Wireless Redstone
 
@@ -300,7 +302,9 @@ Stays flat while targeting diagonally, at different heights, or straight up/down
 
 Hold the upgraded ejector, `Shift + right-click` a target block, then place normally. A trajectory preview appears after selection; select the same target again to clear it. Right-click an existing upgraded ejector with a target selected to retarget it without consuming the held item; wait for flying items to arrive before changing direction. Wrench rotation rotates the target, and hovering with a wrench previews the current trajectory. Native stack-size settings, inventory, and redstone pause remain available. Both entities and items can launch; solid blocks obstruct item trajectories.
 
-Craft one Netherite Sheet with an original Weighted Ejector in a shapeless recipe. The upgrade has fire and blast protection and a native Shift summary.
+Craft one Netherite Sheet with an original Weighted Ejector in a shapeless recipe. The upgrade has fire and blast protection.
+
+**Ponder tutorials:** Hover the Netherite Weighted Ejector and hold the default `W` key for “Selecting a target and launching items” and “Retargeting, stack size and redstone”. Both usage scenes have English and Chinese subtitles.
 
 # Netherite Extendo Grip
 
@@ -365,5 +369,5 @@ Existing worlds keep their own `serverconfig/createnetherite-server.toml`. If de
 Build output:
 
 ```text
-build/libs/createnetherite-1.21.1-0.3.11.jar
+build/libs/createnetherite-1.21.1-0.3.12.jar
 ```

@@ -11,7 +11,7 @@
 - 分支：`1.21.1-NeoForge`
 - 源码核对日期：`2026-11-02`
 - 源码基线提交：`258581732409c92bd271c783fff83fe993a5a4ca`（后续新增无线终端与管理器；贴图提交 `7326d31`）
-- 模组版本：`0.3.11`
+- 模组版本：`0.3.12`
 - Mod id：`createnetherite`
 - 主包名：`io.github.boosterproject.booster`
 - Minecraft：`1.21.1`
@@ -74,7 +74,7 @@
 按当前配置生成的主 jar：
 
 ```text
-build/libs/createnetherite-1.21.1-0.3.11.jar
+build/libs/createnetherite-1.21.1-0.3.12.jar
 ```
 
 ## Gradle 与依赖
@@ -332,7 +332,7 @@ createnetherite-server.toml
 
 强力机械泵使用普通 `BlockItem`，不再通过 `appendHoverText` 默认展开介绍。
 
-客户端 `BoosterTooltips.register()` 使用 Create 6.0.10 的 `TooltipModifier.REGISTRY` 与 `ItemDescription.Modifier`。下界合金鼓风机保留原生 Ponder 入口；其余十八种物品（含旧过滤器）提供中英文 `<物品 description id>.tooltip.summary`，由 Create 生成 Shift 提示、折叠、换行及重点配色。燃烧室捕获用法使用原生 `.condition1` / `.behaviour1`。
+客户端 `BoosterTooltips.register()` 使用 Create 6.0.10 的 `TooltipModifier.REGISTRY` 与 `ItemDescription.Modifier`。下界合金鼓风机和弹射置物台保留原生 Ponder 入口；其余十七种物品（含旧过滤器）提供中英文 `<物品 description id>.tooltip.summary`，由 Create 生成 Shift 提示、折叠、换行及重点配色。燃烧室捕获用法使用原生 `.condition1` / `.behaviour1`。
 
 储罐的当前配置容量倍率、燃烧室堆叠保存的数量与倍率，只在按住 Shift 时追加到原生概要后。相关代码仅在客户端加载；捕获、放置、燃烧以及工程师护目镜信息保持原有逻辑。过滤器的已配置规则预览沿用 Create `FilterItem` 的原生显示行为。
 
@@ -681,9 +681,9 @@ BE 替换 `airCurrent` 为 `NetheriteAirCurrent`。它复用 Create 的碰撞与
 
 ## 下界合金鼓风机思索
 
-客户端 setup 中调用 `PonderIndex.addPlugin(new BoosterPonderPlugin())`，使用 Ponder `1.0.82` 的 `PonderPlugin` / `PonderSceneRegistrationHelper`，不使用旧版 `PonderRegistry` API。当前仅为下界合金鼓风机注册两段用法动画，不覆盖 Create 的原版教程；0.3.7已移除旧专用过滤器的共用入口。
+客户端 setup 中调用 `PonderIndex.addPlugin(new BoosterPonderPlugin())`，使用 Ponder `1.0.82` 的 `PonderPlugin` / `PonderSceneRegistrationHelper`，不使用旧版 `PonderRegistry` API。当前为下界合金鼓风机和弹射置物台各注册两段用法动画，不覆盖 Create 的原版教程；0.3.7已移除旧专用过滤器的共用入口。
 
-- `client/ponder/BoosterPonderPlugin.java`：注册场景和 15 条命名 sharedText。
+- `client/ponder/BoosterPonderPlugin.java`：注册两种机器的场景及共享字幕；鼓风机保留15条，弹射置物台新增13条。
 - `client/ponder/NetheriteFanScenes.java`：接入动力、选择四种加工模式、放入物品、设置过滤器、规则回退与切换，仅说明用法。
 - `assets/createnetherite/ponder/fan/tutorial.nbt`：两段共用的原生 gzip NBT 结构，共 56 个方块。舞台为 7×7，结构高度 3；风机 `(1,2,3)` 向东，正下方 `(1,1,3)` 是安山机壳，轴在其西侧，四个置物台位于 `(3..6,1,3)`。场景先展示安山机壳，再展示风机。风口高于置物台一格，避免挡风。
 
@@ -1049,3 +1049,18 @@ minecraft:netherite_ingot
 验证：未注册基线先失败。新增4项GameTest覆盖满饥饿开始/松开/完成路径不消耗，真实ServerPlayer使用循环跨越多个32tick周期，200tick尚未授予而201tick授予，260tick后仍持续且数量/组件/饥饿/饱和/生命不变，150tick松开后副手重启再独立等待201tick，真实配方、challenge类型及原生事件总线的1/0/负值边界和普通苹果不变。NeoForge明确拒绝给FakePlayer授予进度，因此进度验证改用真实ServerPlayer及不联网的测试连接；生产逻辑未为测试放开限制。完整构建的205项原有回归与全部33项服务端GameTest通过，独立只读审查未发现问题。
 
 发布核对：143个生产JSON、中英文各102键，旧98键值和格式保持；用户指定的三段中文逐字一致。最终0.3.11 jar 的202个生产资源和全部生产类与源码/编译输出逐字节一致，模组元数据版本0.3.11，测试类/QA配方/结构未打包，旧专用过滤器配方仍不存在。SHA-256：`d095624fc3a9481924471a74b78b7b72fe3aca5f7bb8b7296f9f8861b676a13d`。未启动客户端或使用RTX5060，手部动作及紫色toast的实际图形显示仍待实测。
+
+## 下界合金弹射置物台思索（0.3.12）
+
+2026-11-04 为 `netherite_weighted_ejector` 新增原生W思索入口，两段动画仅介绍用法，不改变机器逻辑、倍率或贴图。该物品移出纯Shift概要注册清单，原有概要翻译保留兼容。
+
+- `NetheriteEjectorScenes.launch` / `netherite_ejector_launch`：手持机器Shift右键目标、预览斜向高低轨迹、正常放置、连接动力轴、向蓄力完成的平台投入铜锭，由真实飞行队列送到目标置物台。
+- `NetheriteEjectorScenes.controls` / `netherite_ejector_controls`：在途物品抵达后重新选点并右键现有机器改向；侧面数量面板设为4，先放2件等待，再补2件触发；从目标置物台取走第一批物品以腾出空间，再演示控制杆通电暂停满4件的平台，断电恢复弹射。
+- `BoosterPonderPlugin` 为新物品注册两个 `ejector/tutorial` storyboard，新增13条共享字幕、两个标题，全部具备中英文。原鼓风机注册、场景、15条共享字幕及结构保留。
+- `assets/createnetherite/ponder/ejector/tutorial.nbt` 为7×8×7、58方块的原生结构。源台 `(1,2,5)` 面向北，下方为安山机壳，西侧X轴轴杆；两个目标分别为 `(4,3,2)`、`(5,1,4)`，控制杆在 `(1,2,6)` 并有机壳支撑。结构预留完整轨迹上方空间，目标支柱不挡飞行路径。
+- 场景通过真实 `setTargetOffset`、原生数量行为的 `setValue(4)` 和控制杆切换后的 `updateSignal()` 控制，使用 `createItemOnBeltLike` 投料并等待实际虚拟飞行，不直接给目标添加产物。轨迹预览采样同一个 `NetheriteEntityLauncher`。数量调整调用行为接口，避免对已放置动力方块重新载入整份NBT时触发Create的移动保护并清除动力信息。
+- 锁定Create版本的可合并空置物台首次只接收1件：原生余量计算读取空堆叠的上限1。教程投料先放1件，再放剩余数量，避免Ponder忽略余量导致“2+2”实际只收到3件；不修改原生库存实现。
+
+验证：新增1项 `NetheriteEjectorPonderGameTest`，读取实际生产结构，验证支撑和注册、真实选点/最后一件放置、斜上方输送、空闲改向不消耗物品、两条实际轨迹均位于结构范围内、64RPM持续供能、2件等待/4件触发、腾空目标、控制杆暂停与恢复后的再次实际到达。独立审查指出的空台首次批量投料问题已修正并复核；测试也发现并修正了整份NBT重载导致的停机和接收台未腾空。最终完整离线 `build runWirelessGameTestServer` 通过，205项原有回归及全部34项服务端GameTest通过。
+
+发布核对：143个生产JSON、中英文各117键，旧102键值和原鼓风机场景/结构未改，58张既有仓库PNG字节不变。最终0.3.12 jar 的203个生产资源和138个生产类与源码资源/编译结果逐字节一致，元数据版本0.3.12，新增场景类及结构齐全，测试类/QA配方/结构未打包。SHA-256：`a07f49a4b96a4b7b0c06050644508e80125d780db8b4e281e2b31b143e5ad46b`。未启动客户端或使用RTX5060；上述服务端操作链验证与源码审查不代表已实测Ponder画面、镜头及字幕布局，实际播放仍待图形验证。

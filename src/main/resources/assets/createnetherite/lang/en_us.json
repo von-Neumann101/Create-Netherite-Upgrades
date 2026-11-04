@@ -100,5 +100,20 @@
   "item.createnetherite.netherite_netherite": "Netherite Netherite",
   "item.createnetherite.netherite_netherite.tooltip.summary": "Why would you make this?",
   "advancement.createnetherite.are_your_teeth_ok.title": "Are your teeth okay?",
-  "advancement.createnetherite.are_your_teeth_ok.description": "Chew Netherite Netherite continuously for more than 10 seconds."
+  "advancement.createnetherite.are_your_teeth_ok.description": "Chew Netherite Netherite continuously for more than 10 seconds.",
+  "createnetherite.ponder.shared.ejector_select": "Hold a Netherite Weighted Ejector, then sneak and right-click the target block.",
+  "createnetherite.ponder.shared.ejector_diagonal": "The target may be diagonal, above or below the ejector. Check the previewed path.",
+  "createnetherite.ponder.shared.ejector_place": "Place the ejector normally after selecting a target. The platform stays flat.",
+  "createnetherite.ponder.shared.ejector_power": "Connect rotational power to the shaft so the ejector can charge.",
+  "createnetherite.ponder.shared.ejector_insert": "Put items on the charged platform to launch them automatically.",
+  "createnetherite.ponder.shared.ejector_arrive": "A targeted depot receives the items. Keep the flight path clear of solid blocks.",
+  "createnetherite.ponder.shared.ejector_reselect": "To change the route, select a new target with sneak-right-click while holding an ejector.",
+  "createnetherite.ponder.shared.ejector_apply": "Wait for flying items to arrive, then right-click the existing ejector with the selected target. The held ejector is not consumed.",
+  "createnetherite.ponder.shared.ejector_quantity": "Use the side value panel to set the required stack size. Here it is set to four.",
+  "createnetherite.ponder.shared.ejector_wait": "Two items are not enough, so the platform waits.",
+  "createnetherite.ponder.shared.ejector_full": "Adding two more reaches four and triggers one launch.",
+  "createnetherite.ponder.shared.ejector_pause": "A redstone signal pauses launching, even when the required number of items is present.",
+  "createnetherite.ponder.shared.ejector_resume": "Turn the redstone signal off to resume launching.",
+  "createnetherite.ponder.netherite_ejector_launch.header": "Selecting a target and launching items",
+  "createnetherite.ponder.netherite_ejector_controls.header": "Retargeting, stack size and redstone"
 }

@@ -100,5 +100,20 @@
   "item.createnetherite.netherite_netherite": "下界合金下界合金",
   "item.createnetherite.netherite_netherite.tooltip.summary": "你为什么要做这个？",
   "advancement.createnetherite.are_your_teeth_ok.title": "你的牙还好吗？",
-  "advancement.createnetherite.are_your_teeth_ok.description": "连续啃下界合金下界合金超过10秒。"
+  "advancement.createnetherite.are_your_teeth_ok.description": "连续啃下界合金下界合金超过10秒。",
+  "createnetherite.ponder.shared.ejector_select": "手持下界合金弹射置物台，按住Shift右键目标方块。",
+  "createnetherite.ponder.shared.ejector_diagonal": "目标可以在斜向、高处或低处。选点后查看预览轨迹。",
+  "createnetherite.ponder.shared.ejector_place": "选好目标后正常放置，置物台保持平放。",
+  "createnetherite.ponder.shared.ejector_power": "从传动轴接入旋转动力，让置物台蓄力。",
+  "createnetherite.ponder.shared.ejector_insert": "在已蓄力的置物台上放入物品，即可自动弹射。",
+  "createnetherite.ponder.shared.ejector_arrive": "目标置物台会接收物品，请保持飞行路径没有实体方块阻挡。",
+  "createnetherite.ponder.shared.ejector_reselect": "需要改向时，再次手持弹射置物台，按住Shift右键新目标。",
+  "createnetherite.ponder.shared.ejector_apply": "等待在途物品抵达后，手持已选目标的物品右键现有置物台即可改向，不会消耗手中物品。",
+  "createnetherite.ponder.shared.ejector_quantity": "通过侧面的数量面板设置弹射数量，这里设为4个。",
+  "createnetherite.ponder.shared.ejector_wait": "目前只有2个物品，置物台会等待凑齐数量。",
+  "createnetherite.ponder.shared.ejector_full": "再加入2个，达到4个后触发一次弹射。",
+  "createnetherite.ponder.shared.ejector_pause": "红石信号会暂停弹射，即使物品数量已经凑齐。",
+  "createnetherite.ponder.shared.ejector_resume": "关闭红石信号，置物台会恢复弹射。",
+  "createnetherite.ponder.netherite_ejector_launch.header": "选定目标与弹射物品",
+  "createnetherite.ponder.netherite_ejector_controls.header": "改向、数量与红石控制"
 }
