@@ -9,7 +9,6 @@ import com.simibubi.create.content.kinetics.belt.transport.TransportedItemStack;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import io.github.boosterproject.booster.registry.BoosterBlockEntityTypes;
 import io.github.boosterproject.booster.registry.BoosterFluids;
-import io.github.boosterproject.booster.registry.BoosterItems;
 import io.github.boosterproject.booster.registry.BoosterRecipeTypes;
 import java.util.List;
 import net.minecraft.core.BlockPos;
@@ -35,7 +34,7 @@ public class NetheriteConverterBlockEntity extends KineticBlockEntity {
     public static final int REQUIRED_STRESS = 2048, PROCESSING_TICKS = 100, FLUID_PER_ITEM = 250;
     private final ItemStackHandler plate = new ItemStackHandler(1) {
         @Override public int getSlotLimit(int slot) { return 1; }
-        @Override public boolean isItemValid(int slot, ItemStack stack) { return stack.is(BoosterItems.NETHERITE_SHEET.get()); }
+        @Override public boolean isItemValid(int slot, ItemStack stack) { return ConversionPlate.isCatalyst(stack); }
         @Override protected void onContentsChanged(int slot) { changedInventory(); }
     };
     private final FluidTank essence = new FluidTank(4000, stack -> stack.getFluid().isSame(BoosterFluids.NETHER_ESSENCE.get())) {

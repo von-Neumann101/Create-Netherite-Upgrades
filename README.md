@@ -4,7 +4,7 @@
 
 当前分支：`1.21.1-NeoForge`
 
-当前模组版本：`0.3.15`
+当前模组版本：`0.3.16`
 
 # 维护状态
 
@@ -39,6 +39,7 @@ Minecraft `1.20.1` Forge 的 `main` 分支暂停更新，保留现有代码和�
 - `createnetherite:netherite_extendo_grip`
 - `createnetherite:netherite_deployer`
 - `createnetherite:netherite_netherite`
+- `createnetherite:netherite_netherite_wrench`
 - `createnetherite:netherite_sheet`
 
 强力机械泵接入 Create 原版流体管网，默认基础应力消耗为 `16.0`、压力倍率为 `8.0`。压力倍率提高吞吐，不增加管道传播距离。
@@ -128,9 +129,9 @@ Minecraft `1.20.1` Forge 的 `main` 分支暂停更新，保留现有代码和�
 
 新增转换途径，原有合成配方保留。把转换机放在传送带、置物台等处理位的**上方两格**，将普通机器物品送到下方，可逐个转换为对应下界合金版本。覆盖现有14类机器，烈焰人燃烧室的空壳和已有烈焰人版本分别转换。
 
-转换机固定占用 **2048SU**，每个物品需要连续供能 **5秒（100tick）**；提高转速不会加速，断电或过载会重新计时。每次完成消耗 **250mB下界精华** 和一次板材额度，未完成不扣原料。内置精华槽4000mB，可用管道或桶注入；不接受岩浆等其他流体。
+转换机固定占用 **2048SU**，每个物品需要连续供能 **5秒（100tick）**；提高转速不会加速，断电或过载会重新计时。每次完成消耗 **250mB下界精华** 和一次耗材额度，未完成不扣原料。内置精华槽4000mB，可用管道或桶注入；不接受岩浆等其他流体。
 
-右键放入一张下界合金板，单张可转换 **16个**机器；潜行空手右键取回。部分用过的板保留剩余次数，自动化输入同样只接受一张板。板材显示在机身顶部，Shift可查看剩余次数，工程师护目镜可查看精华与进度。暂不制作转换动作动画。
+右键放入一张下界合金板，可转换 **16个**机器；也可放入一张原版下界合金升级模板，转换 **1个**机器。两者均需每次250mB精华。潜行空手右键取回耗材；部分用过的板保留剩余次数，自动化单槽接受一张板或模板。耗材显示在机身顶部，工程师护目镜可查看剩余次数、精华与进度。暂不制作转换动作动画。
 
 转换机的有序合成：
 
@@ -175,6 +176,23 @@ Minecraft `1.20.1` Forge 的 `main` 分支暂停更新，保留现有代码和�
 
 连续使用**超过10秒**（超过200个游戏tick）可获得紫色挑战进度**“你的牙还好吗？”**；松开或换物品后重新计时，短按不累计。支持主手与副手，获得进度后仍可继续啃。原生 Shift 概要为：**“你为什么要做这个？”**。沿用下界合金物品的防火、防爆属性。
 
+# 下界合金下界合金扳手
+
+目前仅通过创造栏或指令获取，**暂不添加合成配方**。基础伤害 **10**（下界合金剑+2）、攻速 **1.6**，无耐久损耗，保留 Create 扳手旋转和拆卸功能。
+
+主手持有，按 **X** 打开轮盘，将下列工作方块放入 **8个真实槽位**（每槽一个），点击槽下按钮启用或停用。**本版只激活一个模块**；双激活与升级留待以后。取出正在激活的模块立即停用，物品组件和储液随扳手保存。
+
+| 模块 | 激活后的用法 |
+| --- | --- |
+| 强力机械泵 | 伤害+6、实体攻击距离+1、击退+2级。 |
+| 下界合金鼓风机 | 长按右键吹动实体，按下Shift切换吸/吹。以256RPM及下界合金风速倍率计算，实体受方块遮挡。 |
+| 下界合金弹射置物台 | Shift显示轨迹，右键沿轨迹弹射，最大64格；无阻挡落地免摔，途中撞到障碍恢复正常摔伤。 |
+| 下界合金烈焰人燃烧室 | 持有者造成的火焰伤害4倍，包括火焰附加造成的后续燃烧。 |
+| 下界合金动力冲压机 | 一次实际攻击的总伤害1.5倍，并定身1秒。 |
+| 下界合金蒸汽引擎 | 长按右键直接驱动点击的单个工作方块；默认16RPM/256SU，恰好一台强力机械泵，不耗空气或耐久，松开即停。 |
+| 下界合金转换机 | 右键生物使其永久获得抗性I、盔甲+3，不叠加；死亡必掉一张原版下界合金升级模板。 |
+| 下界合金流体储罐 | 右键收纳一桶流体源；按Shift打开流体轮盘，选液后Shift+右键放一桶。不同流体合计最多64桶，卸下模块仍保留储液。 |
+
 # 防爆与防火
 
 上述全部物品（含强力机械泵和下界合金板）的掉落物均免疫爆炸伤害；十四种方块放置后均不被爆炸破坏，储罐与保险库中的内容也因此保留。方块基础爆炸抗性统一为 `1200`。
@@ -216,7 +234,7 @@ createnetherite-server.toml
 构建产物：
 
 ```text
-build/libs/createnetherite-1.21.1-0.3.15.jar
+build/libs/createnetherite-1.21.1-0.3.16.jar
 ```
 
 # Introduction
@@ -225,7 +243,7 @@ build/libs/createnetherite-1.21.1-0.3.15.jar
 
 Current branch: `1.21.1-NeoForge`
 
-Current mod version: `0.3.15`
+Current mod version: `0.3.16`
 
 # Maintenance status
 
@@ -260,6 +278,7 @@ The mod currently adds several Create-compatible entries:
 - `createnetherite:netherite_extendo_grip`
 - `createnetherite:netherite_deployer`
 - `createnetherite:netherite_netherite`
+- `createnetherite:netherite_netherite_wrench`
 - `createnetherite:netherite_sheet`
 
 The Powerful Mechanical Pump uses Create's native fluid network, with a default base stress impact of `16.0` and a pressure multiplier of `8.0`. The pressure multiplier increases throughput without extending pipe propagation distance.
@@ -347,9 +366,9 @@ Craft one Netherite Sheet with an original Smart Chute in a shapeless recipe. Th
 
 An additional upgrade route; existing crafting recipes remain. Place the converter **two blocks above** a belt, depot or compatible processing inventory. It converts regular machine items one at a time, covering all 14 existing machine types, with separate empty and occupied Blaze Burner recipes.
 
-The converter uses a fixed **2048 SU** and **5 continuous seconds (100 ticks)** per item. Higher RPM does not speed it up; power loss or overstress restarts progress. Completion costs **250 mB of Nether Essence** and one sheet use. Unfinished work consumes nothing. Its 4000 mB tank accepts essence through pipes or buckets and rejects other fluids.
+The converter uses a fixed **2048 SU** and **5 continuous seconds (100 ticks)** per item. Higher RPM does not speed it up; power loss or overstress restarts progress. Completion costs **250 mB of Nether Essence** and one catalyst use. Unfinished work consumes nothing. Its 4000 mB tank accepts essence through pipes or buckets and rejects other fluids.
 
-Right-click to insert one Netherite Sheet for **16 upgrades**; sneak-right-click empty-handed to retrieve it. Partially used sheets retain their remaining uses, including when extracted, saved or dropped. Automation also accepts only one sheet. The sheet appears on top; Shift shows remaining uses, while Engineer's Goggles show fluid and progress. The machine currently has no conversion animation.
+Right-click to insert one Netherite Sheet for **16 upgrades**, or one vanilla Netherite Upgrade Smithing Template for **one upgrade**. Either catalyst still requires 250 mB essence per upgrade. Sneak-right-click empty-handed to retrieve it; partially used sheets retain their uses. Automation accepts a single sheet or template. The catalyst appears on top; Engineer's Goggles show remaining uses, fluid and progress. The machine currently has no conversion animation.
 
 Shaped crafting recipe:
 
@@ -394,6 +413,23 @@ Craft one Netherite Ingot with one Netherite Sheet in a shapeless recipe. Hold r
 
 Using it continuously for **more than 10 seconds** (over 200 game ticks) grants the purple challenge **“Are your teeth okay?”**. Releasing or switching items resets the timer; separate short uses do not accumulate. Works in either hand and keeps chewing after the challenge is earned. Its native Shift summary is **“Why would you make this?”**. Includes fire and blast protection.
 
+# Netherite Netherite Wrench
+
+Available from the creative tab or commands; **no crafting recipe yet**. Base attack damage is **10** (Netherite Sword +2), attack speed **1.6**, with no durability loss. Keeps Create wrench rotation and dismantling.
+
+Hold in the main hand and press **X**. The wheel stores **eight real module blocks**, one per slot; use the button below a slot to activate or deactivate it. **Only one module is active in this release**. Dual activation and upgrades are deferred. Removing the active module disables it; stored item components and fluids stay with the wrench.
+
+| Module | Active ability |
+| --- | --- |
+| Powerful Mechanical Pump | +6 attack damage, +1 entity attack reach, +2 knockback levels. |
+| Netherite Fan | Hold right-click for airflow; press Shift to toggle push/pull. Uses a 256 RPM reference and the Netherite wind-speed multiplier. Solid blocks obstruct the current. |
+| Netherite Weighted Ejector | Shift previews an arc; right-click launches up to 64 blocks. Unobstructed landing prevents fall damage; hitting an obstacle restores normal fall damage. |
+| Netherite Blaze Burner | Your fire damage is multiplied by four, including subsequent Fire Aspect burning. |
+| Netherite Mechanical Press | Total actual attack damage is multiplied by 1.5; target is rooted for one second. |
+| Netherite Steam Engine | Hold right-click to power only the clicked work block: default 16 RPM/256 SU, exactly enough for one Powerful Pump, without air or durability costs. Release to stop. |
+| Netherite Converter | Right-click a creature for permanent Resistance I and +3 armor, without stacking. Death guarantees one vanilla Netherite Upgrade Smithing Template. |
+| Netherite Fluid Tank | Right-click collects one source bucket; Shift opens fluid selection, then Shift+right-click places one bucket. All types share 64 buckets total. Removing the module preserves stored fluids. |
+
 # Blast and Fire Protection
 
 All items listed above, including the Powerful Mechanical Pump and Netherite Sheet, are immune to explosion damage when dropped. All fourteen placed blocks are protected from explosion destruction, preserving tank and vault contents. Their base blast resistance is `1200`.
@@ -435,5 +471,5 @@ Existing worlds keep their own `serverconfig/createnetherite-server.toml`. If de
 Build output:
 
 ```text
-build/libs/createnetherite-1.21.1-0.3.15.jar
+build/libs/createnetherite-1.21.1-0.3.16.jar
 ```

@@ -1,0 +1,4 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": { "layer0": "createnetherite:item/netherite_netherite_wrench" }
+}

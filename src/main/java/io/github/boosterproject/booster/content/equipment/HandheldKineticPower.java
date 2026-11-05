@@ -4,6 +4,8 @@ import com.simibubi.create.api.stress.BlockStressValues;
 import com.simibubi.create.content.kinetics.base.GeneratingKineticBlockEntity;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import io.github.boosterproject.booster.registry.BoosterBlocks;
+import io.github.boosterproject.booster.content.equipment.wrench.WrenchData;
+import io.github.boosterproject.booster.content.equipment.wrench.WrenchModule;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -32,6 +34,10 @@ public final class HandheldKineticPower {
 
     public static float capacityPerRpm() { return (float) BlockStressValues.getImpact(BoosterBlocks.POWERFUL_MECHANICAL_PUMP.get()); }
 
+    private static boolean canSupply(ItemStack stack) {
+        return NetheriteExtendoGripItem.isGrip(stack) || WrenchData.active(stack) == WrenchModule.ENGINE;
+    }
+
     private static KineticBlockEntity selected(Player player) {
         CompoundTag tag = player.getPersistentData().getCompound(TARGET);
         if (!tag.getString("Dimension").equals(player.level().dimension().location().toString())) return null;
@@ -48,7 +54,7 @@ public final class HandheldKineticPower {
 
     public static boolean isStillDriving(Player player, KineticBlockEntity be) {
         if (player.level() != be.getLevel() || !player.isUsingItem() || player.getUsedItemHand() != InteractionHand.MAIN_HAND
-            || !NetheriteExtendoGripItem.isGrip(player.getMainHandItem()) || selected(player) != be || !canDrive(player, be)) return false;
+            || !canSupply(player.getMainHandItem()) || selected(player) != be || !canDrive(player, be)) return false;
         var eye = player.getEyePosition();
         var hit = player.level().clip(new ClipContext(eye, eye.add(player.getViewVector(1).scale(player.blockInteractionRange())),
             ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, player));
@@ -58,7 +64,7 @@ public final class HandheldKineticPower {
     public static InteractionResult begin(UseOnContext context) {
         var player = context.getPlayer();
         var level = context.getLevel();
-        if (context.getHand() != InteractionHand.MAIN_HAND || player == null
+        if (context.getHand() != InteractionHand.MAIN_HAND || player == null || !canSupply(context.getItemInHand())
             || !(level.getBlockEntity(context.getClickedPos()) instanceof KineticBlockEntity be)) return InteractionResult.PASS;
         if (!canDrive(player, be)) {
             if (!level.isClientSide) player.displayClientMessage(Component.translatable("grip.createnetherite.cannot_power", capacityPerRpm() * RPM), true);
@@ -68,7 +74,8 @@ public final class HandheldKineticPower {
             stop(player);
             var target = (Target) be;
             if (!target.booster$claimPower(player, 0)) return InteractionResult.FAIL;
-            NetheriteExtendoGripItem.consumeAction(player, context.getItemInHand(), EquipmentSlot.MAINHAND);
+            if (NetheriteExtendoGripItem.isGrip(context.getItemInHand()))
+                NetheriteExtendoGripItem.consumeAction(player, context.getItemInHand(), EquipmentSlot.MAINHAND);
             if (context.getItemInHand().isEmpty()) return InteractionResult.FAIL;
             CompoundTag tag = new CompoundTag();
             tag.putString("Dimension", level.dimension().location().toString());
@@ -85,7 +92,8 @@ public final class HandheldKineticPower {
         if (be == null || !isStillDriving(player, be) || !((Target) be).booster$isDrivenBy(player)) {
             stop(player); player.stopUsingItem(); return;
         }
-        if (elapsed > 0 && elapsed % 20 == 0) NetheriteExtendoGripItem.consumeAction(player, stack, EquipmentSlot.MAINHAND);
+        if (elapsed > 0 && elapsed % 20 == 0 && NetheriteExtendoGripItem.isGrip(stack))
+            NetheriteExtendoGripItem.consumeAction(player, stack, EquipmentSlot.MAINHAND);
         if (stack.isEmpty()) { stop(player); player.stopUsingItem(); return; }
         ((Target) be).booster$refreshPower();
     }

@@ -1,6 +1,7 @@
 package io.github.boosterproject.booster.registry;
 
 import io.github.boosterproject.booster.Booster;
+import io.github.boosterproject.booster.content.equipment.wrench.WrenchMenu;
 import io.github.boosterproject.booster.content.kinetics.fan.NetheriteFanMenu;
 import io.github.boosterproject.booster.content.logistics.chute.NetheriteSmartChuteMenu;
 import io.github.boosterproject.booster.content.logistics.filter.NetheriteFilterMenu;
@@ -14,6 +15,9 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 
 public final class BoosterMenuTypes {
     public static final DeferredRegister<MenuType<?>> MENU_TYPES = DeferredRegister.create(Registries.MENU, Booster.MOD_ID);
+
+    public static final DeferredHolder<MenuType<?>, MenuType<WrenchMenu>> NETHERITE_WRENCH =
+        MENU_TYPES.register("netherite_wrench", () -> IMenuTypeExtension.create(WrenchMenu::new));
 
     public static final DeferredHolder<MenuType<?>, MenuType<NetheriteFilterMenu>> NETHERITE_FILTER =
         MENU_TYPES.register("netherite_filter", () -> IMenuTypeExtension.create(NetheriteFilterMenu::new));

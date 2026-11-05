@@ -11,6 +11,7 @@ import io.github.boosterproject.booster.content.redstone.wireless.InfiniteManage
 import io.github.boosterproject.booster.content.logistics.depot.NetheriteEjectorItem;
 import io.github.boosterproject.booster.content.equipment.NetheriteExtendoGripItem;
 import io.github.boosterproject.booster.content.equipment.NetheriteNetheriteItem;
+import io.github.boosterproject.booster.content.equipment.wrench.NetheriteNetheriteWrenchItem;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.neoforged.bus.api.IEventBus;
@@ -19,6 +20,9 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 
 public final class BoosterItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Booster.MOD_ID);
+
+    public static final DeferredItem<Item> NETHERITE_NETHERITE_WRENCH = ITEMS.register("netherite_netherite_wrench",
+        () -> new NetheriteNetheriteWrenchItem(new Item.Properties()));
 
     public static final DeferredItem<Item> NETHERITE_WIRELESS_MANAGER = ITEMS.register("netherite_wireless_manager", () ->
         new BlockItem(BoosterBlocks.NETHERITE_WIRELESS_MANAGER.get(), new Item.Properties().fireResistant()));

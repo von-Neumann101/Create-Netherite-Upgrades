@@ -3,7 +3,6 @@ package io.github.boosterproject.booster.content.conversion;
 import com.simibubi.create.content.kinetics.base.HorizontalKineticBlock;
 import com.simibubi.create.foundation.block.IBE;
 import io.github.boosterproject.booster.registry.BoosterBlockEntityTypes;
-import io.github.boosterproject.booster.registry.BoosterItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
@@ -36,7 +35,7 @@ public class NetheriteConverterBlock extends HorizontalKineticBlock implements I
             }
             return ItemInteractionResult.SUCCESS;
         }
-        if (stack.is(BoosterItems.NETHERITE_SHEET.get())) {
+        if (ConversionPlate.isCatalyst(stack)) {
             if (!level.isClientSide) {
                 ItemStack remainder = be.getPlateInventory().insertItem(0, stack.copyWithCount(1), false);
                 if (remainder.isEmpty() && !player.isCreative()) stack.shrink(1);

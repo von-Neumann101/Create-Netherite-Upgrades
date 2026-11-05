@@ -47,6 +47,7 @@ public final class BoosterClient {
     }
 
     public static void register(IEventBus modEventBus) {
+        WrenchClient.register(modEventBus);
         NeoForge.EVENT_BUS.addListener(NetheriteEjectorTargetHandler::tick);
         BoosterPartialModels.init();
         NetheriteArmModels.init();
@@ -105,6 +106,7 @@ public final class BoosterClient {
     }
 
     private static void registerScreens(RegisterMenuScreensEvent event) {
+        event.register(BoosterMenuTypes.NETHERITE_WRENCH.get(), WrenchScreen::new);
         event.register(BoosterMenuTypes.NETHERITE_SMART_CHUTE.get(), NetheriteSmartChuteScreen::new);
         event.register(BoosterMenuTypes.NETHERITE_FILTER.get(), NetheriteFilterScreen::new);
         event.register(BoosterMenuTypes.NETHERITE_FAN.get(), NetheriteFanScreen::new);
