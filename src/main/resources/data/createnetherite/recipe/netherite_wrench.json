@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    {
+      "item": "createnetherite:netherite_sheet"
+    },
+    {
+      "item": "create:wrench"
+    }
+  ],
+  "result": {
+    "id": "createnetherite:netherite_wrench",
+    "count": 1
+  }
+}

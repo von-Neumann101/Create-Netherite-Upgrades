@@ -49,6 +49,66 @@ import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
 @GameTestHolder(Booster.MOD_ID)
 @PrefixGameTestTemplate(false)
 public final class NetheriteConverterGameTest {
+    @GameTest(template = "wireless_empty", timeoutTicks = 250)
+    public static void advancedWrenchNeedsSixteenValueAndKeepsResultAttributes(GameTestHelper helper) {
+        Fixture f = fixture(helper, 230, 64);
+        var input = new ItemStack(BoosterItems.NETHERITE_WRENCH.get());
+        input.set(DataComponents.CUSTOM_NAME, Component.literal("Upgraded wrench"));
+        CustomData.update(DataComponents.CUSTOM_DATA, input, tag -> tag.putString("OtherMod", "keep"));
+        long[] start = {-1};
+        helper.runAfterDelay(5, () -> {
+            f.be.getPlateInventory().insertItem(0, new ItemStack(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE, 15), false);
+            f.be.getEssenceTank().fill(new FluidStack(BoosterFluids.NETHER_ESSENCE.get(), 1000), FluidAction.EXECUTE);
+            put(f, input);
+        });
+        helper.runAfterDelay(35, () -> {
+            helper.assertTrue(f.be.getNetheriteValue() == 15 && f.be.getProgress() == 0 && f.be.getEssenceTank().getFluidAmount() == 1000
+                && count(f.inventory(), BoosterItems.NETHERITE_WRENCH.get()) == 1, "fifteen points cannot start, consume fluid or replace the basic wrench");
+            f.be.getPlateInventory().insertItem(0, new ItemStack(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE), false);
+        });
+        helper.onEachTick(() -> {
+            if (f.be.getProgress() == 1 && start[0] < 0) start[0] = helper.getLevel().getGameTime();
+            var output = find(f.inventory(), BoosterItems.NETHERITE_NETHERITE_WRENCH.get());
+            if (output.isEmpty()) return;
+            helper.assertTrue(start[0] >= 0 && helper.getLevel().getGameTime() - start[0] >= 99
+                && f.be.getNetheriteValue() == 0 && f.be.getEssenceTank().getFluidAmount() == 750,
+                "advanced upgrade requires the full five seconds and spends sixteen points with the usual 250mB fluid");
+            helper.assertTrue(output.getHoverName().getString().equals("Upgraded wrench")
+                && output.get(DataComponents.CUSTOM_DATA).copyTag().getString("OtherMod").equals("keep")
+                && output.get(DataComponents.UNBREAKABLE) != null, "result preserves source custom components and gets the advanced unbreakable default");
+            double[] attributes = {0, 0};
+            output.getAttributeModifiers().forEach(net.minecraft.world.entity.EquipmentSlot.MAINHAND, (attribute, modifier) -> {
+                if (attribute.equals(net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_DAMAGE)) attributes[0] += modifier.amount();
+                if (attribute.equals(net.minecraft.world.entity.ai.attributes.Attributes.BLOCK_INTERACTION_RANGE)) attributes[1] += modifier.amount();
+            });
+            helper.assertTrue(attributes[0] == 9 && attributes[1] == 2, "advanced sword retains its ten total base damage and the basic wrench's two-block reach bonus");
+            cleanup(helper, f); helper.succeed();
+        });
+    }
+
+    @GameTest(template = "wireless_empty")
+    public static void conversionCostJsonAndNetworkRetainExplicitAndDefaultCosts(GameTestHelper helper) {
+        for (String path : new String[] {"conversion/netherite_wrench", "conversion/netherite_netherite_wrench", "conversion/netherite_mechanical_press"}) {
+            var recipe = (NetheriteConversionRecipe) helper.getLevel().getRecipeManager().byKey(id(path)).orElseThrow().value();
+            int expected = path.endsWith("/netherite_netherite_wrench") ? 16 : 1;
+            helper.assertTrue(recipe.getNetheriteCost() == expected, "JSON loads the correct cost for " + path);
+            var serializer = (NetheriteConversionRecipe.Serializer) recipe.getSerializer();
+            var buffer = new net.minecraft.network.RegistryFriendlyByteBuf(io.netty.buffer.Unpooled.buffer(), helper.getLevel().registryAccess());
+            try {
+                serializer.streamCodec().encode(buffer, recipe);
+                var decoded = serializer.streamCodec().decode(buffer);
+                helper.assertTrue(decoded.getNetheriteCost() == expected && ItemStack.matches(decoded.getResultItem(helper.getLevel().registryAccess()), recipe.getResultItem(helper.getLevel().registryAccess())), "network round trip keeps recipe cost and result");
+            } finally { buffer.release(); }
+            var ops = net.minecraft.resources.RegistryOps.create(com.mojang.serialization.JsonOps.INSTANCE, helper.getLevel().registryAccess());
+            var json = serializer.codec().codec().encodeStart(ops, recipe).getOrThrow().getAsJsonObject();
+            for (int bad : new int[] {0, -1}) {
+                json.addProperty("netherite_cost", bad);
+                helper.assertTrue(serializer.codec().codec().parse(ops, json).error().isPresent(), "invalid nonpositive costs cannot make free conversions");
+            }
+        }
+        helper.succeed();
+    }
+
     @GameTest(template = "wireless_empty", timeoutTicks = 40)
     public static void registeredMachineFluidAndRecipes(GameTestHelper helper) {
         helper.assertTrue(BuiltInRegistries.BLOCK.containsKey(id("netherite_converter")), "converter block must be registered");
@@ -76,12 +136,12 @@ public final class NetheriteConverterGameTest {
                 helper.assertTrue(f.be.getOrCreateNetwork().getActualStressOf(f.be) == 2048, "actual network consumes 2048SU at " + f.rpm + " RPM");
                 long elapsed = helper.getLevel().getGameTime() - starts[i];
                 if (elapsed == 98) helper.assertTrue(count(f.inventory(), BoosterItems.NETHERITE_MECHANICAL_PRESS.get()) == 0
-                    && f.be.getEssenceTank().getFluidAmount() == 4000 && ConversionPlate.remaining(f.be.getPlateInventory().getStackInSlot(0)) == 16,
+                    && f.be.getEssenceTank().getFluidAmount() == 4000 && f.be.getNetheriteValue() == 16,
                     "nothing is consumed or converted before 100 processing ticks");
                 if (count(f.inventory(), BoosterItems.NETHERITE_MECHANICAL_PRESS.get()) == 1) {
                     helper.assertTrue(elapsed >= 99 && elapsed <= 100, "conversion takes 100 ticks at " + f.rpm + " RPM; elapsed=" + elapsed);
-                    helper.assertTrue(f.be.getEssenceTank().getFluidAmount() == 3750 && ConversionPlate.remaining(f.be.getPlateInventory().getStackInSlot(0)) == 15,
-                        "one output costs exactly 250mB and one of sixteen sheet uses");
+                    helper.assertTrue(f.be.getEssenceTank().getFluidAmount() == 3750 && f.be.getNetheriteValue() == 15,
+                        "one output costs exactly 250mB and one stored netherite value");
                     finished[i] = true;
                 }
             }
@@ -95,7 +155,7 @@ public final class NetheriteConverterGameTest {
         int[] stage = {0}; long[] stopped = {-1}, restarted = {-1};
         helper.runAfterDelay(5, () -> put(f, new ItemStack(AllBlocks.MECHANICAL_PRESS.get())));
         helper.runAfterDelay(20, () -> {
-            helper.assertTrue(f.be.getProgress() == 0, "missing plate and fluid do not start progress");
+            helper.assertTrue(f.be.getProgress() == 0, "missing netherite value and fluid do not start progress");
             supply(f, 249);
         });
         helper.runAfterDelay(35, () -> {
@@ -107,7 +167,7 @@ public final class NetheriteConverterGameTest {
             if (stage[0] == 0 && f.be.getProgress() >= 30) { f.motor.generatedSpeed.setValue(0); stopped[0] = now; stage[0] = 1; }
             if (stage[0] == 1 && now - stopped[0] >= 10) {
                 helper.assertTrue(f.be.getProgress() == 0 && f.be.getEssenceTank().getFluidAmount() == 250
-                    && ConversionPlate.remaining(f.be.getPlateInventory().getStackInSlot(0)) == 16, "power loss clears elapsed work without consuming resources");
+                    && f.be.getNetheriteValue() == 16, "power loss clears elapsed work without consuming resources");
                 f.motor.generatedSpeed.setValue(256); stage[0] = 2;
             }
             if (stage[0] == 2 && f.be.getProgress() == 1) { restarted[0] = now; stage[0] = 3; }
@@ -125,8 +185,8 @@ public final class NetheriteConverterGameTest {
         helper.runAfterDelay(1800, () -> {
             helper.assertTrue(count(f.inventory(), BoosterItems.NETHERITE_MECHANICAL_PRESS.get()) == 16
                 && count(f.inventory(), AllBlocks.MECHANICAL_PRESS.asItem()) == 1, "one sheet upgrades exactly sixteen actual depot items");
-            helper.assertTrue(f.be.getPlateInventory().getStackInSlot(0).isEmpty() && f.be.getEssenceTank().isEmpty() && f.be.getProgress() == 0,
-                "the sheet and 4000mB are exhausted; the seventeenth item waits");
+            helper.assertTrue(f.be.getNetheriteValue() == 0 && f.be.getEssenceTank().isEmpty() && f.be.getProgress() == 0,
+                "the stored value and 4000mB are exhausted; the seventeenth item waits");
             cleanup(helper, f); helper.succeed();
         });
     }
@@ -148,14 +208,17 @@ public final class NetheriteConverterGameTest {
             helper.assertTrue(output.getHoverName().getString().equals("Preserved tank") && stored.getString("id").equals("createnetherite:netherite_fluid_tank")
                 && stored.getCompound("TankContent").getCompound("Fluid").getInt("amount") == 4000, "output keeps name and tank contents while updating the BE type");
             var saved = f.be.saveWithoutMetadata(helper.getLevel().registryAccess());
-            f.be.getPlateInventory().extractItem(0, 1, false);
+            f.be.restoreNetheriteValue(0);
             f.be.loadWithComponents(saved, helper.getLevel().registryAccess());
-            helper.assertTrue(ConversionPlate.remaining(f.be.getPlateInventory().getStackInSlot(0)) == 15 && f.be.getEssenceTank().getFluidAmount() == 3750,
-                "reload preserves remaining uses and fluid");
+            helper.assertTrue(f.be.getNetheriteValue() == 15 && f.be.getEssenceTank().getFluidAmount() == 3750,
+                "reload preserves stored netherite value and fluid");
             helper.getLevel().destroyBlock(f.pos, true);
             var drops = helper.getLevel().getEntitiesOfClass(ItemEntity.class, new AABB(f.pos).inflate(2));
-            helper.assertTrue(drops.stream().filter(e -> e.getItem().is(BoosterItems.NETHERITE_SHEET.get())).mapToInt(e -> e.getItem().getCount()).sum() == 1
-                && drops.stream().anyMatch(e -> ConversionPlate.remaining(e.getItem()) == 15), "break drops exactly the original partially used plate");
+            helper.assertTrue(drops.stream().noneMatch(e -> e.getItem().is(BoosterItems.NETHERITE_SHEET.get()))
+                && drops.stream().filter(e -> e.getItem().is(BoosterItems.NETHERITE_CONVERTER.get())).count() == 1
+                && drops.stream().anyMatch(e -> e.getItem().is(BoosterItems.NETHERITE_CONVERTER.get())
+                    && e.getItem().getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag().getInt(NetheriteConverterBlockEntity.VALUE_KEY) == 15),
+                "break drops one converter carrying the remaining fifteen points and no redeemed plate");
             cleanup(helper, f); helper.succeed();
         });
     }
@@ -165,7 +228,7 @@ public final class NetheriteConverterGameTest {
         Fixture f = fixture(helper, 230, 64);
         var player = FakePlayerFactory.get(helper.getLevel(), new GameProfile(UUID.randomUUID(), "ConverterSlotQA"));
         helper.assertTrue(f.be.getPlateInventory().insertItem(0, new ItemStack(Items.DIAMOND), false).is(Items.DIAMOND), "slot rejects non-sheets");
-        helper.assertTrue(f.be.getPlateInventory().insertItem(0, new ItemStack(BoosterItems.NETHERITE_SHEET.get(), 2), false).getCount() == 1, "slot accepts only one sheet");
+        helper.assertTrue(f.be.getPlateInventory().insertItem(0, new ItemStack(BoosterItems.NETHERITE_SHEET.get(), 2), false).isEmpty() && f.be.getNetheriteValue() == 32, "deposit converts both sheets into thirty-two points");
         helper.assertTrue(f.be.getEssenceTank().fill(new FluidStack(Fluids.LAVA, 1000), FluidAction.EXECUTE) == 0, "fluid port rejects lava");
         player.setPos(f.pos.getCenter().add(0, 0, 2)); player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(BoosterFluids.ESSENCE_BUCKET.get()));
         helper.getLevel().getBlockState(f.pos).useItemOn(player.getMainHandItem(), helper.getLevel(), player, InteractionHand.MAIN_HAND,
@@ -174,7 +237,8 @@ public final class NetheriteConverterGameTest {
         player.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY); player.setShiftKeyDown(true);
         helper.getLevel().getBlockState(f.pos).useItemOn(player.getMainHandItem(), helper.getLevel(), player, InteractionHand.MAIN_HAND,
             new BlockHitResult(f.pos.getCenter(), Direction.SOUTH, f.pos, false));
-        helper.assertTrue(f.be.getPlateInventory().getStackInSlot(0).isEmpty() && player.getInventory().items.stream().anyMatch(s -> s.is(BoosterItems.NETHERITE_SHEET.get())), "sneak empty-hand retrieves the actual sheet");
+        helper.assertTrue(f.be.getPlateInventory().getStackInSlot(0).isEmpty() && f.be.getNetheriteValue() == 32
+            && player.getInventory().items.stream().noneMatch(s -> s.is(BoosterItems.NETHERITE_SHEET.get())), "sneak empty-hand shows value without recreating redeemed sheets");
         cleanup(helper, f); helper.succeed();
     }
 
@@ -281,7 +345,7 @@ public final class NetheriteConverterGameTest {
             helper.assertTrue(items.stream().anyMatch(s -> s.stack.is(BoosterItems.NETHERITE_MECHANICAL_PRESS.get())), "real moving belt reaches the converter and receives an upgraded machine");
             helper.assertTrue(items.stream().filter(s -> s.stack.is(BoosterItems.NETHERITE_MECHANICAL_PRESS.get())).mapToInt(s -> s.stack.getCount()).sum() == 1
                 && items.stream().filter(s -> s.stack.is(AllBlocks.MECHANICAL_PRESS.asItem())).mapToInt(s -> s.stack.getCount()).sum() == 1
-                && converter.getEssenceTank().getFluidAmount() == 750 && ConversionPlate.remaining(converter.getPlateInventory().getStackInSlot(0)) == 15,
+                && converter.getEssenceTank().getFluidAmount() == 750 && converter.getNetheriteValue() == 15,
                 "one five-second belt operation upgrades only one input and preserves the waiting remainder");
             for (BlockPos pos : List.of(machine, beltDrive, machineDrive, controller, controller.south(), controller.south(2))) level.removeBlock(pos, false);
         });

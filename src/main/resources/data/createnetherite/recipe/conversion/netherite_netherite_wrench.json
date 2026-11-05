@@ -1,0 +1,6 @@
+{
+  "type": "createnetherite:netherite_conversion",
+  "ingredients": [{"item": "createnetherite:netherite_wrench"}],
+  "results": [{"id": "createnetherite:netherite_netherite_wrench", "count": 1}],
+  "netherite_cost": 16
+}

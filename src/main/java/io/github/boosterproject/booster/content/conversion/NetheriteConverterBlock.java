@@ -5,10 +5,14 @@ import com.simibubi.create.foundation.block.IBE;
 import io.github.boosterproject.booster.registry.BoosterBlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -23,16 +27,21 @@ public class NetheriteConverterBlock extends HorizontalKineticBlock implements I
     @Override public Class<NetheriteConverterBlockEntity> getBlockEntityClass() { return NetheriteConverterBlockEntity.class; }
     @Override public BlockEntityType<? extends NetheriteConverterBlockEntity> getBlockEntityType() { return BoosterBlockEntityTypes.NETHERITE_CONVERTER.get(); }
 
+    @Override public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+        super.setPlacedBy(level, pos, state, placer, stack);
+        var data = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
+        var be = getBlockEntity(level, pos);
+        if (!level.isClientSide && be != null && data.contains(NetheriteConverterBlockEntity.VALUE_KEY))
+            be.restoreNetheriteValue(data.getInt(NetheriteConverterBlockEntity.VALUE_KEY));
+    }
+
     @Override protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos,
                                                        Player player, InteractionHand hand, BlockHitResult hit) {
         if (player.isSpectator() || !player.getAbilities().mayBuild) return ItemInteractionResult.FAIL;
         var be = getBlockEntity(level, pos);
         if (be == null) return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
-        if (player.isShiftKeyDown() && stack.isEmpty()) {
-            if (!level.isClientSide) {
-                ItemStack plate = be.getPlateInventory().extractItem(0, 1, false);
-                if (!player.getInventory().add(plate)) player.drop(plate, false);
-            }
+        if (stack.isEmpty()) {
+            if (!level.isClientSide) player.displayClientMessage(Component.translatable("converter.createnetherite.value", be.getNetheriteValue()), true);
             return ItemInteractionResult.SUCCESS;
         }
         if (ConversionPlate.isCatalyst(stack)) {

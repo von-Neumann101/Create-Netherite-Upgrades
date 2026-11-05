@@ -6,7 +6,12 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "createnetherite:netherite_converter"
+          "name": "createnetherite:netherite_converter",
+          "functions": [{
+            "function": "minecraft:copy_custom_data",
+            "source": "block_entity",
+            "ops": [{"source": "NetheriteValue", "target": "NetheriteValue", "op": "replace"}]
+          }]
         }
       ],
       "conditions": [

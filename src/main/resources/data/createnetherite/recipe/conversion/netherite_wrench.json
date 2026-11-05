@@ -1,0 +1,14 @@
+{
+  "type": "createnetherite:netherite_conversion",
+  "ingredients": [
+    {
+      "item": "create:wrench"
+    }
+  ],
+  "results": [
+    {
+      "id": "createnetherite:netherite_wrench",
+      "count": 1
+    }
+  ]
+}

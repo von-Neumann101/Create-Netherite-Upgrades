@@ -2,6 +2,11 @@ package io.github.boosterproject.booster.content.equipment.wrench;
 
 import com.simibubi.create.AllItems;
 import io.github.boosterproject.booster.content.equipment.HandheldKineticPower;
+import io.github.boosterproject.booster.Booster;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EquipmentSlotGroup;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -19,7 +24,8 @@ import net.minecraft.world.level.Level;
 public final class NetheriteNetheriteWrenchItem extends SwordItem {
     public NetheriteNetheriteWrenchItem(Properties properties) {
         super(Tiers.NETHERITE, properties.fireResistant().stacksTo(1)
-            .attributes(SwordItem.createAttributes(Tiers.NETHERITE, 5, -2.4F))
+            .attributes(SwordItem.createAttributes(Tiers.NETHERITE, 5, -2.4F).withModifierAdded(Attributes.BLOCK_INTERACTION_RANGE,
+                new AttributeModifier(ResourceLocation.fromNamespaceAndPath(Booster.MOD_ID, "netherite_wrench_range"), 2, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND))
             .component(DataComponents.UNBREAKABLE, new Unbreakable(false)));
     }
     @Override public boolean isBarVisible(ItemStack stack) { return false; }

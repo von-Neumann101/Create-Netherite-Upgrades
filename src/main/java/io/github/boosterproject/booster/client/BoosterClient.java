@@ -68,7 +68,6 @@ public final class BoosterClient {
 
     private static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerBlockEntityRenderer(BoosterBlockEntityTypes.NETHERITE_MECHANICAL_SAW.get(), SawRenderer::new);
-        event.registerBlockEntityRenderer(BoosterBlockEntityTypes.NETHERITE_CONVERTER.get(), NetheriteConverterRenderer::new);
         event.registerBlockEntityRenderer(BoosterBlockEntityTypes.NETHERITE_DEPLOYER.get(), DeployerRenderer::new);
         event.registerBlockEntityRenderer(BoosterBlockEntityTypes.NETHERITE_WEIGHTED_EJECTOR.get(), EjectorRenderer::new);
         event.registerBlockEntityRenderer(BoosterBlockEntityTypes.NETHERITE_SMART_CHUTE.get(), SmartChuteRenderer::new);

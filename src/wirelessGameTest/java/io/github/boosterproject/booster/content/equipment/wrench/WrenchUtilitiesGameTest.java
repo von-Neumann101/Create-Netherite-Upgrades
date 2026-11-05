@@ -149,15 +149,11 @@ public final class WrenchUtilitiesGameTest {
         var user = player(helper, "WrenchTemplateQA", pos);
         var template = new ItemStack(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE);
         helper.assertTrue(ConversionPlate.remaining(template) == 1, "vanilla template has exactly one conversion");
-        var sheet = new ItemStack(BoosterItems.NETHERITE_SHEET.get());
-        for (int i = 0; i < 15; i++) ConversionPlate.consume(sheet);
-        helper.assertTrue(sheet.getCount() == 1 && ConversionPlate.remaining(sheet) == 1, "sheet retains its original sixteen-use behavior");
-        ConversionPlate.consume(sheet); helper.assertTrue(sheet.isEmpty(), "sixteenth sheet conversion consumes its plate");
         user.setItemInHand(InteractionHand.MAIN_HAND, template);
         level.getBlockState(pos).useItemOn(template, level, user, InteractionHand.MAIN_HAND,
             new BlockHitResult(pos.getCenter(), Direction.SOUTH, pos, false));
-        helper.assertTrue(template.isEmpty() && machine.getPlateInventory().getStackInSlot(0).is(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE),
-            "the normal right-click insertion accepts the actual vanilla template");
+        helper.assertTrue(template.isEmpty() && machine.getPlateInventory().getStackInSlot(0).isEmpty() && machine.getNetheriteValue() == 1,
+            "normal right-click consumes the template and stores one value");
         helper.runAfterDelay(5, () -> {
             machine.getEssenceTank().fill(new FluidStack(BoosterFluids.NETHER_ESSENCE.get(), 1000), FluidAction.EXECUTE);
             ((SmartBlockEntity) level.getBlockEntity(depot)).getBehaviour(DepotBehaviour.TYPE)
@@ -166,7 +162,7 @@ public final class WrenchUtilitiesGameTest {
         helper.runAfterDelay(240, () -> {
             var inventory = level.getCapability(Capabilities.ItemHandler.BLOCK, depot, null);
             helper.assertTrue(count(inventory, BoosterItems.NETHERITE_MECHANICAL_PRESS.get()) == 1
-                && count(inventory, AllBlocks.MECHANICAL_PRESS.asItem()) == 1 && machine.getPlateInventory().getStackInSlot(0).isEmpty()
+                && count(inventory, AllBlocks.MECHANICAL_PRESS.asItem()) == 1 && machine.getNetheriteValue() == 0
                 && machine.getEssenceTank().getFluidAmount() == 750,
                 "one template produces exactly one upgraded machine and consumes only the normal 250mB essence");
             for (var block : List.of(pos, depot, pos.west(), pos.west(2))) level.removeBlock(block, false);

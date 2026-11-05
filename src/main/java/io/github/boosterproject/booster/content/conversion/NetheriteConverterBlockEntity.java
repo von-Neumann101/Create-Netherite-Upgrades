@@ -17,7 +17,6 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.Containers;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
@@ -29,13 +28,32 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler.FluidAction;
 import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 import net.neoforged.neoforge.items.ItemStackHandler;
+import net.neoforged.neoforge.items.IItemHandler;
 
 public class NetheriteConverterBlockEntity extends KineticBlockEntity {
     public static final int REQUIRED_STRESS = 2048, PROCESSING_TICKS = 100, FLUID_PER_ITEM = 250;
-    private final ItemStackHandler plate = new ItemStackHandler(1) {
-        @Override public int getSlotLimit(int slot) { return 1; }
-        @Override public boolean isItemValid(int slot, ItemStack stack) { return ConversionPlate.isCatalyst(stack); }
-        @Override protected void onContentsChanged(int slot) { changedInventory(); }
+    public static final String VALUE_KEY = "NetheriteValue";
+    private int netheriteValue;
+    // This capability is a deposit port. Redeemed catalysts never remain extractable items.
+    private final IItemHandler plate = new IItemHandler() {
+        private void checkSlot(int slot) { if (slot != 0) throw new IndexOutOfBoundsException(slot); }
+        @Override public int getSlots() { return 1; }
+        @Override public ItemStack getStackInSlot(int slot) { checkSlot(slot); return ItemStack.EMPTY; }
+        @Override public int getSlotLimit(int slot) { checkSlot(slot); return 64; }
+        @Override public boolean isItemValid(int slot, ItemStack stack) { checkSlot(slot); return ConversionPlate.isCatalyst(stack); }
+        @Override public ItemStack extractItem(int slot, int amount, boolean simulate) { checkSlot(slot); return ItemStack.EMPTY; }
+        @Override public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
+            checkSlot(slot);
+            int value = ConversionPlate.remaining(stack);
+            if (value <= 0) return stack;
+            int accepted = Math.min(Math.min(stack.getCount(), getSlotLimit(slot)), (Integer.MAX_VALUE - netheriteValue) / value);
+            if (accepted == 0) return stack;
+            if (!simulate && (level == null || !level.isClientSide)) {
+                netheriteValue += accepted * value;
+                changedInventory();
+            }
+            return stack.copyWithCount(stack.getCount() - accepted);
+        }
     };
     private final FluidTank essence = new FluidTank(4000, stack -> stack.getFluid().isSame(BoosterFluids.NETHER_ESSENCE.get())) {
         @Override protected void onContentsChanged() { changedInventory(); }
@@ -45,7 +63,9 @@ public class NetheriteConverterBlockEntity extends KineticBlockEntity {
     private int progress;
 
     public NetheriteConverterBlockEntity(BlockPos pos, BlockState state) { super(BoosterBlockEntityTypes.NETHERITE_CONVERTER.get(), pos, state); }
-    public ItemStackHandler getPlateInventory() { return plate; }
+    public IItemHandler getPlateInventory() { return plate; }
+    public int getNetheriteValue() { return netheriteValue; }
+    public void restoreNetheriteValue(int value) { netheriteValue = Math.max(0, value); changedInventory(); }
     public FluidTank getEssenceTank() { return essence; }
     public int getProgress() { return progress; }
     private void changedInventory() { setChanged(); if (level != null) sendData(); }
@@ -101,7 +121,7 @@ public class NetheriteConverterBlockEntity extends KineticBlockEntity {
     }
 
     private TransportedResult process(TransportedItemStack item, NetheriteConversionRecipe recipe) {
-        if (ConversionPlate.remaining(plate.getStackInSlot(0)) == 0 || essence.getFluidAmount() < FLUID_PER_ITEM) {
+        if (netheriteValue < recipe.getNetheriteCost() || essence.getFluidAmount() < FLUID_PER_ITEM) {
             resetProgress(); return TransportedResult.doNothing();
         }
         if (tracked != item || !ItemStack.isSameItemSameComponents(inputSnapshot, item.stack)) {
@@ -114,7 +134,7 @@ public class NetheriteConverterBlockEntity extends KineticBlockEntity {
         ItemStack output = upgrade(item.stack, recipe.getResultItem(level.registryAccess()));
         if (output.isEmpty()) { resetProgress(); return TransportedResult.doNothing(); }
         essence.drain(FLUID_PER_ITEM, FluidAction.EXECUTE);
-        ConversionPlate.consume(plate.getStackInSlot(0));
+        netheriteValue -= recipe.getNetheriteCost();
         changedInventory();
         var result = item.copy(); result.stack = output; result.locked = false; result.clearFanProcessingData();
         var remainder = item.copy(); remainder.stack.shrink(1);
@@ -145,24 +165,26 @@ public class NetheriteConverterBlockEntity extends KineticBlockEntity {
 
     @Override protected void write(CompoundTag tag, HolderLookup.Provider registries, boolean clientPacket) {
         super.write(tag, registries, clientPacket);
-        tag.put("Plate", plate.serializeNBT(registries));
+        tag.putInt(VALUE_KEY, netheriteValue);
         tag.put("Essence", essence.writeToNBT(registries, new CompoundTag()));
         if (clientPacket) tag.putInt("Progress", progress);
     }
     @Override protected void read(CompoundTag tag, HolderLookup.Provider registries, boolean clientPacket) {
         super.read(tag, registries, clientPacket);
-        plate.deserializeNBT(registries, tag.getCompound("Plate"));
+        netheriteValue = Math.max(0, tag.getInt(VALUE_KEY));
+        if (!tag.contains(VALUE_KEY) && tag.contains("Plate")) {
+            var legacy = new ItemStackHandler(1);
+            legacy.deserializeNBT(registries, tag.getCompound("Plate"));
+            var oldPlate = legacy.getStackInSlot(0);
+            netheriteValue = (int) Math.min(Integer.MAX_VALUE, (long) ConversionPlate.remaining(oldPlate) * oldPlate.getCount());
+        }
         essence.readFromNBT(registries, tag.getCompound("Essence"));
         progress = clientPacket ? tag.getInt("Progress") : 0;
         if (!clientPacket) { tracked = null; inputSnapshot = ItemStack.EMPTY; }
     }
-    @Override public void destroy() {
-        super.destroy();
-        if (level != null && !level.isClientSide) Containers.dropItemStack(level, worldPosition.getX() + .5, worldPosition.getY() + .5, worldPosition.getZ() + .5, plate.extractItem(0, 1, false));
-    }
     @Override public boolean addToGoggleTooltip(List<Component> tooltip, boolean sneaking) {
         super.addToGoggleTooltip(tooltip, sneaking);
-        tooltip.add(Component.translatable("converter.createnetherite.status", ConversionPlate.remaining(plate.getStackInSlot(0)), essence.getFluidAmount(), progress, REQUIRED_STRESS));
+        tooltip.add(Component.translatable("converter.createnetherite.status", netheriteValue, essence.getFluidAmount(), progress, REQUIRED_STRESS));
         return true;
     }
 }

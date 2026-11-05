@@ -4,7 +4,7 @@
 
 当前分支：`1.21.1-NeoForge`
 
-当前模组版本：`0.3.19`
+当前模组版本：`0.3.20`
 
 # 维护状态
 
@@ -40,6 +40,7 @@ Minecraft `1.20.1` Forge 的 `main` 分支暂停更新，保留现有代码和�
 - `createnetherite:netherite_extendo_grip`
 - `createnetherite:netherite_deployer`
 - `createnetherite:netherite_netherite`
+- `createnetherite:netherite_wrench`
 - `createnetherite:netherite_netherite_wrench`
 - `createnetherite:assembly_table`
 - `createnetherite:netherite_sheet`
@@ -129,11 +130,11 @@ Minecraft `1.20.1` Forge 的 `main` 分支暂停更新，保留现有代码和�
 
 # 下界合金转换机与下界精华
 
-新增转换途径，原有合成配方保留。把转换机放在传送带、置物台等处理位的**上方两格**，将普通机器物品送到下方，可逐个转换为对应下界合金版本。覆盖现有15类机器，烈焰人燃烧室的空壳和已有烈焰人版本分别转换。
+新增转换途径，原有合成配方保留。把转换机放在传送带、置物台等处理位的**上方两格**，将普通机器物品送到下方，可逐个转换为对应下界合金版本。支持机器和两级扳手升级，烈焰人燃烧室的空壳和已有烈焰人版本分别转换。
 
-转换机固定占用 **2048SU**，每个物品需要连续供能 **5秒（100tick）**；提高转速不会加速，断电或过载会重新计时。每次完成消耗 **250mB下界精华** 和一次耗材额度，未完成不扣原料。内置精华槽4000mB，可用管道或桶注入；不接受岩浆等其他流体。
+转换机固定占用 **2048SU**，每个物品需要连续供能 **5秒（100tick）**；提高转速不会加速，断电或过载会重新计时。每次完成消耗 **250mB下界精华** 和配方所需的下界合金值，未完成不扣这些资源。内置精华槽4000mB，可用管道或桶注入；不接受岩浆等其他流体。
 
-右键放入一张下界合金板，可转换 **16个**机器；也可放入一张原版下界合金升级模板，转换 **1个**机器。两者均需每次250mB精华。潜行空手右键取回耗材；部分用过的板保留剩余次数，自动化单槽接受一张板或模板。耗材显示在机身顶部，工程师护目镜可查看剩余次数、精华与进度。暂不制作转换动作动画。
+右键投入一张下界合金板，会立即消耗板材并存入 **16点下界合金值**；原版下界合金升级模板兑换 **1点**。普通机器升级每件消耗 **1点**，下界合金扳手升级为下界合金下界合金扳手消耗 **16点**；均需每件250mB精华。可通过自动化批量投入，空手右键查看点数，工程师护目镜显示点数、精华与进度。已兑换的板材不能取回；旧版部分使用的板材只兑换其剩余点数。拆除或用扳手拾取时，点数随转换机物品保存，重新放置后恢复。暂不制作转换动作动画。
 
 转换机的有序合成：
 
@@ -186,9 +187,13 @@ Minecraft `1.20.1` Forge 的 `main` 分支暂停更新，保留现有代码和�
 
 一个下界合金板加一个原版动力锯无序升级，也可在下界合金转换机中转换。将它装入下界合金下界合金扳手并激活后，长按右键持续锯击攻击距离内最近的前方目标；按256RPM计算为每次 **18点伤害**，沿用原生受伤间隔、队伍和PVP规则，墙体阻挡，松开即停。扳手最多装8个模块，初始激活1个，可在装配台升级为同时激活2个。
 
+# 下界合金扳手
+
+**原版Create扳手＋下界合金板** 无序合成，或将原版扳手放到下界合金转换机下方，消耗 **1点下界合金值＋250mB下界精华** 制作。主手持有时 **方块触及距离+2**，实体攻击距离不变，保留原版扳手功能；无耐久损耗，掉落物防火、防爆。基础扳手不使用模块轮盘。
+
 # 下界合金下界合金扳手
 
-目前仅通过创造栏或指令获取，**暂不添加合成配方**。基础伤害 **10**（下界合金剑+2）、攻速 **1.6**，无耐久损耗，保留 Create 扳手旋转和拆卸功能。
+将 **下界合金扳手** 放到转换机下方，消耗 **16点下界合金值＋250mB下界精华**，连续供能5秒即可制成。基础伤害 **10**（下界合金剑+2）、攻速 **1.6**，无耐久损耗，保留主手 **方块触及距离+2** 和 Create 扳手旋转、拆卸功能。
 
 先将扳手放入 **装配台** 中央槽，再往周围 **8个真实槽位** 装入下列工作方块（每槽一个），也可取出；取出已激活的模块立即停用，模块物品组件和储液随扳手保存。装配台无需动力，用 **工作台＋安山机壳＋下界合金板** 无序合成，拆除会返还内部扳手和剩余模板。
 
@@ -247,7 +252,7 @@ createnetherite-server.toml
 构建产物：
 
 ```text
-build/libs/createnetherite-1.21.1-0.3.19.jar
+build/libs/createnetherite-1.21.1-0.3.20.jar
 ```
 
 # Introduction
@@ -256,7 +261,7 @@ build/libs/createnetherite-1.21.1-0.3.19.jar
 
 Current branch: `1.21.1-NeoForge`
 
-Current mod version: `0.3.19`
+Current mod version: `0.3.20`
 
 # Maintenance status
 
@@ -292,6 +297,7 @@ The mod currently adds several Create-compatible entries:
 - `createnetherite:netherite_extendo_grip`
 - `createnetherite:netherite_deployer`
 - `createnetherite:netherite_netherite`
+- `createnetherite:netherite_wrench`
 - `createnetherite:netherite_netherite_wrench`
 - `createnetherite:assembly_table`
 - `createnetherite:netherite_sheet`
@@ -379,11 +385,11 @@ Craft one Netherite Sheet with an original Smart Chute in a shapeless recipe. Th
 
 # Netherite Converter and Nether Essence
 
-An additional upgrade route; existing crafting recipes remain. Place the converter **two blocks above** a belt, depot or compatible processing inventory. It converts regular machine items one at a time, covering all 15 existing machine types, with separate empty and occupied Blaze Burner recipes.
+An additional upgrade route; existing crafting recipes remain. Place the converter **two blocks above** a belt, depot or compatible processing inventory. It upgrades machines and both wrench tiers one item at a time, with separate empty and occupied Blaze Burner recipes.
 
-The converter uses a fixed **2048 SU** and **5 continuous seconds (100 ticks)** per item. Higher RPM does not speed it up; power loss or overstress restarts progress. Completion costs **250 mB of Nether Essence** and one catalyst use. Unfinished work consumes nothing. Its 4000 mB tank accepts essence through pipes or buckets and rejects other fluids.
+The converter uses a fixed **2048 SU** and **5 continuous seconds (100 ticks)** per item. Higher RPM does not speed it up; power loss or overstress restarts progress. Completion costs **250 mB of Nether Essence** and the recipe's Netherite Value. Unfinished work spends neither resource. Its 4000 mB tank accepts essence through pipes or buckets and rejects other fluids.
 
-Right-click to insert one Netherite Sheet for **16 upgrades**, or one vanilla Netherite Upgrade Smithing Template for **one upgrade**. Either catalyst still requires 250 mB essence per upgrade. Sneak-right-click empty-handed to retrieve it; partially used sheets retain their uses. Automation accepts a single sheet or template. The catalyst appears on top; Engineer's Goggles show remaining uses, fluid and progress. The machine currently has no conversion animation.
+Right-click to immediately redeem a Netherite Sheet for **16 Netherite Value**, or a vanilla Netherite Upgrade Smithing Template for **1 value**. Ordinary upgrades cost **1 value**; upgrading a Netherite Wrench to a Netherite Netherite Wrench costs **16 value**. Each still uses 250 mB essence. Automation can deposit stacks. Right-click empty-handed to view value; Engineer's Goggles show value, fluid and progress. Redeemed items cannot be retrieved; legacy partially used sheets add only their remaining value. Breaking or wrench pickup stores value on the converter item, and placing it restores that value. The machine currently has no conversion animation.
 
 Shaped crafting recipe:
 
@@ -436,9 +442,13 @@ Tree-cutting calculation speed is **2 times** the original. Damage is **1.8 time
 
 Upgrade one original Mechanical Saw with one Netherite Sheet in a shapeless recipe, or use the Netherite Converter. Install and activate it in the Netherite Netherite Wrench, then hold right-click to saw the nearest target ahead within attack reach for **18 damage** at a 256 RPM reference. Native hurt cooldown, teams, PVP and solid obstacles apply; releasing stops it. The wrench holds at most eight modules, with one active initially and two after upgrading at an Assembly Table.
 
+# Netherite Wrench
+
+Craft shapelessly from a **Create Wrench + Netherite Sheet**, or convert a Create Wrench for **1 Netherite Value + 250 mB Nether Essence**. Adds **2 blocks of block interaction reach** in the main hand without changing entity attack reach. Retains the original wrench functions, with no durability, fireproof and explosion-proof drops. The basic wrench does not use the module wheel.
+
 # Netherite Netherite Wrench
 
-Available from the creative tab or commands; **no crafting recipe yet**. Base attack damage is **10** (Netherite Sword +2), attack speed **1.6**, with no durability loss. Keeps Create wrench rotation and dismantling.
+Convert a **Netherite Wrench** using **16 Netherite Value + 250 mB Nether Essence** with five seconds of uninterrupted power. Base attack damage is **10** (Netherite Sword +2), attack speed **1.6**, with no durability loss. Retains **2 extra blocks of main-hand block reach** and Create wrench rotation and dismantling.
 
 Put the wrench in the center slot of an **Assembly Table**, then install or remove the listed blocks in its **eight real module slots**, one per slot. Removing an active module disables it; item components and fluids stay with the wrench. The table needs no power and is crafted shapelessly from a **Crafting Table + Andesite Casing + Netherite Sheet**. Breaking it returns the stored wrench and remaining templates.
 
@@ -497,5 +507,5 @@ Existing worlds keep their own `serverconfig/createnetherite-server.toml`. If de
 Build output:
 
 ```text
-build/libs/createnetherite-1.21.1-0.3.19.jar
+build/libs/createnetherite-1.21.1-0.3.20.jar
 ```

@@ -14,18 +14,19 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import java.util.function.Supplier;
 
 public enum BoosterRecipeTypes implements IRecipeTypeInfo {
-    CONVERSION("netherite_conversion", NetheriteConversionRecipe::new),
-    NETHERITE_MIXING("netherite_mixing", NetheriteMixingRecipe::new);
+    CONVERSION("netherite_conversion", NetheriteConversionRecipe.Serializer::new),
+    NETHERITE_MIXING("netherite_mixing", () -> new StandardProcessingRecipe.Serializer<>(NetheriteMixingRecipe::new));
 
     private final ResourceLocation id;
     private final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<?>> serializer;
     private final DeferredHolder<RecipeType<?>, RecipeType<?>> type;
 
-    BoosterRecipeTypes(String name, StandardProcessingRecipe.Factory<?> factory) {
+    BoosterRecipeTypes(String name, Supplier<RecipeSerializer<?>> factory) {
         id = ResourceLocation.fromNamespaceAndPath(Booster.MOD_ID, name);
-        serializer = Registers.SERIALIZERS.register(name, () -> new StandardProcessingRecipe.Serializer<>(factory));
+        serializer = Registers.SERIALIZERS.register(name, factory);
         type = Registers.TYPES.register(name, () -> RecipeType.simple(id));
     }
 

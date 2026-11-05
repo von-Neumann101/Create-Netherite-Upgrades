@@ -12,6 +12,9 @@
     "NetheriteDeployerBatchMixin",
     "NetheriteDeployerInventoryAccess",
     "NetheriteExtendoGripMixin",
+    "NetheriteWrenchRecognitionMixin",
+    "NetheriteWrenchBogeyMixin",
+    "NetheriteWrenchDeployerInteractionMixin",
     "NetheriteGripTankMixin",
     "HandheldKineticPowerMixin",
     "BoilerDataMixin",
@@ -29,6 +32,7 @@
     "SteamEngineBlockEntityMixin"
   ],
   "client": [
+    "NetheriteWrenchRadialHandlerMixin",
     "NetheriteGripRenderHandlerMixin",
     "NetheriteGripItemRendererMixin",
     "FluidTankRendererMixin",

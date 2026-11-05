@@ -17,11 +17,5 @@ public final class ConversionPlate {
         var tag = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
         return tag.contains(USES) ? Math.clamp(tag.getInt(USES), 0, 16) : 16;
     }
-    public static void consume(ItemStack stack) {
-        int remaining = remaining(stack);
-        if (remaining == 0) return;
-        if (remaining <= 1) stack.shrink(1);
-        else CustomData.update(DataComponents.CUSTOM_DATA, stack, tag -> tag.putInt(USES, remaining - 1));
-    }
     private ConversionPlate() {}
 }

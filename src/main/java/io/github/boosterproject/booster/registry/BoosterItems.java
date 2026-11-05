@@ -12,6 +12,7 @@ import io.github.boosterproject.booster.content.logistics.depot.NetheriteEjector
 import io.github.boosterproject.booster.content.equipment.NetheriteExtendoGripItem;
 import io.github.boosterproject.booster.content.equipment.NetheriteNetheriteItem;
 import io.github.boosterproject.booster.content.equipment.wrench.NetheriteNetheriteWrenchItem;
+import io.github.boosterproject.booster.content.equipment.wrench.NetheriteWrenchItem;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.neoforged.bus.api.IEventBus;
@@ -20,6 +21,8 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 
 public final class BoosterItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Booster.MOD_ID);
+
+    public static final DeferredItem<Item> NETHERITE_WRENCH = ITEMS.register("netherite_wrench", () -> new NetheriteWrenchItem(new Item.Properties()));
 
     public static final DeferredItem<Item> ASSEMBLY_TABLE = ITEMS.register("assembly_table", () ->
         new BlockItem(BoosterBlocks.ASSEMBLY_TABLE.get(), new Item.Properties().fireResistant()));
