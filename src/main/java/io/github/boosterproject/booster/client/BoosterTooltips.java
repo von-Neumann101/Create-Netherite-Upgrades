@@ -22,7 +22,7 @@ public final class BoosterTooltips {
     }
 
     public static void register() {
-        // The fan and ejector have native Ponder entries; other items use native Shift descriptions.
+        // The fan, ejector and extendo grip have native Ponder entries; other items use native Shift descriptions.
         for (Item item : List.of(
             BoosterItems.POWERFUL_MECHANICAL_PUMP.get(),
             BoosterItems.NETHERITE_SHEET.get(),
@@ -36,7 +36,6 @@ public final class BoosterTooltips {
             BoosterItems.NETHERITE_INFINITE_MANAGER.get(),
             BoosterItems.NETHERITE_SMART_CHUTE.get(),
             BoosterItems.NETHERITE_FILTER.get(),
-            BoosterItems.NETHERITE_EXTENDO_GRIP.get(),
             BoosterItems.NETHERITE_DEPLOYER.get(),
             BoosterItems.NETHERITE_NETHERITE.get()
         )) {

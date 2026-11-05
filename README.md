@@ -4,7 +4,7 @@
 
 当前分支：`1.21.1-NeoForge`
 
-当前模组版本：`0.3.12`
+当前模组版本：`0.3.13`
 
 # 维护状态
 
@@ -88,7 +88,7 @@ Minecraft `1.20.1` Forge 的 `main` 分支暂停更新，保留现有代码和�
 
 **思索教程：** 悬停下界合金鼓风机并按住默认 `W`，查看“内置加工模式”和“过滤器规则与统一模式”两段用法动画。教程现使用原版过滤表和四槽操作，支持中英文字幕。
 
-**物品说明与界面：** 鼓风机和弹射置物台沿用原生思索入口，其余无思索物品使用原生 Shift 概要。界面 PNG 位于 jar 内 `assets/createnetherite/textures/gui/`，资源包可按相同路径及原尺寸替换，文字与物品由游戏绘制。
+**物品说明与界面：** 鼓风机、弹射置物台和伸缩机械手沿用原生思索入口，其余无思索物品使用原生 Shift 概要。界面 PNG 位于 jar 内 `assets/createnetherite/textures/gui/`，资源包可按相同路径及原尺寸替换，文字与物品由游戏绘制。
 
 # 无线红石
 
@@ -126,7 +126,9 @@ Minecraft `1.20.1` Forge 的 `main` 分支暂停更新，保留现有代码和�
 
 副手持有新机械手、主手持空桶，生存玩家右键原版或下界合金流体储罐即可装液体，每桶抽取 `1000 mB`。主手持新机械手，对工作方块长按右键可直接供能，松开或移开视线即停止；按住 Shift 开始可反向转动。仅驱动点击方块，沿用原生加工所需转速条件。默认 `16 RPM`、`256 SU`，容量跟随强力机械泵的基础应力配置，恰好够一台强力泵工作；超过此需求的方块不能启动，已有动力的方块仍使用其原有动力。
 
-耐久上限沿用原版的 `200`。成功取一桶扣一次资源，供能开始扣一次，随后每 `20 tick` 扣一次；优先消耗已装备背罐的压缩空气，没有空气时消耗 `1` 点耐久。普通远距破坏、放置和攻击继续沿用 Create 的消耗规则与配置。下界合金板加原版伸缩机械手无序升级；防火、防爆，并提供原生 Shift 概要。
+耐久上限沿用原版的 `200`。成功取一桶扣一次资源，供能开始扣一次，随后每 `20 tick` 扣一次；优先消耗已装备背罐的压缩空气，没有空气时消耗 `1` 点耐久。普通远距破坏、放置和攻击继续沿用 Create 的消耗规则与配置。下界合金板加原版伸缩机械手无序升级；防火、防爆。
+
+**思索教程：** 悬停下界合金伸缩机械手并按住默认 `W`，查看“副手辅助装液体”和“主手给工作方块供能”两段用法动画，支持中英文字幕。
 
 # 下界合金机械手（加工）
 
@@ -183,7 +185,7 @@ createnetherite-server.toml
 构建产物：
 
 ```text
-build/libs/createnetherite-1.21.1-0.3.12.jar
+build/libs/createnetherite-1.21.1-0.3.13.jar
 ```
 
 # Introduction
@@ -192,7 +194,7 @@ build/libs/createnetherite-1.21.1-0.3.12.jar
 
 Current branch: `1.21.1-NeoForge`
 
-Current mod version: `0.3.12`
+Current mod version: `0.3.13`
 
 # Maintenance status
 
@@ -274,7 +276,7 @@ Craft a Netherite Sheet with a regular Encased Fan to upgrade it. Breaking retur
 
 **Ponder:** Hover the fan and hold the default `W` key for two usage tutorials covering built-in modes, original filters in four slots, and selected-mode fallback. English and Chinese captions are available.
 
-**Descriptions and GUI:** The fan and ejector have native Ponder entries; items without Ponder use native Shift summaries. GUI PNGs are under `assets/createnetherite/textures/gui/` inside the jar and can be replaced by resource packs at matching paths and dimensions; text and items remain game-rendered.
+**Descriptions and GUI:** The fan, ejector and extendo grip have native Ponder entries; items without Ponder use native Shift summaries. GUI PNGs are under `assets/createnetherite/textures/gui/` inside the jar and can be replaced by resource packs at matching paths and dimensions; text and items remain game-rendered.
 
 # Wireless Redstone
 
@@ -312,7 +314,9 @@ Adds `3` more blocks of block reach than the original Create Extendo Grip: `6` b
 
 With the upgrade in the offhand and an empty bucket in the main hand, survival players can right-click an original or Netherite Fluid Tank to fill a bucket, draining `1000 mB`. In the main hand, hold right-click on a working block to power it directly; release or look away to stop. Sneak when starting to reverse rotation. Only the clicked block is driven, and its native minimum speed still applies. Default output is `16 RPM` and `256 SU`; capacity follows the Powerful Mechanical Pump's stress setting, exactly enough for one pump. Blocks requiring more cannot start, and existing mechanical power remains in control.
 
-Keeps the original `200` durability. A successful bucket fill costs one action; hand power costs one action initially and every `20 ticks` afterward. Equipped backtank air is used first, then `1` durability without air. Native remote breaking, placement, and attacks keep Create's cost rules and settings. Craft one Netherite Sheet with an original Extendo Grip in a shapeless recipe. Includes fire and blast protection and a native Shift summary.
+Keeps the original `200` durability. A successful bucket fill costs one action; hand power costs one action initially and every `20 ticks` afterward. Equipped backtank air is used first, then `1` durability without air. Native remote breaking, placement, and attacks keep Create's cost rules and settings. Craft one Netherite Sheet with an original Extendo Grip in a shapeless recipe. Includes fire and blast protection.
+
+**Ponder tutorials:** Hover the Netherite Extendo Grip and hold the default `W` key for “Filling buckets with an offhand grip” and “Powering a working block by hand”. Both usage scenes have English and Chinese subtitles.
 
 # Netherite Deployer
 
@@ -369,5 +373,5 @@ Existing worlds keep their own `serverconfig/createnetherite-server.toml`. If de
 Build output:
 
 ```text
-build/libs/createnetherite-1.21.1-0.3.12.jar
+build/libs/createnetherite-1.21.1-0.3.13.jar
 ```

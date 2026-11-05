@@ -11,7 +11,7 @@
 - 分支：`1.21.1-NeoForge`
 - 源码核对日期：`2026-11-02`
 - 源码基线提交：`258581732409c92bd271c783fff83fe993a5a4ca`（后续新增无线终端与管理器；贴图提交 `7326d31`）
-- 模组版本：`0.3.12`
+- 模组版本：`0.3.13`
 - Mod id：`createnetherite`
 - 主包名：`io.github.boosterproject.booster`
 - Minecraft：`1.21.1`
@@ -74,7 +74,7 @@
 按当前配置生成的主 jar：
 
 ```text
-build/libs/createnetherite-1.21.1-0.3.12.jar
+build/libs/createnetherite-1.21.1-0.3.13.jar
 ```
 
 ## Gradle 与依赖
@@ -332,7 +332,7 @@ createnetherite-server.toml
 
 强力机械泵使用普通 `BlockItem`，不再通过 `appendHoverText` 默认展开介绍。
 
-客户端 `BoosterTooltips.register()` 使用 Create 6.0.10 的 `TooltipModifier.REGISTRY` 与 `ItemDescription.Modifier`。下界合金鼓风机和弹射置物台保留原生 Ponder 入口；其余十七种物品（含旧过滤器）提供中英文 `<物品 description id>.tooltip.summary`，由 Create 生成 Shift 提示、折叠、换行及重点配色。燃烧室捕获用法使用原生 `.condition1` / `.behaviour1`。
+客户端 `BoosterTooltips.register()` 使用 Create 6.0.10 的 `TooltipModifier.REGISTRY` 与 `ItemDescription.Modifier`。下界合金鼓风机、弹射置物台和伸缩机械手保留原生 Ponder 入口；其余十六种物品（含旧过滤器）提供中英文 `<物品 description id>.tooltip.summary`，由 Create 生成 Shift 提示、折叠、换行及重点配色。燃烧室捕获用法使用原生 `.condition1` / `.behaviour1`。
 
 储罐的当前配置容量倍率、燃烧室堆叠保存的数量与倍率，只在按住 Shift 时追加到原生概要后。相关代码仅在客户端加载；捕获、放置、燃烧以及工程师护目镜信息保持原有逻辑。过滤器的已配置规则预览沿用 Create `FilterItem` 的原生显示行为。
 
@@ -681,9 +681,9 @@ BE 替换 `airCurrent` 为 `NetheriteAirCurrent`。它复用 Create 的碰撞与
 
 ## 下界合金鼓风机思索
 
-客户端 setup 中调用 `PonderIndex.addPlugin(new BoosterPonderPlugin())`，使用 Ponder `1.0.82` 的 `PonderPlugin` / `PonderSceneRegistrationHelper`，不使用旧版 `PonderRegistry` API。当前为下界合金鼓风机和弹射置物台各注册两段用法动画，不覆盖 Create 的原版教程；0.3.7已移除旧专用过滤器的共用入口。
+客户端 setup 中调用 `PonderIndex.addPlugin(new BoosterPonderPlugin())`，使用 Ponder `1.0.82` 的 `PonderPlugin` / `PonderSceneRegistrationHelper`，不使用旧版 `PonderRegistry` API。当前为下界合金鼓风机、弹射置物台和伸缩机械手各注册两段用法动画，不覆盖 Create 的原版教程；0.3.7已移除旧专用过滤器的共用入口。
 
-- `client/ponder/BoosterPonderPlugin.java`：注册两种机器的场景及共享字幕；鼓风机保留15条，弹射置物台新增13条。
+- `client/ponder/BoosterPonderPlugin.java`：注册三种物品的场景及共享字幕；鼓风机15条、弹射置物台13条、伸缩机械手10条。
 - `client/ponder/NetheriteFanScenes.java`：接入动力、选择四种加工模式、放入物品、设置过滤器、规则回退与切换，仅说明用法。
 - `assets/createnetherite/ponder/fan/tutorial.nbt`：两段共用的原生 gzip NBT 结构，共 56 个方块。舞台为 7×7，结构高度 3；风机 `(1,2,3)` 向东，正下方 `(1,1,3)` 是安山机壳，轴在其西侧，四个置物台位于 `(3..6,1,3)`。场景先展示安山机壳，再展示风机。风口高于置物台一格，避免挡风。
 
@@ -1064,3 +1064,18 @@ minecraft:netherite_ingot
 验证：新增1项 `NetheriteEjectorPonderGameTest`，读取实际生产结构，验证支撑和注册、真实选点/最后一件放置、斜上方输送、空闲改向不消耗物品、两条实际轨迹均位于结构范围内、64RPM持续供能、2件等待/4件触发、腾空目标、控制杆暂停与恢复后的再次实际到达。独立审查指出的空台首次批量投料问题已修正并复核；测试也发现并修正了整份NBT重载导致的停机和接收台未腾空。最终完整离线 `build runWirelessGameTestServer` 通过，205项原有回归及全部34项服务端GameTest通过。
 
 发布核对：143个生产JSON、中英文各117键，旧102键值和原鼓风机场景/结构未改，58张既有仓库PNG字节不变。最终0.3.12 jar 的203个生产资源和138个生产类与源码资源/编译结果逐字节一致，元数据版本0.3.12，新增场景类及结构齐全，测试类/QA配方/结构未打包。SHA-256：`a07f49a4b96a4b7b0c06050644508e80125d780db8b4e281e2b31b143e5ad46b`。未启动客户端或使用RTX5060；上述服务端操作链验证与源码审查不代表已实测Ponder画面、镜头及字幕布局，实际播放仍待图形验证。
+
+
+## 下界合金伸缩机械手思索（0.3.13）
+
+2026-11-05 为 `netherite_extendo_grip` 新增原生W入口，移出纯Shift概要注册清单，原有概要翻译保留兼容。两段动画仅介绍用户指定的副手取液和主手供能用法，物品能力、倍率、Mixin及贴图不变。
+
+- `NetheriteExtendoGripScenes.bucket` / `netherite_grip_bucket`：生存模式下副手持机械手、主手空桶右键流体储罐；真实储罐库存减少1000mB，显示水桶结果，并说明至少一桶存量和重复取液。取液过程沿用原生Ponder编排，未在虚拟世界伪造玩家交易。
+- `NetheriteExtendoGripScenes.power` / `netherite_grip_power`：主手持机械手，选择未接外部动力且未超过容量的工作方块；持续瞄准并长按右键，强力机械泵输水，啮合的小齿轮保持静止。松开、移开视线或换工具停止供能。两段均说明已装备背罐的空气优先，不足时扣机械手耐久。
+- 新增 `assets/createnetherite/ponder/extendo_grip/tutorial.nbt`，5×4×5、33方块。源储罐 `(1,2,2)` 含8000mB水，目标储罐 `(3,2,2)` 为空，二者隔着向东的强力机械泵 `(2,2,2)`；北侧小齿轮 `(2,2,1)` 为X轴，四个工作块下方均为安山机壳。储罐独立，不发生多方块合并。
+- `BoosterPonderPlugin` 为该物品注册两个共用结构的storyboard，新增10条共享字幕及两个标题，中英文齐全。既有鼓风机和弹射置物台的四段思索及字幕保留。
+- 供能动画仅对泵调用 `setKineticSpeed(..., HandheldKineticPower.RPM)`，读取实际16RPM常量，并通过 `propagatePipeChange` 更新压力，流体由Create原生虚拟流体网络输送；100tick后转速归零，泵两口压力在下一个虚拟tick归零。未直接设置产物储罐内容，也未向齿轮写入转速。该场景编排表示主手供能效果，不创建实际玩家、动力网络或额外供能规则。
+
+验证：新增1项 `NetheriteExtendoGripPonderGameTest`，未提供生产结构时先按预期失败。加入结构后读取实际生产NBT，验证源罐8000mB与目标空罐相互独立、生存副手机械手与主手空桶取1000mB并消耗一次资源、主手切换后持续16RPM驱动实际机械泵输水、实际啮合的小齿轮始终不转、持续扣耐久以及松开立即归零。独立审查发现原北侧Z轴杆未与泵连接，已改为X轴小齿轮；新增真实啮合断言先在旧布置失败，修正后通过。供能演示缩短为100tick，避免默认8倍压力先抽空源罐而遮蔽停机效果。既有机械手GameTest继续覆盖背罐空气优先、容量/权限边界等行为。最终完整离线 `build runWirelessGameTestServer` 的205项原有回归和全部35项服务端GameTest通过。
+
+发布核对：143个生产JSON、中英文各129键，旧117键值保留；既有鼓风机/弹射置物台场景和结构未改，58张既有仓库PNG字节不变。最终0.3.13 jar 的204个生产资源与139个生产类和源码资源/编译结果逐字节一致，模组元数据版本0.3.13，测试类/QA配方/结构未打包。SHA-256：`336a8a7153f14e0338a317f7c4bd4b2e3e755443886987f1a9a468c10dfd36ac`。未启动客户端或使用RTX5060；实际思索播放、镜头和字幕布局仍待图形验证，服务端真实操作链验证不等同于Ponder画面实测。

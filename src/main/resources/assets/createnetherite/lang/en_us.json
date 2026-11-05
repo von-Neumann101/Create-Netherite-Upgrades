@@ -115,5 +115,17 @@
   "createnetherite.ponder.shared.ejector_pause": "A redstone signal pauses launching, even when the required number of items is present.",
   "createnetherite.ponder.shared.ejector_resume": "Turn the redstone signal off to resume launching.",
   "createnetherite.ponder.netherite_ejector_launch.header": "Selecting a target and launching items",
-  "createnetherite.ponder.netherite_ejector_controls.header": "Retargeting, stack size and redstone"
+  "createnetherite.ponder.netherite_ejector_controls.header": "Retargeting, stack size and redstone",
+  "createnetherite.ponder.shared.grip_offhand": "In Survival, put the Netherite Extendo Grip in your offhand.",
+  "createnetherite.ponder.shared.grip_bucket": "Hold an empty bucket in your main hand and right-click a fluid tank.",
+  "createnetherite.ponder.shared.grip_filled": "One bucket of fluid leaves the tank and fills your bucket.",
+  "createnetherite.ponder.shared.grip_repeat": "The tank needs at least one bucket of the fluid. Use another empty bucket to collect more.",
+  "createnetherite.ponder.shared.grip_resources": "Successful bucket fills and sustained hand power use resources. Equipped backtank air is used first, then grip durability when no air is available.",
+  "createnetherite.ponder.shared.grip_mainhand": "To power a working block, move the Netherite Extendo Grip to your main hand.",
+  "createnetherite.ponder.shared.grip_limits": "Choose an idle working block without external power and within the grip's capacity. One Powerful Mechanical Pump can run this way.",
+  "createnetherite.ponder.shared.grip_hold": "Keep aiming at the working block and hold right-click. This pump transfers water between the tanks.",
+  "createnetherite.ponder.shared.grip_single": "Hand power applies only to the clicked block. Connected shafts and gears do not power other machines.",
+  "createnetherite.ponder.shared.grip_stop": "Release right-click, look away or switch items to stop supplying power.",
+  "createnetherite.ponder.netherite_grip_bucket.header": "Filling buckets with an offhand grip",
+  "createnetherite.ponder.netherite_grip_power.header": "Powering a working block by hand"
 }

@@ -115,5 +115,17 @@
   "createnetherite.ponder.shared.ejector_pause": "红石信号会暂停弹射，即使物品数量已经凑齐。",
   "createnetherite.ponder.shared.ejector_resume": "关闭红石信号，置物台会恢复弹射。",
   "createnetherite.ponder.netherite_ejector_launch.header": "选定目标与弹射物品",
-  "createnetherite.ponder.netherite_ejector_controls.header": "改向、数量与红石控制"
+  "createnetherite.ponder.netherite_ejector_controls.header": "改向、数量与红石控制",
+  "createnetherite.ponder.shared.grip_offhand": "生存模式下，将下界合金伸缩机械手放在副手。",
+  "createnetherite.ponder.shared.grip_bucket": "主手拿空桶，右键流体储罐。",
+  "createnetherite.ponder.shared.grip_filled": "储罐减少一桶流体，主手获得装满的桶。",
+  "createnetherite.ponder.shared.grip_repeat": "储罐内至少要有一桶对应流体。再次使用空桶即可继续取液。",
+  "createnetherite.ponder.shared.grip_resources": "成功取液和持续供能都会消耗资源。优先使用已装备背罐的压缩空气，没有空气时扣机械手耐久。",
+  "createnetherite.ponder.shared.grip_mainhand": "要给工作方块供能时，将下界合金伸缩机械手换到主手。",
+  "createnetherite.ponder.shared.grip_limits": "选择未接入外部动力、且未超过供能能力的工作方块。单台强力机械泵可以正常工作。",
+  "createnetherite.ponder.shared.grip_hold": "持续瞄准工作方块并按住右键供能。示例中的机械泵会在两个储罐之间输水。",
+  "createnetherite.ponder.shared.grip_single": "临时动力只作用于点击的方块，不会经传动轴或齿轮带动其他机器。",
+  "createnetherite.ponder.shared.grip_stop": "松开右键、移开视线或换下工具都会停止供能。",
+  "createnetherite.ponder.netherite_grip_bucket.header": "副手辅助装液体",
+  "createnetherite.ponder.netherite_grip_power.header": "主手给工作方块供能"
 }

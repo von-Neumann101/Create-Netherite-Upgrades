@@ -21,10 +21,23 @@ public class BoosterPonderPlugin implements PonderPlugin {
         helper.forComponents(BoosterItems.NETHERITE_WEIGHTED_EJECTOR.getId())
             .addStoryBoard("ejector/tutorial", NetheriteEjectorScenes::launch)
             .addStoryBoard("ejector/tutorial", NetheriteEjectorScenes::controls);
+        helper.forComponents(BoosterItems.NETHERITE_EXTENDO_GRIP.getId())
+            .addStoryBoard("extendo_grip/tutorial", NetheriteExtendoGripScenes::bucket)
+            .addStoryBoard("extendo_grip/tutorial", NetheriteExtendoGripScenes::power);
     }
 
     @Override
     public void registerSharedText(SharedTextRegistrationHelper helper) {
+        helper.registerSharedText("grip_offhand", "In Survival, put the Netherite Extendo Grip in your offhand.");
+        helper.registerSharedText("grip_bucket", "Hold an empty bucket in your main hand and right-click a fluid tank.");
+        helper.registerSharedText("grip_filled", "One bucket of fluid leaves the tank and fills your bucket.");
+        helper.registerSharedText("grip_repeat", "The tank needs at least one bucket of the fluid. Use another empty bucket to collect more.");
+        helper.registerSharedText("grip_resources", "Successful bucket fills and sustained hand power use resources. Equipped backtank air is used first, then grip durability when no air is available.");
+        helper.registerSharedText("grip_mainhand", "To power a working block, move the Netherite Extendo Grip to your main hand.");
+        helper.registerSharedText("grip_limits", "Choose an idle working block without external power and within the grip's capacity. One Powerful Mechanical Pump can run this way.");
+        helper.registerSharedText("grip_hold", "Keep aiming at the working block and hold right-click. This pump transfers water between the tanks.");
+        helper.registerSharedText("grip_single", "Hand power applies only to the clicked block. Connected shafts and gears do not power other machines.");
+        helper.registerSharedText("grip_stop", "Release right-click, look away or switch items to stop supplying power.");
         helper.registerSharedText("ejector_select", "Hold a Netherite Weighted Ejector, then sneak and right-click the target block.");
         helper.registerSharedText("ejector_diagonal", "The target may be diagonal, above or below the ejector. Check the previewed path.");
         helper.registerSharedText("ejector_place", "Place the ejector normally after selecting a target. The platform stays flat.");
