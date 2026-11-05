@@ -1,0 +1,14 @@
+{
+  "type": "createnetherite:netherite_conversion",
+  "ingredients": [
+    {
+      "item": "create:weighted_ejector"
+    }
+  ],
+  "results": [
+    {
+      "id": "createnetherite:netherite_weighted_ejector",
+      "count": 1
+    }
+  ]
+}

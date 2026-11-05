@@ -1,0 +1,14 @@
+{
+  "type": "createnetherite:netherite_conversion",
+  "ingredients": [
+    {
+      "item": "create:redstone_link"
+    }
+  ],
+  "results": [
+    {
+      "id": "createnetherite:netherite_wireless_terminal",
+      "count": 1
+    }
+  ]
+}

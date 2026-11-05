@@ -17,6 +17,7 @@ import io.github.boosterproject.booster.content.logistics.depot.NetheriteEjector
 import io.github.boosterproject.booster.content.kinetics.deployer.NetheriteDeployerBlockEntity;
 import io.github.boosterproject.booster.mixin.NetheriteDeployerInventoryAccess;
 import com.simibubi.create.content.logistics.depot.DepotBehaviour;
+import io.github.boosterproject.booster.content.conversion.NetheriteConverterBlockEntity;
 import io.github.boosterproject.booster.content.redstone.wireless.WirelessTerminalBlockEntity;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.core.BlockPos;
@@ -31,6 +32,9 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 public final class BoosterBlockEntityTypes {
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPES =
         DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, Booster.MOD_ID);
+
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<NetheriteConverterBlockEntity>> NETHERITE_CONVERTER =
+        BLOCK_ENTITY_TYPES.register("netherite_converter", () -> BlockEntityType.Builder.of(NetheriteConverterBlockEntity::new, BoosterBlocks.NETHERITE_CONVERTER.get()).build(null));
 
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<PowerfulMechanicalPumpBlockEntity>> POWERFUL_MECHANICAL_PUMP =
         BLOCK_ENTITY_TYPES.register("powerful_mechanical_pump", () -> BlockEntityType.Builder
@@ -107,6 +111,8 @@ public final class BoosterBlockEntityTypes {
     }
 
     private static void registerCapabilities(RegisterCapabilitiesEvent event) {
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, NETHERITE_CONVERTER.get(), (be, side) -> be.getPlateInventory());
+        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, NETHERITE_CONVERTER.get(), (be, side) -> be.getEssenceTank());
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, NETHERITE_DEPLOYER.get(), (be, side) -> {
             var access = (NetheriteDeployerInventoryAccess) be;
             access.booster$initHandler();

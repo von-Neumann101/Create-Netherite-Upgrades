@@ -1,0 +1,19 @@
+{
+  "type": "createnetherite:netherite_conversion",
+  "ingredients": [
+    {
+      "item": "create:empty_blaze_burner"
+    }
+  ],
+  "results": [
+    {
+      "id": "createnetherite:netherite_blaze_burner",
+      "count": 1,
+      "components": {
+        "minecraft:custom_data": {
+          "BlazeCount": 0
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "type": "createnetherite:netherite_conversion",
+  "ingredients": [
+    {
+      "item": "create:fluid_tank"
+    }
+  ],
+  "results": [
+    {
+      "id": "createnetherite:netherite_fluid_tank",
+      "count": 1
+    }
+  ]
+}

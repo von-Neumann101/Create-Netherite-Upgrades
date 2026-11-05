@@ -1,0 +1,14 @@
+{
+  "type": "createnetherite:netherite_conversion",
+  "ingredients": [
+    {
+      "item": "create:mechanical_pump"
+    }
+  ],
+  "results": [
+    {
+      "id": "createnetherite:powerful_mechanical_pump",
+      "count": 1
+    }
+  ]
+}

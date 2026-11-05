@@ -1,0 +1,14 @@
+{
+  "type": "createnetherite:netherite_conversion",
+  "ingredients": [
+    {
+      "item": "create:smart_chute"
+    }
+  ],
+  "results": [
+    {
+      "id": "createnetherite:netherite_smart_chute",
+      "count": 1
+    }
+  ]
+}

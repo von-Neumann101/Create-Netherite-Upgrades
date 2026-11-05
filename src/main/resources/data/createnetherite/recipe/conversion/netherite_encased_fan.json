@@ -1,0 +1,14 @@
+{
+  "type": "createnetherite:netherite_conversion",
+  "ingredients": [
+    {
+      "item": "create:encased_fan"
+    }
+  ],
+  "results": [
+    {
+      "id": "createnetherite:netherite_encased_fan",
+      "count": 1
+    }
+  ]
+}

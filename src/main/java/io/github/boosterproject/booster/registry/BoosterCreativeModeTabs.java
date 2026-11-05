@@ -20,6 +20,8 @@ public final class BoosterCreativeModeTabs {
             .icon(() -> new ItemStack(BoosterItems.POWERFUL_MECHANICAL_PUMP.get()))
             .displayItems((parameters, output) -> {
                 output.accept(BoosterItems.POWERFUL_MECHANICAL_PUMP.get());
+                output.accept(BoosterItems.NETHERITE_CONVERTER.get());
+                output.accept(BoosterFluids.ESSENCE_BUCKET.get());
                 output.accept(BoosterItems.NETHERITE_FLUID_TANK.get());
                 output.accept(BoosterItems.NETHERITE_STEAM_ENGINE.get());
                 output.accept(BoosterItems.NETHERITE_ITEM_VAULT.get());

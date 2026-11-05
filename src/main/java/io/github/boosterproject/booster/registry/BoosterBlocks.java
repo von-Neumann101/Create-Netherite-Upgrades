@@ -1,6 +1,7 @@
 package io.github.boosterproject.booster.registry;
 
 import com.simibubi.create.AllBlocks;
+import io.github.boosterproject.booster.content.conversion.NetheriteConverterBlock;
 import io.github.boosterproject.booster.Booster;
 import io.github.boosterproject.booster.content.contraptions.elevator.NetheriteElevatorPulleyBlock;
 import io.github.boosterproject.booster.content.fluids.pump.PowerfulMechanicalPumpBlock;
@@ -25,6 +26,9 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 
 public final class BoosterBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Booster.MOD_ID);
+
+    public static final DeferredBlock<NetheriteConverterBlock> NETHERITE_CONVERTER = BLOCKS.register("netherite_converter", () ->
+        new NetheriteConverterBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.NETHERITE_BLOCK).strength(5, 1200).requiresCorrectToolForDrops()));
 
     public static final DeferredBlock<PowerfulMechanicalPumpBlock> POWERFUL_MECHANICAL_PUMP =
         BLOCKS.register("powerful_mechanical_pump", () -> new PowerfulMechanicalPumpBlock(

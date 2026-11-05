@@ -4,7 +4,7 @@
 
 当前分支：`1.21.1-NeoForge`
 
-当前模组版本：`0.3.13`
+当前模组版本：`0.3.14`
 
 # 维护状态
 
@@ -19,6 +19,8 @@ Minecraft `1.20.1` Forge 的 `main` 分支暂停更新，保留现有代码和�
 当前模组新增多个 Create 兼容内容：
 
 - `createnetherite:powerful_mechanical_pump`
+- `createnetherite:netherite_converter`
+- `createnetherite:nether_essence_bucket`
 - `createnetherite:netherite_fluid_tank`
 - `createnetherite:netherite_steam_engine`
 - `createnetherite:netherite_item_vault`
@@ -110,6 +112,23 @@ Minecraft `1.20.1` Forge 的 `main` 分支暂停更新，保留现有代码和�
 
 一个下界合金板加一个原版智能溜槽，无序合成一个下界合金智能溜槽。物品沿用防火、防爆与原生 Shift 概要，GUI 使用独立 `netherite_smart_chute.png`。
 
+# 下界合金转换机与下界精华
+
+新增转换途径，原有合成配方保留。把转换机放在传送带、置物台等处理位的**上方两格**，将普通机器物品送到下方，可逐个转换为对应下界合金版本。覆盖现有14类机器，烈焰人燃烧室的空壳和已有烈焰人版本分别转换。
+
+转换机固定占用 **2048SU**，每个物品需要连续供能 **5秒（100tick）**；提高转速不会加速，断电或过载会重新计时。每次完成消耗 **250mB下界精华** 和一次板材额度，未完成不扣原料。内置精华槽4000mB，可用管道或桶注入；不接受岩浆等其他流体。
+
+右键放入一张下界合金板，单张可转换 **16个**机器；潜行空手右键取回。部分用过的板保留剩余次数，自动化输入同样只接受一张板。板材显示在机身顶部，Shift可查看剩余次数，工程师护目镜可查看精华与进度。暂不制作转换动作动画。
+
+转换机的有序合成：
+
+| 下界合金锭 | 下界之星 | 下界合金锭 |
+| --- | --- | --- |
+| 龙息 | 附魔台 | 龙息 |
+| 黑曜石 | 钻石块 | 哭泣的黑曜石 |
+
+下界精华只能由**下界合金动力搅拌机**在工作盆中制作：**1烈焰粉＋1地狱疣＋1000mB岩浆→1000mB下界精华**，无需额外热源。普通动力搅拌机不能制作。
+
 # 下界合金弹射置物台
 
 保持平放，可自由选择斜向及不同高度的目标，也可纯向上或向下弹射。水平直线射程和垂直高度差上限均为 Create 弹射距离配置的 `2` 倍，默认 `64` 格；斜向按水平直线距离判定。相同转速和距离下，蓄力进度为原版的 `8` 倍，蓄力阶段约为原来的 `1/8`，仍受整 tick 和原版弹射动作时间影响；应力消耗沿用原版。
@@ -185,7 +204,7 @@ createnetherite-server.toml
 构建产物：
 
 ```text
-build/libs/createnetherite-1.21.1-0.3.13.jar
+build/libs/createnetherite-1.21.1-0.3.14.jar
 ```
 
 # Introduction
@@ -194,7 +213,7 @@ build/libs/createnetherite-1.21.1-0.3.13.jar
 
 Current branch: `1.21.1-NeoForge`
 
-Current mod version: `0.3.13`
+Current mod version: `0.3.14`
 
 # Maintenance status
 
@@ -209,6 +228,8 @@ Technical documentation (Chinese): [NeoForge 1.21.1](docs/neoforge-1.21.1.md) ·
 The mod currently adds several Create-compatible entries:
 
 - `createnetherite:powerful_mechanical_pump`
+- `createnetherite:netherite_converter`
+- `createnetherite:nether_essence_bucket`
 - `createnetherite:netherite_fluid_tank`
 - `createnetherite:netherite_steam_engine`
 - `createnetherite:netherite_item_vault`
@@ -298,6 +319,23 @@ Each direction buffers one stack independently, allowing opposing traffic in a c
 
 Craft one Netherite Sheet with an original Smart Chute in a shapeless recipe. The upgrade has fire and blast protection, a native Shift summary, and a separate `netherite_smart_chute.png` GUI texture.
 
+# Netherite Converter and Nether Essence
+
+An additional upgrade route; existing crafting recipes remain. Place the converter **two blocks above** a belt, depot or compatible processing inventory. It converts regular machine items one at a time, covering all 14 existing machine types, with separate empty and occupied Blaze Burner recipes.
+
+The converter uses a fixed **2048 SU** and **5 continuous seconds (100 ticks)** per item. Higher RPM does not speed it up; power loss or overstress restarts progress. Completion costs **250 mB of Nether Essence** and one sheet use. Unfinished work consumes nothing. Its 4000 mB tank accepts essence through pipes or buckets and rejects other fluids.
+
+Right-click to insert one Netherite Sheet for **16 upgrades**; sneak-right-click empty-handed to retrieve it. Partially used sheets retain their remaining uses, including when extracted, saved or dropped. Automation also accepts only one sheet. The sheet appears on top; Shift shows remaining uses, while Engineer's Goggles show fluid and progress. The machine currently has no conversion animation.
+
+Shaped crafting recipe:
+
+| Netherite Ingot | Nether Star | Netherite Ingot |
+| --- | --- | --- |
+| Dragon's Breath | Enchanting Table | Dragon's Breath |
+| Obsidian | Diamond Block | Crying Obsidian |
+
+Only a **Netherite Mechanical Mixer** can produce essence in a basin: **1 Blaze Powder + 1 Nether Wart + 1000 mB Lava → 1000 mB Nether Essence**. No extra heat source is required. A regular mixer cannot make it.
+
 # Netherite Weighted Ejector
 
 Stays flat while targeting diagonally, at different heights, or straight up/down. Its horizontal radius and vertical offset limits are twice Create's ejector distance setting, `64` blocks by default; diagonals use horizontal straight-line distance. At matching speed and distance, charge progress is `8` times the original, making the charging phase about `1/8` as long, subject to whole ticks and the original launch animation. Stress consumption follows the original.
@@ -373,5 +411,5 @@ Existing worlds keep their own `serverconfig/createnetherite-server.toml`. If de
 Build output:
 
 ```text
-build/libs/createnetherite-1.21.1-0.3.13.jar
+build/libs/createnetherite-1.21.1-0.3.14.jar
 ```

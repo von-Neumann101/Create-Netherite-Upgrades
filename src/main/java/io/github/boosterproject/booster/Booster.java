@@ -23,6 +23,8 @@ import io.github.boosterproject.booster.registry.BoosterBlockEntityTypes;
 import io.github.boosterproject.booster.registry.BoosterBlocks;
 import io.github.boosterproject.booster.registry.BoosterCreativeModeTabs;
 import io.github.boosterproject.booster.registry.BoosterItems;
+import io.github.boosterproject.booster.registry.BoosterFluids;
+import io.github.boosterproject.booster.registry.BoosterRecipeTypes;
 import io.github.boosterproject.booster.registry.BoosterMenuTypes;
 import io.github.boosterproject.booster.registry.BoosterArmInteractionPointTypes;
 import net.minecraft.world.level.block.Block;
@@ -43,6 +45,8 @@ public class Booster {
 
     public Booster(IEventBus modEventBus, ModContainer modContainer) {
         BoosterConfigs.register(modContainer);
+        BoosterFluids.register(modEventBus);
+        BoosterRecipeTypes.register(modEventBus);
         BoosterBlocks.register(modEventBus);
         BoosterItems.register(modEventBus);
         BoosterCreativeModeTabs.register(modEventBus);
@@ -67,6 +71,7 @@ public class Booster {
 
     private void commonSetup(FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
+            BlockStressValues.IMPACTS.register(BoosterBlocks.NETHERITE_CONVERTER.get(), () -> 2048D);
             BlockStressValues.IMPACTS.register(BoosterBlocks.NETHERITE_DEPLOYER.get(), () -> BlockStressValues.getImpact(AllBlocks.DEPLOYER.get()));
             MovementBehaviour.REGISTRY.register(BoosterBlocks.NETHERITE_DEPLOYER.get(), new DeployerMovementBehaviour());
             MovingInteractionBehaviour.REGISTRY.register(BoosterBlocks.NETHERITE_DEPLOYER.get(), new DeployerMovingInteraction());

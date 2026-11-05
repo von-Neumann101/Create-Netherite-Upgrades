@@ -127,5 +127,13 @@
   "createnetherite.ponder.shared.grip_single": "Hand power applies only to the clicked block. Connected shafts and gears do not power other machines.",
   "createnetherite.ponder.shared.grip_stop": "Release right-click, look away or switch items to stop supplying power.",
   "createnetherite.ponder.netherite_grip_bucket.header": "Filling buckets with an offhand grip",
-  "createnetherite.ponder.netherite_grip_power.header": "Powering a working block by hand"
+  "createnetherite.ponder.netherite_grip_power.header": "Powering a working block by hand",
+  "block.createnetherite.netherite_converter": "Netherite Converter",
+  "block.createnetherite.nether_essence": "Nether Essence",
+  "fluid.createnetherite.nether_essence": "Nether Essence",
+  "item.createnetherite.nether_essence_bucket": "Nether Essence Bucket",
+  "block.createnetherite.netherite_converter.tooltip.summary": "Place _two blocks_ above a belt or depot to upgrade regular machines. Uses a fixed _2048 SU_ and _5 continuous seconds_ per item; RPM cannot speed it up and loss of power restarts progress. Each conversion costs _250 mB of Nether Essence_. Right-click to insert one Netherite Sheet for _16 conversions_. Sneak-right-click empty-handed to retrieve it with remaining uses intact.",
+  "item.createnetherite.nether_essence_bucket.tooltip.summary": "Mix _Blaze Powder, Nether Wart and Lava_ in a basin using a _Netherite Mechanical Mixer_. Supply it to a Netherite Converter by pipe or bucket; each conversion uses _250 mB_.",
+  "converter.createnetherite.status": "Sheet: %s uses; Essence: %s/4000 mB; Progress: %s/100; Required: %s SU",
+  "converter.createnetherite.plate_uses": "Converter uses: %s/16"
 }

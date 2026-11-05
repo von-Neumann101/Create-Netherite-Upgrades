@@ -127,5 +127,13 @@
   "createnetherite.ponder.shared.grip_single": "临时动力只作用于点击的方块，不会经传动轴或齿轮带动其他机器。",
   "createnetherite.ponder.shared.grip_stop": "松开右键、移开视线或换下工具都会停止供能。",
   "createnetherite.ponder.netherite_grip_bucket.header": "副手辅助装液体",
-  "createnetherite.ponder.netherite_grip_power.header": "主手给工作方块供能"
+  "createnetherite.ponder.netherite_grip_power.header": "主手给工作方块供能",
+  "block.createnetherite.netherite_converter": "下界合金转换机",
+  "block.createnetherite.nether_essence": "下界精华",
+  "fluid.createnetherite.nether_essence": "下界精华",
+  "item.createnetherite.nether_essence_bucket": "下界精华桶",
+  "block.createnetherite.netherite_converter.tooltip.summary": "放在传送带或置物台上方_两格_，把普通机器转换为下界合金版本。固定占用_2048SU_，每个物品需连续供能_5秒_，转速不会加速，断电后重新计时。每次消耗_250mB下界精华_；右键放入一张下界合金板，可转换_16个_机器。潜行空手右键取回板材，剩余次数会保留。",
+  "item.createnetherite.nether_essence_bucket.tooltip.summary": "在_下界合金搅拌机_下的工作盆，用_烈焰粉、地狱疣和岩浆_制作。可通过管道或桶注入下界合金转换机，每次转换消耗_250mB_。",
+  "converter.createnetherite.status": "板材剩余：%s次；精华：%s/4000mB；进度：%s/100；需求：%sSU",
+  "converter.createnetherite.plate_uses": "转换机可用：%s/16次"
 }

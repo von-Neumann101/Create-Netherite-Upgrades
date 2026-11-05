@@ -11,7 +11,7 @@
 - 分支：`1.21.1-NeoForge`
 - 源码核对日期：`2026-11-02`
 - 源码基线提交：`258581732409c92bd271c783fff83fe993a5a4ca`（后续新增无线终端与管理器；贴图提交 `7326d31`）
-- 模组版本：`0.3.13`
+- 模组版本：`0.3.14`
 - Mod id：`createnetherite`
 - 主包名：`io.github.boosterproject.booster`
 - Minecraft：`1.21.1`
@@ -74,7 +74,7 @@
 按当前配置生成的主 jar：
 
 ```text
-build/libs/createnetherite-1.21.1-0.3.13.jar
+build/libs/createnetherite-1.21.1-0.3.14.jar
 ```
 
 ## Gradle 与依赖
@@ -128,6 +128,8 @@ MixinConfigs: createnetherite.mixins.json
 注册 ID：
 
 - `createnetherite:powerful_mechanical_pump`
+- `createnetherite:netherite_converter`
+- `createnetherite:nether_essence_bucket`
 - `createnetherite:netherite_fluid_tank`
 - `createnetherite:netherite_steam_engine`
 - `createnetherite:netherite_item_vault`
@@ -152,7 +154,7 @@ MixinConfigs: createnetherite.mixins.json
 - 注册位置：`BoosterCreativeModeTabs`
 - 标签页 ID：`createnetherite:createnetherite`
 - 图标：强力机械泵
-- 包含：上述十四种方块的物品、下界合金无限管理器、下界合金伸缩机械手、下界合金下界合金和下界合金板，共十八种在用物品；另保留旧下界合金过滤器注册以兼容存档，注册物品总数为十九。空燃烧室是同一物品 ID 的组件变体
+- 包含：上述十五种机器方块的物品、下界合金无限管理器、下界合金伸缩机械手、下界合金下界合金、下界合金板和下界精华桶，共二十种在用物品；另保留旧下界合金过滤器注册以兼容存档，注册物品总数为二十一。另注册下界精华液体方块，不提供方块物品。空燃烧室是同一物品 ID 的组件变体
 
 ## 主类与初始化
 
@@ -332,7 +334,7 @@ createnetherite-server.toml
 
 强力机械泵使用普通 `BlockItem`，不再通过 `appendHoverText` 默认展开介绍。
 
-客户端 `BoosterTooltips.register()` 使用 Create 6.0.10 的 `TooltipModifier.REGISTRY` 与 `ItemDescription.Modifier`。下界合金鼓风机、弹射置物台和伸缩机械手保留原生 Ponder 入口；其余十六种物品（含旧过滤器）提供中英文 `<物品 description id>.tooltip.summary`，由 Create 生成 Shift 提示、折叠、换行及重点配色。燃烧室捕获用法使用原生 `.condition1` / `.behaviour1`。
+客户端 `BoosterTooltips.register()` 使用 Create 6.0.10 的 `TooltipModifier.REGISTRY` 与 `ItemDescription.Modifier`。下界合金鼓风机、弹射置物台和伸缩机械手保留原生 Ponder 入口；其余十八种物品（含旧过滤器）提供中英文 `<物品 description id>.tooltip.summary`，由 Create 生成 Shift 提示、折叠、换行及重点配色。燃烧室捕获用法使用原生 `.condition1` / `.behaviour1`。
 
 储罐的当前配置容量倍率、燃烧室堆叠保存的数量与倍率，只在按住 Shift 时追加到原生概要后。相关代码仅在客户端加载；捕获、放置、燃烧以及工程师护目镜信息保持原有逻辑。过滤器的已配置规则预览沿用 Create `FilterItem` 的原生显示行为。
 
@@ -1079,3 +1081,23 @@ minecraft:netherite_ingot
 验证：新增1项 `NetheriteExtendoGripPonderGameTest`，未提供生产结构时先按预期失败。加入结构后读取实际生产NBT，验证源罐8000mB与目标空罐相互独立、生存副手机械手与主手空桶取1000mB并消耗一次资源、主手切换后持续16RPM驱动实际机械泵输水、实际啮合的小齿轮始终不转、持续扣耐久以及松开立即归零。独立审查发现原北侧Z轴杆未与泵连接，已改为X轴小齿轮；新增真实啮合断言先在旧布置失败，修正后通过。供能演示缩短为100tick，避免默认8倍压力先抽空源罐而遮蔽停机效果。既有机械手GameTest继续覆盖背罐空气优先、容量/权限边界等行为。最终完整离线 `build runWirelessGameTestServer` 的205项原有回归和全部35项服务端GameTest通过。
 
 发布核对：143个生产JSON、中英文各129键，旧117键值保留；既有鼓风机/弹射置物台场景和结构未改，58张既有仓库PNG字节不变。最终0.3.13 jar 的204个生产资源与139个生产类和源码资源/编译结果逐字节一致，模组元数据版本0.3.13，测试类/QA配方/结构未打包。SHA-256：`336a8a7153f14e0338a317f7c4bd4b2e3e755443886987f1a9a468c10dfd36ac`。未启动客户端或使用RTX5060；实际思索播放、镜头和字幕布局仍待图形验证，服务端真实操作链验证不等同于Ponder画面实测。
+
+
+## 下界合金转换机与下界精华（0.3.14）
+
+2026-11-05 新增 `netherite_converter`、下界精华source/flowing Fluid与FluidType、流体方块和桶。转换机有序合成为：下界合金锭/下界之星/下界合金锭；龙息/附魔台/龙息；黑曜石/钻石块/哭泣的黑曜石。原生配方返还两个龙息玻璃瓶。既有升级合成配方保留。
+
+- `BoosterRecipeTypes` 注册独立 `netherite_conversion` 与 `netherite_mixing`，使用锁定Create的 `StandardProcessingRecipe.Serializer` 和原生JSON/网络codec。15条转换配方覆盖14类机器，空/满烈焰人燃烧室分别给出BlazeCount=0/1；结果均为1个，不复制旧批量合成的3个产量。转换不包括工具、管理器或材料。
+- `NetheriteMixingRecipe extends BasinRecipe`，配方为1烈焰粉＋1地狱疣＋1000mB岩浆→1000mB精华，热量要求NONE。仅下界合金搅拌机在 `matchStaticFilters` 放行自定义类型，同时使用独立静态recipe cache key，隔离原生两层缓存；普通搅拌机不接受该类型。批量配方、流体容量与输出仍走原生BasinRecipe。
+- `NetheriteConverterBlock` 继承HorizontalKineticBlock，水平朝向的左右两面接轴，输入处理位为下方两格。右键插入一张板，潜行空手右键取回，桶交互调用NeoForge FluidUtil。物品能力仅接受单张下界合金板；4000mB流体槽仅接受精华。新机器/桶防火、防爆，机器加入镐和钻石工具标签、正常掉落及创造栏。
+- `NetheriteConverterBlockEntity.calculateStressApplied` 返回2048/abs(theoreticalRPM)，同步lastStressApplied。零RPM的基础值2048不会产生实际网络负载，并防止低容量手持工具错误认领；真实网络以基础值乘原始RPM，运行时固定2048SU。`onSpeedChanged` 在服务端且实际网络仍包含该成员时刷新impact，避免移除回调把机器重新加回网络。过载由原生Create处理。
+- `BeltProcessingBehaviour` 负责保留匹配输入；BE服务端tick直接查询下方真实 `TransportedItemStackHandlerBehaviour` 的中心库存，推进一次100tick转换，不依赖传送带tick或RPM。原生BeltInventory在停带时不调用held回调，所以断电检查和进度清零必须独立执行。更换输入、阻挡处理空间、缺板/精华或断电/过载均清零；再次供能重新计时，重载不保存未完成进度。
+- 完成前重新检查真实输入与资源，一次转换一个物品，扣250mB与一次板材额度，再使用 `TransportedResult.convertToAndLeaveHeld` 输出升级品并保留余下输入。板材 `minecraft:custom_data.NetheriteConversionUses` 缺省16，首次完成写15，最后一次消耗板；取出/保存/掉落保留完整组件，零次标签不恢复免费额度。
+- 升级使用 `transmuteCopy` 保留输入组件，结果指定patch优先；有 `BLOCK_ENTITY_DATA` 时把id改为目标BE类型，使储罐液体等兼容数据可应用到升级机器。自定义名称保留。新机无压头动作，仅静态机身与顶部板材renderer；仍使用原生Shift概要及护目镜信息。
+- 指定美术对话新增7张PNG：四张16×16机身、16×16精华静止面、32×32流动面、16×16透明桶。客户端用RegisterClientExtensionsEvent注册流体纹理，无本地客户端或GPU验证。
+
+验证：新增10项真实服务端GameTest，注册缺失基线先失败；实现后覆盖16/256RPM均固定2048SU与100tick、1984SU实际网络拒绝/2048SU刚好通过、资源不足与断电重计不扣料、一张板恰好16次并保留第17件输入、名称及储罐内容/目标BE类型、部分板与精华保存重载及拆除掉落、真实桶交互/单槽过滤/取回、真实移动传送带逐件转换、精华专属工作盆和普通搅拌机拒绝、指定3×3与两个玻璃瓶返还、15条转换和专属混合配方的网络codec往返。初次混合测试未通过的原因是测试用轴顶接搅拌机，而原生搅拌机只接齿轮；改为真实啮合小齿轮并断言64RPM后通过，生产搅拌规则未为夹具放宽。最终全部45项GameTest通过，完整离线build的205项原有回归通过。
+
+独立审查发现精华纹理位于非默认的 `textures/fluid`，需要额外图集登记。已新增 `assets/minecraft/atlases/blocks.json` 的两条 `minecraft:single`，纳入静止/流动纹理；按锁定NeoForge要求核对，并复核最终jar内图集及PNG齐全，审查无剩余重要问题。
+
+发布核对：168个生产JSON，中英文各137键，旧129键值保留；15条新转换、1条精华混合和1条新机合成配方，既有所有配方和思索资源保留。58张旧仓库PNG字节不变，7张新增PNG的尺寸/透明度及图集路径通过检查；旧文本资源按Git行尾规范化比较。最终0.3.14 jar 的236个生产资源、152个生产类与源码资源/编译输出逐字节相同，模组元数据版本0.3.14，测试类/QA配方/结构未打包。SHA-256：`58bd2f5a699814f2a13616e8f9418bf7731b65050c3f6e26dcbfb512bc0a147b`。未启动客户端或使用RTX5060；新机、板材与流体的实际渲染仍待图形实测。

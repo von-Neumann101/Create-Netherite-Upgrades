@@ -1,0 +1,14 @@
+{
+  "type": "createnetherite:netherite_conversion",
+  "ingredients": [
+    {
+      "item": "create:mechanical_arm"
+    }
+  ],
+  "results": [
+    {
+      "id": "createnetherite:netherite_mechanical_arm",
+      "count": 1
+    }
+  ]
+}

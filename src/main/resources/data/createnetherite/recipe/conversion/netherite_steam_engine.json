@@ -1,0 +1,14 @@
+{
+  "type": "createnetherite:netherite_conversion",
+  "ingredients": [
+    {
+      "item": "create:steam_engine"
+    }
+  ],
+  "results": [
+    {
+      "id": "createnetherite:netherite_steam_engine",
+      "count": 1
+    }
+  ]
+}

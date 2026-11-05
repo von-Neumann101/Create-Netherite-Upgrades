@@ -1,0 +1,23 @@
+{
+  "type": "createnetherite:netherite_mixing",
+  "ingredients": [
+    {
+      "item": "minecraft:blaze_powder"
+    },
+    {
+      "item": "minecraft:nether_wart"
+    },
+    {
+      "type": "neoforge:single",
+      "fluid": "minecraft:lava",
+      "amount": 1000
+    }
+  ],
+  "results": [
+    {
+      "id": "createnetherite:nether_essence",
+      "amount": 1000
+    }
+  ],
+  "processing_time": 100
+}

@@ -20,6 +20,9 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 public final class BoosterItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Booster.MOD_ID);
 
+    public static final DeferredItem<Item> NETHERITE_CONVERTER = ITEMS.register("netherite_converter", () ->
+        new BlockItem(BoosterBlocks.NETHERITE_CONVERTER.get(), new Item.Properties().fireResistant()));
+
     public static final DeferredItem<Item> POWERFUL_MECHANICAL_PUMP =
         ITEMS.register("powerful_mechanical_pump", () -> new BlockItem(
             BoosterBlocks.POWERFUL_MECHANICAL_PUMP.get(),

@@ -27,6 +27,9 @@ import io.github.boosterproject.booster.registry.BoosterBlockEntityTypes;
 import io.github.boosterproject.booster.registry.BoosterBlocks;
 import io.github.boosterproject.booster.registry.BoosterMenuTypes;
 import io.github.boosterproject.booster.registry.BoosterItems;
+import io.github.boosterproject.booster.registry.BoosterFluids;
+import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
+import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import io.github.boosterproject.booster.content.processing.burner.NetheriteBlazeBurnerData;
 import io.github.boosterproject.booster.client.ponder.BoosterPonderPlugin;
 import net.createmod.ponder.foundation.PonderIndex;
@@ -48,6 +51,7 @@ public final class BoosterClient {
         BoosterPartialModels.init();
         NetheriteArmModels.init();
         modEventBus.addListener(BoosterClient::registerRenderers);
+        modEventBus.addListener(BoosterClient::registerFluidExtensions);
         modEventBus.addListener(BoosterClient::clientSetup);
         modEventBus.addListener(BoosterClient::registerScreens);
         CreateClient.MODEL_SWAPPER.getCustomBlockModels()
@@ -60,6 +64,7 @@ public final class BoosterClient {
     }
 
     private static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
+        event.registerBlockEntityRenderer(BoosterBlockEntityTypes.NETHERITE_CONVERTER.get(), NetheriteConverterRenderer::new);
         event.registerBlockEntityRenderer(BoosterBlockEntityTypes.NETHERITE_DEPLOYER.get(), DeployerRenderer::new);
         event.registerBlockEntityRenderer(BoosterBlockEntityTypes.NETHERITE_WEIGHTED_EJECTOR.get(), EjectorRenderer::new);
         event.registerBlockEntityRenderer(BoosterBlockEntityTypes.NETHERITE_SMART_CHUTE.get(), SmartChuteRenderer::new);
@@ -92,6 +97,13 @@ public final class BoosterClient {
         );
     }
 
+    private static void registerFluidExtensions(RegisterClientExtensionsEvent event) {
+        event.registerFluidType(new IClientFluidTypeExtensions() {
+            @Override public ResourceLocation getStillTexture() { return ResourceLocation.fromNamespaceAndPath(Booster.MOD_ID, "fluid/nether_essence_still"); }
+            @Override public ResourceLocation getFlowingTexture() { return ResourceLocation.fromNamespaceAndPath(Booster.MOD_ID, "fluid/nether_essence_flow"); }
+        }, BoosterFluids.ESSENCE_TYPE.get());
+    }
+
     private static void registerScreens(RegisterMenuScreensEvent event) {
         event.register(BoosterMenuTypes.NETHERITE_SMART_CHUTE.get(), NetheriteSmartChuteScreen::new);
         event.register(BoosterMenuTypes.NETHERITE_FILTER.get(), NetheriteFilterScreen::new);
@@ -101,6 +113,8 @@ public final class BoosterClient {
 
     private static void clientSetup(FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
+            ItemBlockRenderTypes.setRenderLayer(BoosterFluids.NETHER_ESSENCE.get(), RenderType.translucent());
+            ItemBlockRenderTypes.setRenderLayer(BoosterFluids.FLOWING_NETHER_ESSENCE.get(), RenderType.translucent());
             SimpleBlockEntityVisualizer.builder(BoosterBlockEntityTypes.NETHERITE_DEPLOYER.get()).factory(DeployerVisual::new).apply();
             PonderIndex.addPlugin(new BoosterPonderPlugin());
             BoosterTooltips.register();

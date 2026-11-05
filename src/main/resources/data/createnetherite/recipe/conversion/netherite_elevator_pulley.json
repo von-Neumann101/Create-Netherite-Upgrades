@@ -1,0 +1,14 @@
+{
+  "type": "createnetherite:netherite_conversion",
+  "ingredients": [
+    {
+      "item": "create:elevator_pulley"
+    }
+  ],
+  "results": [
+    {
+      "id": "createnetherite:netherite_elevator_pulley",
+      "count": 1
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "type": "createnetherite:netherite_conversion",
+  "ingredients": [
+    {
+      "item": "create:mechanical_press"
+    }
+  ],
+  "results": [
+    {
+      "id": "createnetherite:netherite_mechanical_press",
+      "count": 1
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "type": "createnetherite:netherite_conversion",
+  "ingredients": [
+    {
+      "item": "create:item_vault"
+    }
+  ],
+  "results": [
+    {
+      "id": "createnetherite:netherite_item_vault",
+      "count": 1
+    }
+  ]
+}

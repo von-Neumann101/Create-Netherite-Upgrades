@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/orientable_with_bottom",
+  "textures": {
+    "side": "createnetherite:block/netherite_converter/side",
+    "front": "createnetherite:block/netherite_converter/front",
+    "top": "createnetherite:block/netherite_converter/top",
+    "bottom": "createnetherite:block/netherite_converter/bottom"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "type": "createnetherite:netherite_conversion",
+  "ingredients": [
+    {
+      "item": "create:deployer"
+    }
+  ],
+  "results": [
+    {
+      "id": "createnetherite:netherite_deployer",
+      "count": 1
+    }
+  ]
+}
