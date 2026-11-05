@@ -1,0 +1,14 @@
+{
+  "type": "createnetherite:netherite_conversion",
+  "ingredients": [
+    {
+      "item": "create:mechanical_saw"
+    }
+  ],
+  "results": [
+    {
+      "id": "createnetherite:netherite_mechanical_saw",
+      "count": 1
+    }
+  ]
+}

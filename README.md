@@ -4,7 +4,7 @@
 
 当前分支：`1.21.1-NeoForge`
 
-当前模组版本：`0.3.16`
+当前模组版本：`0.3.17`
 
 # 维护状态
 
@@ -26,6 +26,7 @@ Minecraft `1.20.1` Forge 的 `main` 分支暂停更新，保留现有代码和�
 - `createnetherite:netherite_item_vault`
 - `createnetherite:netherite_elevator_pulley`
 - `createnetherite:netherite_mechanical_press`
+- `createnetherite:netherite_mechanical_saw`
 - `createnetherite:netherite_mechanical_mixer`
 - `createnetherite:netherite_mechanical_arm`
 - `createnetherite:netherite_blaze_burner`
@@ -127,7 +128,7 @@ Minecraft `1.20.1` Forge 的 `main` 分支暂停更新，保留现有代码和�
 
 # 下界合金转换机与下界精华
 
-新增转换途径，原有合成配方保留。把转换机放在传送带、置物台等处理位的**上方两格**，将普通机器物品送到下方，可逐个转换为对应下界合金版本。覆盖现有14类机器，烈焰人燃烧室的空壳和已有烈焰人版本分别转换。
+新增转换途径，原有合成配方保留。把转换机放在传送带、置物台等处理位的**上方两格**，将普通机器物品送到下方，可逐个转换为对应下界合金版本。覆盖现有15类机器，烈焰人燃烧室的空壳和已有烈焰人版本分别转换。
 
 转换机固定占用 **2048SU**，每个物品需要连续供能 **5秒（100tick）**；提高转速不会加速，断电或过载会重新计时。每次完成消耗 **250mB下界精华** 和一次耗材额度，未完成不扣原料。内置精华槽4000mB，可用管道或桶注入；不接受岩浆等其他流体。
 
@@ -176,6 +177,14 @@ Minecraft `1.20.1` Forge 的 `main` 分支暂停更新，保留现有代码和�
 
 连续使用**超过10秒**（超过200个游戏tick）可获得紫色挑战进度**“你的牙还好吗？”**；松开或换物品后重新计时，短按不累计。支持主手与副手，获得进度后仍可继续啃。原生 Shift 概要为：**“你为什么要做这个？”**。沿用下界合金物品的防火、防爆属性。
 
+# 下界合金动力锯
+
+向上放置时，_一个单件加工周期_即可处理整叠物品，不随输入数量延长加工时间。保留原版过滤、石切配方开关、序列组装逐步推进、概率产物、容器余料与输出行为。
+
+横放砍树的计算速度为原版 **2倍**，固定放置和装配到运动结构后的伤害均为原版 **1.8倍**，应力消耗沿用原版。砍树存在整数tick与整树队列，因此实际耗时不保证严格减半。
+
+一个下界合金板加一个原版动力锯无序升级，也可在下界合金转换机中转换。将它装入下界合金下界合金扳手并激活后，长按右键持续锯击攻击距离内最近的前方目标；按256RPM计算为每次 **18点伤害**，沿用原生受伤间隔、队伍和PVP规则，墙体阻挡，松开即停。扳手仍最多装8个模块、同时激活1个。
+
 # 下界合金下界合金扳手
 
 目前仅通过创造栏或指令获取，**暂不添加合成配方**。基础伤害 **10**（下界合金剑+2）、攻速 **1.6**，无耐久损耗，保留 Create 扳手旋转和拆卸功能。
@@ -189,6 +198,7 @@ Minecraft `1.20.1` Forge 的 `main` 分支暂停更新，保留现有代码和�
 | 下界合金弹射置物台 | Shift显示轨迹，右键沿轨迹弹射，最大64格；无阻挡落地免摔，途中撞到障碍恢复正常摔伤。 |
 | 下界合金烈焰人燃烧室 | 持有者造成的火焰伤害4倍，包括火焰附加造成的后续燃烧。 |
 | 下界合金动力冲压机 | 一次实际攻击的总伤害1.5倍，并定身1秒。 |
+| 下界合金动力锯 | 长按右键锯击攻击距离内最近的前方目标，每次18点伤害，沿用原生受伤间隔；墙体阻挡。 |
 | 下界合金蒸汽引擎 | 长按右键直接驱动点击的单个工作方块；默认16RPM/256SU，恰好一台强力机械泵，不耗空气或耐久，松开即停。 |
 | 下界合金转换机 | 右键生物使其永久获得抗性I、盔甲+3，不叠加；死亡必掉一张原版下界合金升级模板。 |
 | 下界合金流体储罐 | 右键收纳一桶流体源；按Shift打开流体轮盘，选液后Shift+右键放一桶。不同流体合计最多64桶，卸下模块仍保留储液。 |
@@ -234,7 +244,7 @@ createnetherite-server.toml
 构建产物：
 
 ```text
-build/libs/createnetherite-1.21.1-0.3.16.jar
+build/libs/createnetherite-1.21.1-0.3.17.jar
 ```
 
 # Introduction
@@ -243,7 +253,7 @@ build/libs/createnetherite-1.21.1-0.3.16.jar
 
 Current branch: `1.21.1-NeoForge`
 
-Current mod version: `0.3.16`
+Current mod version: `0.3.17`
 
 # Maintenance status
 
@@ -265,6 +275,7 @@ The mod currently adds several Create-compatible entries:
 - `createnetherite:netherite_item_vault`
 - `createnetherite:netherite_elevator_pulley`
 - `createnetherite:netherite_mechanical_press`
+- `createnetherite:netherite_mechanical_saw`
 - `createnetherite:netherite_mechanical_mixer`
 - `createnetherite:netherite_mechanical_arm`
 - `createnetherite:netherite_blaze_burner`
@@ -364,7 +375,7 @@ Craft one Netherite Sheet with an original Smart Chute in a shapeless recipe. Th
 
 # Netherite Converter and Nether Essence
 
-An additional upgrade route; existing crafting recipes remain. Place the converter **two blocks above** a belt, depot or compatible processing inventory. It converts regular machine items one at a time, covering all 14 existing machine types, with separate empty and occupied Blaze Burner recipes.
+An additional upgrade route; existing crafting recipes remain. Place the converter **two blocks above** a belt, depot or compatible processing inventory. It converts regular machine items one at a time, covering all 15 existing machine types, with separate empty and occupied Blaze Burner recipes.
 
 The converter uses a fixed **2048 SU** and **5 continuous seconds (100 ticks)** per item. Higher RPM does not speed it up; power loss or overstress restarts progress. Completion costs **250 mB of Nether Essence** and one catalyst use. Unfinished work consumes nothing. Its 4000 mB tank accepts essence through pipes or buckets and rejects other fluids.
 
@@ -413,6 +424,14 @@ Craft one Netherite Ingot with one Netherite Sheet in a shapeless recipe. Hold r
 
 Using it continuously for **more than 10 seconds** (over 200 game ticks) grants the purple challenge **“Are your teeth okay?”**. Releasing or switching items resets the timer; separate short uses do not accumulate. Works in either hand and keeps chewing after the challenge is earned. Its native Shift summary is **“Why would you make this?”**. Includes fire and blast protection.
 
+# Netherite Mechanical Saw
+
+Facing upward, it processes an entire stack in **one single-item processing cycle**, without increasing duration with input count. Keeps native filtering, the stonecutting recipe option, per-step sequenced assembly, random outputs, crafting remainders and output handling.
+
+Tree-cutting calculation speed is **2 times** the original. Damage is **1.8 times** the original, both stationary and mounted on contraptions. Stress consumption is unchanged. Integer ticks and the tree-breaking queue mean actual cutting time is not always exactly halved.
+
+Upgrade one original Mechanical Saw with one Netherite Sheet in a shapeless recipe, or use the Netherite Converter. Install and activate it in the Netherite Netherite Wrench, then hold right-click to saw the nearest target ahead within attack reach for **18 damage** at a 256 RPM reference. Native hurt cooldown, teams, PVP and solid obstacles apply; releasing stops it. The wrench still holds at most eight modules with one active.
+
 # Netherite Netherite Wrench
 
 Available from the creative tab or commands; **no crafting recipe yet**. Base attack damage is **10** (Netherite Sword +2), attack speed **1.6**, with no durability loss. Keeps Create wrench rotation and dismantling.
@@ -426,6 +445,7 @@ Hold in the main hand and press **X**. The wheel stores **eight real module bloc
 | Netherite Weighted Ejector | Shift previews an arc; right-click launches up to 64 blocks. Unobstructed landing prevents fall damage; hitting an obstacle restores normal fall damage. |
 | Netherite Blaze Burner | Your fire damage is multiplied by four, including subsequent Fire Aspect burning. |
 | Netherite Mechanical Press | Total actual attack damage is multiplied by 1.5; target is rooted for one second. |
+| Netherite Mechanical Saw | Hold right-click to saw the nearest target ahead within attack reach for 18 damage, respecting native hurt cooldown and solid obstacles. |
 | Netherite Steam Engine | Hold right-click to power only the clicked work block: default 16 RPM/256 SU, exactly enough for one Powerful Pump, without air or durability costs. Release to stop. |
 | Netherite Converter | Right-click a creature for permanent Resistance I and +3 armor, without stacking. Death guarantees one vanilla Netherite Upgrade Smithing Template. |
 | Netherite Fluid Tank | Right-click collects one source bucket; Shift opens fluid selection, then Shift+right-click places one bucket. All types share 64 buckets total. Removing the module preserves stored fluids. |
@@ -471,5 +491,5 @@ Existing worlds keep their own `serverconfig/createnetherite-server.toml`. If de
 Build output:
 
 ```text
-build/libs/createnetherite-1.21.1-0.3.16.jar
+build/libs/createnetherite-1.21.1-0.3.17.jar
 ```

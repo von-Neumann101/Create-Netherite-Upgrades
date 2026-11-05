@@ -1,6 +1,8 @@
 package io.github.boosterproject.booster.client;
 
 import com.simibubi.create.CreateClient;
+import com.simibubi.create.content.kinetics.saw.SawRenderer;
+import com.simibubi.create.content.kinetics.saw.SawVisual;
 import com.simibubi.create.content.kinetics.deployer.DeployerRenderer;
 import com.simibubi.create.content.kinetics.deployer.DeployerVisual;
 import com.simibubi.create.content.logistics.depot.EjectorRenderer;
@@ -65,6 +67,7 @@ public final class BoosterClient {
     }
 
     private static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
+        event.registerBlockEntityRenderer(BoosterBlockEntityTypes.NETHERITE_MECHANICAL_SAW.get(), SawRenderer::new);
         event.registerBlockEntityRenderer(BoosterBlockEntityTypes.NETHERITE_CONVERTER.get(), NetheriteConverterRenderer::new);
         event.registerBlockEntityRenderer(BoosterBlockEntityTypes.NETHERITE_DEPLOYER.get(), DeployerRenderer::new);
         event.registerBlockEntityRenderer(BoosterBlockEntityTypes.NETHERITE_WEIGHTED_EJECTOR.get(), EjectorRenderer::new);
@@ -115,6 +118,8 @@ public final class BoosterClient {
 
     private static void clientSetup(FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
+            SimpleBlockEntityVisualizer.builder(BoosterBlockEntityTypes.NETHERITE_MECHANICAL_SAW.get()).factory(SawVisual::new).apply();
+            ItemBlockRenderTypes.setRenderLayer(BoosterBlocks.NETHERITE_MECHANICAL_SAW.get(), RenderType.cutoutMipped());
             ItemBlockRenderTypes.setRenderLayer(BoosterFluids.NETHER_ESSENCE.get(), RenderType.translucent());
             ItemBlockRenderTypes.setRenderLayer(BoosterFluids.FLOWING_NETHER_ESSENCE.get(), RenderType.translucent());
             SimpleBlockEntityVisualizer.builder(BoosterBlockEntityTypes.NETHERITE_DEPLOYER.get()).factory(DeployerVisual::new).apply();

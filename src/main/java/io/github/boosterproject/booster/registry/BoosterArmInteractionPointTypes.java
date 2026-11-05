@@ -3,6 +3,9 @@ package io.github.boosterproject.booster.registry;
 import com.simibubi.create.api.registry.CreateBuiltInRegistries;
 import com.simibubi.create.content.kinetics.mechanicalArm.AllArmInteractionPointTypes.BlazeBurnerType;
 import com.simibubi.create.content.kinetics.mechanicalArm.AllArmInteractionPointTypes.DeployerType;
+import com.simibubi.create.content.kinetics.mechanicalArm.AllArmInteractionPointTypes.SawType;
+import com.simibubi.create.content.kinetics.saw.SawBlock;
+import com.simibubi.create.content.kinetics.saw.SawBlockEntity;
 import com.simibubi.create.content.kinetics.mechanicalArm.ArmInteractionPointType;
 import io.github.boosterproject.booster.Booster;
 import net.minecraft.core.BlockPos;
@@ -25,6 +28,14 @@ public final class BoosterArmInteractionPointTypes {
         });
 
     private BoosterArmInteractionPointTypes() {}
+
+    public static final DeferredHolder<ArmInteractionPointType, SawType> NETHERITE_MECHANICAL_SAW =
+        TYPES.register("netherite_mechanical_saw", () -> new SawType() {
+            @Override public boolean canCreatePoint(Level level, BlockPos pos, BlockState state) {
+                return state.is(BoosterBlocks.NETHERITE_MECHANICAL_SAW.get()) && state.getValue(SawBlock.FACING) == net.minecraft.core.Direction.UP
+                    && level.getBlockEntity(pos) instanceof SawBlockEntity saw && saw.getSpeed() != 0;
+            }
+        });
 
     public static final DeferredHolder<ArmInteractionPointType, DeployerType> NETHERITE_DEPLOYER =
         TYPES.register("netherite_deployer", () -> new DeployerType() {

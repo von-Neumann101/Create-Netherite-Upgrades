@@ -1,6 +1,7 @@
 package io.github.boosterproject.booster.registry;
 
 import com.simibubi.create.content.processing.burner.BlazeBurnerBlockEntity;
+import io.github.boosterproject.booster.content.kinetics.saw.NetheriteSawBlockEntity;
 import io.github.boosterproject.booster.content.processing.burner.NetheriteBlazeBurnerBlockEntity;
 import io.github.boosterproject.booster.Booster;
 import io.github.boosterproject.booster.content.contraptions.elevator.NetheriteElevatorPulleyBlockEntity;
@@ -32,6 +33,9 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 public final class BoosterBlockEntityTypes {
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPES =
         DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, Booster.MOD_ID);
+
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<NetheriteSawBlockEntity>> NETHERITE_MECHANICAL_SAW =
+        BLOCK_ENTITY_TYPES.register("netherite_mechanical_saw", () -> BlockEntityType.Builder.of(NetheriteSawBlockEntity::new, BoosterBlocks.NETHERITE_MECHANICAL_SAW.get()).build(null));
 
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<NetheriteConverterBlockEntity>> NETHERITE_CONVERTER =
         BLOCK_ENTITY_TYPES.register("netherite_converter", () -> BlockEntityType.Builder.of(NetheriteConverterBlockEntity::new, BoosterBlocks.NETHERITE_CONVERTER.get()).build(null));
@@ -111,6 +115,7 @@ public final class BoosterBlockEntityTypes {
     }
 
     private static void registerCapabilities(RegisterCapabilitiesEvent event) {
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, NETHERITE_MECHANICAL_SAW.get(), (be, side) -> side == net.minecraft.core.Direction.DOWN ? null : be.inventory);
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, NETHERITE_CONVERTER.get(), (be, side) -> be.getPlateInventory());
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, NETHERITE_CONVERTER.get(), (be, side) -> be.getEssenceTank());
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, NETHERITE_DEPLOYER.get(), (be, side) -> {

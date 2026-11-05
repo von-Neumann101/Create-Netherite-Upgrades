@@ -31,7 +31,7 @@ public final class NetheriteNetheriteWrenchItem extends SwordItem {
         if (context.getHand() != InteractionHand.MAIN_HAND || context.getPlayer() == null) return InteractionResult.PASS;
         var module = WrenchData.active(stack);
         if (module == WrenchModule.ENGINE) return HandheldKineticPower.begin(context);
-        if (module == WrenchModule.FAN || module == WrenchModule.EJECTOR || module == WrenchModule.TANK)
+        if (module == WrenchModule.FAN || module == WrenchModule.EJECTOR || module == WrenchModule.TANK || module == WrenchModule.SAW)
             return use(context.getLevel(), context.getPlayer(), context.getHand()).getResult();
         return InteractionResult.PASS;
     }
@@ -42,7 +42,8 @@ public final class NetheriteNetheriteWrenchItem extends SwordItem {
         var stack = player.getItemInHand(hand);
         if (hand != InteractionHand.MAIN_HAND) return InteractionResultHolder.pass(stack);
         var module = WrenchData.active(stack);
-        if (module == WrenchModule.FAN) {
+        if (module == WrenchModule.FAN || module == WrenchModule.SAW) {
+            if (module == WrenchModule.SAW && (!player.isAlive() || player.isSpectator())) return InteractionResultHolder.fail(stack);
             player.startUsingItem(hand);
             return InteractionResultHolder.consume(stack);
         }
@@ -60,6 +61,7 @@ public final class NetheriteNetheriteWrenchItem extends SwordItem {
         }
         var module = WrenchData.active(stack);
         if (module == WrenchModule.FAN) WrenchAirflow.tick(player, stack);
+        else if (module == WrenchModule.SAW) WrenchSaw.tick(player, stack);
         else if (module == WrenchModule.ENGINE) HandheldKineticPower.continueUsing(player, stack, getUseDuration(stack, entity) - remaining);
         else player.stopUsingItem();
     }

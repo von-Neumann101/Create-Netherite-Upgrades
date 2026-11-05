@@ -1,6 +1,7 @@
 package io.github.boosterproject.booster.registry;
 
 import com.simibubi.create.AllBlocks;
+import io.github.boosterproject.booster.content.kinetics.saw.NetheriteSawBlock;
 import io.github.boosterproject.booster.content.conversion.NetheriteConverterBlock;
 import io.github.boosterproject.booster.Booster;
 import io.github.boosterproject.booster.content.contraptions.elevator.NetheriteElevatorPulleyBlock;
@@ -27,6 +28,9 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 
 public final class BoosterBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Booster.MOD_ID);
+
+    public static final DeferredBlock<NetheriteSawBlock> NETHERITE_MECHANICAL_SAW = BLOCKS.register("netherite_mechanical_saw", () ->
+        new NetheriteSawBlock(BlockBehaviour.Properties.ofFullCopy(AllBlocks.MECHANICAL_SAW.get()).explosionResistance(1200F)));
 
     public static final DeferredBlock<WirelessManagerBlock> NETHERITE_WIRELESS_MANAGER = BLOCKS.register("netherite_wireless_manager", () ->
         new WirelessManagerBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.NETHERITE_BLOCK).strength(5, 1200).requiresCorrectToolForDrops()));

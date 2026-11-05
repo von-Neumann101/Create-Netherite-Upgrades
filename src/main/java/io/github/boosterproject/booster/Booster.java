@@ -5,6 +5,8 @@ import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.kinetics.deployer.DeployerMovementBehaviour;
 import com.simibubi.create.content.kinetics.deployer.DeployerMovingInteraction;
 import com.simibubi.create.api.behaviour.interaction.MovingInteractionBehaviour;
+import com.simibubi.create.api.contraption.BlockMovementChecks;
+import com.simibubi.create.content.kinetics.saw.SawBlock;
 import com.simibubi.create.api.stress.BlockStressValues;
 import com.simibubi.create.AllMountedStorageTypes;
 import com.simibubi.create.api.behaviour.movement.MovementBehaviour;
@@ -17,6 +19,8 @@ import io.github.boosterproject.booster.content.equipment.NetheriteNetheriteItem
 import io.github.boosterproject.booster.content.equipment.wrench.WrenchCombat;
 import io.github.boosterproject.booster.content.equipment.wrench.WrenchLaunch;
 import io.github.boosterproject.booster.content.equipment.wrench.WrenchNetworking;
+import io.github.boosterproject.booster.content.equipment.wrench.WrenchSaw;
+import io.github.boosterproject.booster.content.kinetics.saw.NetheriteSawMovementBehaviour;
 import io.github.boosterproject.booster.content.processing.burner.NetheriteBlazeBurnerBlock;
 import io.github.boosterproject.booster.content.processing.burner.NetheriteBlazeBurnerMovementBehaviour;
 import io.github.boosterproject.booster.content.kinetics.mechanicalArm.NetheriteArmBehavior;
@@ -64,6 +68,7 @@ public class Booster {
         modEventBus.addListener(WirelessNetworking::register);
         modEventBus.addListener(WrenchNetworking::register);
         WrenchCombat.register(NeoForge.EVENT_BUS);
+        WrenchSaw.register(NeoForge.EVENT_BUS);
         WrenchLaunch.register(NeoForge.EVENT_BUS);
         modEventBus.addListener((RegisterTicketControllersEvent event) -> event.register(WirelessTerminalService.TICKETS));
 
@@ -77,6 +82,10 @@ public class Booster {
 
     private void commonSetup(FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
+            BlockMovementChecks.registerNotSupportiveCheck((state, direction) -> state.is(BoosterBlocks.NETHERITE_MECHANICAL_SAW.get())
+                ? BlockMovementChecks.CheckResult.of(direction == state.getValue(SawBlock.FACING)) : BlockMovementChecks.CheckResult.PASS);
+            BlockStressValues.IMPACTS.register(BoosterBlocks.NETHERITE_MECHANICAL_SAW.get(), () -> BlockStressValues.getImpact(AllBlocks.MECHANICAL_SAW.get()));
+            MovementBehaviour.REGISTRY.register(BoosterBlocks.NETHERITE_MECHANICAL_SAW.get(), new NetheriteSawMovementBehaviour());
             BlockStressValues.IMPACTS.register(BoosterBlocks.NETHERITE_CONVERTER.get(), () -> 2048D);
             BlockStressValues.IMPACTS.register(BoosterBlocks.NETHERITE_DEPLOYER.get(), () -> BlockStressValues.getImpact(AllBlocks.DEPLOYER.get()));
             MovementBehaviour.REGISTRY.register(BoosterBlocks.NETHERITE_DEPLOYER.get(), new DeployerMovementBehaviour());

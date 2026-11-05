@@ -11,6 +11,7 @@ public enum WrenchModule {
     EJECTOR(() -> BoosterItems.NETHERITE_WEIGHTED_EJECTOR.get()),
     BURNER(() -> BoosterItems.NETHERITE_BLAZE_BURNER.get()),
     PRESS(() -> BoosterItems.NETHERITE_MECHANICAL_PRESS.get()),
+    SAW(() -> BoosterItems.NETHERITE_MECHANICAL_SAW.get()),
     ENGINE(() -> BoosterItems.NETHERITE_STEAM_ENGINE.get()),
     CONVERTER(() -> BoosterItems.NETHERITE_CONVERTER.get()),
     TANK(() -> BoosterItems.NETHERITE_FLUID_TANK.get());

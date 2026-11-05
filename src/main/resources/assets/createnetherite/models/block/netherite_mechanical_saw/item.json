@@ -1,0 +1,11 @@
+{
+  "parent": "create:block/mechanical_saw/item",
+  "textures": {
+    "gearbox": "createnetherite:block/netherite_deployer/gearbox",
+    "gearbox_top": "createnetherite:block/netherite_deployer/gearbox_top",
+    "andesite_casing_short": "createnetherite:block/netherite_deployer/andesite_casing_short",
+    "particle": "minecraft:block/netherite_block",
+    "slit": "createnetherite:block/netherite_mechanical_saw/top_no_slot",
+    "mechanical_saw_top": "createnetherite:block/netherite_mechanical_saw/top"
+  }
+}

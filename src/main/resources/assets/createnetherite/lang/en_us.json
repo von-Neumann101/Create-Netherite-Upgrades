@@ -156,5 +156,9 @@
   "wrench.createnetherite.pull": "Fan: Pull",
   "wrench.createnetherite.fluid_title": "Select Stored Fluid",
   "wrench.createnetherite.capacity": "%s / 64000 mB",
-  "wrench.createnetherite.empty": "No fluid stored"
+  "wrench.createnetherite.empty": "No fluid stored",
+  "block.createnetherite.netherite_mechanical_saw": "Netherite Mechanical Saw",
+  "block.createnetherite.netherite_mechanical_saw.tooltip.summary": "Cuts an entire stack in _one processing cycle_, preserving native filtering, stonecutting and sequenced assembly. Tree-cutting calculation speed is _2 times_ normal; damage is _1.8 times_, with unchanged stress. Install in the Netherite Netherite Wrench and _hold right-click_ to saw the nearest target ahead within attack reach. Blocks obstruct the blade.",
+  "item.createnetherite.netherite_netherite_wrench.tooltip.condition4": "With a mechanical saw active",
+  "item.createnetherite.netherite_netherite_wrench.tooltip.behaviour4": "_Hold right-click_ to saw the nearest target ahead within attack reach. Uses a 256 RPM reference for _18 damage_ per hit, respects native hurt cooldown and is blocked by solid blocks."
 }
