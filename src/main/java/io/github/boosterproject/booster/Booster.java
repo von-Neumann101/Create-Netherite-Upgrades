@@ -19,6 +19,7 @@ import io.github.boosterproject.booster.content.equipment.NetheriteNetheriteItem
 import io.github.boosterproject.booster.content.equipment.wrench.WrenchCombat;
 import io.github.boosterproject.booster.content.equipment.wrench.WrenchLaunch;
 import io.github.boosterproject.booster.content.equipment.wrench.WrenchNetworking;
+import io.github.boosterproject.booster.content.equipment.wrench.WrenchWheelNetworking;
 import io.github.boosterproject.booster.content.equipment.wrench.WrenchSaw;
 import io.github.boosterproject.booster.content.kinetics.saw.NetheriteSawMovementBehaviour;
 import io.github.boosterproject.booster.content.processing.burner.NetheriteBlazeBurnerBlock;
@@ -67,6 +68,9 @@ public class Booster {
         NeoForge.EVENT_BUS.addListener(WirelessTerminalService::tick);
         modEventBus.addListener(WirelessNetworking::register);
         modEventBus.addListener(WrenchNetworking::register);
+        modEventBus.addListener(WrenchWheelNetworking::register);
+        NeoForge.EVENT_BUS.addListener(WrenchWheelNetworking::logout);
+        NeoForge.EVENT_BUS.addListener(WrenchWheelNetworking::clone);
         WrenchCombat.register(NeoForge.EVENT_BUS);
         WrenchSaw.register(NeoForge.EVENT_BUS);
         WrenchLaunch.register(NeoForge.EVENT_BUS);

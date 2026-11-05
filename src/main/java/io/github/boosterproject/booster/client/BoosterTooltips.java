@@ -27,6 +27,7 @@ public final class BoosterTooltips {
         // The fan, ejector and extendo grip have native Ponder entries; other items use native Shift descriptions.
         for (Item item : List.of(
             BoosterItems.NETHERITE_CONVERTER.get(),
+            BoosterItems.ASSEMBLY_TABLE.get(),
             BoosterFluids.ESSENCE_BUCKET.get(),
             BoosterItems.POWERFUL_MECHANICAL_PUMP.get(),
             BoosterItems.NETHERITE_STEAM_ENGINE.get(),

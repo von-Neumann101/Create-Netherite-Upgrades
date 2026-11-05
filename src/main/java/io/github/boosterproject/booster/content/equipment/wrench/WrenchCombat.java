@@ -40,7 +40,7 @@ import net.neoforged.neoforge.event.tick.EntityTickEvent;
 
 import static net.minecraft.world.entity.ai.attributes.Attributes.*;
 
-/** Combat and conversion effects of the currently active main-hand wrench module. */
+/** Passive effects use both active slots; conversion uses the current right-click module. */
 public final class WrenchCombat {
     private static final ResourceLocation PUMP_DAMAGE = id("wrench_pump_damage");
     private static final ResourceLocation PUMP_REACH = id("wrench_pump_reach");
@@ -71,7 +71,7 @@ public final class WrenchCombat {
     }
 
     private static void attributes(ItemAttributeModifierEvent event) {
-        if (WrenchData.active(event.getItemStack()) != WrenchModule.PUMP) return;
+        if (!WrenchData.has(event.getItemStack(), WrenchModule.PUMP)) return;
         add(event, ATTACK_DAMAGE, PUMP_DAMAGE, 6);
         add(event, ENTITY_INTERACTION_RANGE, PUMP_REACH, 1);
         add(event, ATTACK_KNOCKBACK, PUMP_KNOCKBACK, 2);
@@ -89,7 +89,7 @@ public final class WrenchCombat {
     private static void damage(LivingDamageEvent.Pre event) {
         if (event.getEntity().level().isClientSide || event.getNewDamage() <= 0) return;
         Player attacker = meleePlayer(event.getSource());
-        if (attacker != null && WrenchData.active(attacker) == WrenchModule.PRESS) {
+        if (attacker != null && WrenchData.has(attacker, WrenchModule.PRESS)) {
             // Scale the one final damage operation, never recursively hurt the entity a second time.
             event.setNewDamage(event.getNewDamage() * 1.5F);
         }
@@ -99,22 +99,22 @@ public final class WrenchCombat {
     }
 
     private static boolean playerCausedFire(LivingEntity target, DamageSource source) {
-        if (source.getEntity() instanceof Player player && WrenchData.active(player) == WrenchModule.BURNER) return true;
+        if (source.getEntity() instanceof Player player && WrenchData.has(player, WrenchModule.BURNER)) return true;
         // Vanilla ON_FIRE ticks lose their attacker. Only a known player ignition supplies that attribution.
         if (!source.is(DamageTypes.ON_FIRE)) return false;
         FireOwner attribution = FIRE_OWNERS.get(target);
         if (attribution == null || !attribution.valid(target)) return false;
         Player owner = attribution.owner.get();
         return owner != null && owner.isAlive() && !owner.isRemoved() && owner.level() == target.level()
-            && WrenchData.active(owner) == WrenchModule.BURNER;
+            && WrenchData.has(owner, WrenchModule.BURNER);
     }
 
     private static void afterDamage(LivingDamageEvent.Post event) {
         LivingEntity target = event.getEntity();
         if (target.level().isClientSide || event.getNewDamage() <= 0 || !target.isAlive()) return;
         Player melee = meleePlayer(event.getSource());
-        if (melee != null && WrenchData.active(melee) == WrenchModule.PRESS) root(target);
-        if (!(event.getSource().getEntity() instanceof Player player) || WrenchData.active(player) != WrenchModule.BURNER) return;
+        if (melee != null && WrenchData.has(melee, WrenchModule.PRESS)) root(target);
+        if (!(event.getSource().getEntity() instanceof Player player) || !WrenchData.has(player, WrenchModule.BURNER)) return;
         if (melee != null) {
             var fireAspect = player.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.FIRE_ASPECT);
             int level = EnchantmentHelper.getItemEnchantmentLevel(fireAspect, player.getMainHandItem());

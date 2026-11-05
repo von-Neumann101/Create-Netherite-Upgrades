@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "particle": "createnetherite:block/brass_framed_netherite",
+    "down": "create:block/andesite_casing",
+    "up": "createnetherite:block/assembly_table/top",
+    "north": "createnetherite:block/assembly_table/front",
+    "south": "createnetherite:block/brass_framed_netherite",
+    "east": "createnetherite:block/brass_framed_netherite",
+    "west": "createnetherite:block/brass_framed_netherite"
+  }
+}

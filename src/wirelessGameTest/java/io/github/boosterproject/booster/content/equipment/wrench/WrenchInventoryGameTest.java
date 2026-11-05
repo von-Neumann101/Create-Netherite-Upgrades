@@ -8,7 +8,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.inventory.ClickType;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -27,36 +26,6 @@ public final class WrenchInventoryGameTest {
     public static void wrenchIsRegistered(GameTestHelper helper) {
         var id = ResourceLocation.fromNamespaceAndPath(Booster.MOD_ID, "netherite_netherite_wrench");
         helper.assertTrue(BuiltInRegistries.ITEM.get(id) != Items.AIR, "new modular wrench is registered");
-        helper.succeed();
-    }
-
-    @GameTest(template = "wireless_empty")
-    public static void eightPhysicalSlotsSingleActivationAndSourceLock(GameTestHelper helper) {
-        var player = FakePlayerFactory.get(helper.getLevel(), new GameProfile(UUID.randomUUID(), "WrenchSlotsQA"));
-        var wrench = new ItemStack(BoosterItems.NETHERITE_NETHERITE_WRENCH.get());
-        player.getInventory().selected = 0;
-        player.setItemInHand(InteractionHand.MAIN_HAND, wrench);
-        var menu = new WrenchMenu(7, player.getInventory(), wrench);
-        menu.setCarried(new ItemStack(Items.DIRT));
-        menu.clicked(0, 0, ClickType.PICKUP, player);
-        helper.assertTrue(menu.getSlot(0).getItem().isEmpty() && menu.getCarried().is(Items.DIRT), "only listed module blocks enter the eight slots");
-        menu.setCarried(new ItemStack(BoosterItems.POWERFUL_MECHANICAL_PUMP.get(), 16));
-        for (int slot = 0; slot < 8; slot++) menu.clicked(slot, 0, ClickType.PICKUP, player);
-        helper.assertTrue(menu.loadedCount() == 8 && menu.getCarried().getCount() == 8, "eight actual blocks consumed, one per slot, eight still on cursor");
-        menu.clicked(0, 0, ClickType.PICKUP, player);
-        helper.assertTrue(menu.getCarried().getCount() == 8 && menu.getSlot(0).getItem().getCount() == 1, "full slot rejects a ninth module");
-        helper.assertTrue(menu.clickMenuButton(player, 0) && WrenchData.activeSlot(wrench) == 0, "activate first stored module");
-        menu.clickMenuButton(player, 1);
-        helper.assertTrue(WrenchData.activeSlot(wrench) == 1 && WrenchData.active(wrench) == WrenchModule.PUMP, "selection replaces the one active slot");
-        menu.clicked(1, 0, ClickType.SWAP, player);
-        helper.assertTrue(player.getMainHandItem() == wrench && menu.getSlot(1).hasItem(), "number key cannot move the source wrench into a module slot");
-        menu.setCarried(ItemStack.EMPTY);
-        menu.clicked(35, 0, ClickType.PICKUP, player);
-        helper.assertTrue(menu.getCarried().isEmpty() && player.getMainHandItem() == wrench, "held source cannot be picked up");
-        menu.clicked(1, 0, ClickType.PICKUP, player);
-        helper.assertTrue(WrenchData.active(wrench) == null && menu.getCarried().getCount() == 1, "removing active block disables it and returns its actual item");
-        player.setItemInHand(InteractionHand.MAIN_HAND, wrench.copy());
-        helper.assertTrue(!menu.stillValid(player), "replacing source with another identical wrench invalidates server menu");
         helper.succeed();
     }
 

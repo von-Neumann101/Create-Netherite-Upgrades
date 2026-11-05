@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
+    "createnetherite:assembly_table",
     "createnetherite:powerful_mechanical_pump",
     "createnetherite:netherite_fluid_tank",
     "createnetherite:netherite_steam_engine",

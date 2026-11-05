@@ -1,6 +1,7 @@
 package io.github.boosterproject.booster.registry;
 
 import com.simibubi.create.content.processing.burner.BlazeBurnerBlockEntity;
+import io.github.boosterproject.booster.content.equipment.wrench.AssemblyTableBlockEntity;
 import io.github.boosterproject.booster.content.kinetics.saw.NetheriteSawBlockEntity;
 import io.github.boosterproject.booster.content.processing.burner.NetheriteBlazeBurnerBlockEntity;
 import io.github.boosterproject.booster.Booster;
@@ -33,6 +34,9 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 public final class BoosterBlockEntityTypes {
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPES =
         DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, Booster.MOD_ID);
+
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<AssemblyTableBlockEntity>> ASSEMBLY_TABLE =
+        BLOCK_ENTITY_TYPES.register("assembly_table", () -> BlockEntityType.Builder.of(AssemblyTableBlockEntity::new, BoosterBlocks.ASSEMBLY_TABLE.get()).build(null));
 
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<NetheriteSawBlockEntity>> NETHERITE_MECHANICAL_SAW =
         BLOCK_ENTITY_TYPES.register("netherite_mechanical_saw", () -> BlockEntityType.Builder.of(NetheriteSawBlockEntity::new, BoosterBlocks.NETHERITE_MECHANICAL_SAW.get()).build(null));

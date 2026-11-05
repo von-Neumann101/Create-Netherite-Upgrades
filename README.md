@@ -4,7 +4,7 @@
 
 当前分支：`1.21.1-NeoForge`
 
-当前模组版本：`0.3.18`
+当前模组版本：`0.3.19`
 
 # 维护状态
 
@@ -41,6 +41,7 @@ Minecraft `1.20.1` Forge 的 `main` 分支暂停更新，保留现有代码和�
 - `createnetherite:netherite_deployer`
 - `createnetherite:netherite_netherite`
 - `createnetherite:netherite_netherite_wrench`
+- `createnetherite:assembly_table`
 - `createnetherite:netherite_sheet`
 
 强力机械泵接入 Create 原版流体管网，默认基础应力消耗为 `16.0`、压力倍率为 `8.0`。压力倍率提高吞吐，不增加管道传播距离。
@@ -183,13 +184,15 @@ Minecraft `1.20.1` Forge 的 `main` 分支暂停更新，保留现有代码和�
 
 横放砍树的计算速度为原版 **2倍**，固定放置和装配到运动结构后的伤害均为原版 **1.8倍**，应力消耗沿用原版。砍树存在整数tick与整树队列，因此实际耗时不保证严格减半。
 
-一个下界合金板加一个原版动力锯无序升级，也可在下界合金转换机中转换。将它装入下界合金下界合金扳手并激活后，长按右键持续锯击攻击距离内最近的前方目标；按256RPM计算为每次 **18点伤害**，沿用原生受伤间隔、队伍和PVP规则，墙体阻挡，松开即停。扳手仍最多装8个模块、同时激活1个。
+一个下界合金板加一个原版动力锯无序升级，也可在下界合金转换机中转换。将它装入下界合金下界合金扳手并激活后，长按右键持续锯击攻击距离内最近的前方目标；按256RPM计算为每次 **18点伤害**，沿用原生受伤间隔、队伍和PVP规则，墙体阻挡，松开即停。扳手最多装8个模块，初始激活1个，可在装配台升级为同时激活2个。
 
 # 下界合金下界合金扳手
 
 目前仅通过创造栏或指令获取，**暂不添加合成配方**。基础伤害 **10**（下界合金剑+2）、攻速 **1.6**，无耐久损耗，保留 Create 扳手旋转和拆卸功能。
 
-主手持有，按 **X** 打开轮盘，将下列工作方块放入 **8个真实槽位**（每槽一个），点击槽下按钮启用或停用。**本版只激活一个模块**；双激活与升级留待以后。取出正在激活的模块立即停用，物品组件和储液随扳手保存。
+先将扳手放入 **装配台** 中央槽，再往周围 **8个真实槽位** 装入下列工作方块（每槽一个），也可取出；取出已激活的模块立即停用，模块物品组件和储液随扳手保存。装配台无需动力，用 **工作台＋安山机壳＋下界合金板** 无序合成，拆除会返还内部扳手和剩余模板。
+
+主手持有扳手，**按住 X** 显示工具箱风格轮盘，点击区域切换该模块的激活状态，松开关闭；按键可在设置中修改。初始 **1个激活位**，开启另一模块会关闭原模块；在装配台放入一张原版 **下界合金升级模板** 并点击升级，可永久解锁 **第2个激活位**。已激活两个时再开启一个，会关闭最早激活者。两个模块的被动效果共同生效，同种效果不重复叠加；**最近激活的右键模块优先**，激活被动模块不会抢占右键。轮盘中的数字表示激活顺序，“右键”标记当前右键模块。
 
 | 模块 | 激活后的用法 |
 | --- | --- |
@@ -244,7 +247,7 @@ createnetherite-server.toml
 构建产物：
 
 ```text
-build/libs/createnetherite-1.21.1-0.3.18.jar
+build/libs/createnetherite-1.21.1-0.3.19.jar
 ```
 
 # Introduction
@@ -253,7 +256,7 @@ build/libs/createnetherite-1.21.1-0.3.18.jar
 
 Current branch: `1.21.1-NeoForge`
 
-Current mod version: `0.3.18`
+Current mod version: `0.3.19`
 
 # Maintenance status
 
@@ -290,6 +293,7 @@ The mod currently adds several Create-compatible entries:
 - `createnetherite:netherite_deployer`
 - `createnetherite:netherite_netherite`
 - `createnetherite:netherite_netherite_wrench`
+- `createnetherite:assembly_table`
 - `createnetherite:netherite_sheet`
 
 The Powerful Mechanical Pump uses Create's native fluid network, with a default base stress impact of `16.0` and a pressure multiplier of `8.0`. The pressure multiplier increases throughput without extending pipe propagation distance.
@@ -430,13 +434,15 @@ Facing upward, it processes an entire stack in **one single-item processing cycl
 
 Tree-cutting calculation speed is **2 times** the original. Damage is **1.8 times** the original, both stationary and mounted on contraptions. Stress consumption is unchanged. Integer ticks and the tree-breaking queue mean actual cutting time is not always exactly halved.
 
-Upgrade one original Mechanical Saw with one Netherite Sheet in a shapeless recipe, or use the Netherite Converter. Install and activate it in the Netherite Netherite Wrench, then hold right-click to saw the nearest target ahead within attack reach for **18 damage** at a 256 RPM reference. Native hurt cooldown, teams, PVP and solid obstacles apply; releasing stops it. The wrench still holds at most eight modules with one active.
+Upgrade one original Mechanical Saw with one Netherite Sheet in a shapeless recipe, or use the Netherite Converter. Install and activate it in the Netherite Netherite Wrench, then hold right-click to saw the nearest target ahead within attack reach for **18 damage** at a 256 RPM reference. Native hurt cooldown, teams, PVP and solid obstacles apply; releasing stops it. The wrench holds at most eight modules, with one active initially and two after upgrading at an Assembly Table.
 
 # Netherite Netherite Wrench
 
 Available from the creative tab or commands; **no crafting recipe yet**. Base attack damage is **10** (Netherite Sword +2), attack speed **1.6**, with no durability loss. Keeps Create wrench rotation and dismantling.
 
-Hold in the main hand and press **X**. The wheel stores **eight real module blocks**, one per slot; use the button below a slot to activate or deactivate it. **Only one module is active in this release**. Dual activation and upgrades are deferred. Removing the active module disables it; stored item components and fluids stay with the wrench.
+Put the wrench in the center slot of an **Assembly Table**, then install or remove the listed blocks in its **eight real module slots**, one per slot. Removing an active module disables it; item components and fluids stay with the wrench. The table needs no power and is crafted shapelessly from a **Crafting Table + Andesite Casing + Netherite Sheet**. Breaking it returns the stored wrench and remaining templates.
+
+With the wrench in the main hand, **hold X** to show the toolbox-style wheel. Click a region to toggle its activation; release to close. Rebind the key in settings. Starts with **one active slot**, so enabling another replaces it. Insert one vanilla **Netherite Upgrade Smithing Template** at the table and click Upgrade to permanently unlock the **second active slot**. Enabling a third disables the oldest activation. Both active modules retain their passive effects; identical effects do not stack. The **most recently activated right-click module takes priority**; passive modules do not take over right-click. Numbers show activation order, and the Right-click badge marks the current action.
 
 | Module | Active ability |
 | --- | --- |
@@ -491,5 +497,5 @@ Existing worlds keep their own `serverconfig/createnetherite-server.toml`. If de
 Build output:
 
 ```text
-build/libs/createnetherite-1.21.1-0.3.18.jar
+build/libs/createnetherite-1.21.1-0.3.19.jar
 ```

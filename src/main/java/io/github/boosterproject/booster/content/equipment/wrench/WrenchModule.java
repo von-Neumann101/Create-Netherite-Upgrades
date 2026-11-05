@@ -19,6 +19,7 @@ public enum WrenchModule {
     private final Supplier<Item> item;
     WrenchModule(Supplier<Item> item) { this.item = item; }
     public Item item() { return item.get(); }
+    public boolean usesRightClick() { return this != PUMP && this != BURNER && this != PRESS; }
     public static WrenchModule fromStack(ItemStack stack) {
         for (var module : values()) if (stack.is(module.item())) return module;
         return null;

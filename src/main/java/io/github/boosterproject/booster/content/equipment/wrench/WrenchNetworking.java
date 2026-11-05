@@ -7,7 +7,6 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
@@ -46,11 +45,7 @@ public final class WrenchNetworking {
         if (!WrenchData.isWrench(stack) || !player.isAlive() || player.isSpectator()
             || player.containerMenu != player.inventoryMenu) return;
         switch (payload.action()) {
-            case OPEN -> {
-                player.stopUsingItem();
-                player.openMenu(new SimpleMenuProvider((id, inv, viewer) -> new WrenchMenu(id, inv, stack), stack.getHoverName()),
-                    buf -> buf.writeVarInt(player.getInventory().selected));
-            }
+            case OPEN -> { return; } // Loading modules now requires an assembly table.
             case TOGGLE_FAN -> {
                 if (WrenchData.active(stack) != WrenchModule.FAN) return;
                 WrenchData.setFanPull(stack, !WrenchData.fanPull(stack));
