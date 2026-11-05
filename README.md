@@ -4,7 +4,7 @@
 
 当前分支：`1.21.1-NeoForge`
 
-当前模组版本：`0.3.17`
+当前模组版本：`0.3.18`
 
 # 维护状态
 
@@ -195,7 +195,7 @@ Minecraft `1.20.1` Forge 的 `main` 分支暂停更新，保留现有代码和�
 | --- | --- |
 | 强力机械泵 | 伤害+6、实体攻击距离+1、击退+2级。 |
 | 下界合金鼓风机 | 长按右键吹动实体，按下Shift切换吸/吹。以256RPM及下界合金风速倍率计算，实体受方块遮挡。 |
-| 下界合金弹射置物台 | Shift显示轨迹，右键沿轨迹弹射，最大64格；无阻挡落地免摔，途中撞到障碍恢复正常摔伤。 |
+| 下界合金弹射置物台 | Shift显示连续轨迹；Shift＋长按右键蓄力，松开发射，1秒蓄满，最大目标距离64格。视角和蓄力时长实时调整轨迹；普通右键或蓄力不足不发射。无阻挡落地免摔，途中碰撞恢复正常摔伤。 |
 | 下界合金烈焰人燃烧室 | 持有者造成的火焰伤害4倍，包括火焰附加造成的后续燃烧。 |
 | 下界合金动力冲压机 | 一次实际攻击的总伤害1.5倍，并定身1秒。 |
 | 下界合金动力锯 | 长按右键锯击攻击距离内最近的前方目标，每次18点伤害，沿用原生受伤间隔；墙体阻挡。 |
@@ -244,7 +244,7 @@ createnetherite-server.toml
 构建产物：
 
 ```text
-build/libs/createnetherite-1.21.1-0.3.17.jar
+build/libs/createnetherite-1.21.1-0.3.18.jar
 ```
 
 # Introduction
@@ -253,7 +253,7 @@ build/libs/createnetherite-1.21.1-0.3.17.jar
 
 Current branch: `1.21.1-NeoForge`
 
-Current mod version: `0.3.17`
+Current mod version: `0.3.18`
 
 # Maintenance status
 
@@ -442,7 +442,7 @@ Hold in the main hand and press **X**. The wheel stores **eight real module bloc
 | --- | --- |
 | Powerful Mechanical Pump | +6 attack damage, +1 entity attack reach, +2 knockback levels. |
 | Netherite Fan | Hold right-click for airflow; press Shift to toggle push/pull. Uses a 256 RPM reference and the Netherite wind-speed multiplier. Solid blocks obstruct the current. |
-| Netherite Weighted Ejector | Shift previews an arc; right-click launches up to 64 blocks. Unobstructed landing prevents fall damage; hitting an obstacle restores normal fall damage. |
+| Netherite Weighted Ejector | Shift previews a continuous arc. Hold Shift+right-click to charge, then release to launch; full charge takes 1 second, up to 64 blocks. View and charge time update the arc. Ordinary right-click and insufficient charge do not launch. Clear landings prevent fall damage; collisions restore it. |
 | Netherite Blaze Burner | Your fire damage is multiplied by four, including subsequent Fire Aspect burning. |
 | Netherite Mechanical Press | Total actual attack damage is multiplied by 1.5; target is rooted for one second. |
 | Netherite Mechanical Saw | Hold right-click to saw the nearest target ahead within attack reach for 18 damage, respecting native hurt cooldown and solid obstacles. |
@@ -491,5 +491,5 @@ Existing worlds keep their own `serverconfig/createnetherite-server.toml`. If de
 Build output:
 
 ```text
-build/libs/createnetherite-1.21.1-0.3.17.jar
+build/libs/createnetherite-1.21.1-0.3.18.jar
 ```

@@ -48,8 +48,7 @@ public final class NetheriteNetheriteWrenchItem extends SwordItem {
             return InteractionResultHolder.consume(stack);
         }
         if (module == WrenchModule.EJECTOR) {
-            if (!level.isClientSide) WrenchLaunch.start(player);
-            return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
+            return WrenchLaunch.beginCharge(player, hand);
         }
         if (module == WrenchModule.TANK) return WrenchTank.use(level, player, hand);
         return InteractionResultHolder.pass(stack);
@@ -62,10 +61,18 @@ public final class NetheriteNetheriteWrenchItem extends SwordItem {
         var module = WrenchData.active(stack);
         if (module == WrenchModule.FAN) WrenchAirflow.tick(player, stack);
         else if (module == WrenchModule.SAW) WrenchSaw.tick(player, stack);
+        else if (module == WrenchModule.EJECTOR) {
+            if (!WrenchLaunch.isCharging(player)) { WrenchLaunch.cancel(player); player.stopUsingItem(); }
+        }
         else if (module == WrenchModule.ENGINE) HandheldKineticPower.continueUsing(player, stack, getUseDuration(stack, entity) - remaining);
         else player.stopUsingItem();
     }
     @Override public void releaseUsing(ItemStack stack, Level level, LivingEntity entity, int remaining) {
+        if (entity instanceof Player player) WrenchLaunch.release(player, stack, remaining);
         if (!level.isClientSide && entity instanceof Player player) HandheldKineticPower.stop(player);
+    }
+
+    @Override public void onStopUsing(ItemStack stack, LivingEntity entity, int remaining) {
+        if (entity instanceof Player player) WrenchLaunch.cancel(player);
     }
 }

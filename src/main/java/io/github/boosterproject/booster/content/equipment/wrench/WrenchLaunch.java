@@ -5,23 +5,33 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.Collections;
+import java.util.IdentityHashMap;
 import io.github.boosterproject.booster.mixin.WrenchFlightAccess;
-import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.item.BowItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.event.entity.living.LivingFallEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
 /** Native collision and gravity remain in control throughout the flight. */
 public final class WrenchLaunch {
     public static final double RANGE = 64;
+    public static final int CHARGE_TICKS = 20;
+    // Entity.equals compares network IDs, shared by an integrated server and its client.
+    private static final Map<Player, ItemStack> CHARGES = Collections.synchronizedMap(new IdentityHashMap<>());
     private static final int MAX_FLIGHT_TICKS = 240;
     private static final Map<UUID, Flight> FLIGHTS = new HashMap<>();
 
@@ -31,29 +41,31 @@ public final class WrenchLaunch {
         bus.addListener(WrenchLaunch::tick);
         bus.addListener(WrenchLaunch::fall);
         bus.addListener(WrenchLaunch::logout);
+        bus.addListener((PlayerEvent.Clone event) -> cancel(event.getOriginal()));
+        bus.addListener(WrenchLaunch::interactSpecific);
+        bus.addListener(WrenchLaunch::interact);
     }
 
     /** Preview and launch share the same discrete vanilla drag/gravity solution. */
     public record Trajectory(Vec3 start, Vec3 target, Vec3 velocity, int ticks, List<Vec3> points) {}
+    public record Preview(List<Vec3> points, Vec3 target, boolean blocked) {}
 
-    public static Trajectory trajectory(Player player) {
+    public static Trajectory trajectory(Player player) { return trajectory(player, 1); }
+
+    public static Trajectory trajectory(Player player, float power) {
         Vec3 start = player.position();
-        Vec3 eye = player.getEyePosition();
+        power = Mth.clamp(power, 0, 1);
+        if (power == 0) return new Trajectory(start, start, Vec3.ZERO, 0, List.of(start));
         Vec3 look = player.getLookAngle();
-        var hit = player.level().clip(new ClipContext(eye, eye.add(look.scale(RANGE)), ClipContext.Block.COLLIDER,
-            ClipContext.Fluid.NONE, player));
-        Vec3 target = start.add(look.scale(RANGE));
-        if (hit.getType() == HitResult.Type.BLOCK) {
-            Vec3 normal = Vec3.atLowerCornerOf(hit.getDirection().getNormal());
-            target = hit.getLocation().add(normal.scale(hit.getDirection() == Direction.UP ? .01 : .35));
-        }
+        // Aim is free: obstacles clip the preview and the real flight, not the selected target.
+        Vec3 target = start.add(look.scale(RANGE * power));
         Vec3 offset = target.subtract(start);
         if (offset.lengthSqr() > RANGE * RANGE) {
             offset = offset.normalize().scale(RANGE);
             target = start.add(offset);
         }
         double horizontal = Math.hypot(offset.x, offset.z);
-        int ticks = Math.max(24, Math.min(80, 32 + (int) Math.ceil(horizontal / 4 + Math.max(0, offset.y) / 2)));
+        int ticks = Math.max(4, Math.min(80, (int) Math.ceil((32 + horizontal / 4 + Math.max(0, offset.y) / 2) * Math.sqrt(power))));
         double horizontalSum = (1 - Math.pow(.91, ticks)) / (1 - .91);
         double verticalSum = (1 - Math.pow(.98, ticks)) / (1 - .98);
         double vy = (offset.y + 3.92 * (ticks - verticalSum)) / verticalSum;
@@ -72,10 +84,75 @@ public final class WrenchLaunch {
 
     public static List<Vec3> preview(Player player) { return trajectory(player).points(); }
 
-    public static boolean start(Player player) {
+    public static Preview predict(Player player, float power) {
+        var trajectory = trajectory(player, power);
+        List<Vec3> points = new ArrayList<>();
+        points.add(trajectory.start());
+        var bounds = player.getBoundingBox();
+        Vec3 previous = trajectory.start();
+        for (int i = 1; i < trajectory.points().size(); i++) {
+            Vec3 next = trajectory.points().get(i);
+            Vec3 step = next.subtract(previous);
+            var entityCollisions = player.level().getEntityCollisions(player, bounds.expandTowards(step));
+            Vec3 allowed = Entity.collideBoundingBox(player, step, bounds, player.level(), entityCollisions);
+            Vec3 actual = previous.add(allowed);
+            points.add(actual);
+            if (allowed.distanceToSqr(step) > 1e-10) return new Preview(List.copyOf(points), actual, true);
+            bounds = bounds.move(allowed);
+            previous = actual;
+        }
+        return new Preview(List.copyOf(points), previous, false);
+    }
+
+    public static float powerForTime(int ticks) { return BowItem.getPowerForTime(Math.max(0, ticks)); }
+    public static boolean isCharging(Player player) {
+        return player.isUsingItem() && CHARGES.get(player) == player.getMainHandItem()
+            && player.getUsedItemHand() == InteractionHand.MAIN_HAND && player.getUseItem() == player.getMainHandItem()
+            && WrenchData.active(player) == WrenchModule.EJECTOR;
+    }
+    public static int chargeTicks(Player player) { return isCharging(player) ? player.getTicksUsingItem() : 0; }
+
+    public static InteractionResultHolder<ItemStack> beginCharge(Player player, InteractionHand hand) {
+        ItemStack stack = player.getItemInHand(hand);
+        if (hand != InteractionHand.MAIN_HAND || !player.isShiftKeyDown() || !player.isAlive() || player.isSpectator()
+            || player.isPassenger() || WrenchData.active(stack) != WrenchModule.EJECTOR) return InteractionResultHolder.fail(stack);
+        if (!isCharging(player)) {
+            player.startUsingItem(hand);
+            if (player.isUsingItem() && player.getUsedItemHand() == hand) CHARGES.put(player, stack);
+        }
+        return InteractionResultHolder.consume(stack);
+    }
+
+    public static void release(Player player, ItemStack stack, int remaining) {
+        boolean charging = isCharging(player) && player.getUseItem() == stack;
+        cancel(player);
+        if (!charging || player.level().isClientSide) return;
+        float power = powerForTime(stack.getUseDuration(player) - remaining);
+        if (power >= .1F) start(player, power);
+    }
+
+    public static void cancel(Player player) { CHARGES.remove(player); }
+
+    private static boolean chargeEntity(Player player, InteractionHand hand, Entity entity) {
+        return WrenchData.active(player) == WrenchModule.EJECTOR && player.level() == entity.level()
+            && player.canInteractWithEntity(entity, 0) && player.hasLineOfSight(entity)
+            && beginCharge(player, hand).getResult().consumesAction();
+    }
+    private static void interactSpecific(PlayerInteractEvent.EntityInteractSpecific event) {
+        if (!chargeEntity(event.getEntity(), event.getHand(), event.getTarget())) return;
+        event.setCancellationResult(InteractionResult.sidedSuccess(event.getLevel().isClientSide)); event.setCanceled(true);
+    }
+    private static void interact(PlayerInteractEvent.EntityInteract event) {
+        if (!chargeEntity(event.getEntity(), event.getHand(), event.getTarget())) return;
+        event.setCancellationResult(InteractionResult.sidedSuccess(event.getLevel().isClientSide)); event.setCanceled(true);
+    }
+
+    public static boolean start(Player player) { return start(player, 1); }
+
+    private static boolean start(Player player, float power) {
         if (player.level().isClientSide || !player.isAlive() || player.isSpectator() || player.isPassenger()
             || WrenchData.active(player) != WrenchModule.EJECTOR) return false;
-        Trajectory trajectory = trajectory(player);
+        Trajectory trajectory = trajectory(player, power);
         FLIGHTS.put(player.getUUID(), new Flight(player, player.level().getGameTime(), trajectory.target()));
         player.setOnGround(false);
         player.horizontalCollision = false;
@@ -106,6 +183,7 @@ public final class WrenchLaunch {
 
     public static void tick(PlayerTickEvent.Post event) {
         Player player = event.getEntity();
+        if (!player.isAlive() || !isCharging(player)) cancel(player);
         if (player.level().isClientSide) return;
         Flight flight = FLIGHTS.get(player.getUUID());
         if (flight == null) return;
@@ -138,7 +216,7 @@ public final class WrenchLaunch {
             && elapsed >= 0 && elapsed <= MAX_FLIGHT_TICKS;
     }
 
-    private static void logout(PlayerEvent.PlayerLoggedOutEvent event) { FLIGHTS.remove(event.getEntity().getUUID()); }
+    private static void logout(PlayerEvent.PlayerLoggedOutEvent event) { FLIGHTS.remove(event.getEntity().getUUID()); cancel(event.getEntity()); }
 
     private static final class Flight {
         final Player owner;

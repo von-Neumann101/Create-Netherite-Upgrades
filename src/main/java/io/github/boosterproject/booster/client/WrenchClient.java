@@ -8,13 +8,12 @@ import io.github.boosterproject.booster.content.equipment.wrench.WrenchNetworkin
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.core.particles.DustParticleOptions;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
+import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.network.PacketDistributor;
-import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;
 
 public final class WrenchClient {
@@ -24,6 +23,11 @@ public final class WrenchClient {
     public static void register(IEventBus bus) {
         bus.addListener((RegisterKeyMappingsEvent event) -> event.register(WHEEL));
         NeoForge.EVENT_BUS.addListener(WrenchClient::tick);
+        NeoForge.EVENT_BUS.addListener((ClientPlayerNetworkEvent.LoggingOut event) -> {
+            if (event.getPlayer() != null) WrenchLaunch.cancel(event.getPlayer());
+        });
+        NeoForge.EVENT_BUS.addListener((ClientPlayerNetworkEvent.Clone event) -> WrenchLaunch.cancel(event.getOldPlayer()));
+        WrenchEjectorPreview.register();
     }
     private static void tick(ClientTickEvent.Post event) {
         var mc = Minecraft.getInstance();
@@ -37,9 +41,5 @@ public final class WrenchClient {
         var module = WrenchData.active(held);
         if (pressed && module == WrenchModule.FAN) PacketDistributor.sendToServer(new WrenchNetworking.Action(WrenchNetworking.TOGGLE_FAN, 0));
         if (pressed && module == WrenchModule.TANK) mc.setScreen(new WrenchFluidScreen(held));
-        if (shift && module == WrenchModule.EJECTOR && mc.level.getGameTime() % 2 == 0) {
-            var dust = new DustParticleOptions(new Vector3f(0.7F, 0.9F, 0.6F), 0.7F);
-            for (var p : WrenchLaunch.preview(mc.player)) mc.level.addParticle(dust, p.x, p.y, p.z, 0, 0, 0);
-        }
     }
 }

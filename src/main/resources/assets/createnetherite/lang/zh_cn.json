@@ -145,7 +145,7 @@
   "item.createnetherite.netherite_netherite_wrench.tooltip.condition1": "激活动力泵、冲压机或燃烧室时",
   "item.createnetherite.netherite_netherite_wrench.tooltip.behaviour1": "动力泵使伤害_+6_、攻击距离_+1_、击退_+2级_；冲压机使总伤害_1.5倍_并定身_1秒_；燃烧室使你造成的火焰伤害_4倍_。",
   "item.createnetherite.netherite_netherite_wrench.tooltip.condition2": "激活鼓风机或弹射置物台时",
-  "item.createnetherite.netherite_netherite_wrench.tooltip.behaviour2": "鼓风机_长按右键_释放气流，按_Shift_切换吸吹；置物台按_Shift_预览，右键弹射至最多_64格_远，撞到障碍后恢复摔落伤害。",
+  "item.createnetherite.netherite_netherite_wrench.tooltip.behaviour2": "鼓风机_长按右键_释放气流，按_Shift_切换吸吹；弹射置物台须_Shift+长按右键蓄力_，松开发射，_1秒_蓄满，最大目标距离_64格_。普通右键和蓄力不足均不弹射；撞到障碍后恢复摔落伤害。",
   "item.createnetherite.netherite_netherite_wrench.tooltip.condition3": "激活引擎、转换机或储罐时",
   "item.createnetherite.netherite_netherite_wrench.tooltip.behaviour3": "引擎_长按右键_驱动一个工作方块；转换机_右键生物_使其下界合金化，死亡掉落一次性转换模板；储罐_右键_收液，_Shift_选液，_Shift+右键_放液，合计_64桶_。",
   "wrench.createnetherite.activate": "启用",
@@ -160,5 +160,8 @@
   "block.createnetherite.netherite_mechanical_saw": "下界合金动力锯",
   "block.createnetherite.netherite_mechanical_saw.tooltip.summary": "在_一个加工周期_内切割整叠物品，过滤、石切与序列组装规则沿用原版。砍伐计算速度为原版_2倍_，伤害为_1.8倍_，应力消耗不变。可装入下界合金下界合金扳手，激活后_长按右键_持续锯击攻击范围内的前方目标，受方块阻挡。",
   "item.createnetherite.netherite_netherite_wrench.tooltip.condition4": "激活动力锯时",
-  "item.createnetherite.netherite_netherite_wrench.tooltip.behaviour4": "_长按右键_持续锯击攻击范围内最近的前方目标；按256RPM计算为每次_18点伤害_，沿用原生受伤间隔，方块会阻挡。"
+  "item.createnetherite.netherite_netherite_wrench.tooltip.behaviour4": "_长按右键_持续锯击攻击范围内最近的前方目标；按256RPM计算为每次_18点伤害_，沿用原生受伤间隔，方块会阻挡。",
+  "wrench.createnetherite.ejector_charge": "蓄力 %s%% · 预计 %s 格",
+  "wrench.createnetherite.ejector_preview": "满蓄力预览 · %s 格",
+  "wrench.createnetherite.ejector_aim": "Shift＋右键蓄力，松开发射"
 }

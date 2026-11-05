@@ -10,8 +10,8 @@
 
 - 分支：`1.21.1-NeoForge`
 - 源码核对日期：`2026-11-05`
-- 本次更新基线提交：`5aba5aec82517e7276823f9476ffff3825b81f06`（0.3.16；0.3.17 动力锯实现见本文末）
-- 模组版本：`0.3.17`
+- 本次更新基线提交：`2ff6e121508ab034158ef278e07b7e11090a4fbf`（0.3.17；0.3.18 扳手弹射蓄力与预览见本文末）
+- 模组版本：`0.3.18`
 - Mod id：`createnetherite`
 - 主包名：`io.github.boosterproject.booster`
 - Minecraft：`1.21.1`
@@ -74,7 +74,7 @@
 按当前配置生成的主 jar：
 
 ```text
-build/libs/createnetherite-1.21.1-0.3.17.jar
+build/libs/createnetherite-1.21.1-0.3.18.jar
 ```
 
 ## Gradle 与依赖
@@ -1157,3 +1157,18 @@ minecraft:netherite_ingot
 初轮测试暴露原生31输出槽截断，按实际产物扩容后4096产物及重载通过。夹具修正包括NeoForge原生槽绝对上限99、Create配方字段processing_time、Codec不接受JSON零概率（QA使用合法配方，运行时将专属QA产物改为确定性全miss后恢复），以及运动结构10tick出生保护和最小原生结构的bounds/seat/storage初始化。独立审查发现运动结构收集边界与机械臂类型判定的原版实例限制，修复后专项复核未发现剩余重要问题。
 
 发布核对：183个生产JSON，中英文各162键，旧158键值全部保留；70张旧仓库PNG字节不变。新增两张16×16全不透明RGBA锯面材质，24个状态对应原生模型骨架。最终0.3.17 jar的258个生产资源、183个生产类与源码资源/编译输出逐字节一致，元数据版本0.3.17，所有GameTest类、QA配方和测试结构未打包。SHA-256：`6f0a24270b8f7a3239246b7372aaed1ecb5ed1dc4010462c3e283c67bf954518`。未启动客户端或使用RTX5060；实际机器渲染、扳手按键与右键图形交互仍待客户端实测。
+
+
+## 扳手弹射蓄力与连续轨迹（0.3.18）
+
+用户最终规则为普通右键不弹射，须Shift+右键蓄力、松开右键后发射。1秒（20tick）满额，沿用BowItem功率曲线；低于0.1功率（不足3tick）松开不发射。按下时只进入原生持续使用，服务器从原生剩余使用tick算强度，发射按最终视角计算。`WrenchLaunch`用同步IdentityHashMap绑定逻辑Player对象身份和实际ItemStack引用（Entity.equals按网络ID判等，单人游戏的客户端与服务端不能据此共享状态）；换成同类另一把扳手、失活、停止使用、重生或登出均取消待发射状态。客户端/服务器实例各自记录，客户端LoggingOut/Clone及服务端Clone/LoggedOut清理，不保存进物品NBT。原生实体Specific/通用右键在Shift时也能开始蓄力，先于村民界面等交互。
+
+trajectory(Player,power)将目标距离缩放到64*power，飞行tick随功率调整，使用原来的0.91/0.98阻力和0.08重力解析离散速度，不再把目标吸附到视线遇到的第一个方块。predict调用原生Entity.collideBoundingBox逐步检查玩家体积，给出碰撞前的脚点；碰撞只截断预览，真实发射仍由原生移动与碰撞处理。既有墙/顶碰撞后正常摔伤、无阻挡首次落地保护、重生实例隔离和超时/维度清理保留。
+
+`WrenchEjectorPreview`在AFTER_PARTICLES即时绘制RenderType.lines连续轨迹、脚点框和十字，保留深度测试；移除每两tick生成的尘粒，避免粒子发散和残影。锁定版本此阶段RenderSystem已经应用视图旋转，PoseStack不重复乘modelView；所有顶点先用double减相机再转float，避免大坐标抖动。每帧只做一次predict供轨迹与HUD复用；未蓄力显示“满蓄力预览”，实际蓄力才显示百分比与预计距离，避免空闲时误显示已满蓄力。无需新增或修改PNG，实体弹射置物台原有选点教程和操作不变。
+
+验证：旧版在“普通主手右键禁止”和“按下仅蓄力不发射”的新契约下先失败，实现后通过。新增4项真实ServerGamePacketListenerImpl入口测试与6项瞄准/状态测试，连同既有84项共94项GameTest通过；最终完整离线build的205项既有回归通过。网络验证从真实handleUseItem开始，服务器tick满20后通过RELEASE_USE_ITEM发射，检查双精度Launch编解码；模拟收到速度后的逐tick客户端位置，经真实handleMovePlayer接受完整航程，普通未发射12格超速仍触发纠正，不添加移速豁免。额外覆盖普通/副手禁止、2tick短按取消、功率增长与饱和、最终视角、同物品新实例取消、实体GUI前开始、失活、玩家体积方块碰撞及自由瞄准不吸附近墙。
+
+独立审查发现预览漏传硬实体碰撞列表，船碰撞回归先在旧实现失败，补逐步getEntityCollisions后通过；大坐标墙接触断言也统一为double计算。提交前复现了Entity.equals导致同网络ID两逻辑实例串扰的回归，改IdentityHashMap及两端生命周期清理后通过，复核无剩余重要问题。普通背包/聊天界面沿用原生持续使用行为；扳手X模块菜单由OPEN显式stopUsingItem取消蓄力。
+
+发布核对：183个生产JSON、中英文各165键，旧162键仅扳手弹射用法一项更新，其余161项保留；72张仓库PNG字节不变。最终0.3.18 jar的258个生产资源、186个生产类与源码资源/编译输出逐字节一致，元数据0.3.18，测试类、QA配方及测试结构未打包。SHA-256：`ab2332e39f3ef0c6bb11c99fc73650c38fb94f4edd303b98af414247efbd9322`。未启动客户端或使用RTX5060；网络用例模拟客户端收到包后的位移，不等于执行LocalPlayer或实测画面、HUD、键鼠交互。

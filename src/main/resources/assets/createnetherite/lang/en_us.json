@@ -145,7 +145,7 @@
   "item.createnetherite.netherite_netherite_wrench.tooltip.condition1": "With a pump, press or burner active",
   "item.createnetherite.netherite_netherite_wrench.tooltip.behaviour1": "Pump adds _6 damage_, _1 attack reach_ and _2 knockback levels_. Press makes total damage _1.5 times_ and roots for _1 second_. Burner multiplies your fire damage by _4_.",
   "item.createnetherite.netherite_netherite_wrench.tooltip.condition2": "With a fan or ejector active",
-  "item.createnetherite.netherite_netherite_wrench.tooltip.behaviour2": "Fan: _hold right click_ for airflow; press _Shift_ to toggle push/pull. Ejector: _Shift_ previews the arc; right click launches up to _64 blocks_. Hitting an obstacle restores fall damage.",
+  "item.createnetherite.netherite_netherite_wrench.tooltip.behaviour2": "Fan: _hold right-click_ for airflow; press _Shift_ to toggle push/pull. Ejector: _hold Shift+right-click to charge_, then release to launch. Full charge takes _1 second_, up to _64 blocks_. Ordinary right-click and insufficient charge do not launch. Hitting obstacles restores fall damage.",
   "item.createnetherite.netherite_netherite_wrench.tooltip.condition3": "With an engine, converter or tank active",
   "item.createnetherite.netherite_netherite_wrench.tooltip.behaviour3": "Engine: _hold right click_ to power one work block. Converter: _right click a creature_ to netheritize it and obtain a one-use template on death. Tank: _right click_ collects, _Shift_ selects fluid, _Shift+right click_ places; total _64 buckets_.",
   "wrench.createnetherite.activate": "On",
@@ -160,5 +160,8 @@
   "block.createnetherite.netherite_mechanical_saw": "Netherite Mechanical Saw",
   "block.createnetherite.netherite_mechanical_saw.tooltip.summary": "Cuts an entire stack in _one processing cycle_, preserving native filtering, stonecutting and sequenced assembly. Tree-cutting calculation speed is _2 times_ normal; damage is _1.8 times_, with unchanged stress. Install in the Netherite Netherite Wrench and _hold right-click_ to saw the nearest target ahead within attack reach. Blocks obstruct the blade.",
   "item.createnetherite.netherite_netherite_wrench.tooltip.condition4": "With a mechanical saw active",
-  "item.createnetherite.netherite_netherite_wrench.tooltip.behaviour4": "_Hold right-click_ to saw the nearest target ahead within attack reach. Uses a 256 RPM reference for _18 damage_ per hit, respects native hurt cooldown and is blocked by solid blocks."
+  "item.createnetherite.netherite_netherite_wrench.tooltip.behaviour4": "_Hold right-click_ to saw the nearest target ahead within attack reach. Uses a 256 RPM reference for _18 damage_ per hit, respects native hurt cooldown and is blocked by solid blocks.",
+  "wrench.createnetherite.ejector_charge": "Charge %s%% · %s blocks",
+  "wrench.createnetherite.ejector_preview": "Full-charge preview · %s blocks",
+  "wrench.createnetherite.ejector_aim": "Hold Shift + right-click; release to launch"
 }
