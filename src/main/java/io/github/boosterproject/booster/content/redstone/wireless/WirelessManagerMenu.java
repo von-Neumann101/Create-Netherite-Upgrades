@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import io.github.boosterproject.booster.registry.BoosterItems;
+import io.github.boosterproject.booster.registry.BoosterBlocks;
 import io.github.boosterproject.booster.registry.BoosterMenuTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -16,6 +17,7 @@ import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -25,6 +27,7 @@ public class WirelessManagerMenu extends AbstractContainerMenu {
     private final InteractionHand hand;
     private final UUID terminalId;
     private final BlockPos terminalPos;
+    private final BlockPos managerPos;
     private final ResourceKey<Level> dimension;
     private final Set<UUID> selected = new HashSet<>();
     private int page;
@@ -33,22 +36,30 @@ public class WirelessManagerMenu extends AbstractContainerMenu {
     private WirelessPagePayload snapshot;
 
     public WirelessManagerMenu(int id, Inventory inventory, RegistryFriendlyByteBuf data) {
-        this(id, inventory, null, null, null);
+        this(id, inventory, null, null, null, null);
     }
 
-    private WirelessManagerMenu(int id, Inventory inventory, InteractionHand hand, UUID terminalId, BlockPos terminalPos) {
+    private WirelessManagerMenu(int id, Inventory inventory, InteractionHand hand, UUID terminalId, BlockPos terminalPos, BlockPos managerPos) {
         super(BoosterMenuTypes.NETHERITE_WIRELESS_MANAGER.get(), id);
         this.viewer = inventory.player;
         this.hand = hand;
         this.terminalId = terminalId;
         this.terminalPos = terminalPos;
+        this.managerPos = managerPos;
         dimension = viewer.level().dimension();
         snapshot = new WirelessPagePayload(id, 0, 1, 0, terminalId != null, List.of());
     }
 
     public static void openManager(ServerPlayer player, InteractionHand hand) {
-        player.openMenu(new SimpleMenuProvider((id, inventory, viewer) -> new WirelessManagerMenu(id, inventory, hand, null, null),
+        player.openMenu(new SimpleMenuProvider((id, inventory, viewer) -> new WirelessManagerMenu(id, inventory, hand, null, null, null),
             Component.translatable("item.createnetherite.netherite_infinite_manager")));
+    }
+
+    public static void openBlockManager(ServerPlayer player, BlockPos pos) {
+        if (!player.level().getBlockState(pos).is(BoosterBlocks.NETHERITE_WIRELESS_MANAGER.get())
+            || player.distanceToSqr(pos.getCenter()) > 64) return;
+        player.openMenu(new SimpleMenuProvider((id, inventory, viewer) -> new WirelessManagerMenu(id, inventory, null, null, null, pos.immutable()),
+            Component.translatable("block.createnetherite.netherite_wireless_manager")));
     }
 
     public static void openTerminal(ServerPlayer player, WirelessTerminalBlockEntity blockEntity) {
@@ -57,7 +68,7 @@ public class WirelessManagerMenu extends AbstractContainerMenu {
             player.displayClientMessage(Component.translatable("wireless.createnetherite.owner_only"), true);
             return;
         }
-        player.openMenu(new SimpleMenuProvider((id, inventory, viewer) -> new WirelessManagerMenu(id, inventory, null, terminal.id(), terminal.pos()),
+        player.openMenu(new SimpleMenuProvider((id, inventory, viewer) -> new WirelessManagerMenu(id, inventory, null, terminal.id(), terminal.pos(), null),
             Component.translatable("block.createnetherite.netherite_wireless_terminal")));
     }
 
@@ -65,6 +76,9 @@ public class WirelessManagerMenu extends AbstractContainerMenu {
     public boolean stillValid(Player player) {
         if (!(player instanceof ServerPlayer serverPlayer)) return true;
         if (hand != null) return player.getItemInHand(hand).is(BoosterItems.NETHERITE_INFINITE_MANAGER.get());
+        if (managerPos != null) return dimension.equals(player.level().dimension())
+            && player.distanceToSqr(managerPos.getCenter()) <= 64
+            && AbstractContainerMenu.stillValid(ContainerLevelAccess.create(player.level(), managerPos), player, BoosterBlocks.NETHERITE_WIRELESS_MANAGER.get());
         if (terminalPos == null || !dimension.equals(player.level().dimension()) || player.distanceToSqr(terminalPos.getCenter()) > 64) return false;
         var terminal = WirelessTerminalData.get(serverPlayer.server).get(terminalId);
         return terminal != null && terminal.owner().equals(player.getUUID())

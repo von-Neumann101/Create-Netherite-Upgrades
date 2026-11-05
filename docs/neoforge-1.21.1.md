@@ -11,7 +11,7 @@
 - 分支：`1.21.1-NeoForge`
 - 源码核对日期：`2026-11-02`
 - 源码基线提交：`258581732409c92bd271c783fff83fe993a5a4ca`（后续新增无线终端与管理器；贴图提交 `7326d31`）
-- 模组版本：`0.3.14`
+- 模组版本：`0.3.15`
 - Mod id：`createnetherite`
 - 主包名：`io.github.boosterproject.booster`
 - Minecraft：`1.21.1`
@@ -74,7 +74,7 @@
 按当前配置生成的主 jar：
 
 ```text
-build/libs/createnetherite-1.21.1-0.3.14.jar
+build/libs/createnetherite-1.21.1-0.3.15.jar
 ```
 
 ## Gradle 与依赖
@@ -141,7 +141,8 @@ MixinConfigs: createnetherite.mixins.json
 - `createnetherite:netherite_encased_fan`
 - `createnetherite:netherite_filter`（旧存档兼容，不再合成或在创造栏提供）
 - `createnetherite:netherite_wireless_terminal`
-- `createnetherite:netherite_infinite_manager`
+- `createnetherite:netherite_infinite_manager`（便携式下界合金无线管理器，保留旧ID）
+- `createnetherite:netherite_wireless_manager`（无需应力的固定方块）
 - `createnetherite:netherite_smart_chute`
 - `createnetherite:netherite_weighted_ejector`
 - `createnetherite:netherite_extendo_grip`
@@ -154,7 +155,7 @@ MixinConfigs: createnetherite.mixins.json
 - 注册位置：`BoosterCreativeModeTabs`
 - 标签页 ID：`createnetherite:createnetherite`
 - 图标：强力机械泵
-- 包含：上述十五种机器方块的物品、下界合金无限管理器、下界合金伸缩机械手、下界合金下界合金、下界合金板和下界精华桶，共二十种在用物品；另保留旧下界合金过滤器注册以兼容存档，注册物品总数为二十一。另注册下界精华液体方块，不提供方块物品。空燃烧室是同一物品 ID 的组件变体
+- 包含：上述十六种机器方块的物品、便携式下界合金无线管理器、下界合金伸缩机械手、下界合金下界合金、下界合金板和下界精华桶，共二十一种在用物品；另保留旧下界合金过滤器注册以兼容存档，注册物品总数为二十二。另注册下界精华液体方块，不提供方块物品。空燃烧室是同一物品 ID 的组件变体
 
 ## 主类与初始化
 
@@ -334,7 +335,7 @@ createnetherite-server.toml
 
 强力机械泵使用普通 `BlockItem`，不再通过 `appendHoverText` 默认展开介绍。
 
-客户端 `BoosterTooltips.register()` 使用 Create 6.0.10 的 `TooltipModifier.REGISTRY` 与 `ItemDescription.Modifier`。下界合金鼓风机、弹射置物台和伸缩机械手保留原生 Ponder 入口；其余十八种物品（含旧过滤器）提供中英文 `<物品 description id>.tooltip.summary`，由 Create 生成 Shift 提示、折叠、换行及重点配色。燃烧室捕获用法使用原生 `.condition1` / `.behaviour1`。
+客户端 `BoosterTooltips.register()` 使用 Create 6.0.10 的 `TooltipModifier.REGISTRY` 与 `ItemDescription.Modifier`。下界合金鼓风机、弹射置物台和伸缩机械手保留原生 Ponder 入口；其余十九种物品（含旧过滤器）提供中英文 `<物品 description id>.tooltip.summary`，由 Create 生成 Shift 提示、折叠、换行及重点配色。燃烧室捕获用法使用原生 `.condition1` / `.behaviour1`。
 
 储罐的当前配置容量倍率、燃烧室堆叠保存的数量与倍率，只在按住 Shift 时追加到原生概要后。相关代码仅在客户端加载；捕获、放置、燃烧以及工程师护目镜信息保持原有逻辑。过滤器的已配置规则预览沿用 Create `FilterItem` 的原生显示行为。
 
@@ -1101,3 +1102,18 @@ minecraft:netherite_ingot
 独立审查发现精华纹理位于非默认的 `textures/fluid`，需要额外图集登记。已新增 `assets/minecraft/atlases/blocks.json` 的两条 `minecraft:single`，纳入静止/流动纹理；按锁定NeoForge要求核对，并复核最终jar内图集及PNG齐全，审查无剩余重要问题。
 
 发布核对：168个生产JSON，中英文各137键，旧129键值保留；15条新转换、1条精华混合和1条新机合成配方，既有所有配方和思索资源保留。58张旧仓库PNG字节不变，7张新增PNG的尺寸/透明度及图集路径通过检查；旧文本资源按Git行尾规范化比较。最终0.3.14 jar 的236个生产资源、152个生产类与源码资源/编译输出逐字节相同，模组元数据版本0.3.14，测试类/QA配方/结构未打包。SHA-256：`58bd2f5a699814f2a13616e8f9418bf7731b65050c3f6e26dcbfb512bc0a147b`。未启动客户端或使用RTX5060；新机、板材与流体的实际渲染仍待图形实测。
+
+
+## 固定无线管理器与便携版命名（0.3.15）
+
+2026-11-05 按用户要求，旧手持 `netherite_infinite_manager` 的显示名改为“便携式下界合金无线管理器”/“Portable Netherite Wireless Manager”；注册ID、原有配方与两张便携材质保留，以兼容已有存档。历史记录中“无限管理器”指该手持物品。新增 `netherite_wireless_manager` 方块与物品，显示名“下界合金无线管理器”/“Netherite Wireless Manager”。
+
+- 新 `WirelessManagerBlock extends HorizontalDirectionalBlock`，水平正面朝向放置玩家，可旋转/镜像；不创建BlockEntity，不继承KineticBlock，不注册应力，右键通过原生ServerPlayer.openMenu打开现有WirelessManagerMenu及WirelessManagerScreen。无需持有便携管理器。
+- 菜单新增仅服务端的 `managerPos` 来源。打开时核对实际方块和8格范围；后续 `stillValid` 显式核对打开时维度、中心距离不超过8格、原位置仍为管理器，同时保留原生ContainerLevelAccess检查。远离、拆除/替换或切换维度后，旧菜单的编辑与激活请求被拒绝。客户端构造不接收来源位置，仍返回客户端有效性。
+- `hand` 来源的便携模式与 `terminalId` 来源的终端配置模式保留。固定方块没有所有者或终端列表副本，每个菜单以实际viewer UUID从SavedData筛选自己的和他人公开的终端；跨页选择、批量激活、所有者编辑继续调用现有逻辑及WirelessTerminalService。无网络协议/新GUI背景变更，终端20tick信号和300tick加载期保持。
+- 新方块有序配方：末影之眼/发信线圈（create:transmitter）/地狱疣；黄铜机壳/下界合金锭/黄铜机壳；黑曜石/哭泣的黑曜石/黑曜石。加入创造栏、镐/钻石工具标签和正常掉落；物品防火，沿用全模组命名空间防爆保护与原生Shift概要。
+- 新静态模型引用指定美术对话制作的16×16 front/side/top三张PNG，底面复用原版下界合金块；无动力轴或运动部件。固定版和便携版使用各自菜单标题翻译，终端概要同时指向两种管理器。
+
+验证：新增4项 `WirelessManagerBlockGameTest`。缺注册基线先失败，实现后验证实际右键开菜单与标题、每位玩家独立own/public列表、伪造私有SELECT拒绝与他人公开终端编辑拒绝、多选真实同步激活、远离/替换/同坐标跨维度后旧菜单SAVE/ACTIVATE拒绝、旧便携副手绑定和终端所有者单条模式回归、指定九宫格合成、防火物品及无BE/无动力应力属性。独立审查指出锁定版本的原生stillValid使用“交互范围+4”眼睛距离，不能单独保证8格；增加恰好8格有效/8.6格无效及越界操作测试，先在原实现复现失败，再补显式中心距离约束。修正后完整离线build的205项原有回归与全部49项服务端GameTest通过，审查无剩余重要问题。
+
+发布核对：173个生产JSON，中英文各139键；旧137键中仅便携名称和终端概要两项值更新，其余135项保留。便携ID、配方、物品模型/两张PNG和已有GUI均未改；65张旧仓库PNG字节不变，新3张PNG均为16×16全不透明RGBA。最终0.3.15 jar 的244个生产资源及153个生产类与源码资源/编译输出逐字节相同，元数据版本0.3.15，测试类/QA配方/结构未打包。SHA-256：`708fcc156e067a9c743a95ba2972a4373a40134ffc8c1b26900ad98b5bbb0c50`。未启动客户端或使用RTX5060，方块及界面的实际图形显示仍待实测。

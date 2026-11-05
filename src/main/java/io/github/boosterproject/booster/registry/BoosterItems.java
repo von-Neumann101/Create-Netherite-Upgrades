@@ -20,6 +20,9 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 public final class BoosterItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Booster.MOD_ID);
 
+    public static final DeferredItem<Item> NETHERITE_WIRELESS_MANAGER = ITEMS.register("netherite_wireless_manager", () ->
+        new BlockItem(BoosterBlocks.NETHERITE_WIRELESS_MANAGER.get(), new Item.Properties().fireResistant()));
+
     public static final DeferredItem<Item> NETHERITE_CONVERTER = ITEMS.register("netherite_converter", () ->
         new BlockItem(BoosterBlocks.NETHERITE_CONVERTER.get(), new Item.Properties().fireResistant()));
 

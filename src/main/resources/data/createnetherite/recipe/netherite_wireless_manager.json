@@ -1,0 +1,36 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "pattern": [
+    "ETF",
+    "BNB",
+    "OCO"
+  ],
+  "key": {
+    "E": {
+      "item": "minecraft:ender_eye"
+    },
+    "T": {
+      "item": "create:transmitter"
+    },
+    "F": {
+      "item": "minecraft:nether_wart"
+    },
+    "B": {
+      "item": "create:brass_casing"
+    },
+    "N": {
+      "item": "minecraft:netherite_ingot"
+    },
+    "O": {
+      "item": "minecraft:obsidian"
+    },
+    "C": {
+      "item": "minecraft:crying_obsidian"
+    }
+  },
+  "result": {
+    "id": "createnetherite:netherite_wireless_manager",
+    "count": 1
+  }
+}

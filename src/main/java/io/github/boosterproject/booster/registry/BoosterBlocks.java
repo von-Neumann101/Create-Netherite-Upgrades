@@ -17,6 +17,7 @@ import io.github.boosterproject.booster.content.logistics.depot.NetheriteEjector
 import io.github.boosterproject.booster.content.kinetics.deployer.NetheriteDeployerBlock;
 import io.github.boosterproject.booster.content.processing.burner.NetheriteBlazeBurnerBlock;
 import io.github.boosterproject.booster.content.redstone.wireless.WirelessTerminalBlock;
+import io.github.boosterproject.booster.content.redstone.wireless.WirelessManagerBlock;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
@@ -26,6 +27,9 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 
 public final class BoosterBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Booster.MOD_ID);
+
+    public static final DeferredBlock<WirelessManagerBlock> NETHERITE_WIRELESS_MANAGER = BLOCKS.register("netherite_wireless_manager", () ->
+        new WirelessManagerBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.NETHERITE_BLOCK).strength(5, 1200).requiresCorrectToolForDrops()));
 
     public static final DeferredBlock<NetheriteConverterBlock> NETHERITE_CONVERTER = BLOCKS.register("netherite_converter", () ->
         new NetheriteConverterBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.NETHERITE_BLOCK).strength(5, 1200).requiresCorrectToolForDrops()));

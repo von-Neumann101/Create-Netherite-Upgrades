@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/orientable_with_bottom",
+  "textures": {
+    "front": "createnetherite:block/netherite_wireless_manager/front",
+    "side": "createnetherite:block/netherite_wireless_manager/side",
+    "top": "createnetherite:block/netherite_wireless_manager/top",
+    "bottom": "minecraft:block/netherite_block"
+  }
+}

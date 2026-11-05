@@ -4,7 +4,7 @@
 
 当前分支：`1.21.1-NeoForge`
 
-当前模组版本：`0.3.14`
+当前模组版本：`0.3.15`
 
 # 维护状态
 
@@ -32,7 +32,8 @@ Minecraft `1.20.1` Forge 的 `main` 分支暂停更新，保留现有代码和�
 - `createnetherite:netherite_encased_fan`
 - `createnetherite:netherite_filter` (legacy / 旧存档兼容)
 - `createnetherite:netherite_wireless_terminal`
-- `createnetherite:netherite_infinite_manager`
+- `createnetherite:netherite_infinite_manager` (portable)
+- `createnetherite:netherite_wireless_manager` (block)
 - `createnetherite:netherite_smart_chute`
 - `createnetherite:netherite_weighted_ejector`
 - `createnetherite:netherite_extendo_grip`
@@ -96,7 +97,18 @@ Minecraft `1.20.1` Forge 的 `main` 分支暂停更新，保留现有代码和�
 
 下界合金无线红石信号终端（无线红石加载器）可平放、贴墙或倒挂；点击哪个面就安装到哪个面，平放和倒挂时按玩家朝向旋转。放置后默认私有。所有者右键终端可命名和设置公开状态，显示名称为“放置玩家名的终端名”。管理器同时显示坐标和所在维度；同名终端仍是独立目标。
 
-手持下界合金无限管理器并右键，查看自己放置的终端和其他玩家公开的终端。点击条目勾选，支持跨页多选、“全选本页”、“清空选择”及同时激活所选终端；也可以直接编辑自己的终端。
+**下界合金无线管理器**是可放置的方块，**无需应力**，右键打开管理界面。与便携版共用终端列表及多选功能；多人使用同一个方块时，每人仍只看到自己的终端和其他玩家公开的终端。使用方块界面时需保持在8格以内且处于同一维度，拆除或离开后旧界面失效；目标终端仍可跨维度、无限距离激活。
+
+方块版有序合成：
+
+| 末影之眼 | 发信线圈 | 地狱疣 |
+| --- | --- | --- |
+| 黄铜机壳 | 下界合金锭 | 黄铜机壳 |
+| 黑曜石 | 哭泣的黑曜石 | 黑曜石 |
+
+便携版沿用旧物品ID与原有合成配方，既有存档中的物品继续使用。
+
+手持**便携式下界合金无线管理器**并右键，查看自己放置的终端和其他玩家公开的终端。点击条目勾选，支持跨页多选、“全选本页”、“清空选择”及同时激活所选终端；也可以直接编辑自己的终端。
 
 无需频率，可跨维度、无限距离激活，包括未加载区块中的终端。每次发送输出强度为 `15`、持续 `1 秒` 的红石信号，并保持目标区块加载 `15 秒`。再次激活重新计算两个期限；计时使用游戏 tick（`20 / 300 tick`）。仅打开列表不会加载目标区块。拆除会注销终端，重新放置后按新终端登记。
 
@@ -204,7 +216,7 @@ createnetherite-server.toml
 构建产物：
 
 ```text
-build/libs/createnetherite-1.21.1-0.3.14.jar
+build/libs/createnetherite-1.21.1-0.3.15.jar
 ```
 
 # Introduction
@@ -213,7 +225,7 @@ build/libs/createnetherite-1.21.1-0.3.14.jar
 
 Current branch: `1.21.1-NeoForge`
 
-Current mod version: `0.3.14`
+Current mod version: `0.3.15`
 
 # Maintenance status
 
@@ -241,7 +253,8 @@ The mod currently adds several Create-compatible entries:
 - `createnetherite:netherite_encased_fan`
 - `createnetherite:netherite_filter` (legacy / 旧存档兼容)
 - `createnetherite:netherite_wireless_terminal`
-- `createnetherite:netherite_infinite_manager`
+- `createnetherite:netherite_infinite_manager` (portable)
+- `createnetherite:netherite_wireless_manager` (block)
 - `createnetherite:netherite_smart_chute`
 - `createnetherite:netherite_weighted_ejector`
 - `createnetherite:netherite_extendo_grip`
@@ -303,7 +316,18 @@ Craft a Netherite Sheet with a regular Encased Fan to upgrade it. Breaking retur
 
 The Netherite Wireless Redstone Terminal mounts on floors, walls, and ceilings according to the clicked face. Floor and ceiling placement follows the player's horizontal direction. It starts private. Its owner can right-click to name it or make it public. Names display as “placing player's name + terminal name”; the manager also shows coordinates and dimension. Duplicate display names remain separate targets.
 
-Right-click while holding a Netherite Infinite Manager to list your terminals and public terminals placed by others. Click rows to select, keep selections across pages, select the current page, clear selections, or activate selected terminals together. You can also edit your own terminals remotely.
+The **Netherite Wireless Manager** is a placeable block that needs **no rotational power**. Right-click to open the shared management interface. Each user sees their own terminals and public terminals, even when using the same block. Stay within eight blocks and in the same dimension while using it; removal or leaving invalidates the menu. Target terminals can still be activated across dimensions and at any distance.
+
+Shaped block recipe:
+
+| Eye of Ender | Transmitter | Nether Wart |
+| --- | --- | --- |
+| Brass Casing | Netherite Ingot | Brass Casing |
+| Obsidian | Crying Obsidian | Obsidian |
+
+The portable version keeps its previous item ID and recipe, so existing items remain usable.
+
+Right-click while holding a **Portable Netherite Wireless Manager** to list your terminals and public terminals placed by others. Click rows to select, keep selections across pages, select the current page, clear selections, or activate selected terminals together. You can also edit your own terminals remotely.
 
 No frequencies are needed. Terminals work across dimensions at any distance, including unloaded chunks. Each activation emits a strength-`15` signal for `1 second` and keeps the target chunk ticking for `15 seconds`. Sending again renews both deadlines, measured as `20 / 300 game ticks`. Listing terminals does not load their chunks. Breaking unregisters a terminal; placing it again creates a new identity.
 
@@ -411,5 +435,5 @@ Existing worlds keep their own `serverconfig/createnetherite-server.toml`. If de
 Build output:
 
 ```text
-build/libs/createnetherite-1.21.1-0.3.14.jar
+build/libs/createnetherite-1.21.1-0.3.15.jar
 ```

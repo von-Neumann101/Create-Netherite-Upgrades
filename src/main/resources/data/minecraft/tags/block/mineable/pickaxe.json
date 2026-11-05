@@ -15,6 +15,7 @@
     "createnetherite:netherite_smart_chute",
     "createnetherite:netherite_weighted_ejector",
     "createnetherite:netherite_deployer",
-    "createnetherite:netherite_converter"
+    "createnetherite:netherite_converter",
+    "createnetherite:netherite_wireless_manager"
   ]
 }

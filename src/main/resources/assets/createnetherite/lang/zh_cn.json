@@ -56,8 +56,8 @@
   "block.createnetherite.netherite_mechanical_mixer.tooltip.summary": "搅拌工作盆中的配方。采用_批量加工_，在一个搅拌周期中连续处理当前匹配的配方；动作、加热要求和应力消耗沿用普通动力搅拌机。",
   "item.createnetherite.netherite_sheet.tooltip.summary": "用于制作 Create 机器下界合金升级品的_合成材料_。",
   "block.createnetherite.netherite_wireless_terminal": "下界合金无线红石信号终端",
-  "item.createnetherite.netherite_infinite_manager": "下界合金无限管理器",
-  "block.createnetherite.netherite_wireless_terminal.tooltip.summary": "通过下界合金无限管理器_跨维度、无限距离_激活，无需频率。每次输出_1 秒_、强度为 _15_ 的红石信号，并保持所在区块加载_15 秒_。右键可设置名称和公开状态。",
+  "item.createnetherite.netherite_infinite_manager": "便携式下界合金无线管理器",
+  "block.createnetherite.netherite_wireless_terminal.tooltip.summary": "通过下界合金无线管理器或便携版_跨维度、无限距离_激活，无需频率。每次输出_1 秒_、强度为 _15_ 的红石信号，并保持所在区块加载_15 秒_。右键可设置名称和公开状态。",
   "item.createnetherite.netherite_infinite_manager.tooltip.summary": "右键查看_自己放置的_和_其他玩家公开的_无线红石终端，支持_跨页多选_同时激活。每次发送均重置终端的 1 秒信号与 15 秒加载期限，无需频率或靠近目标。",
   "wireless.createnetherite.default_name": "终端",
   "wireless.createnetherite.owned_name": "%s的%s",
@@ -135,5 +135,7 @@
   "block.createnetherite.netherite_converter.tooltip.summary": "放在传送带或置物台上方_两格_，把普通机器转换为下界合金版本。固定占用_2048SU_，每个物品需连续供能_5秒_，转速不会加速，断电后重新计时。每次消耗_250mB下界精华_；右键放入一张下界合金板，可转换_16个_机器。潜行空手右键取回板材，剩余次数会保留。",
   "item.createnetherite.nether_essence_bucket.tooltip.summary": "在_下界合金搅拌机_下的工作盆，用_烈焰粉、地狱疣和岩浆_制作。可通过管道或桶注入下界合金转换机，每次转换消耗_250mB_。",
   "converter.createnetherite.status": "板材剩余：%s次；精华：%s/4000mB；进度：%s/100；需求：%sSU",
-  "converter.createnetherite.plate_uses": "转换机可用：%s/16次"
+  "converter.createnetherite.plate_uses": "转换机可用：%s/16次",
+  "block.createnetherite.netherite_wireless_manager": "下界合金无线管理器",
+  "block.createnetherite.netherite_wireless_manager.tooltip.summary": "放置后_右键打开_终端管理界面，_无需应力_。查看_自己放置的_和_其他玩家公开的_无线红石终端，支持_跨页多选_同时激活。多人共用方块时，每人仍只看到自己有权查看的终端。"
 }

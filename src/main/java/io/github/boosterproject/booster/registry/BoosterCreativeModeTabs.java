@@ -36,6 +36,7 @@ public final class BoosterCreativeModeTabs {
                 output.accept(BoosterItems.NETHERITE_MECHANICAL_ARM.get());
                 output.accept(BoosterItems.NETHERITE_WIRELESS_TERMINAL.get());
                 output.accept(BoosterItems.NETHERITE_INFINITE_MANAGER.get());
+                output.accept(BoosterItems.NETHERITE_WIRELESS_MANAGER.get());
                 output.accept(BoosterItems.NETHERITE_SMART_CHUTE.get());
                 output.accept(BoosterItems.NETHERITE_WEIGHTED_EJECTOR.get());
                 output.accept(BoosterItems.NETHERITE_EXTENDO_GRIP.get());

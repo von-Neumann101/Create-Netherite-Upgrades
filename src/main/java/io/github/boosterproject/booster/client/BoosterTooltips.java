@@ -37,6 +37,7 @@ public final class BoosterTooltips {
             BoosterItems.NETHERITE_MECHANICAL_MIXER.get(),
             BoosterItems.NETHERITE_WIRELESS_TERMINAL.get(),
             BoosterItems.NETHERITE_INFINITE_MANAGER.get(),
+            BoosterItems.NETHERITE_WIRELESS_MANAGER.get(),
             BoosterItems.NETHERITE_SMART_CHUTE.get(),
             BoosterItems.NETHERITE_FILTER.get(),
             BoosterItems.NETHERITE_DEPLOYER.get(),

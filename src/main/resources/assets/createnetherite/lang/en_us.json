@@ -56,8 +56,8 @@
   "block.createnetherite.netherite_mechanical_mixer.tooltip.summary": "Mixes recipes in a basin. _Batch processing_ repeats the matching recipe in one mixing cycle. Movement, heating requirements and stress cost follow the regular Mechanical Mixer.",
   "item.createnetherite.netherite_sheet.tooltip.summary": "An _upgrade material_ used to craft Netherite variants of Create machines.",
   "block.createnetherite.netherite_wireless_terminal": "Netherite Wireless Redstone Terminal",
-  "item.createnetherite.netherite_infinite_manager": "Netherite Infinite Manager",
-  "block.createnetherite.netherite_wireless_terminal.tooltip.summary": "Activate through a Netherite Infinite Manager _across dimensions, at any distance_, without frequencies. Outputs a _strength-15_ redstone signal for _1 second_ and keeps its chunk loaded for _15 seconds_. Right-click to edit its name and visibility.",
+  "item.createnetherite.netherite_infinite_manager": "Portable Netherite Wireless Manager",
+  "block.createnetherite.netherite_wireless_terminal.tooltip.summary": "Activate through a Netherite Wireless Manager or its portable version _across dimensions, at any distance_, without frequencies. Outputs a _strength-15_ redstone signal for _1 second_ and keeps its chunk loaded for _15 seconds_. Right-click to edit its name and visibility.",
   "item.createnetherite.netherite_infinite_manager.tooltip.summary": "Right-click to list _your terminals_ and _public terminals_ placed by other players. _Select across pages_ to activate several at once. Sending renews the 1-second signal and 15-second chunk-loading lease, without frequencies or distance limits.",
   "wireless.createnetherite.default_name": "Terminal",
   "wireless.createnetherite.owned_name": "%s's %s",
@@ -135,5 +135,7 @@
   "block.createnetherite.netherite_converter.tooltip.summary": "Place _two blocks_ above a belt or depot to upgrade regular machines. Uses a fixed _2048 SU_ and _5 continuous seconds_ per item; RPM cannot speed it up and loss of power restarts progress. Each conversion costs _250 mB of Nether Essence_. Right-click to insert one Netherite Sheet for _16 conversions_. Sneak-right-click empty-handed to retrieve it with remaining uses intact.",
   "item.createnetherite.nether_essence_bucket.tooltip.summary": "Mix _Blaze Powder, Nether Wart and Lava_ in a basin using a _Netherite Mechanical Mixer_. Supply it to a Netherite Converter by pipe or bucket; each conversion uses _250 mB_.",
   "converter.createnetherite.status": "Sheet: %s uses; Essence: %s/4000 mB; Progress: %s/100; Required: %s SU",
-  "converter.createnetherite.plate_uses": "Converter uses: %s/16"
+  "converter.createnetherite.plate_uses": "Converter uses: %s/16",
+  "block.createnetherite.netherite_wireless_manager": "Netherite Wireless Manager",
+  "block.createnetherite.netherite_wireless_manager.tooltip.summary": "Place and _right-click_ to manage wireless terminals, with _no rotational power_. Lists _your terminals_ and _public terminals_ placed by others. _Select across pages_ to activate several at once. Each player sees only terminals they are allowed to view."
 }
