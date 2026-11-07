@@ -9,9 +9,9 @@
 ## 版本与分支
 
 - 分支：`1.21.1-NeoForge`
-- 源码核对日期：`2026-11-05`
-- 本次更新基线提交：`f8c024ec70ff4837737ea764896545ea25dbbf55`（0.3.19；0.3.20 转换机点数与基础扳手见本文末）
-- 模组版本：`0.3.20`
+- 源码核对日期：`2026-11-07`
+- 本次更新基线提交：`7ec6db1aafd6ac0a628e3607ca155067bdf0b44a`（0.3.20；0.3.21 转换机思索见本文末）
+- 模组版本：`0.3.21`
 - Mod id：`createnetherite`
 - 主包名：`io.github.boosterproject.booster`
 - Minecraft：`1.21.1`
@@ -74,7 +74,7 @@
 按当前配置生成的主 jar：
 
 ```text
-build/libs/createnetherite-1.21.1-0.3.20.jar
+build/libs/createnetherite-1.21.1-0.3.21.jar
 ```
 
 ## Gradle 与依赖
@@ -335,7 +335,7 @@ createnetherite-server.toml
 
 强力机械泵使用普通 `BlockItem`，不再通过 `appendHoverText` 默认展开介绍。
 
-客户端 `BoosterTooltips.register()` 使用 Create 6.0.10 的 `TooltipModifier.REGISTRY` 与 `ItemDescription.Modifier`。下界合金鼓风机、弹射置物台和伸缩机械手保留原生 Ponder 入口；其余十九种物品（含旧过滤器）提供中英文 `<物品 description id>.tooltip.summary`，由 Create 生成 Shift 提示、折叠、换行及重点配色。燃烧室捕获用法使用原生 `.condition1` / `.behaviour1`。
+客户端 `BoosterTooltips.register()` 使用 Create 6.0.10 的 `TooltipModifier.REGISTRY` 与 `ItemDescription.Modifier`。下界合金转换机、鼓风机、弹射置物台和伸缩机械手提供原生 Ponder 入口；其余无思索物品（含旧过滤器）提供中英文 `<物品 description id>.tooltip.summary`，由 Create 生成 Shift 提示、折叠、换行及重点配色。燃烧室捕获用法使用原生 `.condition1` / `.behaviour1`。
 
 储罐的当前配置容量倍率、燃烧室堆叠保存的数量与倍率，只在按住 Shift 时追加到原生概要后。相关代码仅在客户端加载；捕获、放置、燃烧以及工程师护目镜信息保持原有逻辑。过滤器的已配置规则预览沿用 Create `FilterItem` 的原生显示行为。
 
@@ -684,7 +684,7 @@ BE 替换 `airCurrent` 为 `NetheriteAirCurrent`。它复用 Create 的碰撞与
 
 ## 下界合金鼓风机思索
 
-客户端 setup 中调用 `PonderIndex.addPlugin(new BoosterPonderPlugin())`，使用 Ponder `1.0.82` 的 `PonderPlugin` / `PonderSceneRegistrationHelper`，不使用旧版 `PonderRegistry` API。当前为下界合金鼓风机、弹射置物台和伸缩机械手各注册两段用法动画，不覆盖 Create 的原版教程；0.3.7已移除旧专用过滤器的共用入口。
+客户端 setup 中调用 `PonderIndex.addPlugin(new BoosterPonderPlugin())`，使用 Ponder `1.0.82` 的 `PonderPlugin` / `PonderSceneRegistrationHelper`，不使用旧版 `PonderRegistry` API。当前为下界合金鼓风机、弹射置物台和伸缩机械手各注册两段、转换机注册三段用法动画，不覆盖 Create 的原版教程；0.3.7已移除旧专用过滤器的共用入口。
 
 - `client/ponder/BoosterPonderPlugin.java`：注册三种物品的场景及共享字幕；鼓风机15条、弹射置物台13条、伸缩机械手10条。
 - `client/ponder/NetheriteFanScenes.java`：接入动力、选择四种加工模式、放入物品、设置过滤器、规则回退与切换，仅说明用法。
@@ -1205,3 +1205,22 @@ trajectory(Player,power)将目标距离缩放到64*power，飞行tick随功率�
 兼容细节：原生c:tools/wrench及ItemProviderEntry.isIn之外，Create还在RadialWrenchHandler、AbstractBogeyBlock、DeployerMovingInteraction直接比较原版物品。分别在唯一身份比较处适配新基础类，转向架冷却仍绑定真实物品，客户端原生旋转轮盘Mixin只列client配置。转向架多样式切换和客户端轮盘按固定源码/字节码核对，未图形实测。
 
 发布核对：193个生产JSON，中英文各181键；旧178键仅转换机概要/状态/板材价值与高级扳手概要4项更新，其余174项保留。旧75张仓库PNG字节不变，新增由指定美术对话制作的16×16透明RGBA基础扳手图标。最终0.3.20 jar的272个生产资源、202个生产类与源码资源/编译输出逐字节匹配，元数据0.3.20，GameTest类/QA配方/测试结构未打包，旧耗材渲染类已排除。SHA-256：`e07738b9eb83d2d70c2090933a16b76ce37d538517ca66d45af65aca9c46fbc8`。仅无图形构建和服务器验证，未启动客户端、未使用RTX5060；工具画面、实际远距点击与原生轮盘键鼠仍待客户端实测。
+
+
+## 下界合金转换机思索（0.3.21）
+
+新增转换机原生W思索入口，三段只讲用法，不改机器/配方/倍率或任何贴图。转换机从纯Shift描述注册中移除，原有概要翻译保留兼容；其他思索保持。
+
+- `NetheriteConverterScenes.value` / `netherite_converter_value`：单张板右键兑换16点，空手右键/工程师护目镜查看，原版升级模板兑换1点，以及连续投入与不退还已兑换板材。
+- `convert` / `netherite_converter_convert`：转换机位于置物台/传送带上方两格，侧轴接入至少2048SU，投入板材、用桶或管道补充精华；普通冲压机等待100tick后成为下界合金版本，消耗1点与250mB，最后提示空手取走。
+- `wrenches` / `netherite_converter_wrenches`：工作台无序合成原版扳手+板材→基础扳手；转换机另一条基础制作路线消耗1点与250mB；再投入基础扳手，用16点与250mB制成模块化扳手，每次持续供能5秒。供料明确分两次单张右键，16→32点，避免把手持两张误演为一次投入两张。
+
+新增 `assets/createnetherite/ponder/converter/tutorial.nbt` 为7×4×7、56方块。转换机(3,3,3)，置物台(3,1,3)，中间空气不被支撑挡住；西侧两根X轴杆(1..2,3,3)，最西杆下两层安山机壳支撑，工作台(5,1,2)。客户端虚拟世界中的点数/精华和加工结果沿用原生storyboard编排，不能据此声称真实加工通过；真实操作链由新增服务器GameTest验证。
+
+`BoosterPonderPlugin` 新增3个共用结构的storyboard、13条共享字幕、3个标题，中英文齐全。每段独立初始化点数/流体与转速，字幕结束后再进入下一操作，转换结果在100tick后出现。扳手合成先显示两件原料，再显示新工具；不展开战斗、模块配置或实现细节。
+
+验证：生产结构缺失的新增用例先按预期失败；补结构后以真实操作验证单张板16点、模板1点、精华桶1000mB、实际西侧轴供能及2048SU负载、无序配方、普通机器1点/250mB、原版扳手1点/250mB、基础扳手16点/250mB和每次100tick。独立复核发现一次右键不能投入两张板，供料演示已改为两次独立单张操作，16→32点；中英字幕和动作时序一致，复核通过。最终完整离线build成功，205项既有回归、117项服务器GameTest全部通过。
+
+发布核对：193个生产JSON，中英文各197键，旧181键值全部保留；新增13字幕+3标题齐全。旧76张仓库PNG字节不变，原有6个storyboard的场景源码与3个结构不变（文本按Git行尾规范化比较）。最终0.3.21 jar的273个生产资源、203个生产类与源码资源/编译结果逐字节匹配，元数据0.3.21，GameTest类、QA配方、测试结构未打包。SHA-256：`3db7e8fbe0a9846bf8b51136abb2d2e398c7a875271ad37d6af26a7d45121c67`。
+
+用户允许显卡检查后，开发客户端已正常加载到菜单和新建世界界面；随后用户要求由其检查，已结束运行，未创建测试世界、未实际播放三段新思索。后续不再代为启动，实际镜头/字幕布局由用户检查。

@@ -12,9 +12,6 @@ import io.github.boosterproject.booster.content.processing.burner.NetheriteBlaze
 import io.github.boosterproject.booster.registry.BoosterItems;
 import io.github.boosterproject.booster.registry.BoosterFluids;
 import io.github.boosterproject.booster.content.conversion.ConversionPlate;
-import io.github.boosterproject.booster.content.conversion.NetheriteConverterBlockEntity;
-import net.minecraft.core.component.DataComponents;
-import net.minecraft.world.item.component.CustomData;
 import net.createmod.catnip.lang.FontHelper.Palette;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
@@ -27,7 +24,7 @@ public final class BoosterTooltips {
     }
 
     public static void register() {
-        // The fan, ejector and extendo grip have native Ponder entries; other items use native Shift descriptions.
+        // The converter, fan, ejector and grip use native Ponder; other items use native Shift descriptions.
         for (Item item : List.of(
             BoosterItems.NETHERITE_WRENCH.get(),
             BoosterItems.ASSEMBLY_TABLE.get(),
@@ -56,8 +53,6 @@ public final class BoosterTooltips {
             "tooltip.createnetherite.netherite_fluid_tank",
             NetheriteFluidTankBlockEntity.getConfiguredCapacityMultiplier()
         )));
-        registerWithDetails(BoosterItems.NETHERITE_CONVERTER.get(), stack -> List.of(Component.translatable(
-            "converter.createnetherite.value", Math.max(0, stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag().getInt(NetheriteConverterBlockEntity.VALUE_KEY)))));
         registerWithDetails(BoosterItems.NETHERITE_SHEET.get(), stack -> List.of(Component.translatable(
             "converter.createnetherite.plate_uses", ConversionPlate.remaining(stack))));
         registerWithDetails(BoosterItems.NETHERITE_BLAZE_BURNER.get(), stack -> {

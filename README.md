@@ -4,7 +4,7 @@
 
 当前分支：`1.21.1-NeoForge`
 
-当前模组版本：`0.3.20`
+当前模组版本：`0.3.21`
 
 # 维护状态
 
@@ -95,7 +95,7 @@ Minecraft `1.20.1` Forge 的 `main` 分支暂停更新，保留现有代码和�
 
 **思索教程：** 悬停下界合金鼓风机并按住默认 `W`，查看“内置加工模式”和“过滤器规则与统一模式”两段用法动画。教程现使用原版过滤表和四槽操作，支持中英文字幕。
 
-**物品说明与界面：** 鼓风机、弹射置物台和伸缩机械手沿用原生思索入口，其余无思索物品使用原生 Shift 概要。界面 PNG 位于 jar 内 `assets/createnetherite/textures/gui/`，资源包可按相同路径及原尺寸替换，文字与物品由游戏绘制。
+**物品说明与界面：** 转换机、鼓风机、弹射置物台和伸缩机械手沿用原生思索入口，其余无思索物品使用原生 Shift 概要。界面 PNG 位于 jar 内 `assets/createnetherite/textures/gui/`，资源包可按相同路径及原尺寸替换，文字与物品由游戏绘制。
 
 # 无线红石
 
@@ -135,6 +135,8 @@ Minecraft `1.20.1` Forge 的 `main` 分支暂停更新，保留现有代码和�
 转换机固定占用 **2048SU**，每个物品需要连续供能 **5秒（100tick）**；提高转速不会加速，断电或过载会重新计时。每次完成消耗 **250mB下界精华** 和配方所需的下界合金值，未完成不扣这些资源。内置精华槽4000mB，可用管道或桶注入；不接受岩浆等其他流体。
 
 右键投入一张下界合金板，会立即消耗板材并存入 **16点下界合金值**；原版下界合金升级模板兑换 **1点**。普通机器升级每件消耗 **1点**，下界合金扳手升级为下界合金下界合金扳手消耗 **16点**；均需每件250mB精华。可通过自动化批量投入，空手右键查看点数，工程师护目镜显示点数、精华与进度。已兑换的板材不能取回；旧版部分使用的板材只兑换其剩余点数。拆除或用扳手拾取时，点数随转换机物品保存，重新放置后恢复。暂不制作转换动作动画。
+
+**思索教程：** 悬停下界合金转换机并按住默认 `W`，查看“获取与查看下界合金值”“转换普通机器”“制作两级扳手”三段用法动画。覆盖板材和模板投入、动力与精华准备、普通机器升级、基础扳手两种制作方式及16点进阶升级，支持中英文字幕。
 
 转换机的有序合成：
 
@@ -252,7 +254,7 @@ createnetherite-server.toml
 构建产物：
 
 ```text
-build/libs/createnetherite-1.21.1-0.3.20.jar
+build/libs/createnetherite-1.21.1-0.3.21.jar
 ```
 
 # Introduction
@@ -261,7 +263,7 @@ build/libs/createnetherite-1.21.1-0.3.20.jar
 
 Current branch: `1.21.1-NeoForge`
 
-Current mod version: `0.3.20`
+Current mod version: `0.3.21`
 
 # Maintenance status
 
@@ -350,7 +352,7 @@ Craft a Netherite Sheet with a regular Encased Fan to upgrade it. Breaking retur
 
 **Ponder:** Hover the fan and hold the default `W` key for two usage tutorials covering built-in modes, original filters in four slots, and selected-mode fallback. English and Chinese captions are available.
 
-**Descriptions and GUI:** The fan, ejector and extendo grip have native Ponder entries; items without Ponder use native Shift summaries. GUI PNGs are under `assets/createnetherite/textures/gui/` inside the jar and can be replaced by resource packs at matching paths and dimensions; text and items remain game-rendered.
+**Descriptions and GUI:** The converter, fan, ejector and extendo grip have native Ponder entries; items without Ponder use native Shift summaries. GUI PNGs are under `assets/createnetherite/textures/gui/` inside the jar and can be replaced by resource packs at matching paths and dimensions; text and items remain game-rendered.
 
 # Wireless Redstone
 
@@ -390,6 +392,8 @@ An additional upgrade route; existing crafting recipes remain. Place the convert
 The converter uses a fixed **2048 SU** and **5 continuous seconds (100 ticks)** per item. Higher RPM does not speed it up; power loss or overstress restarts progress. Completion costs **250 mB of Nether Essence** and the recipe's Netherite Value. Unfinished work spends neither resource. Its 4000 mB tank accepts essence through pipes or buckets and rejects other fluids.
 
 Right-click to immediately redeem a Netherite Sheet for **16 Netherite Value**, or a vanilla Netherite Upgrade Smithing Template for **1 value**. Ordinary upgrades cost **1 value**; upgrading a Netherite Wrench to a Netherite Netherite Wrench costs **16 value**. Each still uses 250 mB essence. Automation can deposit stacks. Right-click empty-handed to view value; Engineer's Goggles show value, fluid and progress. Redeemed items cannot be retrieved; legacy partially used sheets add only their remaining value. Breaking or wrench pickup stores value on the converter item, and placing it restores that value. The machine currently has no conversion animation.
+
+**Ponder tutorials:** Hover the Netherite Converter and hold the default `W` key for “Getting and checking Netherite Value”, “Converting a machine”, and “Making both wrench tiers”. These usage scenes cover deposits, power and essence, ordinary upgrades, both basic-wrench methods, and the 16-value advanced upgrade, with English and Chinese captions.
 
 Shaped crafting recipe:
 
@@ -507,5 +511,5 @@ Existing worlds keep their own `serverconfig/createnetherite-server.toml`. If de
 Build output:
 
 ```text
-build/libs/createnetherite-1.21.1-0.3.20.jar
+build/libs/createnetherite-1.21.1-0.3.21.jar
 ```

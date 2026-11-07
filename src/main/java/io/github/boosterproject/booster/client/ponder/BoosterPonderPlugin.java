@@ -15,6 +15,10 @@ public class BoosterPonderPlugin implements PonderPlugin {
 
     @Override
     public void registerScenes(PonderSceneRegistrationHelper<ResourceLocation> helper) {
+        helper.forComponents(BoosterItems.NETHERITE_CONVERTER.getId())
+            .addStoryBoard("converter/tutorial", NetheriteConverterScenes::value)
+            .addStoryBoard("converter/tutorial", NetheriteConverterScenes::convert)
+            .addStoryBoard("converter/tutorial", NetheriteConverterScenes::wrenches);
         helper.forComponents(BoosterItems.NETHERITE_ENCASED_FAN.getId())
             .addStoryBoard("fan/tutorial", NetheriteFanScenes::modes)
             .addStoryBoard("fan/tutorial", NetheriteFanScenes::filter);
@@ -28,6 +32,19 @@ public class BoosterPonderPlugin implements PonderPlugin {
 
     @Override
     public void registerSharedText(SharedTextRegistrationHelper helper) {
+        helper.registerSharedText("converter_value_sheet", "Right-click the converter with a Netherite Sheet. The sheet immediately becomes 16 Netherite Value.");
+        helper.registerSharedText("converter_value_read", "Right-click with an empty hand or wear Engineer's Goggles to check the stored value.");
+        helper.registerSharedText("converter_value_template", "A vanilla Netherite Upgrade Smithing Template can also be deposited. Each one adds 1 value.");
+        helper.registerSharedText("converter_value_stored", "Deposit more sheets to accumulate value. Redeemed sheets cannot be taken back out.");
+        helper.registerSharedText("converter_layout", "Place the converter two blocks above a depot or belt. Put the item to upgrade directly below it.");
+        helper.registerSharedText("converter_power", "Connect at least 2048 SU through the side shaft, then deposit a sheet for Netherite Value.");
+        helper.registerSharedText("converter_fluid", "Add Nether Essence with a bucket or a pipe. This bucket adds 1000 mB.");
+        helper.registerSharedText("converter_process", "Put a regular machine below the converter and keep power connected for 5 seconds. Each upgrade costs 1 value and 250 mB essence.");
+        helper.registerSharedText("converter_collect", "Right-click empty-handed to collect the result. Put in another item to continue converting.");
+        helper.registerSharedText("converter_wrench_craft", "Craft a Create Wrench with one Netherite Sheet in any arrangement to make a Netherite Wrench.");
+        helper.registerSharedText("converter_wrench_supply", "Connect at least 2048 SU, deposit two sheets one at a time, then add Nether Essence.");
+        helper.registerSharedText("converter_wrench_basic", "Convert a Create Wrench for 5 seconds to make a Netherite Wrench. This uses 1 value and 250 mB essence.");
+        helper.registerSharedText("converter_wrench_advanced", "Put a Netherite Wrench below the converter for another 5 seconds. It becomes a Netherite Netherite Wrench, using 16 value and 250 mB essence.");
         helper.registerSharedText("grip_offhand", "In Survival, put the Netherite Extendo Grip in your offhand.");
         helper.registerSharedText("grip_bucket", "Hold an empty bucket in your main hand and right-click a fluid tank.");
         helper.registerSharedText("grip_filled", "One bucket of fluid leaves the tank and fills your bucket.");

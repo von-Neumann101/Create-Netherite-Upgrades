@@ -179,5 +179,21 @@
   "wrench.createnetherite.insert_wrench": "Insert wrench",
   "item.createnetherite.netherite_wrench": "Netherite Wrench",
   "item.createnetherite.netherite_wrench.tooltip.summary": "Adds _2 blocks of block interaction reach_ in the main hand, retaining the original Create wrench's _rotation and dismantling_ with no durability. Craft shapelessly from a _Create Wrench + Netherite Sheet_, or upgrade with a _Netherite Converter_. Convert it again for _16 Netherite Value_ to obtain the Netherite Netherite Wrench.",
-  "converter.createnetherite.value": "Netherite Value: %s"
+  "converter.createnetherite.value": "Netherite Value: %s",
+  "createnetherite.ponder.shared.converter_value_sheet": "Right-click the converter with a Netherite Sheet. The sheet immediately becomes 16 Netherite Value.",
+  "createnetherite.ponder.shared.converter_value_read": "Right-click with an empty hand or wear Engineer's Goggles to check the stored value.",
+  "createnetherite.ponder.shared.converter_value_template": "A vanilla Netherite Upgrade Smithing Template can also be deposited. Each one adds 1 value.",
+  "createnetherite.ponder.shared.converter_value_stored": "Deposit more sheets to accumulate value. Redeemed sheets cannot be taken back out.",
+  "createnetherite.ponder.shared.converter_layout": "Place the converter two blocks above a depot or belt. Put the item to upgrade directly below it.",
+  "createnetherite.ponder.shared.converter_power": "Connect at least 2048 SU through the side shaft, then deposit a sheet for Netherite Value.",
+  "createnetherite.ponder.shared.converter_fluid": "Add Nether Essence with a bucket or a pipe. This bucket adds 1000 mB.",
+  "createnetherite.ponder.shared.converter_process": "Put a regular machine below the converter and keep power connected for 5 seconds. Each upgrade costs 1 value and 250 mB essence.",
+  "createnetherite.ponder.shared.converter_collect": "Right-click empty-handed to collect the result. Put in another item to continue converting.",
+  "createnetherite.ponder.shared.converter_wrench_craft": "Craft a Create Wrench with one Netherite Sheet in any arrangement to make a Netherite Wrench.",
+  "createnetherite.ponder.shared.converter_wrench_supply": "Connect at least 2048 SU, deposit two sheets one at a time, then add Nether Essence.",
+  "createnetherite.ponder.shared.converter_wrench_basic": "Convert a Create Wrench for 5 seconds to make a Netherite Wrench. This uses 1 value and 250 mB essence.",
+  "createnetherite.ponder.shared.converter_wrench_advanced": "Put a Netherite Wrench below the converter for another 5 seconds. It becomes a Netherite Netherite Wrench, using 16 value and 250 mB essence.",
+  "createnetherite.ponder.netherite_converter_value.header": "Getting and checking Netherite Value",
+  "createnetherite.ponder.netherite_converter_convert.header": "Converting a machine",
+  "createnetherite.ponder.netherite_converter_wrenches.header": "Making both wrench tiers"
 }

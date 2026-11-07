@@ -179,5 +179,21 @@
   "wrench.createnetherite.insert_wrench": "放入扳手",
   "item.createnetherite.netherite_wrench": "下界合金扳手",
   "item.createnetherite.netherite_wrench.tooltip.summary": "主手持有时_方块触及距离+2_，保留普通Create扳手的_旋转、拆卸_等功能，无耐久损耗。可用_原版扳手+下界合金板_无序合成，或在_下界合金转换机_中升级。继续转换并消耗_16点下界合金值_，可制成下界合金下界合金扳手。",
-  "converter.createnetherite.value": "下界合金值：%s"
+  "converter.createnetherite.value": "下界合金值：%s",
+  "createnetherite.ponder.shared.converter_value_sheet": "手持下界合金板右键转换机，板材立即兑换为16点下界合金值。",
+  "createnetherite.ponder.shared.converter_value_read": "空手右键，或佩戴工程师护目镜查看储存的下界合金值。",
+  "createnetherite.ponder.shared.converter_value_template": "原版下界合金升级模板也能投入，每张兑换1点下界合金值。",
+  "createnetherite.ponder.shared.converter_value_stored": "继续投入板材可以累积点数；已兑换的板材不能再取回。",
+  "createnetherite.ponder.shared.converter_layout": "把转换机放在置物台或传送带上方两格，待升级物品放在它的正下方。",
+  "createnetherite.ponder.shared.converter_power": "从侧轴接入至少2048SU动力，再投入板材获得下界合金值。",
+  "createnetherite.ponder.shared.converter_fluid": "用精华桶或管道注入下界精华；一桶可以补充1000mB。",
+  "createnetherite.ponder.shared.converter_process": "放入普通机器并持续供能5秒。每转换一件，消耗1点下界合金值和250mB精华。",
+  "createnetherite.ponder.shared.converter_collect": "空手右键取走转换结果，继续放入物品即可再次加工。",
+  "createnetherite.ponder.shared.converter_wrench_craft": "在工作台将原版扳手与一张下界合金板任意排列，合成下界合金扳手。",
+  "createnetherite.ponder.shared.converter_wrench_supply": "接入至少2048SU动力，分两次投入两张板材，再补充下界精华。",
+  "createnetherite.ponder.shared.converter_wrench_basic": "把原版扳手放在转换机下方，持续供能5秒，消耗1点和250mB精华，制成下界合金扳手。",
+  "createnetherite.ponder.shared.converter_wrench_advanced": "再放入下界合金扳手并持续供能5秒，消耗16点和250mB精华，制成下界合金下界合金扳手。",
+  "createnetherite.ponder.netherite_converter_value.header": "获取与查看下界合金值",
+  "createnetherite.ponder.netherite_converter_convert.header": "转换普通机器",
+  "createnetherite.ponder.netherite_converter_wrenches.header": "制作两级扳手"
 }
