@@ -5,6 +5,7 @@ import io.github.boosterproject.booster.content.equipment.wrench.WrenchMenu;
 import io.github.boosterproject.booster.content.kinetics.fan.NetheriteFanMenu;
 import io.github.boosterproject.booster.content.logistics.chute.NetheriteSmartChuteMenu;
 import io.github.boosterproject.booster.content.logistics.filter.NetheriteFilterMenu;
+import io.github.boosterproject.booster.content.logistics.filter.NetheriteNbtFilterMenu;
 import io.github.boosterproject.booster.content.redstone.wireless.WirelessManagerMenu;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.inventory.MenuType;
@@ -21,6 +22,9 @@ public final class BoosterMenuTypes {
 
     public static final DeferredHolder<MenuType<?>, MenuType<NetheriteFilterMenu>> NETHERITE_FILTER =
         MENU_TYPES.register("netherite_filter", () -> IMenuTypeExtension.create(NetheriteFilterMenu::new));
+
+    public static final DeferredHolder<MenuType<?>, MenuType<NetheriteNbtFilterMenu>> NBT_FILTER =
+        MENU_TYPES.register("netherite_nbt_filter", () -> IMenuTypeExtension.create(NetheriteNbtFilterMenu::new));
 
     public static final DeferredHolder<MenuType<?>, MenuType<NetheriteFanMenu>> NETHERITE_FAN =
         MENU_TYPES.register("netherite_fan", () -> IMenuTypeExtension.create(NetheriteFanMenu::new));

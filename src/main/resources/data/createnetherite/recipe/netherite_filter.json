@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [{"item":"create:filter"},{"item":"createnetherite:netherite_sheet"}],
+  "result": {
+    "id": "createnetherite:netherite_filter",
+    "count": 1,
+    "components": {"minecraft:custom_data":{"NbtFilter":{"SameItem":true}}}
+  }
+}

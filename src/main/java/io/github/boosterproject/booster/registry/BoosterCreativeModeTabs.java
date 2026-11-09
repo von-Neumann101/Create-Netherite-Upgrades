@@ -2,6 +2,7 @@ package io.github.boosterproject.booster.registry;
 
 import io.github.boosterproject.booster.Booster;
 import io.github.boosterproject.booster.content.processing.burner.NetheriteBlazeBurnerData;
+import io.github.boosterproject.booster.content.logistics.filter.NetheriteNbtFilterData;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
@@ -34,6 +35,9 @@ public final class BoosterCreativeModeTabs {
                 NetheriteBlazeBurnerData.setCount(emptyBurner, 0);
                 output.accept(emptyBurner);
                 output.accept(BoosterItems.NETHERITE_ENCASED_FAN.get());
+                ItemStack nbtFilter = new ItemStack(BoosterItems.NETHERITE_FILTER.get());
+                NetheriteNbtFilterData.setReference(nbtFilter, ItemStack.EMPTY);
+                output.accept(nbtFilter);
                 output.accept(BoosterItems.NETHERITE_MECHANICAL_ARM.get());
                 output.accept(BoosterItems.NETHERITE_WIRELESS_TERMINAL.get());
                 output.accept(BoosterItems.NETHERITE_INFINITE_MANAGER.get());

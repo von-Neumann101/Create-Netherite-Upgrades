@@ -7,7 +7,6 @@ import io.github.boosterproject.booster.config.BoosterConfigs;
 import io.github.boosterproject.booster.registry.BoosterBlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.MenuProvider;
@@ -38,7 +37,7 @@ public class NetheriteEncasedFanBlockEntity extends EncasedFanBlockEntity implem
         @Override
         public void setStackInSlot(int slot, ItemStack stack) {
             if (!stack.isEmpty() && (!isItemValid(slot, stack) || stack.getCount() > 1)) {
-                throw new IllegalArgumentException("Each fan slot accepts one original Create filter");
+                throw new IllegalArgumentException("Each fan slot accepts one filter");
             }
             super.setStackInSlot(slot, stack);
         }
@@ -50,8 +49,7 @@ public class NetheriteEncasedFanBlockEntity extends EncasedFanBlockEntity implem
     };
 
     public static boolean isNativeFilter(ItemStack stack) {
-        return stack.getItem() instanceof FilterItem
-            && BuiltInRegistries.ITEM.getKey(stack.getItem()).getNamespace().equals("create");
+        return stack.getItem() instanceof FilterItem;
     }
 
     private void filtersChanged() {

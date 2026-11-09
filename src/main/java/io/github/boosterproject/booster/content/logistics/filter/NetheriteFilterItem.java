@@ -25,6 +25,10 @@ public class NetheriteFilterItem extends FilterItem {
 
     @Override
     public List<Component> makeSummary(ItemStack filter) {
+        if (NetheriteNbtFilterData.configured(filter)) {
+            return List.of(Component.translatable("tooltip.booster.netherite_filter.nbt_rules",
+                NetheriteNbtFilterData.conditions(filter).size()).withStyle(ChatFormatting.GRAY));
+        }
         ItemStackHandler inventory = NetheriteFilterData.inventory(filter);
         List<Component> summary = new ArrayList<>();
         for (FanProcessingMode mode : FanProcessingMode.values()) {
@@ -45,12 +49,24 @@ public class NetheriteFilterItem extends FilterItem {
 
     @Override
     public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
-        return new NetheriteFilterMenu(id, inventory, player.getMainHandItem());
+        return new NetheriteNbtFilterMenu(id, inventory, player.getMainHandItem());
     }
 
     @Override
     public DataComponentType<?> getComponentType() {
         return DataComponents.CUSTOM_DATA;
+    }
+
+    @Override
+    public boolean canCopyFromItem(ItemStack filter) {
+        return NetheriteNbtFilterData.configured(filter) ? NetheriteNbtFilterData.hasReference(filter) : super.canCopyFromItem(filter);
+    }
+
+    @Override
+    public boolean canCopyToItem(ItemStack filter) {
+        return NetheriteNbtFilterData.configured(filter)
+            ? !NetheriteNbtFilterData.hasReference(filter) && NetheriteNbtFilterData.conditions(filter).isEmpty()
+            : super.canCopyToItem(filter);
     }
 
     @Override
@@ -60,6 +76,10 @@ public class NetheriteFilterItem extends FilterItem {
 
     @Override
     public ItemStack[] getFilterItems(ItemStack filter) {
+        if (NetheriteNbtFilterData.configured(filter)) {
+            ItemStack reference = NetheriteNbtFilterData.storedReference(filter);
+            return reference.isEmpty() ? new ItemStack[0] : new ItemStack[] {reference};
+        }
         ItemStackHandler inventory = NetheriteFilterData.inventory(filter);
         List<ItemStack> samples = new ArrayList<>();
         for (int slot = 0; slot < inventory.getSlots(); slot++) {
@@ -73,14 +93,19 @@ public class NetheriteFilterItem extends FilterItem {
 
     private static class RuleFilterStack extends FilterItemStack {
         private final ItemStack[] samples;
+        private final ItemStack configured;
 
         RuleFilterStack(ItemStack filter) {
             super(filter);
+            configured = filter.copy();
             samples = ((NetheriteFilterItem) filter.getItem()).getFilterItems(filter);
         }
 
         @Override
         public boolean test(Level level, ItemStack stack, boolean matchNBT) {
+            if (NetheriteNbtFilterData.configured(configured)) {
+                return level != null && NetheriteNbtFilterData.matches(configured, stack, level.registryAccess());
+            }
             if (stack.isEmpty()) {
                 return false;
             }
@@ -94,6 +119,13 @@ public class NetheriteFilterItem extends FilterItem {
 
         @Override
         public boolean test(Level level, FluidStack stack, boolean matchNBT) {
+            if (NetheriteNbtFilterData.configured(configured)) {
+                if (level == null || stack.isEmpty()) return false;
+                ItemStack bucket = new ItemStack(stack.getFluid().getBucket());
+                if (bucket.isEmpty()) return false;
+                bucket.applyComponents(stack.getComponentsPatch());
+                return NetheriteNbtFilterData.matches(configured, bucket, level.registryAccess());
+            }
             for (ItemStack sample : samples) {
                 if (FilterItemStack.of(sample).test(level, stack, false)) {
                     return true;

@@ -4,7 +4,7 @@
 
 当前分支：`1.21.1-NeoForge`
 
-当前模组版本：`0.3.24`
+当前模组版本：`0.3.25`
 
 # 维护状态
 
@@ -39,7 +39,7 @@ JEI为可选客户端模组。开发环境需要随游戏加载JEI时，给启�
 - `createnetherite:netherite_mechanical_arm`
 - `createnetherite:netherite_blaze_burner`
 - `createnetherite:netherite_encased_fan`
-- `createnetherite:netherite_filter` (legacy / 旧存档兼容)
+- `createnetherite:netherite_filter`
 - `createnetherite:netherite_wireless_terminal`
 - `createnetherite:netherite_infinite_manager` (portable)
 - `createnetherite:netherite_wireless_manager` (block)
@@ -89,21 +89,29 @@ JEI为可选客户端模组。开发环境需要随游戏加载JEI时，给启�
 
 下界合金板由下界合金锭经 Create 冲压制成，用作上述机械的升级材料。
 
+# 下界合金过滤器
+
+用 **Create 过滤表＋下界合金板** 无序合成，可安装到 Create 原生过滤槽，包括黄铜漏斗、智能溜槽、工作盆、动力锯和机械手；也可嵌套到原版过滤表，或安装到下界合金机器的过滤槽。物品防火、防爆。
+
+手持右键打开设置，将参考物品拖入左上角样本槽，或 Shift 点击背包物品、悬停后按1复制参考。样本保留完整NBT／组件，**不消耗原物品**。滚动字段列表，点击方框启用条件，点击字段编辑比较值，再点“应用”或按Enter保存。数字支持**等于、大于、小于、包含两端的范围**；其他字段精确匹配。未选择的字段可不同，多个条件需同时满足。
+
+默认要求与参考物品同种，可关闭后跨物品种类筛选；支持白名单与黑名单。未放参考物品时不匹配任何物品。物品数量不参与比较，1.21.1默认组件值也可筛选，例如未受损工具的damage=0。空手右键原生槽位可取回过滤器；用一个已配置过滤器加空过滤器，可通过Create复制配方复制整套设置。流体槽支持以对应桶作为参考，对可装桶流体的组件进行筛选。
+
 # 下界合金鼓风机
 
 下界合金鼓风机内置水洗、岩浆熔炼、灵魂火缠魂和火焰烟熏，无须在风口前放置介质。支持掉落物、传送带与置物台，沿用 Create 配方；默认加工进度为原版的 `4` 倍、气流计算风速为 `2` 倍，风距和动能网络转速沿用原版。
 
 使用方式：
 
-1. 先手持 Create 原版过滤表右键，设置匹配清单；支持普通过滤表、属性过滤器等 Create 原生过滤器。
-2. 右键鼓风机，将过滤器分别装入水洗、熔炼、缠魂、烟熏按钮下方的对应槽。**每槽放一个真实过滤器，不接受普通物品或专用下界合金过滤器**。支持正常放取与 Shift 快捷转移；取出过滤器后可修改清单。
+1. 先手持过滤器右键设置规则；支持 Create 普通过滤表、属性过滤器，以及通用下界合金NBT过滤器。
+2. 右键鼓风机，将过滤器分别装入水洗、熔炼、缠魂、烟熏按钮下方的对应槽。**每槽放一个真实过滤器，不接受普通物品**。支持正常放取与 Shift 快捷转移；取出过滤器后可修改清单。
 3. 点击加工模式按钮，设置未匹配物品的加工方式。**匹配某槽的物品使用该槽固定加工方式，未匹配的物品仍按所选模式加工**；四个槽有无过滤器均可切换所选模式。
 
 例如，在“熔炼”槽安装包含粗铁和粗金的原版过滤表，两种原料都会熔炼；同时把未匹配模式设为水洗，其他物品便按水洗规则尝试加工。多槽同时匹配时按水洗→熔炼→缠魂→烟熏取第一项；空槽跳过，过滤器的黑白名单、组件匹配和嵌套规则沿用原版。
 
 下界合金板加原版鼓风机可无序升级。拆除鼓风机返还四槽中的真实过滤器及配置。
 
-**旧版兼容：** 专用下界合金过滤器不再提供合成、创造栏或思索入口，保留注册和原配置查看以兼容旧存档。旧机器内已安装的专用过滤器会在打开新界面时退还，背包满则掉落；未打开就拆除也会掉落原物，不会生成额外原版过滤表。升级后的四个新槽为空，按当前所选模式加工，需要重新安装原版过滤表以分类。
+**旧版兼容：** 下界合金过滤器已改为通用NBT过滤器并恢复合成与创造栏。旧四组规则继续合并作为普通匹配清单，直到配置新的参考物品或NBT设置。早期鼓风机内安装的专用过滤器仍会在打开时退还，背包满则掉落；拆除也会返还。随后可将过滤器放入指定加工槽，风机仍由四个槽和所选模式决定加工方式。
 
 **思索教程：** 悬停下界合金鼓风机并按住默认 `W`，查看“内置加工模式”和“过滤器规则与统一模式”两段用法动画。教程现使用原版过滤表和四槽操作，支持中英文字幕。
 
@@ -268,7 +276,7 @@ createnetherite-server.toml
 构建产物：
 
 ```text
-build/libs/createnetherite-1.21.1-0.3.24.jar
+build/libs/createnetherite-1.21.1-0.3.25.jar
 ```
 
 # Introduction
@@ -277,7 +285,7 @@ build/libs/createnetherite-1.21.1-0.3.24.jar
 
 Current branch: `1.21.1-NeoForge`
 
-Current mod version: `0.3.24`
+Current mod version: `0.3.25`
 
 # Maintenance status
 
@@ -312,7 +320,7 @@ The mod currently adds several Create-compatible entries:
 - `createnetherite:netherite_mechanical_arm`
 - `createnetherite:netherite_blaze_burner`
 - `createnetherite:netherite_encased_fan`
-- `createnetherite:netherite_filter` (legacy / 旧存档兼容)
+- `createnetherite:netherite_filter`
 - `createnetherite:netherite_wireless_terminal`
 - `createnetherite:netherite_infinite_manager` (portable)
 - `createnetherite:netherite_wireless_manager` (block)
@@ -362,19 +370,27 @@ Fuel types and normal/superheated states follow Create. Manual and automated fee
 
 Netherite Sheets are pressed from Netherite Ingots using Create and serve as upgrade materials for these machines.
 
+# Netherite Filter
+
+Craft shapelessly from a **Create Filter + Netherite Sheet**. Installs in native Create filter slots, including Brass Funnels, Smart Chutes, Basins, Mechanical Saws and Deployers. It also nests inside original list filters and fits upgraded-machine filter slots. The item is fireproof and explosion-proof.
+
+Right-click while holding it, then drag a reference into the top-left sample slot, Shift-click an inventory item, or hover and press1 to copy a reference. Full NBT/components are retained and **the original item is not consumed**. Scroll the field list, click a checkbox to enable a condition, select a field to edit its value, then click Apply or press Enter. Numbers support **equals, greater-than, less-than and inclusive ranges**; other fields match exactly. Unselected fields may differ; all selected conditions must match.
+
+Same-item matching starts enabled and can be disabled for cross-item rules. Allow and deny lists are supported. No reference means no matches. Stack count is ignored; effective default components are available, such as damage=0 on an undamaged tool. Retrieve installed filters with an empty-hand click. Create's filter-copying recipe copies complete settings to blank filters. Fluid slots support bucket-backed fluid/component comparisons.
+
 # Netherite Fan
 
 The Netherite Encased Fan provides built-in Washing, Blasting, Haunting, and Smoking without requiring media in front of it. It processes dropped items, belt items, and depot items using Create recipes. Defaults remain `4` times the normal processing progress and `2` times the air-current speed calculation, with native airflow range and kinetic RPM.
 
-1. Hold an original Create filter and right-click to configure its list. Original list, attribute, and other native Create filter types are supported.
-2. Right-click the fan and install filters in the four slots below the Washing, Blasting, Haunting, and Smoking buttons. **Each slot holds one real original filter; ordinary items and the dedicated Netherite Filter are rejected.** Normal inventory actions and Shift transfer work. Remove a filter to edit it.
+1. Hold a filter and right-click to configure its rules. Original Create list/attribute filters and the general Netherite NBT Filter are supported.
+2. Right-click the fan and install filters in the four slots below the Washing, Blasting, Haunting, and Smoking buttons. **Each slot holds one real filter; ordinary items are rejected.** Normal inventory actions and Shift transfer work. Remove a filter to edit it.
 3. Click a processing button to choose the unmatched-item mode. **Matched items use their slot's fixed processing type; unmatched items use the selected mode.** This remains selectable with all four filters installed.
 
 For example, put a list containing raw iron and raw gold in the Blasting slot and select Washing as the fallback. Both ores are blasted; other items attempt washing. Overlaps resolve in Washing, Blasting, Haunting, Smoking order, skipping empty slots. Native allow/deny lists, component matching, and nested filters retain their behavior.
 
 Craft a Netherite Sheet with a regular Encased Fan to upgrade it. Breaking returns the real installed filters with their configurations.
 
-**Legacy saves:** The dedicated Netherite Filter has no crafting recipe, creative-tab entry, or Ponder entry. Its registration and configuration viewer remain for old saves. An old installed filter is returned when opening the new fan menu, or dropped if inventory space is unavailable; breaking an unopened old fan also returns the original item. Migration creates no extra native filters. The four new slots start empty and processing uses the selected mode until you install original Create filters.
+**Legacy saves:** The Netherite Filter is now a general NBT filter with crafting and creative access restored. Saved four-group rules remain a combined ordinary matching list until new reference/NBT settings are configured. Old fan-installed filters are still returned on opening or breaking, with inventory overflow dropped. Reinstall the filter in a processing slot; the fan slots and selected mode determine processing.
 
 **Ponder:** Hover the fan and hold the default `W` key for two usage tutorials covering built-in modes, original filters in four slots, and selected-mode fallback. English and Chinese captions are available.
 
@@ -539,5 +555,5 @@ Existing worlds keep their own `serverconfig/createnetherite-server.toml`. If de
 Build output:
 
 ```text
-build/libs/createnetherite-1.21.1-0.3.24.jar
+build/libs/createnetherite-1.21.1-0.3.25.jar
 ```

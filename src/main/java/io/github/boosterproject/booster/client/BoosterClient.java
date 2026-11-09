@@ -111,6 +111,7 @@ public final class BoosterClient {
         event.register(BoosterMenuTypes.NETHERITE_WRENCH.get(), WrenchScreen::new);
         event.register(BoosterMenuTypes.NETHERITE_SMART_CHUTE.get(), NetheriteSmartChuteScreen::new);
         event.register(BoosterMenuTypes.NETHERITE_FILTER.get(), NetheriteFilterScreen::new);
+        event.register(BoosterMenuTypes.NBT_FILTER.get(), NetheriteNbtFilterScreen::new);
         event.register(BoosterMenuTypes.NETHERITE_FAN.get(), NetheriteFanScreen::new);
         event.register(BoosterMenuTypes.NETHERITE_WIRELESS_MANAGER.get(), WirelessManagerScreen::new);
     }

@@ -95,7 +95,6 @@ public final class JeiRecipeGameTest {
         for (RecipeHolder<?> recipe : helper.getLevel().getRecipeManager().getRecipes())
             obtainable.add(recipe.value().getResultItem(helper.getLevel().registryAccess()).getItem());
         for (var item : BoosterItems.ITEMS.getEntries()) {
-            if (item.getId().getPath().equals("netherite_filter")) continue;
             helper.assertTrue(obtainable.contains(item.get()), "missing acquisition recipe for " + item.getId());
         }
         ItemStack bucket = new ItemStack(Items.BUCKET);

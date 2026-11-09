@@ -74,9 +74,9 @@ public class BoosterPonderPlugin implements PonderPlugin {
         helper.registerSharedText("fan_blasting", "Blasting: raw iron becomes an iron ingot.");
         helper.registerSharedText("fan_haunting", "Haunting: sand becomes soul sand.");
         helper.registerSharedText("fan_smoking", "Smoking: raw beef becomes steak.");
-        helper.registerSharedText("fan_filter_open", "Configure original Create filters by holding them and right-clicking.");
+        helper.registerSharedText("fan_filter_open", "Configure Create filters or the general Netherite Filter by holding them and right-clicking.");
         helper.registerSharedText("fan_filter_keys", "The fan has one filter slot each for Washing, Blasting, Haunting and Smoking.");
-        helper.registerSharedText("fan_filter_samples", "Each slot holds one real original filter. Remove it to edit its list.");
+        helper.registerSharedText("fan_filter_samples", "Each slot holds one real filter. Remove it to edit its rules.");
         helper.registerSharedText("fan_filter_install", "Right-click the fan and install each configured filter below its matching mode.");
         helper.registerSharedText("fan_filter_override", "Listed items follow their filter rules, even in the same air current.");
         helper.registerSharedText("fan_filter_fallback", "Unlisted items use the fan's selected mode. This beef is smoked.");

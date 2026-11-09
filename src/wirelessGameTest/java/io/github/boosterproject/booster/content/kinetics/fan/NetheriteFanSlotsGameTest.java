@@ -41,7 +41,7 @@ public final class NetheriteFanSlotsGameTest {
             helper.assertTrue(filters.isItemValid(slot, list(new ItemStack(targets.get(slot)))), "slot accepts original list filter");
             helper.assertTrue(filters.isItemValid(slot, new ItemStack(AllItems.ATTRIBUTE_FILTER.get())), "slot accepts original attribute filter");
             helper.assertTrue(!filters.isItemValid(slot, new ItemStack(Items.RAW_IRON))
-                && !filters.isItemValid(slot, new ItemStack(BoosterItems.NETHERITE_FILTER.get())), "slot rejects ordinary items and dedicated netherite filter");
+                && filters.isItemValid(slot, new ItemStack(BoosterItems.NETHERITE_FILTER.get())), "slot rejects ordinary items and accepts the general Netherite Filter");
             filters.setStackInSlot(slot, list(new ItemStack(targets.get(slot))));
         }
         fan.setProcessingMode(FanProcessingMode.HAUNTING);

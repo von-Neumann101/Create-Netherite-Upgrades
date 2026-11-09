@@ -15,6 +15,7 @@ import com.simibubi.create.api.contraption.storage.item.MountedItemStorageType;
 import io.github.boosterproject.booster.client.BoosterClient;
 import io.github.boosterproject.booster.config.BoosterConfigs;
 import io.github.boosterproject.booster.content.BoosterExplosionProtection;
+import io.github.boosterproject.booster.content.logistics.filter.NetheriteNbtFilterNetworking;
 import io.github.boosterproject.booster.content.equipment.NetheriteNetheriteItem;
 import io.github.boosterproject.booster.content.equipment.wrench.WrenchCombat;
 import io.github.boosterproject.booster.content.equipment.wrench.WrenchLaunch;
@@ -69,6 +70,7 @@ public class Booster {
         modEventBus.addListener(WirelessNetworking::register);
         modEventBus.addListener(WrenchNetworking::register);
         modEventBus.addListener(WrenchWheelNetworking::register);
+        modEventBus.addListener(NetheriteNbtFilterNetworking::register);
         NeoForge.EVENT_BUS.addListener(WrenchWheelNetworking::logout);
         NeoForge.EVENT_BUS.addListener(WrenchWheelNetworking::clone);
         WrenchCombat.register(NeoForge.EVENT_BUS);
