@@ -83,8 +83,13 @@ public final class WrenchRadialScreen extends Screen {
         return (int) Math.floor((angle + 360 + 22.5) / 45) % WrenchData.SLOTS;
     }
 
-    @Override public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
+    @Override public void renderBackground(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
+        // Like Create's radial menus, tint the world without applying the menu blur pass.
         graphics.fillGradient(0, 0, width, height, 0xA0202028, 0xC0101018);
+    }
+
+    @Override public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
+        super.render(graphics, mouseX, mouseY, partialTick);
         int centerX = width / 2, centerY = height / 2;
         int hovered = hoveredSlot(mouseX, mouseY);
         graphics.drawCenteredString(font, title, centerX, centerY - 110, 0xFFE1E3E8);
@@ -123,7 +128,6 @@ public final class WrenchRadialScreen extends Screen {
             if (!acknowledged) tooltip.add(WrenchScreen.text("wheel_waiting"));
             graphics.renderTooltip(font, tooltip, Optional.empty(), mouseX, mouseY);
         }
-        super.render(graphics, mouseX, mouseY, partialTick);
     }
 
     @Override public boolean mouseClicked(double mouseX, double mouseY, int button) {

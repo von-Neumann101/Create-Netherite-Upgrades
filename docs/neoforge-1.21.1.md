@@ -10,8 +10,8 @@
 
 - 分支：`1.21.1-NeoForge`
 - 源码核对日期：`2026-11-09`
-- 本次更新基线提交：`62ea431b13a9b9c437daa82a8193b7ca1a13fe0c`（0.3.22；0.3.23 JEI 配方展示见本文末）
-- 模组版本：`0.3.23`
+- 本次更新基线提交：`dd3679d8b044d0edf39c378c0d380668dffb43d6`（0.3.23；0.3.24 扳手轮盘模糊修复见本文末）
+- 模组版本：`0.3.24`
 - Mod id：`createnetherite`
 - 主包名：`io.github.boosterproject.booster`
 - Minecraft：`1.21.1`
@@ -74,7 +74,7 @@
 按当前配置生成的主 jar：
 
 ```text
-build/libs/createnetherite-1.21.1-0.3.23.jar
+build/libs/createnetherite-1.21.1-0.3.24.jar
 ```
 
 ## Gradle 与依赖
@@ -1258,3 +1258,11 @@ trajectory(Player,power)将目标距离缩放到64*power，飞行tick随功率�
 最终验证：`build/jei-recipes-with-jei.log` 中，完整离线build通过，205项既有回归及128项服务器GameTest通过（含4项JEI登记检查）；`build/jei-recipes-without-jei.log` 中，模组列表没有JEI，124项原有GameTest全部通过。独立源码及包检查无剩余具体问题。遍历确认BoosterItems中24个现役物品均有真实配方产物，精华桶另有原生注液途径。
 
 发布核对：273项生产资源和208个生产类与jar逐字节一致，193个生产JSON可解析，中英文各208键、旧201键值全部保留。45个生产配方与Git基线按标准行尾规范化后完全相同；原有76张PNG字节不变。元数据为0.3.23，JEI依赖为客户端optional；JEI API／实现、GameTest类和QA资源均未打入发布包。SHA-256：`b4d3bc205a639408abfe834f4851448262db2dfda2d7458a2812aa0f53d3da3a`。
+
+## 扳手轮盘模糊修复（0.3.24）
+
+`WrenchRadialScreen.render` 原先先画模块图标、文字和悬停提示，最后才调用 `super.render`。固定版本NeoForge21.1.219的 `Screen.render` 会调用 `renderBackground`，其默认实现执行 `GameRenderer.processBlurEffect` 后再覆盖菜单背景，导致已经画好的轮盘一并被模糊。
+
+对照Create6.0.10的 `RadialToolboxMenu` 和 `RadialWrenchMenu`，轮盘现在覆写 `renderBackground`，仅绘制原有配色的半透明渐变；`super.render` 移到内容绘制之前，让背景先画、图标／文字／提示最后画。菜单模糊不再作用于此轮盘。持键检查、点击激活、松键关闭、模块顺序和网络会话逻辑均未修改，未改贴图或其他界面。
+
+验证：无界面离线 `build runWirelessGameTestServer` 成功，205项回归与124项服务器GameTest全部通过，包含既有轮盘会话和模块激活检查，日志 `build/wrench-wheel-blur-validation.log`。这些测试不验证实际GUI画面；本次未启动客户端，清晰度由用户进游戏检查。最终jar的273项生产资源和208个生产类与资源／编译结果逐字节一致，元数据为0.3.24，原有76张PNG和中英文全部翻译不变；未打包JEI API或测试资源。SHA-256：`738c2713c7dc7ef06a97f3e6075a6c4742292077f718075200c77f05296daafb`。
