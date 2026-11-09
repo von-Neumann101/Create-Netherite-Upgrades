@@ -4,7 +4,7 @@
 
 当前分支：`1.21.1-NeoForge`
 
-当前模组版本：`0.3.22`
+当前模组版本：`0.3.23`
 
 # 维护状态
 
@@ -13,6 +13,14 @@
 Minecraft `1.20.1` Forge 的 `main` 分支暂停更新，保留现有代码和历史技术文档。两个版本目前存在功能差异，暂停期间不再同步新增内容。
 
 技术文档：[NeoForge 1.21.1](docs/neoforge-1.21.1.md) · [Forge 1.20.1（历史参考）](docs/forge-1.20.1.md)
+
+# JEI 配方查询
+
+安装适用于1.21.1 NeoForge的 **JEI 19.21.0.247或更新的19.x版本** 后，可用默认 `R` 查看制作方法、`U` 查看用途。普通合成和下界合金板冲压配方沿用原版／Create展示；新增“下界合金搅拌”和“下界合金转换”分类，读取当前世界的配方数据，包含全部18条转换路线和两级扳手升级。
+
+下界精华配方为 **1烈焰粉＋1地狱疣＋1000mB岩浆→1000mB下界精华**，仅列出下界合金搅拌机和工作盆。精华桶可查看注液器的 **空桶＋1000mB下界精华** 配方，并有获取说明。转换配方显示实际产物、250mB精华、对应下界合金值、固定5秒和2048SU；板材／模板单独说明为预先兑换点数的来源。冲压机、搅拌机、动力锯、机械手和鼓风机均可查看其支持的加工分类，空／满烈焰人燃烧室分别匹配配方。
+
+JEI为可选客户端模组。开发环境需要随游戏加载JEI时，给启动命令加 `-PwithJei=true`；发布包不内置JEI。
 
 # 模组内容
 
@@ -258,7 +266,7 @@ createnetherite-server.toml
 构建产物：
 
 ```text
-build/libs/createnetherite-1.21.1-0.3.22.jar
+build/libs/createnetherite-1.21.1-0.3.23.jar
 ```
 
 # Introduction
@@ -267,7 +275,7 @@ build/libs/createnetherite-1.21.1-0.3.22.jar
 
 Current branch: `1.21.1-NeoForge`
 
-Current mod version: `0.3.22`
+Current mod version: `0.3.23`
 
 # Maintenance status
 
@@ -276,6 +284,14 @@ Since 2026-10-29, development primarily targets Minecraft `1.21.1` on the `1.21.
 Updates to the Minecraft `1.20.1` Forge `main` branch are paused. Its code and historical technical documentation remain available. The two versions have feature differences, and new content will not be synchronized while Forge updates are paused.
 
 Technical documentation (Chinese): [NeoForge 1.21.1](docs/neoforge-1.21.1.md) · [Forge 1.20.1 (historical reference)](docs/forge-1.20.1.md)
+
+# JEI recipes
+
+With **JEI 19.21.0.247 or a newer 19.x release for 1.21.1 NeoForge**, use the default `R` to view recipes and `U` to view uses. Crafting and sheet pressing retain their native displays. New Netherite Mixing and Netherite Conversion categories read the current world's recipe data, including all 18 conversions and both wrench upgrade steps.
+
+Nether Essence uses **1 Blaze Powder + 1 Nether Wart + 1000mB Lava → 1000mB Nether Essence**, with only the Netherite Mixer and Basin listed. The essence bucket is shown through Create's **empty bucket + 1000mB essence** Spout filling recipe and an information page. Conversions show the actual output, 250mB essence, recipe-specific Netherite Value, fixed 5 seconds and 2048SU. Sheets and templates are explained separately as prepaid point sources. Upgraded presses, mixers, saws, deployers and fans open their supported processing categories; empty and filled burners are distinct recipe ingredients.
+
+JEI is optional and is not bundled in the release. Add `-PwithJei=true` to development launch commands to load it locally.
 
 # Content
 
@@ -519,5 +535,5 @@ Existing worlds keep their own `serverconfig/createnetherite-server.toml`. If de
 Build output:
 
 ```text
-build/libs/createnetherite-1.21.1-0.3.22.jar
+build/libs/createnetherite-1.21.1-0.3.23.jar
 ```

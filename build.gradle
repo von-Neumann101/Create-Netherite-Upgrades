@@ -25,6 +25,7 @@ sourceSets.main.resources {
 }
 
 repositories {
+    maven { url = "https://maven.blamejared.com" }
     maven { url = "https://maven.createmod.net" }
     maven { url = "https://maven.ithundxr.dev/snapshots" }
     mavenCentral()
@@ -171,6 +172,10 @@ tasks.named('check') {
 }
 
 dependencies {
+    compileOnly("mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}")
+    if (providers.gradleProperty('withJei').map { it.toBoolean() }.getOrElse(false)) {
+        localRuntime("mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}")
+    }
     implementation("com.simibubi.create:create-${minecraft_version}:${create_version}:slim") {
         transitive = false
     }

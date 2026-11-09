@@ -34,3 +34,10 @@ config="${mod_id}.mixins.json"
     versionRange="${create_version_range}"
     ordering="AFTER"
     side="BOTH"
+
+[[dependencies.${mod_id}]]
+    modId="jei"
+    type="optional"
+    versionRange="[19.21.0.247,20)"
+    ordering="AFTER"
+    side="CLIENT"

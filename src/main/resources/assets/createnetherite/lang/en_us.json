@@ -1,4 +1,11 @@
 {
+  "createnetherite.recipe.netherite_mixing": "Netherite Mixing",
+  "createnetherite.recipe.netherite_conversion": "Netherite Conversion",
+  "jei.createnetherite.essence_info": "Mix 1 Blaze Powder, 1 Nether Wart and 1000mB Lava in a basin using a Netherite Mechanical Mixer to produce 1000mB Nether Essence. A regular mixer cannot make it. Collect it from the basin with a bucket, or fill an empty bucket with 1000mB using a Spout. Each item converted in a Netherite Converter consumes 250mB.",
+  "jei.createnetherite.conversion_conditions": "%s s · %s SU",
+  "jei.createnetherite.value_cost": "Cost: %s Netherite Value",
+  "jei.createnetherite.deposit_first": "Deposit sheets or templates first",
+  "jei.createnetherite.point_source": "Deposit first to gain %s Netherite Value. Each conversion spends its listed point cost; unused points remain stored.",
   "block.createnetherite.netherite_fluid_tank": "Netherite Fluid Tank",
   "block.createnetherite.netherite_steam_engine": "Netherite Steam Engine",
   "block.createnetherite.netherite_item_vault": "Netherite Item Vault",

@@ -10,8 +10,8 @@
 
 - 分支：`1.21.1-NeoForge`
 - 源码核对日期：`2026-11-09`
-- 本次更新基线提交：`bdb1cfb6183269a68f08108ee00f058f79ddbbf5`（0.3.21；0.3.22 冲压机／搅拌机配方过滤见本文末）
-- 模组版本：`0.3.22`
+- 本次更新基线提交：`62ea431b13a9b9c437daa82a8193b7ca1a13fe0c`（0.3.22；0.3.23 JEI 配方展示见本文末）
+- 模组版本：`0.3.23`
 - Mod id：`createnetherite`
 - 主包名：`io.github.boosterproject.booster`
 - Minecraft：`1.21.1`
@@ -74,7 +74,7 @@
 按当前配置生成的主 jar：
 
 ```text
-build/libs/createnetherite-1.21.1-0.3.22.jar
+build/libs/createnetherite-1.21.1-0.3.23.jar
 ```
 
 ## Gradle 与依赖
@@ -1240,3 +1240,21 @@ trajectory(Player,power)将目标距离缩放到64*power，飞行tick随功率�
 验证记录：新增的冲压机／搅拌机用例先因缺少原生过滤槽按预期失败。首次实现后123/124服务器测试通过，唯一失败来自装取测试将原版安装时会移除的默认附魔／属性组件也当作必须保留的数据；依据 `FilterItemStack.trimFilterComponents` 改用原版规范化后的过滤表比较，明确使用生存玩家后，205项回归与全部124项服务器GameTest通过。7项新测试覆盖黑名单保留64青金石、移除过滤后批量压出7块并余1、64组竞争配方、白名单与盆过滤同时约束、直接冲压产物筛选、加工中更改过滤、原生安装／持久化／取回／拆除返还，以及精华纯流体黑白名单。
 
 服务器完整验证日志：`build/processing-filter-release.log`。随后补齐客户端显示入口，最终无界面 `build` 再次成功、205项回归通过，日志 `build/processing-filter-final-build.log`；未启动客户端，不能据此宣称过滤槽外观已经实测。独立源码复核无剩余具体问题。最终jar的273项生产资源、205个生产类与资源／编译结果逐字节一致；193个生产JSON可解析，中英文各201键，旧197键值不变；原有76张PNG字节不变。元数据为0.3.22，测试类／QA配方／测试结构均未打包。SHA-256：`48f9a344ba0fc1f9f29bb651ada9b3619e0bb5e70bbcc1d07b103ea7aded8602`。
+
+## JEI 配方展示（0.3.23）
+
+排查现有45个生产配方：25个工作台合成、1个冲压、18个转换、1个下界合金专用搅拌。现役物品已有获取途径；问题在于自定义 `netherite_mixing` 和 `netherite_conversion` 没有JEI分类，原版／Create只能自动展示其自身认识的配方类型。本次补充展示接入，未新增获取捷径或更改生产配方；旧专用下界合金过滤器继续只保留存档兼容。
+
+- `compat/jei/BoosterJeiPlugin` 由 `@JeiPlugin` 自动发现，通用启动入口不引用该类。添加JEI官方Maven仓库，`jei_version=19.21.0.247` 接口仅 `compileOnly`；可用 `-PwithJei=true` 将完整JEI加入本地开发运行。模组元数据声明客户端可选依赖 `[19.21.0.247,20)`，发布包不嵌入JEI接口或实现。
+- “下界合金搅拌”使用Create原生 `MixingCategory` 布局，类型ID仍为 `createnetherite:netherite_mixing`，原料、流体和产物从当前世界的配方管理器读取。仅将下界合金搅拌机和工作盆登记为该分类的加工设备，不把精华错误展示为普通搅拌配方。
+- “下界合金转换”使用 `NetheriteConversionCategory`，按每条转换配方登记输入和输出，并将250mB精华登记为真正的流体输入。页面显示配方的 `netherite_cost`、固定100tick和2048SU。板材／原版升级模板为 `RENDER_ONLY` 点数来源，说明先兑换16／1点再从余额扣除，避免误示每转换一次都消耗一整张板。
+- 普通冲压、压块、自动压缩、搅拌、无序合成、酿造、锯切、石切、机械手加工及鼓风机四类加工，均补上下界合金机器的JEI加工设备入口。空燃烧室与已装烈焰人版本登记不同子类型；1至4只归为相同的“已装入”获取类型。
+- 下界精华流体和桶均增加中英文获取说明。桶的注液展示沿用Create原生 `SpoutCategory.consumeRecipes`，它根据空桶流体能力和已登记流体生成注液配方；无需新增会重复显示的JSON。精华配方保持1烈焰粉＋1地狱疣＋1000mB岩浆→1000mB精华。
+
+测试用 `JeiGameTestRegistration` 仅在JEI已安装时手动登记4项 `JeiRecipeGameTest`，没有 `@GameTestHolder` 全局扫描JEI测试类。这样未安装JEI时不会因测试类签名提前加载JEI接口。测试读取真实配方管理器，通过记录JEI登记端口和槽位端口的参数，检查两类索引、18条转换、精华原料与流体数量、高级扳手16点成本、点数来源不混入消耗槽、机器分类及空满燃烧室匹配；另遍历所有现役注册物品的真实配方产物，验证精华桶的实际注液数量与结果。
+
+验证过程保留：首次API-only测试环境因JEI接口未作为模组加载而启动失败（`build/jei-recipes-red.log`），改用完整JEI开发运行后，新增测试因缺失插件按预期失败（`build/jei-recipes-red-with-jei.log`）。第一次实现后127/128服务器测试通过，唯一失败是测试代理 `IIngredientManager` 的反射会加载仅客户端的 `Rect2i`；已将该项改为验证实际 `GenericItemFilling` 行为，原生JEI注液生成逻辑依据固定版本源码复核。未启动客户端，不将无界面登记检查当作实际JEI画面验证。
+
+最终验证：`build/jei-recipes-with-jei.log` 中，完整离线build通过，205项既有回归及128项服务器GameTest通过（含4项JEI登记检查）；`build/jei-recipes-without-jei.log` 中，模组列表没有JEI，124项原有GameTest全部通过。独立源码及包检查无剩余具体问题。遍历确认BoosterItems中24个现役物品均有真实配方产物，精华桶另有原生注液途径。
+
+发布核对：273项生产资源和208个生产类与jar逐字节一致，193个生产JSON可解析，中英文各208键、旧201键值全部保留。45个生产配方与Git基线按标准行尾规范化后完全相同；原有76张PNG字节不变。元数据为0.3.23，JEI依赖为客户端optional；JEI API／实现、GameTest类和QA资源均未打入发布包。SHA-256：`b4d3bc205a639408abfe834f4851448262db2dfda2d7458a2812aa0f53d3da3a`。
