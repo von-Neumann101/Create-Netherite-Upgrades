@@ -1,0 +1,5 @@
+{
+  "type": "create:mixing",
+  "ingredients": [{"item":"minecraft:lapis_lazuli"},{"item":"minecraft:egg"},{"item":"minecraft:sugar"}],
+  "results": [{"id":"minecraft:diamond","count":1}]
+}

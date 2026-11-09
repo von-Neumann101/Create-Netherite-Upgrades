@@ -4,7 +4,7 @@
 
 当前分支：`1.21.1-NeoForge`
 
-当前模组版本：`0.3.21`
+当前模组版本：`0.3.22`
 
 # 维护状态
 
@@ -58,6 +58,10 @@ Minecraft `1.20.1` Forge 的 `main` 分支暂停更新，保留现有代码和�
 下界合金动力冲压机支持批量冲压，并在工作盆中连续处理当前可匹配的配方；基础应力消耗沿用普通动力冲压机。
 
 下界合金动力搅拌机采用与下界合金冲压机相同的批量加速方式：一次搅拌周期结束时，连续处理工作盆中当前仍可匹配的配方。搅拌动作和每周期等待时间沿用原版，批量处理的吞吐提升取决于盆内材料数量。应力消耗为普通搅拌机的 `1` 倍（默认基础值 `4 SU/RPM`）；配方、加热、超级加热、无序合成、酿造、过滤和工作盆输出规则沿用 Create。一个下界合金板加一个原版动力搅拌机，无序合成一个升级品。
+
+**冲压机／搅拌机配方过滤：** 两台机器各有一个原生配方过滤槽。先设置 Create 原版过滤表的黑白名单，再右键机身侧面的过滤槽安装；冲压机使用没有传动轴的两个侧面，搅拌机可从水平侧面操作。空手右键槽位取回过滤表，拆除机器也会返还。也可沿用原版操作，用单个产物作为白名单样本。
+
+过滤的是**配方产物**：黑名单中的产物不会制作，白名单只允许匹配的产物。例如把“青金石块”加入黑名单，青金石仍可用于其他配方，批量投料时不会被误压成块。工作盆自身的过滤仍同时生效，两个过滤条件都满足才加工；机器过滤槽为空则不额外限制。冲压机在传送带、置物台和掉落物上的加工也遵循该规则；纯流体配方按流体产物匹配，可用对应流体桶设置过滤表。修改过滤会在下一次消耗材料前生效，中英文用法可按住 `Shift` 查看。
 
 下界合金动力臂的动作进度和动作速度上限均为原版的 `3` 倍，同转速下应力消耗为原版的 `1.5` 倍（默认基础值为 `3 SU/RPM`）。工作半径为 Create 机械手范围配置的 `3` 倍，默认从 `5` 格扩大到 `15` 格；沿用原版球形距离判定，目标距离须小于该半径。选点、分配模式、红石控制与自动喂料沿用原版。一个下界合金板加一个原版机械手，无序合成一个升级品。
 
@@ -254,7 +258,7 @@ createnetherite-server.toml
 构建产物：
 
 ```text
-build/libs/createnetherite-1.21.1-0.3.21.jar
+build/libs/createnetherite-1.21.1-0.3.22.jar
 ```
 
 # Introduction
@@ -263,7 +267,7 @@ build/libs/createnetherite-1.21.1-0.3.21.jar
 
 Current branch: `1.21.1-NeoForge`
 
-Current mod version: `0.3.21`
+Current mod version: `0.3.22`
 
 # Maintenance status
 
@@ -317,6 +321,10 @@ The Netherite Elevator Pulley uses twice the rotational speed in Create's moveme
 The Netherite Mechanical Press supports bulk pressing and repeatedly processes the current matching basin recipe. Its base stress impact follows the regular Mechanical Press.
 
 The Netherite Mechanical Mixer uses the same batch acceleration as the Netherite Mechanical Press: when a mixing cycle finishes, it repeatedly processes the current recipe while it still matches. Movement and per-cycle waiting time follow Create, so the throughput gain depends on the ingredients available in the basin. Stress consumption matches the regular mixer's (`1×`, default base impact: `4 SU/RPM`). Recipes, heat requirements, shapeless crafting, brewing, filtering, and basin output follow Create's rules. Craft one Netherite Sheet with a regular Mechanical Mixer to obtain the upgrade.
+
+**Press / Mixer recipe filtering:** Each machine has one native recipe-filter slot. Configure an original Create filter's allow/deny list, then right-click the slot on the machine's side to install it. Press slots use the two sides without shafts; Mixer slots are accessible from horizontal sides. Right-click the slot empty-handed to retrieve the filter; breaking the machine also returns it. Native single-output sample filtering is supported too.
+
+Filters match **recipe outputs**: deny-listed outputs are not crafted, while allow lists permit only matching outputs. Deny-list lapis blocks to keep lapis available for other recipes during bulk processing. The basin's own filter still applies; both filters must permit the recipe. An empty machine slot adds no restriction. Pressing on belts, depots and dropped items follows the same rule. Fluid-only recipes match their fluid output, using its bucket in a filter. Changes apply before the next material consumption. Hold `Shift` for usage descriptions in English or Chinese.
 
 The Netherite Mechanical Arm advances movement at `3` times the normal rate with a `3` times movement speed cap. At the same RPM, it consumes `1.5` times the regular arm's stress (default base impact: `3 SU/RPM`). Its working radius is `3` times Create's mechanical arm range setting, expanding the default from `5` to `15` blocks. Targets must be strictly within this spherical radius, following Create's distance rule. Target selection, distribution modes, redstone control, and automated feeding follow Create. Craft one Netherite Sheet with a regular Mechanical Arm to obtain the upgrade.
 
@@ -511,5 +519,5 @@ Existing worlds keep their own `serverconfig/createnetherite-server.toml`. If de
 Build output:
 
 ```text
-build/libs/createnetherite-1.21.1-0.3.21.jar
+build/libs/createnetherite-1.21.1-0.3.22.jar
 ```

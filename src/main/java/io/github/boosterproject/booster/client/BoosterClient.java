@@ -126,7 +126,7 @@ public final class BoosterClient {
             BoosterTooltips.register();
             SimpleBlockEntityVisualizer.builder(BoosterBlockEntityTypes.NETHERITE_WEIGHTED_EJECTOR.get()).factory(EjectorVisual::new).apply();
             SimpleBlockEntityVisualizer.builder(BoosterBlockEntityTypes.NETHERITE_MECHANICAL_MIXER.get())
-                .factory(MixerVisual::new).apply();
+                .factory(MixerVisual::new).neverSkipVanillaRender().apply();
             SimpleBlockEntityVisualizer.builder(BoosterBlockEntityTypes.NETHERITE_MECHANICAL_ARM.get())
                 .factory(ArmVisual::new).apply();
             ItemProperties.register(BoosterItems.NETHERITE_BLAZE_BURNER.get(),
@@ -151,6 +151,7 @@ public final class BoosterClient {
             SimpleBlockEntityVisualizer
                 .builder(BoosterBlockEntityTypes.NETHERITE_MECHANICAL_PRESS.get())
                 .factory(PressVisual::new)
+                .neverSkipVanillaRender()
                 .apply();
         });
     }

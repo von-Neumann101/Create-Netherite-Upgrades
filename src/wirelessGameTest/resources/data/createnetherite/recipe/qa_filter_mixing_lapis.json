@@ -1,0 +1,9 @@
+{
+  "type": "create:mixing",
+  "ingredients": [
+    {"item":"minecraft:lapis_lazuli"},{"item":"minecraft:lapis_lazuli"},{"item":"minecraft:lapis_lazuli"},
+    {"item":"minecraft:lapis_lazuli"},{"item":"minecraft:lapis_lazuli"},{"item":"minecraft:lapis_lazuli"},
+    {"item":"minecraft:lapis_lazuli"},{"item":"minecraft:lapis_lazuli"},{"item":"minecraft:lapis_lazuli"}
+  ],
+  "results": [{"id":"minecraft:lapis_block","count":1}]
+}
