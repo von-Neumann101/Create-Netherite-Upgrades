@@ -1,6 +1,9 @@
 package io.github.boosterproject.booster.client;
 
 import com.simibubi.create.CreateClient;
+import com.simibubi.create.AllPartialModels;
+import com.simibubi.create.content.kinetics.crafter.MechanicalCrafterRenderer;
+import com.simibubi.create.content.kinetics.base.SingleAxisRotatingVisual;
 import com.simibubi.create.content.kinetics.saw.SawRenderer;
 import com.simibubi.create.content.kinetics.saw.SawVisual;
 import com.simibubi.create.content.kinetics.deployer.DeployerRenderer;
@@ -53,6 +56,7 @@ public final class BoosterClient {
         NeoForge.EVENT_BUS.addListener(NetheriteEjectorTargetHandler::tick);
         BoosterPartialModels.init();
         NetheriteArmModels.init();
+        NetheriteCrafterModels.init();
         modEventBus.addListener(BoosterClient::registerRenderers);
         modEventBus.addListener(BoosterClient::registerFluidExtensions);
         modEventBus.addListener(BoosterClient::clientSetup);
@@ -64,9 +68,13 @@ public final class BoosterClient {
         CreateClient.MODEL_SWAPPER.getCustomBlockModels()
             .register(ResourceLocation.fromNamespaceAndPath(Booster.MOD_ID, "netherite_item_vault"),
                 model -> new CTModel(model, new NetheriteItemVaultCTBehaviour()));
+        CreateClient.MODEL_SWAPPER.getCustomBlockModels()
+            .register(ResourceLocation.fromNamespaceAndPath(Booster.MOD_ID, "netherite_mechanical_crafter"),
+                model -> new CTModel(model, new NetheriteCrafterCTBehaviour()));
     }
 
     private static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
+        event.registerBlockEntityRenderer(BoosterBlockEntityTypes.NETHERITE_MECHANICAL_CRAFTER.get(), MechanicalCrafterRenderer::new);
         event.registerBlockEntityRenderer(BoosterBlockEntityTypes.NETHERITE_MECHANICAL_SAW.get(), SawRenderer::new);
         event.registerBlockEntityRenderer(BoosterBlockEntityTypes.NETHERITE_DEPLOYER.get(), DeployerRenderer::new);
         event.registerBlockEntityRenderer(BoosterBlockEntityTypes.NETHERITE_WEIGHTED_EJECTOR.get(), EjectorRenderer::new);
@@ -118,6 +126,9 @@ public final class BoosterClient {
 
     private static void clientSetup(FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
+            SimpleBlockEntityVisualizer.builder(BoosterBlockEntityTypes.NETHERITE_MECHANICAL_CRAFTER.get())
+                .factory(SingleAxisRotatingVisual.of(AllPartialModels.SHAFTLESS_COGWHEEL)).neverSkipVanillaRender().apply();
+            ItemBlockRenderTypes.setRenderLayer(BoosterBlocks.NETHERITE_MECHANICAL_CRAFTER.get(), RenderType.cutoutMipped());
             SimpleBlockEntityVisualizer.builder(BoosterBlockEntityTypes.NETHERITE_MECHANICAL_SAW.get()).factory(SawVisual::new).apply();
             ItemBlockRenderTypes.setRenderLayer(BoosterBlocks.NETHERITE_MECHANICAL_SAW.get(), RenderType.cutoutMipped());
             ItemBlockRenderTypes.setRenderLayer(BoosterFluids.NETHER_ESSENCE.get(), RenderType.translucent());

@@ -1,0 +1,6 @@
+{
+  "parent": "create:block/mechanical_crafter/belt_animated",
+  "textures": {
+    "3": "createnetherite:block/netherite_crafter_thingies"
+  }
+}

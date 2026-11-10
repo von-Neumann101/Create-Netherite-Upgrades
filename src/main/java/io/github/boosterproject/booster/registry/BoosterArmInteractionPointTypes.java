@@ -4,6 +4,7 @@ import com.simibubi.create.api.registry.CreateBuiltInRegistries;
 import com.simibubi.create.content.kinetics.mechanicalArm.AllArmInteractionPointTypes.BlazeBurnerType;
 import com.simibubi.create.content.kinetics.mechanicalArm.AllArmInteractionPointTypes.DeployerType;
 import com.simibubi.create.content.kinetics.mechanicalArm.AllArmInteractionPointTypes.SawType;
+import com.simibubi.create.content.kinetics.mechanicalArm.AllArmInteractionPointTypes.CrafterType;
 import com.simibubi.create.content.kinetics.saw.SawBlock;
 import com.simibubi.create.content.kinetics.saw.SawBlockEntity;
 import com.simibubi.create.content.kinetics.mechanicalArm.ArmInteractionPointType;
@@ -28,6 +29,13 @@ public final class BoosterArmInteractionPointTypes {
         });
 
     private BoosterArmInteractionPointTypes() {}
+
+    public static final DeferredHolder<ArmInteractionPointType, CrafterType> NETHERITE_MECHANICAL_CRAFTER =
+        TYPES.register("netherite_mechanical_crafter", () -> new CrafterType() {
+            @Override public boolean canCreatePoint(Level level, BlockPos pos, BlockState state) {
+                return state.is(BoosterBlocks.NETHERITE_MECHANICAL_CRAFTER.get());
+            }
+        });
 
     public static final DeferredHolder<ArmInteractionPointType, SawType> NETHERITE_MECHANICAL_SAW =
         TYPES.register("netherite_mechanical_saw", () -> new SawType() {

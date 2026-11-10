@@ -22,6 +22,9 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 public final class BoosterItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Booster.MOD_ID);
 
+    public static final DeferredItem<Item> NETHERITE_MECHANICAL_CRAFTER = ITEMS.register("netherite_mechanical_crafter", () ->
+        new BlockItem(BoosterBlocks.NETHERITE_MECHANICAL_CRAFTER.get(), new Item.Properties().fireResistant()));
+
     public static final DeferredItem<Item> NETHERITE_WRENCH = ITEMS.register("netherite_wrench", () -> new NetheriteWrenchItem(new Item.Properties()));
 
     public static final DeferredItem<Item> ASSEMBLY_TABLE = ITEMS.register("assembly_table", () ->

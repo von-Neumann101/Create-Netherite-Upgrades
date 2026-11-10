@@ -1,0 +1,7 @@
+{
+  "type": "create:mechanical_crafting",
+  "pattern": ["D", "D", "D", "D"],
+  "key": {"D": {"item": "minecraft:diamond"}},
+  "result": {"id": "minecraft:emerald", "count": 3},
+  "accept_mirrored": false
+}

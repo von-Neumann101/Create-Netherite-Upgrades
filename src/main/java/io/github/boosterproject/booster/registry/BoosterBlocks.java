@@ -1,6 +1,7 @@
 package io.github.boosterproject.booster.registry;
 
 import com.simibubi.create.AllBlocks;
+import io.github.boosterproject.booster.content.kinetics.crafter.NetheriteMechanicalCrafterBlock;
 import io.github.boosterproject.booster.content.equipment.wrench.AssemblyTableBlock;
 import io.github.boosterproject.booster.content.kinetics.saw.NetheriteSawBlock;
 import io.github.boosterproject.booster.content.conversion.NetheriteConverterBlock;
@@ -29,6 +30,9 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 
 public final class BoosterBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Booster.MOD_ID);
+
+    public static final DeferredBlock<NetheriteMechanicalCrafterBlock> NETHERITE_MECHANICAL_CRAFTER = BLOCKS.register("netherite_mechanical_crafter", () ->
+        new NetheriteMechanicalCrafterBlock(BlockBehaviour.Properties.ofFullCopy(AllBlocks.MECHANICAL_CRAFTER.get()).explosionResistance(1200F)));
 
     public static final DeferredBlock<AssemblyTableBlock> ASSEMBLY_TABLE = BLOCKS.register("assembly_table", () ->
         new AssemblyTableBlock(BlockBehaviour.Properties.ofFullCopy(AllBlocks.ANDESITE_CASING.get()).strength(3.5F, 1200F).requiresCorrectToolForDrops()));

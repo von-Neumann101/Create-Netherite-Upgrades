@@ -5,6 +5,11 @@
   "compatibilityLevel": "JAVA_21",
   "refmap": "createnetherite.refmap.json",
   "mixins": [
+    "NetheriteCrafterGridAccess",
+    "NetheriteCrafterBatchMixin",
+    "NetheriteCrafterBlockMixin",
+    "NetheriteCrafterConnectionMixin",
+    "NetheriteCrafterRecipeGridMixin",
     "NetheriteSawMovementDamageMixin",
     "NetheriteSawOutputMixin",
     "WrenchFlightAccess",
@@ -32,6 +37,7 @@
     "SteamEngineBlockEntityMixin"
   ],
   "client": [
+    "NetheriteCrafterRendererMixin",
     "NetheriteWrenchRadialHandlerMixin",
     "NetheriteGripRenderHandlerMixin",
     "NetheriteGripItemRendererMixin",

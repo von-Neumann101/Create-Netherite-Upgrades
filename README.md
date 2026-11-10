@@ -4,7 +4,7 @@
 
 当前分支：`1.21.1-NeoForge`
 
-当前模组版本：`0.3.25`
+当前模组版本：`0.3.26`
 
 # 维护状态
 
@@ -16,7 +16,7 @@ Minecraft `1.20.1` Forge 的 `main` 分支暂停更新，保留现有代码和�
 
 # JEI 配方查询
 
-安装适用于1.21.1 NeoForge的 **JEI 19.21.0.247或更新的19.x版本** 后，可用默认 `R` 查看制作方法、`U` 查看用途。普通合成和下界合金板冲压配方沿用原版／Create展示；新增“下界合金搅拌”和“下界合金转换”分类，读取当前世界的配方数据，包含全部18条转换路线和两级扳手升级。
+安装适用于1.21.1 NeoForge的 **JEI 19.21.0.247或更新的19.x版本** 后，可用默认 `R` 查看制作方法、`U` 查看用途。普通合成和下界合金板冲压配方沿用原版／Create展示；新增“下界合金搅拌”和“下界合金转换”分类，读取当前世界的配方数据，包含全部19条转换路线和两级扳手升级。
 
 下界精华配方为 **1烈焰粉＋1地狱疣＋1000mB岩浆→1000mB下界精华**，仅列出下界合金搅拌机和工作盆。精华桶可查看注液器的 **空桶＋1000mB下界精华** 配方，并有获取说明。转换配方显示实际产物、250mB精华、对应下界合金值、固定5秒和2048SU；板材／模板单独说明为预先兑换点数的来源。冲压机、搅拌机、动力锯、机械手和鼓风机均可查看其支持的加工分类，空／满烈焰人燃烧室分别匹配配方。
 
@@ -35,6 +35,7 @@ JEI为可选客户端模组。开发环境需要随游戏加载JEI时，给启�
 - `createnetherite:netherite_elevator_pulley`
 - `createnetherite:netherite_mechanical_press`
 - `createnetherite:netherite_mechanical_saw`
+- `createnetherite:netherite_mechanical_crafter`
 - `createnetherite:netherite_mechanical_mixer`
 - `createnetherite:netherite_mechanical_arm`
 - `createnetherite:netherite_blaze_burner`
@@ -64,6 +65,8 @@ JEI为可选客户端模组。开发环境需要随游戏加载JEI时，给启�
 下界合金升降机滑轮在原版移动速度计算中使用 `2` 倍转速，默认最大运输距离为 `768` 格，实际范围仍受世界最低建造高度限制。
 
 下界合金动力冲压机支持批量冲压，并在工作盆中连续处理当前可匹配的配方；基础应力消耗沿用普通动力冲压机。
+
+下界合金动力合成器每格可放一组材料（遵守物品本身的堆叠上限），一轮合成能凑出的最多份数；多余材料留在原格。例如上下两格分别放64和7个木板，一轮得到28根木棍，第一格保留57个木板。产物和返还的容器按正常堆叠输出，出口堵塞时等待。拼装布局、箭头、槽位盖板、红石启动和应力消耗沿用原版；混用普通动力合成器时每轮只合成一份。获取方式：**普通动力合成器＋下界合金板**无序合成，或在下界合金转换机中转换（1点下界合金值＋250mB下界精华）。按Shift查看概要，JEI可查两种升级路线和原版动力合成分类。
 
 下界合金动力搅拌机采用与下界合金冲压机相同的批量加速方式：一次搅拌周期结束时，连续处理工作盆中当前仍可匹配的配方。搅拌动作和每周期等待时间沿用原版，批量处理的吞吐提升取决于盆内材料数量。应力消耗为普通搅拌机的 `1` 倍（默认基础值 `4 SU/RPM`）；配方、加热、超级加热、无序合成、酿造、过滤和工作盆输出规则沿用 Create。一个下界合金板加一个原版动力搅拌机，无序合成一个升级品。
 
@@ -276,7 +279,7 @@ createnetherite-server.toml
 构建产物：
 
 ```text
-build/libs/createnetherite-1.21.1-0.3.25.jar
+build/libs/createnetherite-1.21.1-0.3.26.jar
 ```
 
 # Introduction
@@ -285,7 +288,7 @@ build/libs/createnetherite-1.21.1-0.3.25.jar
 
 Current branch: `1.21.1-NeoForge`
 
-Current mod version: `0.3.25`
+Current mod version: `0.3.26`
 
 # Maintenance status
 
@@ -297,7 +300,7 @@ Technical documentation (Chinese): [NeoForge 1.21.1](docs/neoforge-1.21.1.md) ·
 
 # JEI recipes
 
-With **JEI 19.21.0.247 or a newer 19.x release for 1.21.1 NeoForge**, use the default `R` to view recipes and `U` to view uses. Crafting and sheet pressing retain their native displays. New Netherite Mixing and Netherite Conversion categories read the current world's recipe data, including all 18 conversions and both wrench upgrade steps.
+With **JEI 19.21.0.247 or a newer 19.x release for 1.21.1 NeoForge**, use the default `R` to view recipes and `U` to view uses. Crafting and sheet pressing retain their native displays. New Netherite Mixing and Netherite Conversion categories read the current world's recipe data, including all 19 conversions and both wrench upgrade steps.
 
 Nether Essence uses **1 Blaze Powder + 1 Nether Wart + 1000mB Lava → 1000mB Nether Essence**, with only the Netherite Mixer and Basin listed. The essence bucket is shown through Create's **empty bucket + 1000mB essence** Spout filling recipe and an information page. Conversions show the actual output, 250mB essence, recipe-specific Netherite Value, fixed 5 seconds and 2048SU. Sheets and templates are explained separately as prepaid point sources. Upgraded presses, mixers, saws, deployers and fans open their supported processing categories; empty and filled burners are distinct recipe ingredients.
 
@@ -316,6 +319,7 @@ The mod currently adds several Create-compatible entries:
 - `createnetherite:netherite_elevator_pulley`
 - `createnetherite:netherite_mechanical_press`
 - `createnetherite:netherite_mechanical_saw`
+- `createnetherite:netherite_mechanical_crafter`
 - `createnetherite:netherite_mechanical_mixer`
 - `createnetherite:netherite_mechanical_arm`
 - `createnetherite:netherite_blaze_burner`
@@ -345,6 +349,8 @@ The Netherite Item Vault provides `16` times the regular vault's inventory slots
 The Netherite Elevator Pulley uses twice the rotational speed in Create's movement speed calculation. Its default maximum travel distance is `768` blocks, also limited by the world's minimum build height.
 
 The Netherite Mechanical Press supports bulk pressing and repeatedly processes the current matching basin recipe. Its base stress impact follows the regular Mechanical Press.
+
+The Netherite Mechanical Crafter holds one normal stack per cell and crafts the largest complete batch in one cycle. Excess ingredients stay in their original cells: two vertical cells holding 64 and 7 planks produce 28 sticks, leaving 57 planks. Products and crafting containers split into legal stacks and wait if the outlet is blocked. Layouts, arrows, slot covers, redstone starts and stress follow Create; mixed chains with ordinary crafters craft one recipe per cycle. Upgrade shapelessly with a **Mechanical Crafter + Netherite Sheet**, or convert the original for 1 Netherite Value and 250mB Nether Essence. Hold Shift for its summary; JEI lists both acquisition routes and native crafter categories.
 
 The Netherite Mechanical Mixer uses the same batch acceleration as the Netherite Mechanical Press: when a mixing cycle finishes, it repeatedly processes the current recipe while it still matches. Movement and per-cycle waiting time follow Create, so the throughput gain depends on the ingredients available in the basin. Stress consumption matches the regular mixer's (`1×`, default base impact: `4 SU/RPM`). Recipes, heat requirements, shapeless crafting, brewing, filtering, and basin output follow Create's rules. Craft one Netherite Sheet with a regular Mechanical Mixer to obtain the upgrade.
 
@@ -555,5 +561,5 @@ Existing worlds keep their own `serverconfig/createnetherite-server.toml`. If de
 Build output:
 
 ```text
-build/libs/createnetherite-1.21.1-0.3.25.jar
+build/libs/createnetherite-1.21.1-0.3.26.jar
 ```

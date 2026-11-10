@@ -9,9 +9,9 @@
 ## 版本与分支
 
 - 分支：`1.21.1-NeoForge`
-- 源码核对日期：`2026-11-09`
-- 本次更新基线提交：`25e144878b883b2cc543e8343c35a8803cd5f618`（0.3.24；0.3.25 通用NBT过滤器见本文末）
-- 模组版本：`0.3.25`
+- 源码核对日期：`2026-11-10`
+- 本次更新基线提交：`27d23d3c08edbf03cb51f3d4d1865c84f51fd5ee`（0.3.25；0.3.26 动力合成器见本文末）
+- 模组版本：`0.3.26`
 - Mod id：`createnetherite`
 - 主包名：`io.github.boosterproject.booster`
 - Minecraft：`1.21.1`
@@ -74,7 +74,7 @@
 按当前配置生成的主 jar：
 
 ```text
-build/libs/createnetherite-1.21.1-0.3.25.jar
+build/libs/createnetherite-1.21.1-0.3.26.jar
 ```
 
 ## Gradle 与依赖
@@ -1286,3 +1286,21 @@ GUI底图由用户指定贴图对话提供：`textures/gui/netherite_nbt_filter.
 验证：新增字段匹配用例先在 `build/nbt-filter-red.log` 中按预期失败。扩展用例在 `build/nbt-filter-expanded-validation.log` 中131项通过；独立复核发现原生复制资格与窗口重建文本问题，前者用真实复制配方在 `build/nbt-filter-copy-red.log` 复现，再修复并执行完整检查。最终 `build/nbt-filter-release-with-jei.log` 中205项回归和136项服务器GameTest通过；无JEI的最终 `build/nbt-filter-release-without-jei.log` 中205项回归和132项GameTest通过。8项新增测试覆盖数值边界、大整数精度、缺失字段、未选字段、数值／字符串类型、物品种类开关、黑白名单、默认组件、任意键名和列表索引、保存与复制、5种原版设备槽、嵌套过滤器、菜单与陈旧数据拒绝、风机和桶流体、恢复合成及真实原生复制配方。
 
 发布核对：275项生产资源、217个生产类与jar逐字节一致；194个生产JSON有效，中英文各224键，新增16键、仅更新7项既有过滤器相关文案。45个原有配方按Git行尾规范化后不变，只新增过滤器合成。76张原PNG字节不变，新GUI的37个18×18槽框独立核验通过，图片SHA-256为 `703ab992eb0ee0622e8579fe62a21229ab1287918d31a9777cdaa02530c28185`。最终jar元数据0.3.25，JEI仍可选，未嵌入JEI或测试资源。JAR SHA-256：`f4cc9784ed7e200598c6b62b4ba9e48caf91803bb6f84cac55a30649b3118432`。
+
+## 下界合金动力合成器（0.3.26）
+
+注册ID `createnetherite:netherite_mechanical_crafter`，复用Create6.0.10的 `MechanicalCrafterBlock` / `MechanicalCrafterBlockEntity`。每格调用原生 `SmartInventory.withMaxStackSize(64)`，仍遵守物品自身最大堆叠，鸡蛋最多16、桶最多1。保留原版应力、动画与倒计时；一轮可以完成多份配方，不缩短动画。
+
+`NetheriteCrafterBatchMixin` 在原生链启动前调用 `prepareBatch`。全下界合金网格取所有非空材料格的最小数量，空格／盖板不限制份数；混合普通网格统一取1。每格 `begin` 仅送出这批材料，多余材料留在原生Inventory中。将自动启动检查推迟到下一tick，避免共享输入还在分配同一次插入时提前启动。运行中禁止重复启动。原生Phase继续存档，读档后恢复运行状态；没有另造第二套持久化阶段。
+
+最终格逐份以数量1的材料调用原生 `RecipeGridHandler.tryToApplyRecipe`，保留普通配方开关、自动化忽略标签、烟花限制以及Create专用机械合成匹配。每份分别组装产物和返回容器，合并同物品／同组件结果并拆成合法堆叠；通过原生GroupedItems和INSERTING阶段等待下游空间。原生随后收集容器前清空已处理输入网格，避免容器重复返还。正常完成／取消保留未用材料；移除方块时同时掉落该格未用材料，其他格正常退回在途材料。
+
+`NetheriteCrafterBlockMixin`、`NetheriteCrafterRecipeGridMixin`、`NetheriteCrafterConnectionMixin` 只补齐原生方块身份判断，支持箭头目标、拼装链和扳手共享输入；不改普通合成器槽位或合成份数。单独注册原生CrafterType机械臂交互点与共享物品Capability。方块防爆1200，物品防火并使用现有全局下界合金掉落物防爆规则。
+
+客户端复用 `MechanicalCrafterRenderer` 和原生无轴齿轮Visual，`neverSkipVanillaRender` 保证物品、盖板和箭头仍绘制；注册 `cutoutMipped`。新材质由贴图对话制作，CT沿用原版连接规则和横／纵向侧纹理。局部模型及传输带UV换成下界合金版本，未改既有材质。概要采用Create原生Shift提示。
+
+新增普通动力合成器＋下界合金板的无序配方，以及成本1点下界合金值／250mB精华的转换配方。JEI转换路线共19条，并将新方块加入 `create:mechanical_crafting` 和 `create:automatic_shaped` 催化剂。
+
+恢复存档时，在 `initialize` 调用父类前重新发现出口Capability。原因是原生SmartBlockEntity初始化会先调用lazyTick，INSERTING阶段此时若尚无库存缓存就会提前弹出成品。测试以全新BlockEntity实例模拟区块恢复，覆盖合成中途余料和堵塞中的完整产物；不把已放置实例的直接读NBT当作区块恢复（Create的wasMoved会清除该实例动力）。
+
+验证：12项新增真实服务器测试覆盖正常堆叠上限、模拟插入、应力与防护、两种升级配方、机械臂交互、64份一次合成、材料短板与余料、共享输入、普通／混合网格、超3×3机械配方、容器返还、盖板与红石空格、堵塞和两种阶段的读档、运行中拆除。`build/crafter-release-with-jei.log` 中205项回归及148项GameTest通过；`build/crafter-release-without-jei.log` 中205项回归及144项GameTest通过。独立源码复核指出缺少原生cutoutMipped层，已补齐。最终JAR核对包含289项生产资源、228个生产类、205个有效JSON，中英文各226键；元数据为0.3.26，未嵌入JEI或QA资源。未启动客户端，外观与手动交互由用户检查。

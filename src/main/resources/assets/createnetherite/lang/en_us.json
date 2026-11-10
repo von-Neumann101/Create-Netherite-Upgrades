@@ -222,5 +222,7 @@
   "gui.booster.nbt_filter.op3": "Range",
   "gui.booster.nbt_filter.field_hint": "Click a field to edit; click its box to toggle the condition.",
   "gui.booster.nbt_filter.invalid": "Invalid condition: check the value, NBT syntax and range bounds.",
-  "tooltip.booster.netherite_filter.nbt_rules": "NBT filter: %s conditions"
+  "tooltip.booster.netherite_filter.nbt_rules": "NBT filter: %s conditions",
+  "block.createnetherite.netherite_mechanical_crafter": "Netherite Mechanical Crafter",
+  "block.createnetherite.netherite_mechanical_crafter.tooltip.summary": "Holds _one normal stack_ per cell and crafts the _largest complete batch_ in one cycle. The least-filled ingredient cell limits the batch; excess stays in its original cell. Uses standard crafter layouts, arrows, slot covers and stress. Mixed chains craft one recipe per cycle."
 }

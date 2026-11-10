@@ -1,0 +1,64 @@
+{
+  "variants": {
+    "facing=east,pointing=down": {
+      "model": "createnetherite:block/netherite_mechanical_crafter/block",
+      "y": 90
+    },
+    "facing=east,pointing=left": {
+      "model": "createnetherite:block/netherite_mechanical_crafter/block",
+      "y": 90
+    },
+    "facing=east,pointing=right": {
+      "model": "createnetherite:block/netherite_mechanical_crafter/block",
+      "y": 90
+    },
+    "facing=east,pointing=up": {
+      "model": "createnetherite:block/netherite_mechanical_crafter/block",
+      "y": 90
+    },
+    "facing=north,pointing=down": {
+      "model": "createnetherite:block/netherite_mechanical_crafter/block"
+    },
+    "facing=north,pointing=left": {
+      "model": "createnetherite:block/netherite_mechanical_crafter/block"
+    },
+    "facing=north,pointing=right": {
+      "model": "createnetherite:block/netherite_mechanical_crafter/block"
+    },
+    "facing=north,pointing=up": {
+      "model": "createnetherite:block/netherite_mechanical_crafter/block"
+    },
+    "facing=south,pointing=down": {
+      "model": "createnetherite:block/netherite_mechanical_crafter/block",
+      "y": 180
+    },
+    "facing=south,pointing=left": {
+      "model": "createnetherite:block/netherite_mechanical_crafter/block",
+      "y": 180
+    },
+    "facing=south,pointing=right": {
+      "model": "createnetherite:block/netherite_mechanical_crafter/block",
+      "y": 180
+    },
+    "facing=south,pointing=up": {
+      "model": "createnetherite:block/netherite_mechanical_crafter/block",
+      "y": 180
+    },
+    "facing=west,pointing=down": {
+      "model": "createnetherite:block/netherite_mechanical_crafter/block",
+      "y": 270
+    },
+    "facing=west,pointing=left": {
+      "model": "createnetherite:block/netherite_mechanical_crafter/block",
+      "y": 270
+    },
+    "facing=west,pointing=right": {
+      "model": "createnetherite:block/netherite_mechanical_crafter/block",
+      "y": 270
+    },
+    "facing=west,pointing=up": {
+      "model": "createnetherite:block/netherite_mechanical_crafter/block",
+      "y": 270
+    }
+  }
+}

@@ -67,8 +67,8 @@ public final class JeiRecipeGameTest {
     public static void liveRecipesExposeEssenceAndAllConversions(GameTestHelper helper) throws Exception {
         Setup setup = setup(helper);
         helper.assertTrue(setup.recipes.get("createnetherite:netherite_mixing").size() == 1
-            && setup.recipes.get("createnetherite:netherite_conversion").size() == 18,
-            "JEI must receive the real exclusive mixing recipe and all eighteen live conversions");
+            && setup.recipes.get("createnetherite:netherite_conversion").size() == 19,
+            "JEI must receive the real exclusive mixing recipe and all nineteen live conversions");
         List<Slot> mixing = layout(setup, "netherite_mixing", "mixing/nether_essence");
         helper.assertTrue(hasItem(mixing, RecipeIngredientRole.INPUT, Items.BLAZE_POWDER)
             && hasItem(mixing, RecipeIngredientRole.INPUT, Items.NETHER_WART)
@@ -127,7 +127,8 @@ public final class JeiRecipeGameTest {
         helper.assertTrue(catalysts.get(BoosterItems.NETHERITE_MECHANICAL_PRESS.get()).containsAll(Set.of("create:pressing", "create:packing", "create:automatic_packing"))
             && catalysts.get(BoosterItems.NETHERITE_ENCASED_FAN.get()).size() == 4
             && catalysts.get(BoosterItems.NETHERITE_MECHANICAL_SAW.get()).containsAll(Set.of("create:sawing", "create:block_cutting"))
-            && catalysts.get(BoosterItems.NETHERITE_DEPLOYER.get()).contains("create:deploying"), "press, saw, deployer and all four fan modes have recipe entry points");
+            && catalysts.get(BoosterItems.NETHERITE_DEPLOYER.get()).contains("create:deploying")
+            && catalysts.get(BoosterItems.NETHERITE_MECHANICAL_CRAFTER.get()).containsAll(Set.of("create:mechanical_crafting", "create:automatic_shaped")), "press, saw, deployer, crafter and all four fan modes have recipe entry points");
         List<ISubtypeInterpreter<ItemStack>> interpreters = new ArrayList<>();
         setup.plugin.registerItemSubtypes(proxy(ISubtypeRegistration.class, (instance, method, args) -> {
             if (method.getName().equals("registerSubtypeInterpreter")) interpreters.add((ISubtypeInterpreter<ItemStack>) args[1]);

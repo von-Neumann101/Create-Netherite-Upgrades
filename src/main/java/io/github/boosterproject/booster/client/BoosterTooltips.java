@@ -35,6 +35,7 @@ public final class BoosterTooltips {
             BoosterItems.NETHERITE_ELEVATOR_PULLEY.get(),
             BoosterItems.NETHERITE_MECHANICAL_PRESS.get(),
             BoosterItems.NETHERITE_MECHANICAL_SAW.get(),
+            BoosterItems.NETHERITE_MECHANICAL_CRAFTER.get(),
             BoosterItems.NETHERITE_MECHANICAL_ARM.get(),
             BoosterItems.NETHERITE_MECHANICAL_MIXER.get(),
             BoosterItems.NETHERITE_WIRELESS_TERMINAL.get(),

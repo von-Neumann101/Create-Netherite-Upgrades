@@ -91,6 +91,7 @@ public class Booster {
             BlockMovementChecks.registerNotSupportiveCheck((state, direction) -> state.is(BoosterBlocks.NETHERITE_MECHANICAL_SAW.get())
                 ? BlockMovementChecks.CheckResult.of(direction == state.getValue(SawBlock.FACING)) : BlockMovementChecks.CheckResult.PASS);
             BlockStressValues.IMPACTS.register(BoosterBlocks.NETHERITE_MECHANICAL_SAW.get(), () -> BlockStressValues.getImpact(AllBlocks.MECHANICAL_SAW.get()));
+            BlockStressValues.IMPACTS.register(BoosterBlocks.NETHERITE_MECHANICAL_CRAFTER.get(), () -> BlockStressValues.getImpact(AllBlocks.MECHANICAL_CRAFTER.get()));
             MovementBehaviour.REGISTRY.register(BoosterBlocks.NETHERITE_MECHANICAL_SAW.get(), new NetheriteSawMovementBehaviour());
             BlockStressValues.IMPACTS.register(BoosterBlocks.NETHERITE_CONVERTER.get(), () -> 2048D);
             BlockStressValues.IMPACTS.register(BoosterBlocks.NETHERITE_DEPLOYER.get(), () -> BlockStressValues.getImpact(AllBlocks.DEPLOYER.get()));

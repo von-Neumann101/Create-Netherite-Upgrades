@@ -77,6 +77,7 @@ public final class BoosterJeiPlugin implements IModPlugin {
         nativeCatalysts(registration, BoosterItems.NETHERITE_MECHANICAL_PRESS.get(), "pressing", "packing", "automatic_packing");
         nativeCatalysts(registration, BoosterItems.NETHERITE_MECHANICAL_MIXER.get(), "mixing", "automatic_shapeless", "automatic_brewing");
         nativeCatalysts(registration, BoosterItems.NETHERITE_MECHANICAL_SAW.get(), "sawing", "block_cutting");
+        nativeCatalysts(registration, BoosterItems.NETHERITE_MECHANICAL_CRAFTER.get(), "mechanical_crafting", "automatic_shaped");
         nativeCatalysts(registration, BoosterItems.NETHERITE_DEPLOYER.get(), "deploying");
         nativeCatalysts(registration, BoosterItems.NETHERITE_ENCASED_FAN.get(), "fan_washing", "fan_blasting", "fan_haunting", "fan_smoking");
     }

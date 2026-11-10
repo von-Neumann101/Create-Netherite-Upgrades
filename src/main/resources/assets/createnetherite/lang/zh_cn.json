@@ -222,5 +222,7 @@
   "gui.booster.nbt_filter.op3": "范围",
   "gui.booster.nbt_filter.field_hint": "点击字段编辑；点击方框启用／取消条件。",
   "gui.booster.nbt_filter.invalid": "条件无效：检查数值、NBT格式和范围上下界。",
-  "tooltip.booster.netherite_filter.nbt_rules": "NBT筛选：%s条条件"
+  "tooltip.booster.netherite_filter.nbt_rules": "NBT筛选：%s条条件",
+  "block.createnetherite.netherite_mechanical_crafter": "下界合金动力合成器",
+  "block.createnetherite.netherite_mechanical_crafter.tooltip.summary": "每格可放入_一组_材料，一轮尽可能完成_多份合成_。份数由材料最少的格子决定，多余材料留在原格。布局、箭头、槽位盖板和应力消耗沿用动力合成器；混用普通动力合成器时，每轮仅合成一份。"
 }
