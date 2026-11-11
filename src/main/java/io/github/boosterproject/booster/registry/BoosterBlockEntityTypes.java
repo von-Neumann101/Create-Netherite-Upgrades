@@ -1,5 +1,6 @@
 package io.github.boosterproject.booster.registry;
 
+import io.github.boosterproject.booster.content.kinetics.portable.PortableStressDeviceBlockEntity;
 import com.simibubi.create.content.processing.burner.BlazeBurnerBlockEntity;
 import io.github.boosterproject.booster.content.processing.basin.NetheriteBasinBlockEntity;
 import io.github.boosterproject.booster.content.kinetics.crafter.NetheriteMechanicalCrafterBlockEntity;
@@ -105,6 +106,10 @@ public final class BoosterBlockEntityTypes {
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<WirelessTerminalBlockEntity>> NETHERITE_WIRELESS_TERMINAL =
         BLOCK_ENTITY_TYPES.register("netherite_wireless_terminal", () -> BlockEntityType.Builder
             .of(WirelessTerminalBlockEntity::new, BoosterBlocks.NETHERITE_WIRELESS_TERMINAL.get()).build(null));
+
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<PortableStressDeviceBlockEntity>> NETHERITE_PORTABLE_STRESS_DEVICE =
+        BLOCK_ENTITY_TYPES.register("netherite_portable_stress_device", () -> BlockEntityType.Builder
+            .of(PortableStressDeviceBlockEntity::new, BoosterBlocks.NETHERITE_PORTABLE_STRESS_DEVICE.get()).build(null));
 
     private BoosterBlockEntityTypes() {
     }

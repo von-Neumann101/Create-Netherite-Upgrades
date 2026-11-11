@@ -4,7 +4,7 @@
 
 当前分支：`1.21.1-NeoForge`
 
-当前模组版本：`0.3.28`
+当前模组版本：`0.3.29`
 
 # 维护状态
 
@@ -26,6 +26,7 @@ JEI为可选客户端模组。开发环境需要随游戏加载JEI时，给启�
 
 当前模组新增多个 Create 兼容内容：
 
+- `createnetherite:netherite_portable_stress_device`
 - `createnetherite:powerful_mechanical_pump`
 - `createnetherite:netherite_converter`
 - `createnetherite:nether_essence_bucket`
@@ -54,6 +55,8 @@ JEI为可选客户端模组。开发环境需要随游戏加载JEI时，给启�
 - `createnetherite:netherite_netherite_wrench`
 - `createnetherite:assembly_table`
 - `createnetherite:netherite_sheet`
+
+下界合金便捷应力装置：手持对准动力接口即可看到 Create 原版放置预览，右键部署一个临时方块。物品留在手中，以 **64RPM** 向整个动力网络提供 **2048SU**，最多运行 **120秒**。对空气右键会提前收回这件物品对应的装置；消失或被拆除后，该物品独立冷却 **120秒**。可以携带和同时部署多件装置，互不占用冷却。物品下方绿色条显示剩余运行时间，蓝色条显示剩余冷却时间；按Shift查看概要。暂不添加合成配方，可从创造物品栏取得。区块卸载会断开供能，计时继续；未过期时重新加载即可继续工作。
 
 强力机械泵接入 Create 原版流体管网，默认基础应力消耗为 `16.0`、压力倍率为 `8.0`。压力倍率提高吞吐，不增加管道传播距离。
 
@@ -282,7 +285,7 @@ createnetherite-server.toml
 构建产物：
 
 ```text
-build/libs/createnetherite-1.21.1-0.3.28.jar
+build/libs/createnetherite-1.21.1-0.3.29.jar
 ```
 
 # Introduction
@@ -291,7 +294,7 @@ build/libs/createnetherite-1.21.1-0.3.28.jar
 
 Current branch: `1.21.1-NeoForge`
 
-Current mod version: `0.3.28`
+Current mod version: `0.3.29`
 
 # Maintenance status
 
@@ -313,6 +316,7 @@ JEI is optional and is not bundled in the release. Add `-PwithJei=true` to devel
 
 The mod currently adds several Create-compatible entries:
 
+- `createnetherite:netherite_portable_stress_device`
 - `createnetherite:powerful_mechanical_pump`
 - `createnetherite:netherite_converter`
 - `createnetherite:nether_essence_bucket`
@@ -341,6 +345,8 @@ The mod currently adds several Create-compatible entries:
 - `createnetherite:netherite_netherite_wrench`
 - `createnetherite:assembly_table`
 - `createnetherite:netherite_sheet`
+
+The Netherite Portable Stress Device uses Create's native placement preview when aimed at a shaft interface. Right-click to deploy a temporary block while retaining the item. It supplies **2048SU at 64RPM** to the normal kinetic network for up to **120 seconds**. Right-click air to recall that item's device. Disappearance or dismantling starts its own **120-second cooldown**; multiple items can deploy and cool independently. The green item bar shows remaining runtime, the blue bar remaining cooldown; hold Shift for the summary. Its recipe is deferred, so obtain it from the creative inventory for now. Unloading its chunk disconnects power while the timer continues; reloading before expiry resumes operation.
 
 The Powerful Mechanical Pump uses Create's native fluid network, with a default base stress impact of `16.0` and a pressure multiplier of `8.0`. The pressure multiplier increases throughput without extending pipe propagation distance.
 
@@ -567,5 +573,5 @@ Existing worlds keep their own `serverconfig/createnetherite-server.toml`. If de
 Build output:
 
 ```text
-build/libs/createnetherite-1.21.1-0.3.28.jar
+build/libs/createnetherite-1.21.1-0.3.29.jar
 ```

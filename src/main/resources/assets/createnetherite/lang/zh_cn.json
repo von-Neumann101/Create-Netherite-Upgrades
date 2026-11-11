@@ -1,4 +1,6 @@
 {
+  "block.createnetherite.netherite_portable_stress_device": "下界合金便捷应力装置",
+  "block.createnetherite.netherite_portable_stress_device.tooltip.summary": "对准_动力接口_查看放置预览，_右键_部署。以_64RPM_向整个动力网络提供_2048SU_，最多运行_120秒_。物品留在手中；对_空气右键_提前收回这件物品的装置。消失后冷却_120秒_，每件物品_独立计时_。物品下方_绿色条_表示剩余运行时间，_蓝色条_表示剩余冷却时间。",
   "createnetherite.recipe.netherite_mixing": "下界合金搅拌",
   "createnetherite.recipe.netherite_conversion": "下界合金转换",
   "jei.createnetherite.essence_info": "1远古残骸＋1地狱疣＋1烈焰粉→1000mB下界精华，无需岩浆。必须使用下界合金搅拌机、下界合金工作盆，以及装满4只烈焰人且正在加热的下界合金燃烧室。转换机只通过管道接收精华：普通加工1000mB，高级扳手4000mB。精华桶仍可用注液器装满和运输。",

@@ -69,6 +69,7 @@ public class Booster {
         NeoForge.EVENT_BUS.addListener(BoosterExplosionProtection::onExplosionDetonate);
         NeoForge.EVENT_BUS.addListener(BoosterExplosionProtection::onEntityInvulnerabilityCheck);
         NeoForge.EVENT_BUS.addListener(NetheriteNetheriteItem::keepChewing);
+        NeoForge.EVENT_BUS.addListener(io.github.boosterproject.booster.content.kinetics.portable.PortableStressService::tick);
         NeoForge.EVENT_BUS.addListener(WirelessTerminalService::tick);
         modEventBus.addListener(WirelessNetworking::register);
         modEventBus.addListener(WrenchNetworking::register);
@@ -91,6 +92,8 @@ public class Booster {
 
     private void commonSetup(FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
+            BlockMovementChecks.registerMovementAllowedCheck((state, level, pos) -> state.is(BoosterBlocks.NETHERITE_PORTABLE_STRESS_DEVICE.get())
+                ? BlockMovementChecks.CheckResult.FAIL : BlockMovementChecks.CheckResult.PASS);
             BlockMovementChecks.registerNotSupportiveCheck((state, direction) -> state.is(BoosterBlocks.NETHERITE_MECHANICAL_SAW.get())
                 ? BlockMovementChecks.CheckResult.of(direction == state.getValue(SawBlock.FACING)) : BlockMovementChecks.CheckResult.PASS);
             BlockStressValues.IMPACTS.register(BoosterBlocks.NETHERITE_MECHANICAL_SAW.get(), () -> BlockStressValues.getImpact(AllBlocks.MECHANICAL_SAW.get()));
@@ -98,6 +101,8 @@ public class Booster {
             UnpackingHandler.REGISTRY.register(BoosterBlocks.NETHERITE_BASIN.get(), BasinUnpackingHandler.INSTANCE);
             BlockStressValues.IMPACTS.register(BoosterBlocks.NETHERITE_MECHANICAL_CRAFTER.get(), () -> BlockStressValues.getImpact(AllBlocks.MECHANICAL_CRAFTER.get()));
             MovementBehaviour.REGISTRY.register(BoosterBlocks.NETHERITE_MECHANICAL_SAW.get(), new NetheriteSawMovementBehaviour());
+            BlockStressValues.CAPACITIES.register(BoosterBlocks.NETHERITE_PORTABLE_STRESS_DEVICE.get(), () -> 32D);
+            BlockStressValues.setGeneratorSpeed(64, true).accept(BoosterBlocks.NETHERITE_PORTABLE_STRESS_DEVICE.get());
             BlockStressValues.IMPACTS.register(BoosterBlocks.NETHERITE_CONVERTER.get(), () -> 2048D);
             BlockStressValues.IMPACTS.register(BoosterBlocks.NETHERITE_DEPLOYER.get(), () -> BlockStressValues.getImpact(AllBlocks.DEPLOYER.get()));
             MovementBehaviour.REGISTRY.register(BoosterBlocks.NETHERITE_DEPLOYER.get(), new DeployerMovementBehaviour());

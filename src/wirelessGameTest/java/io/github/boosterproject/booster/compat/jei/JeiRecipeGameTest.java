@@ -99,6 +99,8 @@ public final class JeiRecipeGameTest {
         for (RecipeHolder<?> recipe : helper.getLevel().getRecipeManager().getRecipes())
             obtainable.add(recipe.value().getResultItem(helper.getLevel().registryAccess()).getItem());
         for (var item : BoosterItems.ITEMS.getEntries()) {
+            // User explicitly deferred the portable device recipe.
+            if (item == BoosterItems.NETHERITE_PORTABLE_STRESS_DEVICE) continue;
             helper.assertTrue(obtainable.contains(item.get()), "missing acquisition recipe for " + item.getId());
         }
         ItemStack bucket = new ItemStack(Items.BUCKET);

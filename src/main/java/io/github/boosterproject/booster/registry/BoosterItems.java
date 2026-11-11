@@ -1,5 +1,6 @@
 package io.github.boosterproject.booster.registry;
 
+import io.github.boosterproject.booster.content.kinetics.portable.PortableStressDeviceItem;
 import com.simibubi.create.content.logistics.vault.ItemVaultItem;
 import io.github.boosterproject.booster.content.processing.burner.NetheriteBlazeBurnerItem;
 import com.simibubi.create.content.kinetics.mechanicalArm.ArmItem;
@@ -114,6 +115,10 @@ public final class BoosterItems {
 
     public static final DeferredItem<Item> NETHERITE_INFINITE_MANAGER =
         ITEMS.register("netherite_infinite_manager", () -> new InfiniteManagerItem(new Item.Properties().fireResistant().stacksTo(1)));
+
+    public static final DeferredItem<Item> NETHERITE_PORTABLE_STRESS_DEVICE =
+        ITEMS.register("netherite_portable_stress_device", () -> new PortableStressDeviceItem(
+            BoosterBlocks.NETHERITE_PORTABLE_STRESS_DEVICE.get(), new Item.Properties().fireResistant().stacksTo(1)));
 
     private BoosterItems() {
     }

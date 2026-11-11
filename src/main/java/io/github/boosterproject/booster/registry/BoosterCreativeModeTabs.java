@@ -51,6 +51,7 @@ public final class BoosterCreativeModeTabs {
                 output.accept(BoosterItems.NETHERITE_NETHERITE.get());
                 output.accept(BoosterItems.NETHERITE_NETHERITE_WRENCH.get());
                 output.accept(BoosterItems.NETHERITE_WRENCH.get());
+                output.accept(BoosterItems.NETHERITE_PORTABLE_STRESS_DEVICE.get());
                 output.accept(BoosterItems.ASSEMBLY_TABLE.get());
                 output.accept(BoosterItems.NETHERITE_SHEET.get());
             })

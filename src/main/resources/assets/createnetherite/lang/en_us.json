@@ -1,4 +1,6 @@
 {
+  "block.createnetherite.netherite_portable_stress_device": "Netherite Portable Stress Device",
+  "block.createnetherite.netherite_portable_stress_device.tooltip.summary": "Aim at a _shaft interface_ for the placement preview, then _right-click_ to deploy. Supplies _2048SU_ at _64RPM_ to the entire kinetic network for up to _120 seconds_. The item stays with you; _right-click air_ to recall its device. Each item has its _own 120-second cooldown_ after disappearance. A _green bar_ shows remaining runtime; a _blue bar_ shows remaining cooldown.",
   "createnetherite.recipe.netherite_mixing": "Netherite Mixing",
   "createnetherite.recipe.netherite_conversion": "Netherite Conversion",
   "jei.createnetherite.essence_info": "1 Ancient Debris +1 Nether Wart +1 Blaze Powder produce1000mB Nether Essence, with no lava. Requires a Netherite Mixer, Netherite Basin and a fueled Netherite Burner containing four blazes. Converter pipe supply:1000mB per normal recipe,4000mB for the advanced wrench. Essence buckets can still be filled with a Spout and transported.",

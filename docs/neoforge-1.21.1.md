@@ -10,8 +10,8 @@
 
 - 分支：`1.21.1-NeoForge`
 - 源码核对日期：`2026-11-11`
-- 本次更新基线提交：`7c009302afaa45256cca87ddd774951c56f6fb15`（0.3.27；0.3.28 精华加工机制见本文末）
-- 模组版本：`0.3.28`
+- 本次更新基线提交：`95bbdd1916145a7031e694b7d650a0ac0a4651db`（0.3.28；0.3.29 便捷应力装置见本文末）
+- 模组版本：`0.3.29`
 - Mod id：`createnetherite`
 - 主包名：`io.github.boosterproject.booster`
 - Minecraft：`1.21.1`
@@ -74,7 +74,7 @@
 按当前配置生成的主 jar：
 
 ```text
-build/libs/createnetherite-1.21.1-0.3.28.jar
+build/libs/createnetherite-1.21.1-0.3.29.jar
 ```
 
 ## Gradle 与依赖
@@ -1336,3 +1336,17 @@ JEI用量槽读取每条配方的getEssenceAmount，移除点数来源槽和16�
 验证：`build/converter-pipe-red.log` 复现桶右键和Action Bar旧行为；`build/essence-requirements-red.log` 复现普通盆被错误接受。新增用例验证六面桶交互不填／不抽液、空手无提示、真实储罐→动力泵→管道供液；精华环境矩阵拒绝普通盆、普通燃烧室、三只烈焰人和未加热，且不消耗材料；真实搅拌过程重新检查四只条件。既有转换测试迁移并保留999/1000、3999/4000、固定应力／计时、断电重启、物品组件、重载、真实扳手拾取放置、传送带、机身与盆过滤、JSON／网络用量校验。完整三段思索的真实流程由管道先供2000mB，再供4000mB，验证普通机器及两级扳手的实际消耗。
 
 最终完整无界面build：`build/essence-release-with-jei.log` 中205项既有回归和162项GameTest通过；`build/essence-release-without-jei.log` 中205项和158项通过。独立只读复核无待修问题。JAR元数据0.3.28，298项生产资源、232个生产类、212个有效JSON，中英文各223键；不含QA、JEI代码或已退休的ConversionPlate类。客户端未启动，JEI／思索外观由用户检查。
+
+## 下界合金便捷应力装置（0.3.29）
+
+注册物品、方块及方块实体 `netherite_portable_stress_device`。物品不堆叠、不消耗，防火并沿用现有下界合金掉落物防爆规则；临时方块抗爆1200、无掉落表，禁止活塞和Create运动结构搬运，Shift扳手拆除仍遵守原生BreakEvent。暂不注册配方，也不加入转换机路线；JEI配方覆盖测试只豁免这件用户明确暂缓配方的物品。
+
+`PortableStressDeviceItem` 注册Catnip `IPlacementHelper`，根据目标 `IRotate.hasShaftTowards` 和鼠标位置选邻接接口。预览与实际放置共用同一Offset，支持六方向；仍走BlockItem的碰撞与权限检查。`onItemUseFirst` 进入ItemStack.useOn原生快照／放置事件事务，避免有界面的机器先吞掉右键。setPlacedBy只保留瞬时待放置物品，成功事务的延迟onPlace才提交UUID与部署；被保护模组拒绝时，方块回滚且不进入冷却。
+
+`PortableStressDeviceBlockEntity` 是方向性 `GeneratingKineticBlockEntity`，只在FACING侧有轴，以64RPM提供每RPM32SU容量，即固定2048SU接入正常动力网络；多个负载共享容量，过载行为由Create处理。渲染复用原生半轴及OrientedRotatingVisual，三面16×16贴图由指定贴图对话提供。使用Create原生Shift概要，绿色物品条显示剩余运行时间、蓝色显示剩余冷却时间，不使用玩家物品栏上方文字。
+
+`PortableStressData` 使用主世界SavedData，以物品UUID保存部署Token、维度、位置、到期tick与冷却结束tick。物品CUSTOM_DATA仅保存供客户端展示的状态快照，服务端始终查询SavedData；不使用按Item类型共享的原版ItemCooldowns。运行和冷却各2400tick。对空气右键仅回收手持物品的部署，转交物品保留同一状态。重复拆除或旧Token不能延长冷却／移除新部署。区块卸载不强制加载，但通过原生remove/detach立即撤回应力并断开下游，计时继续；有效重载重新接入。过期／已回收的旧方块在首次tick先做原生保存容量对账，再移除，避免其他发电机的网络残留2048SU。
+
+验证：新增14项真实服务器测试，覆盖六方向预览与放置一致、两件物品同时部署及分别回收／冷却、交接与序列化、非法与被保护的放置、原生受保护拆卸、真实2048SU网络过载和恢复、无玩家持有时自动消失、精确运行／冷却边界、卸载断电与有效重载、旧部署隔离、首次tick及首次tick前移除时的完整网络容量对账、无重复掉落和下界合金保护属性。审查发现的放置事件、卸载残留动力、存档残留容量及拆卸保护均先在 `build/portable-review-red.log` 复现；补充的首次tick及首次tick前移除路径分别在 `build/portable-first-tick-red.log`、`build/portable-before-tick-removal-red.log` 复现后修正。上下模型朝向通过原版BlockModelRotation规则核对。
+
+最终 `build/portable-release-with-jei.log` 中205项回归及176项GameTest通过；`build/portable-release-without-jei.log` 中205项回归及172项GameTest通过。独立只读复核无待修问题。JAR元数据0.3.29，304项生产资源、241个生产类、215个有效JSON、84张可读PNG，中英文各225键；新物品暂未包含任何配方，QA与JEI运行库未嵌入。未启动客户端，实际预览、模型及物品状态条由用户检查。

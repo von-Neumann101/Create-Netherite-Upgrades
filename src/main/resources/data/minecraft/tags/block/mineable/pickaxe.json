@@ -20,6 +20,7 @@
     "createnetherite:netherite_wireless_manager",
     "createnetherite:netherite_mechanical_saw",
     "createnetherite:netherite_mechanical_crafter",
-    "createnetherite:netherite_basin"
+    "createnetherite:netherite_basin",
+    "createnetherite:netherite_portable_stress_device"
   ]
 }

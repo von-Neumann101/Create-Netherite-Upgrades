@@ -25,6 +25,7 @@ public final class BoosterTooltips {
     public static void register() {
         // The converter, fan, ejector and grip use native Ponder; other items use native Shift descriptions.
         for (Item item : List.of(
+            BoosterItems.NETHERITE_PORTABLE_STRESS_DEVICE.get(),
             BoosterItems.NETHERITE_SHEET.get(),
             BoosterItems.NETHERITE_WRENCH.get(),
             BoosterItems.ASSEMBLY_TABLE.get(),

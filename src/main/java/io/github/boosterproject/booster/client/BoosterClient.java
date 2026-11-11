@@ -54,6 +54,10 @@ public final class BoosterClient {
 
     public static void register(IEventBus modEventBus) {
         WrenchClient.register(modEventBus);
+        NeoForge.EVENT_BUS.addListener((net.neoforged.neoforge.client.event.ClientTickEvent.Post event) -> {
+            var level = net.minecraft.client.Minecraft.getInstance().level;
+            if (level != null) io.github.boosterproject.booster.content.kinetics.portable.PortableStressDeviceItem.setClientTime(level.getGameTime());
+        });
         NeoForge.EVENT_BUS.addListener(NetheriteEjectorTargetHandler::tick);
         BoosterPartialModels.init();
         NetheriteArmModels.init();
@@ -75,6 +79,7 @@ public final class BoosterClient {
     }
 
     private static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
+        event.registerBlockEntityRenderer(BoosterBlockEntityTypes.NETHERITE_PORTABLE_STRESS_DEVICE.get(), PortableStressDeviceRenderer::new);
         event.registerBlockEntityRenderer(BoosterBlockEntityTypes.NETHERITE_BASIN.get(), BasinRenderer::new);
         event.registerBlockEntityRenderer(BoosterBlockEntityTypes.NETHERITE_MECHANICAL_CRAFTER.get(), MechanicalCrafterRenderer::new);
         event.registerBlockEntityRenderer(BoosterBlockEntityTypes.NETHERITE_MECHANICAL_SAW.get(), SawRenderer::new);
@@ -139,6 +144,8 @@ public final class BoosterClient {
             SimpleBlockEntityVisualizer.builder(BoosterBlockEntityTypes.NETHERITE_DEPLOYER.get()).factory(DeployerVisual::new).apply();
             PonderIndex.addPlugin(new BoosterPonderPlugin());
             BoosterTooltips.register();
+            SimpleBlockEntityVisualizer.builder(BoosterBlockEntityTypes.NETHERITE_PORTABLE_STRESS_DEVICE.get())
+                .factory(com.simibubi.create.content.kinetics.base.OrientedRotatingVisual.of(AllPartialModels.SHAFT_HALF)).apply();
             SimpleBlockEntityVisualizer.builder(BoosterBlockEntityTypes.NETHERITE_WEIGHTED_EJECTOR.get()).factory(EjectorVisual::new).apply();
             SimpleBlockEntityVisualizer.builder(BoosterBlockEntityTypes.NETHERITE_MECHANICAL_MIXER.get())
                 .factory(MixerVisual::new).neverSkipVanillaRender().apply();

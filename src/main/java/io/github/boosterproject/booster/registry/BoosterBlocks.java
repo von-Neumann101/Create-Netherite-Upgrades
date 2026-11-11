@@ -1,5 +1,6 @@
 package io.github.boosterproject.booster.registry;
 
+import io.github.boosterproject.booster.content.kinetics.portable.PortableStressDeviceBlock;
 import com.simibubi.create.AllBlocks;
 import io.github.boosterproject.booster.content.processing.basin.NetheriteBasinBlock;
 import io.github.boosterproject.booster.content.kinetics.crafter.NetheriteMechanicalCrafterBlock;
@@ -117,6 +118,11 @@ public final class BoosterBlocks {
             BlockBehaviour.Properties.ofFullCopy(AllBlocks.REDSTONE_LINK.get())
                 .noOcclusion().explosionResistance(1200.0F)
         ));
+
+    public static final DeferredBlock<PortableStressDeviceBlock> NETHERITE_PORTABLE_STRESS_DEVICE =
+        BLOCKS.register("netherite_portable_stress_device", () -> new PortableStressDeviceBlock(
+            BlockBehaviour.Properties.ofFullCopy(AllBlocks.CREATIVE_MOTOR.get()).explosionResistance(1200F)
+                .noLootTable().pushReaction(net.minecraft.world.level.material.PushReaction.BLOCK)));
 
     private BoosterBlocks() {
     }

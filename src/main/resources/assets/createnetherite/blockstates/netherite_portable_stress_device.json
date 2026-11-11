@@ -1,0 +1,27 @@
+{
+  "variants": {
+    "facing=south": {
+      "model": "createnetherite:block/netherite_portable_stress_device"
+    },
+    "facing=north": {
+      "model": "createnetherite:block/netherite_portable_stress_device",
+      "y": 180
+    },
+    "facing=east": {
+      "model": "createnetherite:block/netherite_portable_stress_device",
+      "y": 270
+    },
+    "facing=west": {
+      "model": "createnetherite:block/netherite_portable_stress_device",
+      "y": 90
+    },
+    "facing=up": {
+      "model": "createnetherite:block/netherite_portable_stress_device",
+      "x": 90
+    },
+    "facing=down": {
+      "model": "createnetherite:block/netherite_portable_stress_device",
+      "x": 270
+    }
+  }
+}
