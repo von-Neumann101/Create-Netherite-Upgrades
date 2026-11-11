@@ -131,7 +131,6 @@ public final class BoosterBlockEntityTypes {
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, NETHERITE_BASIN.get(), (be, side) -> be.getFluidCapability());
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, NETHERITE_MECHANICAL_CRAFTER.get(), (be, side) -> be.getItemCapability());
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, NETHERITE_MECHANICAL_SAW.get(), (be, side) -> side == net.minecraft.core.Direction.DOWN ? null : be.inventory);
-        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, NETHERITE_CONVERTER.get(), (be, side) -> be.getPlateInventory());
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, NETHERITE_CONVERTER.get(), (be, side) -> be.getEssenceTank());
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, NETHERITE_DEPLOYER.get(), (be, side) -> {
             var access = (NetheriteDeployerInventoryAccess) be;

@@ -3,12 +3,13 @@ package io.github.boosterproject.booster.content.conversion;
 import io.github.boosterproject.booster.Booster;
 import com.mojang.authlib.GameProfile;
 import com.simibubi.create.AllBlocks;
-import com.simibubi.create.content.fluids.pump.PumpBlock;
 import com.simibubi.create.content.kinetics.motor.CreativeMotorBlock;
 import com.simibubi.create.content.kinetics.motor.CreativeMotorBlockEntity;
 import com.simibubi.create.content.kinetics.belt.transport.TransportedItemStack;
 import com.simibubi.create.content.logistics.depot.DepotBehaviour;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
+import com.simibubi.create.content.processing.burner.BlazeBurnerBlock;
+import io.github.boosterproject.booster.content.processing.burner.NetheriteBlazeBurnerBlockEntity;
 import io.github.boosterproject.booster.registry.BoosterBlocks;
 import io.github.boosterproject.booster.registry.BoosterFluids;
 import io.github.boosterproject.booster.registry.BoosterItems;
@@ -50,29 +51,28 @@ import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
 @PrefixGameTestTemplate(false)
 public final class NetheriteConverterGameTest {
     @GameTest(template = "wireless_empty", timeoutTicks = 250)
-    public static void advancedWrenchNeedsSixteenValueAndKeepsResultAttributes(GameTestHelper helper) {
+    public static void advancedWrenchNeedsFourBucketsAndKeepsResultAttributes(GameTestHelper helper) {
         Fixture f = fixture(helper, 230, 64);
         var input = new ItemStack(BoosterItems.NETHERITE_WRENCH.get());
         input.set(DataComponents.CUSTOM_NAME, Component.literal("Upgraded wrench"));
         CustomData.update(DataComponents.CUSTOM_DATA, input, tag -> tag.putString("OtherMod", "keep"));
         long[] start = {-1};
         helper.runAfterDelay(5, () -> {
-            f.be.getPlateInventory().insertItem(0, new ItemStack(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE, 15), false);
-            f.be.getEssenceTank().fill(new FluidStack(BoosterFluids.NETHER_ESSENCE.get(), 1000), FluidAction.EXECUTE);
+            supply(f, 3999);
             put(f, input);
         });
         helper.runAfterDelay(35, () -> {
-            helper.assertTrue(f.be.getNetheriteValue() == 15 && f.be.getProgress() == 0 && f.be.getEssenceTank().getFluidAmount() == 1000
-                && count(f.inventory(), BoosterItems.NETHERITE_WRENCH.get()) == 1, "fifteen points cannot start, consume fluid or replace the basic wrench");
-            f.be.getPlateInventory().insertItem(0, new ItemStack(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE), false);
+            helper.assertTrue(f.be.getProgress() == 0 && f.be.getEssenceTank().getFluidAmount() == 3999
+                && count(f.inventory(), BoosterItems.NETHERITE_WRENCH.get()) == 1, "3999mB cannot start, consume fluid or replace the basic wrench");
+            f.be.getEssenceTank().fill(new FluidStack(BoosterFluids.NETHER_ESSENCE.get(), 1), FluidAction.EXECUTE);
         });
         helper.onEachTick(() -> {
             if (f.be.getProgress() == 1 && start[0] < 0) start[0] = helper.getLevel().getGameTime();
             var output = find(f.inventory(), BoosterItems.NETHERITE_NETHERITE_WRENCH.get());
             if (output.isEmpty()) return;
             helper.assertTrue(start[0] >= 0 && helper.getLevel().getGameTime() - start[0] >= 99
-                && f.be.getNetheriteValue() == 0 && f.be.getEssenceTank().getFluidAmount() == 750,
-                "advanced upgrade requires the full five seconds and spends sixteen points with the usual 250mB fluid");
+                && f.be.getEssenceTank().isEmpty() && output.getCount() == 1,
+                "advanced upgrade requires the full five seconds and consumes exactly 4000mB");
             helper.assertTrue(output.getHoverName().getString().equals("Upgraded wrench")
                 && output.get(DataComponents.CUSTOM_DATA).copyTag().getString("OtherMod").equals("keep")
                 && output.get(DataComponents.UNBREAKABLE) != null, "result preserves source custom components and gets the advanced unbreakable default");
@@ -87,23 +87,37 @@ public final class NetheriteConverterGameTest {
     }
 
     @GameTest(template = "wireless_empty")
-    public static void conversionCostJsonAndNetworkRetainExplicitAndDefaultCosts(GameTestHelper helper) {
+    public static void conversionFluidJsonAndNetworkRetainPositiveExplicitAndDefaultAmounts(GameTestHelper helper) {
         for (String path : new String[] {"conversion/netherite_wrench", "conversion/netherite_netherite_wrench", "conversion/netherite_mechanical_press"}) {
             var recipe = (NetheriteConversionRecipe) helper.getLevel().getRecipeManager().byKey(id(path)).orElseThrow().value();
-            int expected = path.endsWith("/netherite_netherite_wrench") ? 16 : 1;
-            helper.assertTrue(recipe.getNetheriteCost() == expected, "JSON loads the correct cost for " + path);
+            int expected = path.endsWith("/netherite_netherite_wrench") ? 4000 : 1000;
+            helper.assertTrue(recipe.getEssenceAmount() == expected, "JSON loads the correct fluid amount for " + path);
             var serializer = (NetheriteConversionRecipe.Serializer) recipe.getSerializer();
             var buffer = new net.minecraft.network.RegistryFriendlyByteBuf(io.netty.buffer.Unpooled.buffer(), helper.getLevel().registryAccess());
             try {
                 serializer.streamCodec().encode(buffer, recipe);
                 var decoded = serializer.streamCodec().decode(buffer);
-                helper.assertTrue(decoded.getNetheriteCost() == expected && ItemStack.matches(decoded.getResultItem(helper.getLevel().registryAccess()), recipe.getResultItem(helper.getLevel().registryAccess())), "network round trip keeps recipe cost and result");
+                helper.assertTrue(decoded.getEssenceAmount() == expected && ItemStack.matches(decoded.getResultItem(helper.getLevel().registryAccess()), recipe.getResultItem(helper.getLevel().registryAccess())), "network round trip keeps recipe fluid amount and result");
             } finally { buffer.release(); }
             var ops = net.minecraft.resources.RegistryOps.create(com.mojang.serialization.JsonOps.INSTANCE, helper.getLevel().registryAccess());
             var json = serializer.codec().codec().encodeStart(ops, recipe).getOrThrow().getAsJsonObject();
+            if (expected == 4000) helper.assertTrue(json.get("fluid_amount").getAsInt() == 4000, "advanced recipe serializes its explicit four-bucket amount");
+            json.remove("fluid_amount");
+            helper.assertTrue(serializer.codec().codec().parse(ops, json).getOrThrow().getEssenceAmount() == 1000,
+                "omitting fluid_amount retains the ordinary 1000mB default");
             for (int bad : new int[] {0, -1}) {
-                json.addProperty("netherite_cost", bad);
-                helper.assertTrue(serializer.codec().codec().parse(ops, json).error().isPresent(), "invalid nonpositive costs cannot make free conversions");
+                json.addProperty("fluid_amount", bad);
+                helper.assertTrue(serializer.codec().codec().parse(ops, json).error().isPresent(), "invalid nonpositive JSON amounts cannot make free conversions");
+                var invalid = new net.minecraft.network.RegistryFriendlyByteBuf(io.netty.buffer.Unpooled.buffer(), helper.getLevel().registryAccess());
+                try {
+                    var base = new com.simibubi.create.content.processing.recipe.StandardProcessingRecipe.Serializer<NetheriteConversionRecipe>(NetheriteConversionRecipe::new);
+                    base.streamCodec().encode(invalid, recipe);
+                    invalid.writeVarInt(bad);
+                    boolean rejected = false;
+                    try { serializer.streamCodec().decode(invalid); }
+                    catch (IllegalArgumentException expectedError) { rejected = true; }
+                    helper.assertTrue(rejected, "invalid nonpositive network amounts cannot make free conversions");
+                } finally { invalid.release(); }
             }
         }
         helper.succeed();
@@ -136,12 +150,12 @@ public final class NetheriteConverterGameTest {
                 helper.assertTrue(f.be.getOrCreateNetwork().getActualStressOf(f.be) == 2048, "actual network consumes 2048SU at " + f.rpm + " RPM");
                 long elapsed = helper.getLevel().getGameTime() - starts[i];
                 if (elapsed == 98) helper.assertTrue(count(f.inventory(), BoosterItems.NETHERITE_MECHANICAL_PRESS.get()) == 0
-                    && f.be.getEssenceTank().getFluidAmount() == 4000 && f.be.getNetheriteValue() == 16,
+                    && f.be.getEssenceTank().getFluidAmount() == 4000,
                     "nothing is consumed or converted before 100 processing ticks");
                 if (count(f.inventory(), BoosterItems.NETHERITE_MECHANICAL_PRESS.get()) == 1) {
                     helper.assertTrue(elapsed >= 99 && elapsed <= 100, "conversion takes 100 ticks at " + f.rpm + " RPM; elapsed=" + elapsed);
-                    helper.assertTrue(f.be.getEssenceTank().getFluidAmount() == 3750 && f.be.getNetheriteValue() == 15,
-                        "one output costs exactly 250mB and one stored netherite value");
+                    helper.assertTrue(f.be.getEssenceTank().getFluidAmount() == 3000,
+                        "one output costs exactly 1000mB essence");
                     finished[i] = true;
                 }
             }
@@ -155,19 +169,19 @@ public final class NetheriteConverterGameTest {
         int[] stage = {0}; long[] stopped = {-1}, restarted = {-1};
         helper.runAfterDelay(5, () -> put(f, new ItemStack(AllBlocks.MECHANICAL_PRESS.get())));
         helper.runAfterDelay(20, () -> {
-            helper.assertTrue(f.be.getProgress() == 0, "missing netherite value and fluid do not start progress");
-            supply(f, 249);
+            helper.assertTrue(f.be.getProgress() == 0, "missing essence does not start progress");
+            supply(f, 999);
         });
         helper.runAfterDelay(35, () -> {
-            helper.assertTrue(f.be.getProgress() == 0 && f.be.getEssenceTank().getFluidAmount() == 249, "249mB cannot start or be partially consumed");
+            helper.assertTrue(f.be.getProgress() == 0 && f.be.getEssenceTank().getFluidAmount() == 999, "999mB cannot start or be partially consumed");
             f.be.getEssenceTank().fill(new FluidStack(BoosterFluids.NETHER_ESSENCE.get(), 1), FluidAction.EXECUTE);
         });
         helper.onEachTick(() -> {
             long now = helper.getLevel().getGameTime();
             if (stage[0] == 0 && f.be.getProgress() >= 30) { f.motor.generatedSpeed.setValue(0); stopped[0] = now; stage[0] = 1; }
             if (stage[0] == 1 && now - stopped[0] >= 10) {
-                helper.assertTrue(f.be.getProgress() == 0 && f.be.getEssenceTank().getFluidAmount() == 250
-                    && f.be.getNetheriteValue() == 16, "power loss clears elapsed work without consuming resources");
+                helper.assertTrue(f.be.getProgress() == 0 && f.be.getEssenceTank().getFluidAmount() == 1000,
+                    "power loss clears elapsed work without consuming resources");
                 f.motor.generatedSpeed.setValue(256); stage[0] = 2;
             }
             if (stage[0] == 2 && f.be.getProgress() == 1) { restarted[0] = now; stage[0] = 3; }
@@ -178,21 +192,21 @@ public final class NetheriteConverterGameTest {
         });
     }
 
-    @GameTest(template = "wireless_empty", timeoutTicks = 1900)
-    public static void oneSheetConvertsSixteenItems(GameTestHelper helper) {
+    @GameTest(template = "wireless_empty", timeoutTicks = 650)
+    public static void fourBucketsConvertFourItemsAndFifthWaits(GameTestHelper helper) {
         Fixture f = fixture(helper, 230, 64);
-        helper.runAfterDelay(5, () -> { supply(f, 4000); put(f, new ItemStack(AllBlocks.MECHANICAL_PRESS.get(), 17)); });
-        helper.runAfterDelay(1800, () -> {
-            helper.assertTrue(count(f.inventory(), BoosterItems.NETHERITE_MECHANICAL_PRESS.get()) == 16
-                && count(f.inventory(), AllBlocks.MECHANICAL_PRESS.asItem()) == 1, "one sheet upgrades exactly sixteen actual depot items");
-            helper.assertTrue(f.be.getNetheriteValue() == 0 && f.be.getEssenceTank().isEmpty() && f.be.getProgress() == 0,
-                "the stored value and 4000mB are exhausted; the seventeenth item waits");
+        helper.runAfterDelay(5, () -> { supply(f, 4000); put(f, new ItemStack(AllBlocks.MECHANICAL_PRESS.get(), 5)); });
+        helper.runAfterDelay(600, () -> {
+            helper.assertTrue(count(f.inventory(), BoosterItems.NETHERITE_MECHANICAL_PRESS.get()) == 4
+                && count(f.inventory(), AllBlocks.MECHANICAL_PRESS.asItem()) == 1, "4000mB upgrades exactly four actual depot items");
+            helper.assertTrue(f.be.getEssenceTank().isEmpty() && f.be.getProgress() == 0,
+                "all 4000mB are exhausted; the fifth item waits");
             cleanup(helper, f); helper.succeed();
         });
     }
 
     @GameTest(template = "wireless_empty", timeoutTicks = 240)
-    public static void componentsPlateReloadAndDrops(GameTestHelper helper) {
+    public static void componentsFluidReloadAndDrops(GameTestHelper helper) {
         Fixture f = fixture(helper, 230, 64);
         var input = new ItemStack(AllBlocks.FLUID_TANK.get());
         input.set(DataComponents.CUSTOM_NAME, Component.literal("Preserved tank"));
@@ -208,37 +222,47 @@ public final class NetheriteConverterGameTest {
             helper.assertTrue(output.getHoverName().getString().equals("Preserved tank") && stored.getString("id").equals("createnetherite:netherite_fluid_tank")
                 && stored.getCompound("TankContent").getCompound("Fluid").getInt("amount") == 4000, "output keeps name and tank contents while updating the BE type");
             var saved = f.be.saveWithoutMetadata(helper.getLevel().registryAccess());
-            f.be.restoreNetheriteValue(0);
+            f.be.getEssenceTank().drain(4000, FluidAction.EXECUTE);
             f.be.loadWithComponents(saved, helper.getLevel().registryAccess());
-            helper.assertTrue(f.be.getNetheriteValue() == 15 && f.be.getEssenceTank().getFluidAmount() == 3750,
-                "reload preserves stored netherite value and fluid");
+            helper.assertTrue(f.be.getEssenceTank().getFluidAmount() == 3000 && !saved.contains("NetheriteValue") && !saved.contains("Plate"),
+                "reload preserves essence without retaining obsolete point or plate data");
             helper.getLevel().destroyBlock(f.pos, true);
             var drops = helper.getLevel().getEntitiesOfClass(ItemEntity.class, new AABB(f.pos).inflate(2));
             helper.assertTrue(drops.stream().noneMatch(e -> e.getItem().is(BoosterItems.NETHERITE_SHEET.get()))
                 && drops.stream().filter(e -> e.getItem().is(BoosterItems.NETHERITE_CONVERTER.get())).count() == 1
                 && drops.stream().anyMatch(e -> e.getItem().is(BoosterItems.NETHERITE_CONVERTER.get())
-                    && e.getItem().getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag().getInt(NetheriteConverterBlockEntity.VALUE_KEY) == 15),
-                "break drops one converter carrying the remaining fifteen points and no redeemed plate");
+                    && !e.getItem().getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag().contains("NetheriteValue")),
+                "break drops one converter without obsolete points or a plate refund");
             cleanup(helper, f); helper.succeed();
         });
     }
 
     @GameTest(template = "wireless_empty", timeoutTicks = 70)
-    public static void plateSlotAndBucketInteraction(GameTestHelper helper) {
+    public static void fluidOnlyPortsRejectMaterialDepositsAndBuckets(GameTestHelper helper) {
         Fixture f = fixture(helper, 230, 64);
-        var player = FakePlayerFactory.get(helper.getLevel(), new GameProfile(UUID.randomUUID(), "ConverterSlotQA"));
-        helper.assertTrue(f.be.getPlateInventory().insertItem(0, new ItemStack(Items.DIAMOND), false).is(Items.DIAMOND), "slot rejects non-sheets");
-        helper.assertTrue(f.be.getPlateInventory().insertItem(0, new ItemStack(BoosterItems.NETHERITE_SHEET.get(), 2), false).isEmpty() && f.be.getNetheriteValue() == 32, "deposit converts both sheets into thirty-two points");
+        var player = FakePlayerFactory.get(helper.getLevel(), new GameProfile(UUID.randomUUID(), "ConverterPortQA"));
+        helper.assertTrue(helper.getLevel().getCapability(Capabilities.ItemHandler.BLOCK, f.pos, null) == null,
+            "converter exposes no item deposit capability");
+        for (Direction side : Direction.values()) {
+            helper.assertTrue(helper.getLevel().getCapability(Capabilities.ItemHandler.BLOCK, f.pos, side) == null,
+                "converter has no item deposit capability on " + side);
+            helper.assertTrue(helper.getLevel().getCapability(Capabilities.FluidHandler.BLOCK, f.pos, side) != null,
+                "converter exposes a pipe fluid port on " + side);
+        }
         helper.assertTrue(f.be.getEssenceTank().fill(new FluidStack(Fluids.LAVA, 1000), FluidAction.EXECUTE) == 0, "fluid port rejects lava");
-        player.setPos(f.pos.getCenter().add(0, 0, 2)); player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(BoosterFluids.ESSENCE_BUCKET.get()));
-        helper.getLevel().getBlockState(f.pos).useItemOn(player.getMainHandItem(), helper.getLevel(), player, InteractionHand.MAIN_HAND,
-            new BlockHitResult(f.pos.getCenter(), Direction.SOUTH, f.pos, false));
-        helper.assertTrue(f.be.getEssenceTank().getFluidAmount() == 1000 && player.getMainHandItem().is(Items.BUCKET), "real bucket interaction fills the machine and returns its container");
-        player.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY); player.setShiftKeyDown(true);
-        helper.getLevel().getBlockState(f.pos).useItemOn(player.getMainHandItem(), helper.getLevel(), player, InteractionHand.MAIN_HAND,
-            new BlockHitResult(f.pos.getCenter(), Direction.SOUTH, f.pos, false));
-        helper.assertTrue(f.be.getPlateInventory().getStackInSlot(0).isEmpty() && f.be.getNetheriteValue() == 32
-            && player.getInventory().items.stream().noneMatch(s -> s.is(BoosterItems.NETHERITE_SHEET.get())), "sneak empty-hand shows value without recreating redeemed sheets");
+        player.setPos(f.pos.getCenter().add(0, 0, 2));
+        for (Item item : List.of(BoosterItems.NETHERITE_SHEET.get(), Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE, BoosterFluids.ESSENCE_BUCKET.get())) {
+            player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(item));
+            helper.getLevel().getBlockState(f.pos).useItemOn(player.getMainHandItem(), helper.getLevel(), player, InteractionHand.MAIN_HAND,
+                new BlockHitResult(f.pos.getCenter(), Direction.SOUTH, f.pos, false));
+            helper.assertTrue(player.getMainHandItem().is(item) && player.getMainHandItem().getCount() == 1 && f.be.getEssenceTank().isEmpty(),
+                "right-click does not deposit material or transfer a bucket: " + item);
+        }
+        helper.assertTrue(helper.getLevel().getCapability(Capabilities.FluidHandler.BLOCK, f.pos, Direction.SOUTH)
+                .fill(new FluidStack(BoosterFluids.NETHER_ESSENCE.get(), 1000), FluidAction.EXECUTE) == 1000,
+            "the pipe capability accepts essence without any material deposit");
+        var saved = f.be.saveWithoutMetadata(helper.getLevel().registryAccess());
+        helper.assertTrue(!saved.contains("NetheriteValue") && !saved.contains("Plate"), "fluid-only storage contains no material points or deposit inventory");
         cleanup(helper, f); helper.succeed();
     }
 
@@ -251,20 +275,25 @@ public final class NetheriteConverterGameTest {
                 helper.assertTrue(Math.abs(((com.simibubi.create.content.kinetics.base.KineticBlockEntity) helper.getLevel().getBlockEntity(pos)).getSpeed()) == 64,
                     "the real mixer fixture must receive power through a cogwheel");
                 var items = helper.getLevel().getCapability(Capabilities.ItemHandler.BLOCK, pos.below(2), null);
+                ItemHandlerHelper.insertItemStacked(items, new ItemStack(Items.ANCIENT_DEBRIS), false);
                 ItemHandlerHelper.insertItemStacked(items, new ItemStack(Items.BLAZE_POWDER), false);
                 ItemHandlerHelper.insertItemStacked(items, new ItemStack(Items.NETHER_WART), false);
-                helper.getLevel().getCapability(Capabilities.FluidHandler.BLOCK, pos.below(2), null).fill(new FluidStack(Fluids.LAVA, 1000), FluidAction.EXECUTE);
             }
         });
         helper.runAfterDelay(350, () -> {
             var nether = helper.getLevel().getCapability(Capabilities.FluidHandler.BLOCK, upgraded.below(2), null);
             var original = helper.getLevel().getCapability(Capabilities.FluidHandler.BLOCK, regular.below(2), null);
             helper.assertTrue(amount(nether, BoosterFluids.NETHER_ESSENCE.get()) == 1000 && amount(nether, Fluids.LAVA) == 0,
-                "actual netherite mixer produces exactly 1000mB essence from the lava recipe");
-            helper.assertTrue(amount(original, BoosterFluids.NETHER_ESSENCE.get()) == 0 && amount(original, Fluids.LAVA) == 1000,
+                "actual netherite mixer produces exactly 1000mB essence from debris, wart and blaze powder without lava");
+            var upgradedItems = helper.getLevel().getCapability(Capabilities.ItemHandler.BLOCK, upgraded.below(2), null);
+            var regularItems = helper.getLevel().getCapability(Capabilities.ItemHandler.BLOCK, regular.below(2), null);
+            helper.assertTrue(count(upgradedItems, Items.ANCIENT_DEBRIS) == 0 && count(upgradedItems, Items.NETHER_WART) == 0
+                && count(upgradedItems, Items.BLAZE_POWDER) == 0, "essence production consumes exactly its three ingredients");
+            helper.assertTrue(amount(original, BoosterFluids.NETHER_ESSENCE.get()) == 0 && count(regularItems, Items.ANCIENT_DEBRIS) == 1
+                && count(regularItems, Items.NETHER_WART) == 1 && count(regularItems, Items.BLAZE_POWDER) == 1,
                 "normal mixer cannot consume or produce the exclusive essence recipe");
             for (BlockPos pos : List.of(upgraded, regular)) {
-                for (int dy = -2; dy <= 0; dy++) helper.getLevel().removeBlock(pos.above(dy), false);
+                for (int dy = -3; dy <= 0; dy++) helper.getLevel().removeBlock(pos.above(dy), false);
                 for (int dy = 0; dy <= 2; dy++) helper.getLevel().removeBlock(pos.west().above(dy), false);
             }
             helper.succeed();
@@ -308,7 +337,7 @@ public final class NetheriteConverterGameTest {
         });
         helper.runAfterDelay(150, () -> {
             helper.assertTrue(count(f.inventory(), BoosterItems.NETHERITE_MECHANICAL_PRESS.get()) == 1
-                && f.be.getOrCreateNetwork().getActualStressOf(f.be) == 2048 && f.be.getEssenceTank().getFluidAmount() == 750,
+                && f.be.getOrCreateNetwork().getActualStressOf(f.be) == 2048 && f.be.getEssenceTank().isEmpty(),
                 "exactly 2048SU actual capacity runs one full conversion");
             cleanup(helper, f); helper.succeed();
         });
@@ -335,7 +364,6 @@ public final class NetheriteConverterGameTest {
         }
         var converter = (NetheriteConverterBlockEntity) level.getBlockEntity(machine);
         helper.runAfterDelay(5, () -> {
-            converter.getPlateInventory().insertItem(0, new ItemStack(BoosterItems.NETHERITE_SHEET.get()), false);
             converter.getEssenceTank().fill(new FluidStack(BoosterFluids.NETHER_ESSENCE.get(), 1000), FluidAction.EXECUTE);
             var carried = new TransportedItemStack(new ItemStack(AllBlocks.MECHANICAL_PRESS.get(), 2)); carried.beltPosition = carried.prevBeltPosition = .5F;
             ((com.simibubi.create.content.kinetics.belt.BeltBlockEntity) level.getBlockEntity(controller)).getInventory().addItem(carried);
@@ -345,7 +373,7 @@ public final class NetheriteConverterGameTest {
             helper.assertTrue(items.stream().anyMatch(s -> s.stack.is(BoosterItems.NETHERITE_MECHANICAL_PRESS.get())), "real moving belt reaches the converter and receives an upgraded machine");
             helper.assertTrue(items.stream().filter(s -> s.stack.is(BoosterItems.NETHERITE_MECHANICAL_PRESS.get())).mapToInt(s -> s.stack.getCount()).sum() == 1
                 && items.stream().filter(s -> s.stack.is(AllBlocks.MECHANICAL_PRESS.asItem())).mapToInt(s -> s.stack.getCount()).sum() == 1
-                && converter.getEssenceTank().getFluidAmount() == 750 && converter.getNetheriteValue() == 15,
+                && converter.getEssenceTank().isEmpty(),
                 "one five-second belt operation upgrades only one input and preserves the waiting remainder");
             for (BlockPos pos : List.of(machine, beltDrive, machineDrive, controller, controller.south(), controller.south(2))) level.removeBlock(pos, false);
         });
@@ -376,7 +404,6 @@ public final class NetheriteConverterGameTest {
         return new Fixture(helper, pos, depot, motor, (NetheriteConverterBlockEntity) level.getBlockEntity(pos), rpm);
     }
     private static void supply(Fixture f, int fluid) {
-        f.be.getPlateInventory().insertItem(0, new ItemStack(BoosterItems.NETHERITE_SHEET.get()), false);
         f.be.getEssenceTank().fill(new FluidStack(BoosterFluids.NETHER_ESSENCE.get(), fluid), FluidAction.EXECUTE);
     }
     private static void put(Fixture f, ItemStack stack) { ((SmartBlockEntity) f.helper.getLevel().getBlockEntity(f.depot)).getBehaviour(DepotBehaviour.TYPE).setCenteredHeldItem(new TransportedItemStack(stack)); }
@@ -388,7 +415,16 @@ public final class NetheriteConverterGameTest {
     private static int amount(IFluidHandler handler, net.minecraft.world.level.material.Fluid fluid) { int n = 0; for (int i = 0; i < handler.getTanks(); i++) if (handler.getFluidInTank(i).is(fluid)) n += handler.getFluidInTank(i).getAmount(); return n; }
     private static BlockPos mixer(GameTestHelper helper, int height, Block block) {
         var level = helper.getLevel(); BlockPos pos = helper.absolutePos(new BlockPos(1, height, 1));
-        level.setBlock(pos.below(2), AllBlocks.BASIN.getDefaultState(), 3); level.setBlock(pos, block.defaultBlockState(), 3);
+        level.setBlock(pos.below(2), BoosterBlocks.NETHERITE_BASIN.get().defaultBlockState(), 3); level.setBlock(pos, block.defaultBlockState(), 3);
+        BlockPos burnerPos = pos.below(3);
+        level.setBlock(burnerPos, BoosterBlocks.NETHERITE_BLAZE_BURNER.get().defaultBlockState()
+            .setValue(BlazeBurnerBlock.HEAT_LEVEL, BlazeBurnerBlock.HeatLevel.SMOULDERING), 3);
+        var burner = (NetheriteBlazeBurnerBlockEntity) level.getBlockEntity(burnerPos);
+        burner.setBlazeCount(4);
+        var coal = new ItemStack(Items.COAL);
+        helper.assertTrue(BlazeBurnerBlock.tryInsert(level.getBlockState(burnerPos), level, burnerPos, coal, false, false, false).getResult().consumesAction()
+            && coal.isEmpty() && burner.getRemainingBurnTime() > 0 && burner.getHeatLevelFromBlock() == BlazeBurnerBlock.HeatLevel.KINDLED,
+            "native fuel insertion activates the four-blaze netherite burner");
         level.setBlock(pos.west(), AllBlocks.COGWHEEL.getDefaultState().setValue(net.minecraft.world.level.block.state.properties.BlockStateProperties.AXIS, Direction.Axis.Y), 3);
         level.setBlock(pos.west().above(), AllBlocks.SHAFT.getDefaultState().setValue(net.minecraft.world.level.block.state.properties.BlockStateProperties.AXIS, Direction.Axis.Y), 3);
         level.setBlock(pos.west().above(2), AllBlocks.CREATIVE_MOTOR.getDefaultState().setValue(CreativeMotorBlock.FACING, Direction.DOWN), 3);

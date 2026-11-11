@@ -12,7 +12,6 @@ import com.simibubi.create.content.kinetics.belt.transport.TransportedItemStack;
 import com.simibubi.create.content.logistics.depot.DepotBehaviour;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import io.github.boosterproject.booster.Booster;
-import io.github.boosterproject.booster.content.conversion.ConversionPlate;
 import io.github.boosterproject.booster.content.conversion.NetheriteConverterBlockEntity;
 import io.github.boosterproject.booster.content.equipment.HandheldKineticPower;
 import io.github.boosterproject.booster.registry.BoosterBlocks;
@@ -138,7 +137,7 @@ public final class WrenchUtilitiesGameTest {
     }
 
     @GameTest(template = "wireless_empty", timeoutTicks = 280)
-    public static void upgradeTemplateConvertsExactlyOnceAtNormalFluidCost(GameTestHelper helper) {
+    public static void upgradeTemplateIsNotDepositedAndOneBucketConvertsExactlyOnce(GameTestHelper helper) {
         var level = helper.getLevel(); BlockPos pos = helper.absolutePos(new BlockPos(2, 210, 1)), depot = pos.below(2);
         level.setBlock(depot, AllBlocks.DEPOT.getDefaultState(), 3);
         level.setBlock(pos, BoosterBlocks.NETHERITE_CONVERTER.get().defaultBlockState(), 3);
@@ -148,12 +147,12 @@ public final class WrenchUtilitiesGameTest {
         var machine = (NetheriteConverterBlockEntity) level.getBlockEntity(pos);
         var user = player(helper, "WrenchTemplateQA", pos);
         var template = new ItemStack(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE);
-        helper.assertTrue(ConversionPlate.remaining(template) == 1, "vanilla template has exactly one conversion");
         user.setItemInHand(InteractionHand.MAIN_HAND, template);
         level.getBlockState(pos).useItemOn(template, level, user, InteractionHand.MAIN_HAND,
             new BlockHitResult(pos.getCenter(), Direction.SOUTH, pos, false));
-        helper.assertTrue(template.isEmpty() && machine.getPlateInventory().getStackInSlot(0).isEmpty() && machine.getNetheriteValue() == 1,
-            "normal right-click consumes the template and stores one value");
+        helper.assertTrue(template.is(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE) && template.getCount() == 1
+            && level.getCapability(Capabilities.ItemHandler.BLOCK, pos, null) == null && machine.getEssenceTank().isEmpty(),
+            "normal right-click leaves the template untouched and provides no converter resources");
         helper.runAfterDelay(5, () -> {
             machine.getEssenceTank().fill(new FluidStack(BoosterFluids.NETHER_ESSENCE.get(), 1000), FluidAction.EXECUTE);
             ((SmartBlockEntity) level.getBlockEntity(depot)).getBehaviour(DepotBehaviour.TYPE)
@@ -162,9 +161,9 @@ public final class WrenchUtilitiesGameTest {
         helper.runAfterDelay(240, () -> {
             var inventory = level.getCapability(Capabilities.ItemHandler.BLOCK, depot, null);
             helper.assertTrue(count(inventory, BoosterItems.NETHERITE_MECHANICAL_PRESS.get()) == 1
-                && count(inventory, AllBlocks.MECHANICAL_PRESS.asItem()) == 1 && machine.getNetheriteValue() == 0
-                && machine.getEssenceTank().getFluidAmount() == 750,
-                "one template produces exactly one upgraded machine and consumes only the normal 250mB essence");
+                && count(inventory, AllBlocks.MECHANICAL_PRESS.asItem()) == 1 && machine.getEssenceTank().isEmpty()
+                && machine.getProgress() == 0 && template.getCount() == 1,
+                "1000mB essence upgrades exactly one machine while the second waits and the template remains untouched");
             for (var block : List.of(pos, depot, pos.west(), pos.west(2))) level.removeBlock(block, false);
             helper.succeed();
         });

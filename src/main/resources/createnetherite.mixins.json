@@ -5,6 +5,7 @@
   "compatibilityLevel": "JAVA_21",
   "refmap": "createnetherite.refmap.json",
   "mixins": [
+    "NetheriteEssenceBasinRecipeMixin",
     "NetheriteBasinInventoryMixin",
     "NetheriteCrafterGridAccess",
     "NetheriteCrafterBatchMixin",

@@ -4,7 +4,7 @@
 
 当前分支：`1.21.1-NeoForge`
 
-当前模组版本：`0.3.27`
+当前模组版本：`0.3.28`
 
 # 维护状态
 
@@ -18,7 +18,7 @@ Minecraft `1.20.1` Forge 的 `main` 分支暂停更新，保留现有代码和�
 
 安装适用于1.21.1 NeoForge的 **JEI 19.21.0.247或更新的19.x版本** 后，可用默认 `R` 查看制作方法、`U` 查看用途。普通合成和下界合金板冲压配方沿用原版／Create展示；新增“下界合金搅拌”和“下界合金转换”分类，读取当前世界的配方数据，包含全部20条转换路线和两级扳手升级。
 
-下界精华配方为 **1烈焰粉＋1地狱疣＋1000mB岩浆→1000mB下界精华**，仅列出下界合金搅拌机和工作盆。精华桶可查看注液器的 **空桶＋1000mB下界精华** 配方，并有获取说明。转换配方显示实际产物、250mB精华、对应下界合金值、固定5秒和2048SU；板材／模板单独说明为预先兑换点数的来源。冲压机、搅拌机、动力锯、机械手和鼓风机均可查看其支持的加工分类，空／满烈焰人燃烧室分别匹配配方。
+下界精华配方为 **1远古残骸＋1地狱疣＋1烈焰粉→1000mB下界精华**，无需岩浆。要求下界合金搅拌机、下界合金工作盆，以及装满4只烈焰人且正在加热的下界合金燃烧室。转换配方显示1000mB用量，高级扳手显示4000mB，均为固定5秒、2048SU；不再显示点数或板材／模板投入。精华桶仍可用注液器装满和运输，但不能右键注入转换机。
 
 JEI为可选客户端模组。开发环境需要随游戏加载JEI时，给启动命令加 `-PwithJei=true`；发布包不内置JEI。
 
@@ -67,9 +67,9 @@ JEI为可选客户端模组。开发环境需要随游戏加载JEI时，给启�
 
 下界合金动力冲压机支持批量冲压，并在工作盆中连续处理当前可匹配的配方；基础应力消耗沿用普通动力冲压机。
 
-下界合金动力合成器每格可放一组材料（遵守物品本身的堆叠上限），一轮合成能凑出的最多份数；多余材料留在原格。例如上下两格分别放64和7个木板，一轮得到28根木棍，第一格保留57个木板。产物和返还的容器按正常堆叠输出，出口堵塞时等待。拼装布局、箭头、槽位盖板、红石启动和应力消耗沿用原版；混用普通动力合成器时每轮只合成一份。获取方式：**普通动力合成器＋下界合金板**无序合成，或在下界合金转换机中转换（1点下界合金值＋250mB下界精华）。按Shift查看概要，JEI可查两种升级路线和原版动力合成分类。
+下界合金动力合成器每格可放一组材料（遵守物品本身的堆叠上限），一轮合成能凑出的最多份数；多余材料留在原格。例如上下两格分别放64和7个木板，一轮得到28根木棍，第一格保留57个木板。产物和返还的容器按正常堆叠输出，出口堵塞时等待。拼装布局、箭头、槽位盖板、红石启动和应力消耗沿用原版；混用普通动力合成器时每轮只合成一份。获取方式：**普通动力合成器＋下界合金板**无序合成，或在下界合金转换机中转换（1000mB下界精华）。按Shift查看概要，JEI可查两种升级路线和原版动力合成分类。
 
-下界合金工作盆的物品容量是原版的 **3倍**：输入和产物各从9格增加到 **27格**，普通64堆叠物品各可容纳 **1728个**；同种物品可占多格，鸡蛋、桶等保留自身堆叠上限。流体容量保持原版，可搭配普通及下界合金冲压机、搅拌机，保留配方过滤、加热、侧向输出、机械臂和包裹输入。多产物先合计检查空间，装不下时不消耗原料。使用 **普通工作盆＋下界合金板** 无序合成，或在下界合金转换机中升级（1点下界合金值＋250mB下界精华）。按Shift查看概要，JEI可查询制作与加工用途。
+下界合金工作盆的物品容量是原版的 **3倍**：输入和产物各从9格增加到 **27格**，普通64堆叠物品各可容纳 **1728个**；同种物品可占多格，鸡蛋、桶等保留自身堆叠上限。流体容量保持原版，可搭配普通及下界合金冲压机、搅拌机，保留配方过滤、加热、侧向输出、机械臂和包裹输入。多产物先合计检查空间，装不下时不消耗原料。使用 **普通工作盆＋下界合金板** 无序合成，或在下界合金转换机中升级（1000mB下界精华）。按Shift查看概要，JEI可查询制作与加工用途。
 
 下界合金动力搅拌机采用与下界合金冲压机相同的批量加速方式：一次搅拌周期结束时，连续处理工作盆中当前仍可匹配的配方。搅拌动作和每周期等待时间沿用原版，批量处理的吞吐提升取决于盆内材料数量。应力消耗为普通搅拌机的 `1` 倍（默认基础值 `4 SU/RPM`）；配方、加热、超级加热、无序合成、酿造、过滤和工作盆输出规则沿用 Create。一个下界合金板加一个原版动力搅拌机，无序合成一个升级品。
 
@@ -158,11 +158,11 @@ JEI为可选客户端模组。开发环境需要随游戏加载JEI时，给启�
 
 新增转换途径，原有合成配方保留。把转换机放在传送带、置物台等处理位的**上方两格**，将普通机器物品送到下方，可逐个转换为对应下界合金版本。支持机器和两级扳手升级，烈焰人燃烧室的空壳和已有烈焰人版本分别转换。
 
-转换机固定占用 **2048SU**，每个物品需要连续供能 **5秒（100tick）**；提高转速不会加速，断电或过载会重新计时。每次完成消耗 **250mB下界精华** 和配方所需的下界合金值，未完成不扣这些资源。内置精华槽4000mB，可用管道或桶注入；不接受岩浆等其他流体。
+转换机固定占用 **2048SU**，每个物品连续供能 **5秒（100tick）**；提高转速不会加速，断电或过载重新计时。普通加工每件消耗 **1000mB下界精华**，下界合金下界合金扳手消耗 **4000mB**，未完成不消耗流体。内置4000mB槽只接受下界精华，通过管道和动力泵供液。
 
-右键投入一张下界合金板，会立即消耗板材并存入 **16点下界合金值**；原版下界合金升级模板兑换 **1点**。普通机器升级每件消耗 **1点**，下界合金扳手升级为下界合金下界合金扳手消耗 **16点**；均需每件250mB精华。可通过自动化批量投入，空手右键查看点数，工程师护目镜显示点数、精华与进度。已兑换的板材不能取回；旧版部分使用的板材只兑换其剩余点数。拆除或用扳手拾取时，点数随转换机物品保存，重新放置后恢复。暂不制作转换动作动画。
+转换机不再接收下界合金板或升级模板，也不再存储、消耗下界合金值。空手右键不显示物品栏上方文字；工程师护目镜可查看精华和进度。物品放在下方两格的置物台或传送带上加工。
 
-**思索教程：** 悬停下界合金转换机并按住默认 `W`，查看“获取与查看下界合金值”“转换普通机器”“制作两级扳手”三段用法动画。覆盖板材和模板投入、动力与精华准备、普通机器升级、基础扳手两种制作方式及16点进阶升级，支持中英文字幕。
+**思索教程：** 悬停转换机并按住默认 `W`，查看“供给下界精华”“转换普通机器”“制作两级扳手”。演示实际管道与动力泵供液、固定动力要求、普通加工1000mB和高级扳手4000mB；中英文说明同步更新。
 
 转换机的有序合成：
 
@@ -171,7 +171,7 @@ JEI为可选客户端模组。开发环境需要随游戏加载JEI时，给启�
 | 龙息 | 附魔台 | 龙息 |
 | 黑曜石 | 钻石块 | 哭泣的黑曜石 |
 
-下界精华只能由**下界合金动力搅拌机**在工作盆中制作：**1烈焰粉＋1地狱疣＋1000mB岩浆→1000mB下界精华**，无需额外热源。普通动力搅拌机不能制作。
+下界精华只能由**下界合金动力搅拌机**在**下界合金工作盆**中制作：**1远古残骸＋1地狱疣＋1烈焰粉→1000mB下界精华**。工作盆下方必须有装满 **4只烈焰人** 且已燃料加热的下界合金燃烧室；普通工作盆、普通燃烧室、少于4只或未加热均不能生产。
 
 # 下界合金弹射置物台
 
@@ -217,11 +217,11 @@ JEI为可选客户端模组。开发环境需要随游戏加载JEI时，给启�
 
 # 下界合金扳手
 
-**原版Create扳手＋下界合金板** 无序合成，或将原版扳手放到下界合金转换机下方，消耗 **1点下界合金值＋250mB下界精华** 制作。主手持有时 **方块触及距离+2**，实体攻击距离不变，保留原版扳手功能；无耐久损耗，掉落物防火、防爆。基础扳手不使用模块轮盘。
+**原版Create扳手＋下界合金板** 无序合成，或将原版扳手放到下界合金转换机下方，消耗 **1000mB下界精华** 制作。主手持有时 **方块触及距离+2**，实体攻击距离不变，保留原版扳手功能；无耐久损耗，掉落物防火、防爆。基础扳手不使用模块轮盘。
 
 # 下界合金下界合金扳手
 
-将 **下界合金扳手** 放到转换机下方，消耗 **16点下界合金值＋250mB下界精华**，连续供能5秒即可制成。基础伤害 **10**（下界合金剑+2）、攻速 **1.6**，无耐久损耗，保留主手 **方块触及距离+2** 和 Create 扳手旋转、拆卸功能。
+将 **下界合金扳手** 放到转换机下方，消耗 **4000mB下界精华**，连续供能5秒即可制成。基础伤害 **10**（下界合金剑+2）、攻速 **1.6**，无耐久损耗，保留主手 **方块触及距离+2** 和 Create 扳手旋转、拆卸功能。
 
 先将扳手放入 **装配台** 中央槽，再往周围 **8个真实槽位** 装入下列工作方块（每槽一个），也可取出；取出已激活的模块立即停用，模块物品组件和储液随扳手保存。装配台无需动力，用 **工作台＋安山机壳＋下界合金板** 无序合成，拆除会返还内部扳手和剩余模板。
 
@@ -282,7 +282,7 @@ createnetherite-server.toml
 构建产物：
 
 ```text
-build/libs/createnetherite-1.21.1-0.3.27.jar
+build/libs/createnetherite-1.21.1-0.3.28.jar
 ```
 
 # Introduction
@@ -291,7 +291,7 @@ build/libs/createnetherite-1.21.1-0.3.27.jar
 
 Current branch: `1.21.1-NeoForge`
 
-Current mod version: `0.3.27`
+Current mod version: `0.3.28`
 
 # Maintenance status
 
@@ -305,7 +305,7 @@ Technical documentation (Chinese): [NeoForge 1.21.1](docs/neoforge-1.21.1.md) ·
 
 With **JEI 19.21.0.247 or a newer 19.x release for 1.21.1 NeoForge**, use the default `R` to view recipes and `U` to view uses. Crafting and sheet pressing retain their native displays. New Netherite Mixing and Netherite Conversion categories read the current world's recipe data, including all 20 conversions and both wrench upgrade steps.
 
-Nether Essence uses **1 Blaze Powder + 1 Nether Wart + 1000mB Lava → 1000mB Nether Essence**, with only the Netherite Mixer and Basin listed. The essence bucket is shown through Create's **empty bucket + 1000mB essence** Spout filling recipe and an information page. Conversions show the actual output, 250mB essence, recipe-specific Netherite Value, fixed 5 seconds and 2048SU. Sheets and templates are explained separately as prepaid point sources. Upgraded presses, mixers, saws, deployers and fans open their supported processing categories; empty and filled burners are distinct recipe ingredients.
+Nether Essence uses **1 Ancient Debris +1 Nether Wart +1 Blaze Powder →1000mB essence**, with no lava. Requires a Netherite Mixer, Netherite Basin and a fueled Netherite Burner containing all four blazes. JEI shows1000mB per normal conversion and4000mB for the advanced wrench, fixed five seconds and2048SU, with no point-source slots. Essence buckets remain transport/filling items and cannot fill the converter by right-click.
 
 JEI is optional and is not bundled in the release. Add `-PwithJei=true` to development launch commands to load it locally.
 
@@ -354,9 +354,9 @@ The Netherite Elevator Pulley uses twice the rotational speed in Create's moveme
 
 The Netherite Mechanical Press supports bulk pressing and repeatedly processes the current matching basin recipe. Its base stress impact follows the regular Mechanical Press.
 
-The Netherite Mechanical Crafter holds one normal stack per cell and crafts the largest complete batch in one cycle. Excess ingredients stay in their original cells: two vertical cells holding 64 and 7 planks produce 28 sticks, leaving 57 planks. Products and crafting containers split into legal stacks and wait if the outlet is blocked. Layouts, arrows, slot covers, redstone starts and stress follow Create; mixed chains with ordinary crafters craft one recipe per cycle. Upgrade shapelessly with a **Mechanical Crafter + Netherite Sheet**, or convert the original for 1 Netherite Value and 250mB Nether Essence. Hold Shift for its summary; JEI lists both acquisition routes and native crafter categories.
+The Netherite Mechanical Crafter holds one normal stack per cell and crafts the largest complete batch in one cycle. Excess ingredients stay in their original cells: two vertical cells holding 64 and 7 planks produce 28 sticks, leaving 57 planks. Products and crafting containers split into legal stacks and wait if the outlet is blocked. Layouts, arrows, slot covers, redstone starts and stress follow Create; mixed chains with ordinary crafters craft one recipe per cycle. Upgrade shapelessly with a **Mechanical Crafter + Netherite Sheet**, or convert the original for 1000mB Nether Essence. Hold Shift for its summary; JEI lists both acquisition routes and native crafter categories.
 
-The Netherite Basin has **3 times** the regular item capacity: **27 input slots and 27 product slots**, each holding up to **1728 ordinary items**. Identical items can occupy several slots; normal item stack limits still apply. Fluid capacity stays native. Works with regular and Netherite Presses and Mixers, retaining recipe filters, heat, side outputs, Mechanical Arms and package input. The full product list is checked together before ingredients are consumed. Upgrade with a **Basin + Netherite Sheet** in shapeless crafting, or convert a Basin for 1 Netherite Value and 250mB Nether Essence. Hold Shift for the summary; JEI lists acquisition and processing uses.
+The Netherite Basin has **3 times** the regular item capacity: **27 input slots and 27 product slots**, each holding up to **1728 ordinary items**. Identical items can occupy several slots; normal item stack limits still apply. Fluid capacity stays native. Works with regular and Netherite Presses and Mixers, retaining recipe filters, heat, side outputs, Mechanical Arms and package input. The full product list is checked together before ingredients are consumed. Upgrade with a **Basin + Netherite Sheet** in shapeless crafting, or convert a Basin for 1000mB Nether Essence. Hold Shift for the summary; JEI lists acquisition and processing uses.
 
 The Netherite Mechanical Mixer uses the same batch acceleration as the Netherite Mechanical Press: when a mixing cycle finishes, it repeatedly processes the current recipe while it still matches. Movement and per-cycle waiting time follow Create, so the throughput gain depends on the ingredients available in the basin. Stress consumption matches the regular mixer's (`1×`, default base impact: `4 SU/RPM`). Recipes, heat requirements, shapeless crafting, brewing, filtering, and basin output follow Create's rules. Craft one Netherite Sheet with a regular Mechanical Mixer to obtain the upgrade.
 
@@ -443,11 +443,11 @@ Craft one Netherite Sheet with an original Smart Chute in a shapeless recipe. Th
 
 An additional upgrade route; existing crafting recipes remain. Place the converter **two blocks above** a belt, depot or compatible processing inventory. It upgrades machines and both wrench tiers one item at a time, with separate empty and occupied Blaze Burner recipes.
 
-The converter uses a fixed **2048 SU** and **5 continuous seconds (100 ticks)** per item. Higher RPM does not speed it up; power loss or overstress restarts progress. Completion costs **250 mB of Nether Essence** and the recipe's Netherite Value. Unfinished work spends neither resource. Its 4000 mB tank accepts essence through pipes or buckets and rejects other fluids.
+The converter uses a fixed **2048SU** for **5 continuous seconds (100 ticks)**. Higher RPM does not speed it up; power loss or overstress restarts progress. Normal recipes consume **1000mB essence**; the Netherite Netherite Wrench consumes **4000mB**. Unfinished work consumes no fluid. Its4000mB tank accepts only essence, supplied by pipes and powered pumps.
 
-Right-click to immediately redeem a Netherite Sheet for **16 Netherite Value**, or a vanilla Netherite Upgrade Smithing Template for **1 value**. Ordinary upgrades cost **1 value**; upgrading a Netherite Wrench to a Netherite Netherite Wrench costs **16 value**. Each still uses 250 mB essence. Automation can deposit stacks. Right-click empty-handed to view value; Engineer's Goggles show value, fluid and progress. Redeemed items cannot be retrieved; legacy partially used sheets add only their remaining value. Breaking or wrench pickup stores value on the converter item, and placing it restores that value. The machine currently has no conversion animation.
+Sheets and upgrade templates are no longer deposited, and Netherite Value is no longer stored or consumed. Empty-hand interaction sends no text above the hotbar. Engineer’s Goggles show essence and progress. Items are processed on a depot or belt two blocks below.
 
-**Ponder tutorials:** Hover the Netherite Converter and hold the default `W` key for “Getting and checking Netherite Value”, “Converting a machine”, and “Making both wrench tiers”. These usage scenes cover deposits, power and essence, ordinary upgrades, both basic-wrench methods, and the 16-value advanced upgrade, with English and Chinese captions.
+**Ponder tutorials:** Hover the Converter and hold the default `W` key for “Supplying Nether Essence”, “Converting a machine” and “Making both wrench tiers”. Scenes show the actual pump/pipe supply, fixed power,1000mB normal conversion and4000mB advanced wrench upgrade, with English and Chinese captions.
 
 Shaped crafting recipe:
 
@@ -456,7 +456,7 @@ Shaped crafting recipe:
 | Dragon's Breath | Enchanting Table | Dragon's Breath |
 | Obsidian | Diamond Block | Crying Obsidian |
 
-Only a **Netherite Mechanical Mixer** can produce essence in a basin: **1 Blaze Powder + 1 Nether Wart + 1000 mB Lava → 1000 mB Nether Essence**. No extra heat source is required. A regular mixer cannot make it.
+Only a **Netherite Mechanical Mixer** can produce essence: **1 Ancient Debris +1 Nether Wart +1 Blaze Powder →1000mB Nether Essence**, with no lava. Use a **Netherite Basin** above a fueled **four-blaze Netherite Burner**. Ordinary basins/burners and fewer than four blazes cannot make it.
 
 # Netherite Weighted Ejector
 
@@ -502,11 +502,11 @@ Upgrade one original Mechanical Saw with one Netherite Sheet in a shapeless reci
 
 # Netherite Wrench
 
-Craft shapelessly from a **Create Wrench + Netherite Sheet**, or convert a Create Wrench for **1 Netherite Value + 250 mB Nether Essence**. Adds **2 blocks of block interaction reach** in the main hand without changing entity attack reach. Retains the original wrench functions, with no durability, fireproof and explosion-proof drops. The basic wrench does not use the module wheel.
+Craft shapelessly from a **Create Wrench + Netherite Sheet**, or convert a Create Wrench for **1000mB Nether Essence**. Adds **2 blocks of block interaction reach** in the main hand without changing entity attack reach. Retains the original wrench functions, with no durability, fireproof and explosion-proof drops. The basic wrench does not use the module wheel.
 
 # Netherite Netherite Wrench
 
-Convert a **Netherite Wrench** using **16 Netherite Value + 250 mB Nether Essence** with five seconds of uninterrupted power. Base attack damage is **10** (Netherite Sword +2), attack speed **1.6**, with no durability loss. Retains **2 extra blocks of main-hand block reach** and Create wrench rotation and dismantling.
+Convert a **Netherite Wrench** using **4000mB Nether Essence** with five seconds of uninterrupted power. Base attack damage is **10** (Netherite Sword +2), attack speed **1.6**, with no durability loss. Retains **2 extra blocks of main-hand block reach** and Create wrench rotation and dismantling.
 
 Put the wrench in the center slot of an **Assembly Table**, then install or remove the listed blocks in its **eight real module slots**, one per slot. Removing an active module disables it; item components and fluids stay with the wrench. The table needs no power and is crafted shapelessly from a **Crafting Table + Andesite Casing + Netherite Sheet**. Breaking it returns the stored wrench and remaining templates.
 
@@ -567,5 +567,5 @@ Existing worlds keep their own `serverconfig/createnetherite-server.toml`. If de
 Build output:
 
 ```text
-build/libs/createnetherite-1.21.1-0.3.27.jar
+build/libs/createnetherite-1.21.1-0.3.28.jar
 ```

@@ -72,20 +72,24 @@ public final class JeiRecipeGameTest {
         List<Slot> mixing = layout(setup, "netherite_mixing", "mixing/nether_essence");
         helper.assertTrue(hasItem(mixing, RecipeIngredientRole.INPUT, Items.BLAZE_POWDER)
             && hasItem(mixing, RecipeIngredientRole.INPUT, Items.NETHER_WART)
-            && fluid(mixing, RecipeIngredientRole.INPUT, Fluids.LAVA) == 1000
-            && fluid(mixing, RecipeIngredientRole.OUTPUT, BoosterFluids.NETHER_ESSENCE.get()) == 1000,
-            "the actual JEI layout indexes both ingredients and the exact lava/essence quantities");
+            && hasItem(mixing, RecipeIngredientRole.INPUT, Items.ANCIENT_DEBRIS)
+            && fluid(mixing, RecipeIngredientRole.INPUT, Fluids.LAVA) == 0
+            && fluid(mixing, RecipeIngredientRole.OUTPUT, BoosterFluids.NETHER_ESSENCE.get()) == 1000
+            && hasItem(mixing, RecipeIngredientRole.RENDER_ONLY, BoosterItems.NETHERITE_BASIN.get())
+            && hasItem(mixing, RecipeIngredientRole.RENDER_ONLY, BoosterItems.NETHERITE_BLAZE_BURNER.get())
+            && !hasItem(mixing, RecipeIngredientRole.RENDER_ONLY, com.simibubi.create.AllBlocks.BASIN.asItem()),
+            "the actual JEI layout indexes all three ingredients, no lava and1000mB essence");
         List<Slot> conversion = layout(setup, "netherite_conversion", "conversion/netherite_netherite_wrench");
         helper.assertTrue(hasItem(conversion, RecipeIngredientRole.INPUT, BoosterItems.NETHERITE_WRENCH.get())
             && hasItem(conversion, RecipeIngredientRole.OUTPUT, BoosterItems.NETHERITE_NETHERITE_WRENCH.get())
-            && fluid(conversion, RecipeIngredientRole.INPUT, BoosterFluids.NETHER_ESSENCE.get()) == 250,
-            "advanced wrench conversion is searchable with its basic wrench input and 250mB fluid");
+            && fluid(conversion, RecipeIngredientRole.INPUT, BoosterFluids.NETHER_ESSENCE.get()) == 4000,
+            "advanced wrench conversion is searchable with its basic wrench input and4000mB fluid");
         var advanced = (NetheriteConversionRecipe) setup.recipes.get("createnetherite:netherite_conversion").stream()
             .filter(recipe -> recipe.id().getPath().equals("conversion/netherite_netherite_wrench")).findFirst().orElseThrow().value();
-        helper.assertTrue(advanced.getNetheriteCost() == 16
+        helper.assertTrue(advanced.getEssenceAmount() == 4000
             && !hasItem(conversion, RecipeIngredientRole.INPUT, BoosterItems.NETHERITE_SHEET.get())
-            && hasItem(conversion, RecipeIngredientRole.RENDER_ONLY, BoosterItems.NETHERITE_SHEET.get()),
-            "stored value cost remains sixteen; point sources must not be misrepresented as per-recipe item consumption");
+            && !hasItem(conversion, RecipeIngredientRole.RENDER_ONLY, BoosterItems.NETHERITE_SHEET.get()),
+            "conversion consumes only essence; no obsolete point-source slots remain");
         helper.succeed();
     }
 
@@ -123,7 +127,8 @@ public final class JeiRecipeGameTest {
         helper.assertTrue(catalysts.get(BoosterItems.NETHERITE_MECHANICAL_MIXER.get()).containsAll(Set.of("createnetherite:netherite_mixing", "create:mixing", "create:automatic_shapeless", "create:automatic_brewing"))
             && catalysts.get(BoosterItems.NETHERITE_CONVERTER.get()).contains("createnetherite:netherite_conversion")
             && catalysts.get(BoosterItems.NETHERITE_BASIN.get()).containsAll(Set.of("createnetherite:netherite_mixing", "create:mixing", "create:automatic_shapeless", "create:automatic_brewing", "create:packing", "create:automatic_packing")), "upgraded processing machines and basin open their supported categories");
-        helper.assertTrue(!catalysts.getOrDefault(com.simibubi.create.AllBlocks.MECHANICAL_MIXER.asItem(), Set.of()).contains("createnetherite:netherite_mixing"),
+        helper.assertTrue(!catalysts.getOrDefault(com.simibubi.create.AllBlocks.MECHANICAL_MIXER.asItem(), Set.of()).contains("createnetherite:netherite_mixing")
+            && !catalysts.getOrDefault(com.simibubi.create.AllBlocks.BASIN.asItem(), Set.of()).contains("createnetherite:netherite_mixing"),
             "ordinary mixers must not be advertised for exclusive essence recipes");
         helper.assertTrue(catalysts.get(BoosterItems.NETHERITE_MECHANICAL_PRESS.get()).containsAll(Set.of("create:pressing", "create:packing", "create:automatic_packing"))
             && catalysts.get(BoosterItems.NETHERITE_ENCASED_FAN.get()).size() == 4

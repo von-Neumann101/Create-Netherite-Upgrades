@@ -1,0 +1,12 @@
+# Essence-only conversion and strict essence production
+
+Final user steering: remove material deposits and Netherite Value entirely. Converter accepts essence through pipes only, with1000mB per ordinary conversion and4000mB for the advanced Netherite Netherite Wrench. Essence is1 Ancient Debris +1 Nether Wart +1 Blaze Powder →1000mB, no lava. Preserve the existing exclusive Netherite Mixer, now require a Netherite Basin and a fueled four-blaze Netherite Burner underneath. No model value display or action-bar messages. Fixed2048SU/100 ticks and interruption behavior remain.
+
+- [x] Add real interaction regressions for filled/empty buckets on all faces, no action-bar messages and an actual powered pump/pipe/tank supply. Record failing old interactions.
+- [x] Replace point costs with positive `fluid_amount` (default1000, advanced4000), remove item capability/deposit/point persistence and old helper/loot copy; retain fluid storage and processing safeguards.
+- [x] Add the new essence ingredients/heat and a native BasinRecipe guard for the new basin/four-blaze conditions; prove simulated and real failures do not consume ingredients.
+- [x] Update existing converter/value/wrench/filter regression tests to the new economy without removing applicable coverage. Delegate these isolated test edits; main owns production, new boundary tests, Ponder and JEI.
+- [x] Replace obsolete point and bucket instructions in Ponder/README/translations and JEI with the actual production and fluid costs. Preserve existing art.
+- [x] Run headless build and appropriate server checks and synchronize version0.3.28/docs. No client launch.
+
+Verification: `build/converter-pipe-red.log` reproduced the old bucket/action-bar behavior; `build/essence-requirements-red.log` reproduced invalid basin acceptance before the native recipe guard. Final `build/essence-release-with-jei.log`:205 standalone regression cases and162 required server GameTests pass; `build/essence-release-without-jei.log`:205 and158 pass. New tests cover real pump/pipe flow, all-face container rejection, no action-bar messages, ordinary/three-blaze/unfueled environment rejection and actual mixer rechecks. Migrated tests retain resource boundary3999→4000/999→1000, stress, interruption, components, native placement/pickup, belt and filter coverage. Final read-only review reported no actionable findings. Package:298 production resources,232 classes,212 valid JSON,223 keys per locale; no QA, bundled JEI or retired ConversionPlate helper. Deliver the authorized scoped commit/push after these checks.

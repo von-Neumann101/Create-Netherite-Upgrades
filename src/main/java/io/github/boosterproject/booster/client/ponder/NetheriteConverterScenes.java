@@ -3,6 +3,7 @@ package io.github.boosterproject.booster.client.ponder;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.content.logistics.depot.DepotBlockEntity;
+import com.simibubi.create.content.fluids.tank.FluidTankBlockEntity;
 import com.simibubi.create.foundation.ponder.CreateSceneBuilder;
 import io.github.boosterproject.booster.content.conversion.NetheriteConverterBlockEntity;
 import io.github.boosterproject.booster.registry.BoosterFluids;
@@ -17,6 +18,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.neoforged.neoforge.fluids.FluidStack;
 
 public final class NetheriteConverterScenes {
@@ -27,27 +29,17 @@ public final class NetheriteConverterScenes {
 
     private NetheriteConverterScenes() {}
 
-    public static void value(SceneBuilder builder, SceneBuildingUtil util) {
+    public static void supply(SceneBuilder builder, SceneBuildingUtil util) {
         var scene = new CreateSceneBuilder(builder);
-        scene.title("netherite_converter_value", "Getting and checking Netherite Value");
+        scene.title("netherite_converter_supply", "Supplying Nether Essence");
         setup(scene, util);
         machine(scene, util);
-        scene.idle(20);
-        scene.overlay().showControls(util.vector().topOf(CONVERTER), Pointing.DOWN, 75)
-            .rightClick().withItem(new ItemStack(BoosterItems.NETHERITE_SHEET.get()));
-        inventory(scene, 16, 0);
-        text(scene, "converter_value_sheet", CONVERTER, 95);
-        scene.idle(105);
-        scene.overlay().showControls(util.vector().blockSurface(CONVERTER, Direction.SOUTH), Pointing.RIGHT, 80).rightClick();
-        text(scene, "converter_value_read", CONVERTER, 95);
-        scene.idle(105);
-        scene.overlay().showControls(util.vector().topOf(CONVERTER), Pointing.DOWN, 75)
-            .rightClick().withItem(new ItemStack(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE));
-        inventory(scene, 17, 0);
-        text(scene, "converter_value_template", CONVERTER, 90);
+        text(scene, "converter_supply_only", CONVERTER, 105);
+        scene.idle(115);
+        fluidSupply(scene, util, 1000);
+        scene.overlay().showControls(util.vector().topOf(CONVERTER), Pointing.DOWN, 70).withItem(AllItems.GOGGLES.asStack());
+        text(scene, "converter_inspect", CONVERTER, 90);
         scene.idle(100);
-        text(scene, "converter_value_stored", CONVERTER, 95);
-        scene.idle(105);
         scene.markAsFinished();
     }
 
@@ -61,18 +53,11 @@ public final class NetheriteConverterScenes {
         text(scene, "converter_layout", DEPOT, 100);
         scene.idle(110);
         power(scene, util);
-        scene.overlay().showControls(util.vector().topOf(CONVERTER), Pointing.DOWN, 75)
-            .rightClick().withItem(new ItemStack(BoosterItems.NETHERITE_SHEET.get()));
-        inventory(scene, 16, 0);
         text(scene, "converter_power", SHAFT, 100);
         scene.idle(110);
-        scene.overlay().showControls(util.vector().blockSurface(CONVERTER, Direction.SOUTH), Pointing.RIGHT, 80)
-            .rightClick().withItem(new ItemStack(BoosterFluids.ESSENCE_BUCKET.get()));
-        inventory(scene, 16, 1000);
-        text(scene, "converter_fluid", CONVERTER, 95);
-        scene.idle(105);
+        fluidSupply(scene, util, 1000);
         process(scene, util, AllBlocks.MECHANICAL_PRESS.asStack(), new ItemStack(BoosterItems.NETHERITE_MECHANICAL_PRESS.get()),
-            "converter_process", 15, 750);
+            "converter_process", 0);
         collect(scene, util);
         scene.markAsFinished();
     }
@@ -98,26 +83,14 @@ public final class NetheriteConverterScenes {
         machine(scene, util);
         scene.world().showSection(util.select().position(DEPOT), Direction.UP);
         power(scene, util);
-        text(scene, "converter_wrench_supply", CONVERTER, 165);
-        scene.overlay().showControls(util.vector().topOf(CONVERTER), Pointing.DOWN, 50)
-            .rightClick().withItem(new ItemStack(BoosterItems.NETHERITE_SHEET.get()));
-        inventory(scene, 16, 0);
-        scene.idle(55);
-        scene.overlay().showControls(util.vector().topOf(CONVERTER), Pointing.DOWN, 50)
-            .rightClick().withItem(new ItemStack(BoosterItems.NETHERITE_SHEET.get()));
-        inventory(scene, 32, 0);
-        scene.idle(55);
-        scene.overlay().showControls(util.vector().blockSurface(CONVERTER, Direction.SOUTH), Pointing.RIGHT, 55)
-            .rightClick().withItem(new ItemStack(BoosterFluids.ESSENCE_BUCKET.get()));
-        inventory(scene, 32, 1000);
-        scene.idle(65);
+        text(scene, "converter_wrench_supply", CONVERTER, 100);
+        scene.idle(110);
+        fluidSupply(scene, util, 1000);
         process(scene, util, AllItems.WRENCH.asStack(), new ItemStack(BoosterItems.NETHERITE_WRENCH.get()),
-            "converter_wrench_basic", 31, 750);
-        scene.overlay().showControls(util.vector().topOf(DEPOT), Pointing.DOWN, 45).rightClick();
-        item(scene, ItemStack.EMPTY);
-        scene.idle(55);
-        process(scene, util, new ItemStack(BoosterItems.NETHERITE_WRENCH.get()), new ItemStack(BoosterItems.NETHERITE_NETHERITE_WRENCH.get()),
-            "converter_wrench_advanced", 15, 500);
+            "converter_wrench_basic", 0);
+        fluidSupply(scene, util, 4000);
+        process(scene, util, new ItemStack(BoosterItems.NETHERITE_WRENCH.get()),
+            new ItemStack(BoosterItems.NETHERITE_NETHERITE_WRENCH.get()), "converter_wrench_advanced", 0);
         collect(scene, util);
         scene.markAsFinished();
     }
@@ -127,7 +100,7 @@ public final class NetheriteConverterScenes {
         scene.scaleSceneView(.85F);
         scene.showBasePlate();
         scene.world().setKineticSpeed(util.select().everywhere(), 0);
-        inventory(scene, 0, 0);
+        inventory(scene, 0);
     }
 
     private static void machine(CreateSceneBuilder scene, SceneBuildingUtil util) {
@@ -140,14 +113,35 @@ public final class NetheriteConverterScenes {
         scene.effects().rotationDirectionIndicator(SHAFT);
     }
 
+    private static void fluidSupply(CreateSceneBuilder scene, SceneBuildingUtil util, int amount) {
+        BlockPos pipe = CONVERTER.south(), pump = CONVERTER.south(2), source = CONVERTER.south(3), cog = pump.east(), motor = cog.south();
+        scene.world().setBlock(pipe, AllBlocks.FLUID_PIPE.getDefaultState().setValue(BlockStateProperties.NORTH, true).setValue(BlockStateProperties.SOUTH, true), false);
+        scene.world().setBlock(pump, AllBlocks.MECHANICAL_PUMP.getDefaultState().setValue(BlockStateProperties.FACING, Direction.NORTH), false);
+        scene.world().setBlock(source, AllBlocks.FLUID_TANK.getDefaultState(), false);
+        scene.world().setBlock(cog, AllBlocks.COGWHEEL.getDefaultState().setValue(BlockStateProperties.AXIS, Direction.Axis.Z), false);
+        scene.world().setBlock(motor, AllBlocks.CREATIVE_MOTOR.getDefaultState().setValue(BlockStateProperties.FACING, Direction.NORTH), false);
+        scene.world().modifyBlockEntity(source, FluidTankBlockEntity.class,
+            tank -> tank.getTankInventory().setFluid(new FluidStack(BoosterFluids.NETHER_ESSENCE.get(), amount)));
+        scene.world().showSection(util.select().fromTo(pipe, source), Direction.UP);
+        scene.world().showSection(util.select().fromTo(cog, motor), Direction.UP);
+        scene.world().setKineticSpeed(util.select().position(pump), 64);
+        scene.world().setKineticSpeed(util.select().fromTo(cog, motor), -64);
+        scene.world().propagatePipeChange(pump);
+        text(scene, "converter_fluid", pipe, 100);
+        scene.idle(35);
+        scene.world().modifyBlockEntity(source, FluidTankBlockEntity.class, tank -> tank.getTankInventory().setFluid(FluidStack.EMPTY));
+        inventory(scene, amount);
+        scene.idle(75);
+    }
+
     private static void process(CreateSceneBuilder scene, SceneBuildingUtil util, ItemStack input, ItemStack output,
-                                String key, int remainingValue, int remainingFluid) {
+                                String key, int remainingFluid) {
         scene.overlay().showControls(util.vector().topOf(DEPOT), Pointing.DOWN, 70).withItem(input);
         item(scene, input);
         text(scene, key, DEPOT, 110);
         scene.idle(NetheriteConverterBlockEntity.PROCESSING_TICKS);
         item(scene, output);
-        inventory(scene, remainingValue, remainingFluid);
+        inventory(scene, remainingFluid);
         scene.effects().indicateSuccess(DEPOT);
         scene.idle(20);
     }
@@ -162,10 +156,9 @@ public final class NetheriteConverterScenes {
         scene.world().modifyBlockEntity(DEPOT, DepotBlockEntity.class, depot -> depot.setHeldItem(stack.copy()));
     }
 
-    private static void inventory(CreateSceneBuilder scene, int value, int fluid) {
+    private static void inventory(CreateSceneBuilder scene, int fluid) {
         // Storyboards stage client-side state; the real server processing chain is tested separately.
         scene.world().modifyBlockEntity(CONVERTER, NetheriteConverterBlockEntity.class, machine -> {
-            machine.restoreNetheriteValue(value);
             machine.getEssenceTank().setFluid(fluid == 0 ? FluidStack.EMPTY : new FluidStack(BoosterFluids.NETHER_ESSENCE.get(), fluid));
         });
     }

@@ -10,8 +10,8 @@
 
 - 分支：`1.21.1-NeoForge`
 - 源码核对日期：`2026-11-11`
-- 本次更新基线提交：`9dc0bd0649dadea7ef017b8a0cf868090d3571ed`（0.3.26；0.3.27 工作盆见本文末）
-- 模组版本：`0.3.27`
+- 本次更新基线提交：`7c009302afaa45256cca87ddd774951c56f6fb15`（0.3.27；0.3.28 精华加工机制见本文末）
+- 模组版本：`0.3.28`
 - Mod id：`createnetherite`
 - 主包名：`io.github.boosterproject.booster`
 - Minecraft：`1.21.1`
@@ -74,7 +74,7 @@
 按当前配置生成的主 jar：
 
 ```text
-build/libs/createnetherite-1.21.1-0.3.27.jar
+build/libs/createnetherite-1.21.1-0.3.28.jar
 ```
 
 ## Gradle 与依赖
@@ -1320,3 +1320,19 @@ GUI底图由用户指定贴图对话提供：`textures/gui/netherite_nbt_filter.
 验证：新增9项真实服务器测试。容量基线在 `build/basin-red.log` 按预期失败；独立审查指出取消唯一格限制后，多份相同产物可在原生逐项模拟时复用同一空位。真实配方“两组各64钻石、仅65个空位”在 `build/basin-multiple-products-red.log` 复现后，已加入整份产物预留检查。空间不足时原料与现有产物保持不变，腾出空间后128个产物完整产出。测试还覆盖27格满载输入／产物、输入模拟无副作用、产物格写入锁、物品正常堆叠与组件、全部高位槽存档及拆除、普通工作盆不变、两种制作方法、包裹、移动库存、机械臂识别、原生过滤及侧向出口、四种真实动力机器使用24—26号槽。
 
 最终 `build/basin-release-with-jei.log` 中205项回归及157项GameTest通过；`build/basin-release-without-jei.log` 中205项回归及153项GameTest通过。JAR包含298项生产资源、232个生产类、212个有效JSON，中英文各228键；元数据0.3.27，未嵌入JEI或QA资源。PNG可读、RGBA且与原版尺寸匹配。未启动客户端，外观与手动交互由用户检查。
+
+## 精华生产与纯流体转换（0.3.28）
+
+本节取代历史版本的板材／模板投入、NetheriteValue与250mB转换机制。转换机不再提供物品Capability，也不兑换或保存点数；删除ConversionPlate辅助类、板材点数提示和掉落表的NetheriteValue复制。旧保存数据中的点数／Plate字段不再参与新加工。转化目标仍是下方两格置物台／传送带上的物品，固定2048SU、100个连续工作tick，断电或过载重新计时，原有物品组件保留行为继续有效。
+
+NetheriteConversionRecipe新增正整数fluid_amount，默认1000mB；高级下界合金下界合金扳手JSON显式4000mB。编码及网络流保存实际用量并拒绝非正数。每tick检查完整流体预算，完成时一次扣除，不再使用netherite_cost字段。转换机4000mB容量与精华流体过滤保留，仅通过管道供液。流体容器右键被消费为交互但不注入／抽取，阻止后续物品使用落入桶倒液流程；空手右键没有Action Bar消息，护目镜仅显示精华／进度／所需应力。
+
+精华配方改为各1个远古残骸、地狱疣、烈焰粉，产出1000mB，无岩浆。沿用专用NetheriteMixingRecipe类型和下界合金搅拌机缓存；JSON要求heated。另检查工作盆必须为NetheriteBasinBlockEntity，其下必须是blazeCount为4的NetheriteBlazeBurnerBlockEntity。检查必须同时覆盖配方模拟与实际应用，避免加工过程中条件失效仍消耗材料。普通工作盆、普通燃烧室、少于四只烈焰人和未加热都应拒绝。
+
+JEI用量槽读取每条配方的getEssenceAmount，移除点数来源槽和16点标签，精华说明给出完整设备与供热要求；专用搅拌分类不再列普通工作盆。思索改为管道供液、普通加工与两级扳手制作，无板材投入或桶右键示范。沿用现有贴图，不新增模型点数显示，未启动客户端。
+
+`NetheriteEssenceBasinRecipeMixin` 在原生private `BasinRecipe.apply(basin, recipe, simulate)`入口检查专用配方环境，覆盖模拟和实际扣料路径；heated仍由原生热量条件检查。JEI使用专用NetheriteMixingCategory，直接列出三种原料、1000mB产物和正确的下界合金设备／四烈焰人图标，避免沿用原版盆与单只燃烧室动画造成误解。
+
+验证：`build/converter-pipe-red.log` 复现桶右键和Action Bar旧行为；`build/essence-requirements-red.log` 复现普通盆被错误接受。新增用例验证六面桶交互不填／不抽液、空手无提示、真实储罐→动力泵→管道供液；精华环境矩阵拒绝普通盆、普通燃烧室、三只烈焰人和未加热，且不消耗材料；真实搅拌过程重新检查四只条件。既有转换测试迁移并保留999/1000、3999/4000、固定应力／计时、断电重启、物品组件、重载、真实扳手拾取放置、传送带、机身与盆过滤、JSON／网络用量校验。完整三段思索的真实流程由管道先供2000mB，再供4000mB，验证普通机器及两级扳手的实际消耗。
+
+最终完整无界面build：`build/essence-release-with-jei.log` 中205项既有回归和162项GameTest通过；`build/essence-release-without-jei.log` 中205项和158项通过。独立只读复核无待修问题。JAR元数据0.3.28，298项生产资源、232个生产类、212个有效JSON，中英文各223键；不含QA、JEI代码或已退休的ConversionPlate类。客户端未启动，JEI／思索外观由用户检查。

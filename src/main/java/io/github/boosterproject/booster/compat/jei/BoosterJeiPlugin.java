@@ -2,12 +2,12 @@ package io.github.boosterproject.booster.compat.jei;
 
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.compat.jei.category.CreateRecipeCategory;
-import com.simibubi.create.compat.jei.category.MixingCategory;
 import com.simibubi.create.content.processing.basin.BasinRecipe;
 import io.github.boosterproject.booster.Booster;
 import io.github.boosterproject.booster.content.conversion.NetheriteConversionRecipe;
 import io.github.boosterproject.booster.content.processing.burner.NetheriteBlazeBurnerData;
 import io.github.boosterproject.booster.registry.BoosterItems;
+import io.github.boosterproject.booster.registry.BoosterBlocks;
 import io.github.boosterproject.booster.registry.BoosterFluids;
 import io.github.boosterproject.booster.registry.BoosterRecipeTypes;
 import mezz.jei.api.IModPlugin;
@@ -44,11 +44,11 @@ public final class BoosterJeiPlugin implements IModPlugin {
     public void registerCategories(IRecipeCategoryRegistration registration) {
         mixing = new CreateRecipeCategory.Builder<>(BasinRecipe.class)
             .catalyst(BoosterItems.NETHERITE_MECHANICAL_MIXER::get)
-            .catalyst(AllBlocks.BASIN::get)
             .catalyst(BoosterItems.NETHERITE_BASIN::get)
-            .doubleItemIcon(BoosterItems.NETHERITE_MECHANICAL_MIXER.get(), AllBlocks.BASIN.get())
-            .emptyBackground(177, 103)
-            .build(BoosterRecipeTypes.NETHERITE_MIXING.getId(), MixingCategory::standard);
+            .catalyst(BoosterItems.NETHERITE_BLAZE_BURNER::get)
+            .doubleItemIcon(BoosterItems.NETHERITE_MECHANICAL_MIXER.get(), BoosterBlocks.NETHERITE_BASIN.get())
+            .emptyBackground(177, 113)
+            .build(BoosterRecipeTypes.NETHERITE_MIXING.getId(), NetheriteMixingCategory::new);
         conversion = new CreateRecipeCategory.Builder<>(NetheriteConversionRecipe.class)
             .catalyst(BoosterItems.NETHERITE_CONVERTER::get)
             .itemIcon(BoosterItems.NETHERITE_CONVERTER.get())

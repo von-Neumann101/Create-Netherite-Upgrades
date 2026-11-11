@@ -2,15 +2,13 @@
   "type": "createnetherite:netherite_mixing",
   "ingredients": [
     {
-      "item": "minecraft:blaze_powder"
+      "item": "minecraft:ancient_debris"
     },
     {
       "item": "minecraft:nether_wart"
     },
     {
-      "type": "neoforge:single",
-      "fluid": "minecraft:lava",
-      "amount": 1000
+      "item": "minecraft:blaze_powder"
     }
   ],
   "results": [
@@ -19,5 +17,6 @@
       "amount": 1000
     }
   ],
-  "processing_time": 100
+  "processing_time": 100,
+  "heat_requirement": "heated"
 }

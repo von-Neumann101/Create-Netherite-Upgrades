@@ -14,6 +14,7 @@ import com.simibubi.create.content.logistics.filter.FilterItemStack;
 import com.simibubi.create.content.kinetics.motor.CreativeMotorBlock;
 import com.simibubi.create.content.kinetics.motor.CreativeMotorBlockEntity;
 import com.simibubi.create.content.processing.basin.BasinBlockEntity;
+import com.simibubi.create.content.processing.burner.BlazeBurnerBlock;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.filtering.FilteringBehaviour;
 import io.github.boosterproject.booster.Booster;
@@ -21,6 +22,7 @@ import io.github.boosterproject.booster.registry.BoosterBlocks;
 import io.github.boosterproject.booster.registry.BoosterFluids;
 import io.github.boosterproject.booster.content.kinetics.press.NetheriteMechanicalPressBlockEntity;
 import io.github.boosterproject.booster.content.kinetics.mixer.NetheriteMechanicalMixerBlockEntity;
+import io.github.boosterproject.booster.content.processing.burner.NetheriteBlazeBurnerBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.gametest.framework.GameTest;
@@ -33,13 +35,11 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.common.util.FakePlayerFactory;
-import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.gametest.GameTestHolder;
 import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
@@ -198,19 +198,32 @@ public final class NetheriteProcessingFilterGameTest {
 
     @GameTest(template = "wireless_empty", timeoutTicks = 300)
     public static void fluidOnlyMixingUsesTheFluidResultFilter(GameTestHelper helper) {
-        Fixture f = fixture(helper, true, 270);
+        Fixture initial = fixture(helper, true, 270);
+        BlockPos basinPos = initial.machine.below(2), burnerPos = initial.machine.below(3);
+        helper.getLevel().setBlock(basinPos, BoosterBlocks.NETHERITE_BASIN.get().defaultBlockState(), 3);
+        helper.getLevel().setBlock(burnerPos, BoosterBlocks.NETHERITE_BLAZE_BURNER.get().defaultBlockState()
+            .setValue(BlazeBurnerBlock.HEAT_LEVEL, BlazeBurnerBlock.HeatLevel.SMOULDERING), 3);
+        var burner = (NetheriteBlazeBurnerBlockEntity) helper.getLevel().getBlockEntity(burnerPos);
+        burner.setBlazeCount(4);
+        var coal = new ItemStack(Items.COAL);
+        helper.assertTrue(BlazeBurnerBlock.tryInsert(helper.getLevel().getBlockState(burnerPos), helper.getLevel(), burnerPos, coal, false, false, false).getResult().consumesAction()
+            && coal.isEmpty() && burner.getRemainingBurnTime() > 0 && burner.getHeatLevelFromBlock() == BlazeBurnerBlock.HeatLevel.KINDLED,
+            "native fuel insertion activates a four-blaze netherite burner below the netherite basin");
+        var blocks = new ArrayList<>(initial.blocks); blocks.add(burnerPos);
+        Fixture f = new Fixture(initial.machine, (BasinBlockEntity) helper.getLevel().getBlockEntity(basinPos), blocks);
         filter(helper, f).setFilter(list(true, BoosterFluids.ESSENCE_BUCKET.get()));
         f.basin.getInputInventory().setStackInSlot(0, new ItemStack(Items.BLAZE_POWDER));
         f.basin.getInputInventory().setStackInSlot(1, new ItemStack(Items.NETHER_WART));
+        f.basin.getInputInventory().setStackInSlot(2, new ItemStack(Items.ANCIENT_DEBRIS));
         IFluidHandler fluids = helper.getLevel().getCapability(Capabilities.FluidHandler.BLOCK, f.basin.getBlockPos(), null);
-        fluids.fill(new FluidStack(Fluids.LAVA, 1000), IFluidHandler.FluidAction.EXECUTE);
         helper.runAfterDelay(100, () -> {
-            helper.assertTrue(fluidAmount(fluids, Fluids.LAVA) == 1000 && fluidAmount(fluids, BoosterFluids.NETHER_ESSENCE.get()) == 0,
-                "blacklisting an essence bucket blocks fluid-only essence production");
+            helper.assertTrue(count(f.basin.getInputInventory(), Items.BLAZE_POWDER) == 1 && count(f.basin.getInputInventory(), Items.NETHER_WART) == 1
+                && count(f.basin.getInputInventory(), Items.ANCIENT_DEBRIS) == 1 && fluidAmount(fluids, BoosterFluids.NETHER_ESSENCE.get()) == 0,
+                "blacklisting an essence bucket blocks fluid-only essence production without consuming any ingredient");
             filter(helper, f).setFilter(list(false, BoosterFluids.ESSENCE_BUCKET.get()));
         });
         helper.runAfterDelay(260, () -> {
-            helper.assertTrue(fluidAmount(fluids, Fluids.LAVA) == 0 && fluidAmount(fluids, BoosterFluids.NETHER_ESSENCE.get()) == 1000,
+            helper.assertTrue(f.basin.getInputInventory().isEmpty() && fluidAmount(fluids, BoosterFluids.NETHER_ESSENCE.get()) == 1000,
                 "whitelisting the fluid result wakes the mixer and permits the native essence recipe");
             cleanup(helper, f); helper.succeed();
         });

@@ -11,7 +11,6 @@ import io.github.boosterproject.booster.content.fluids.tank.NetheriteFluidTankBl
 import io.github.boosterproject.booster.content.processing.burner.NetheriteBlazeBurnerData;
 import io.github.boosterproject.booster.registry.BoosterItems;
 import io.github.boosterproject.booster.registry.BoosterFluids;
-import io.github.boosterproject.booster.content.conversion.ConversionPlate;
 import net.createmod.catnip.lang.FontHelper.Palette;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
@@ -26,6 +25,7 @@ public final class BoosterTooltips {
     public static void register() {
         // The converter, fan, ejector and grip use native Ponder; other items use native Shift descriptions.
         for (Item item : List.of(
+            BoosterItems.NETHERITE_SHEET.get(),
             BoosterItems.NETHERITE_WRENCH.get(),
             BoosterItems.ASSEMBLY_TABLE.get(),
             BoosterFluids.ESSENCE_BUCKET.get(),
@@ -55,8 +55,6 @@ public final class BoosterTooltips {
             "tooltip.createnetherite.netherite_fluid_tank",
             NetheriteFluidTankBlockEntity.getConfiguredCapacityMultiplier()
         )));
-        registerWithDetails(BoosterItems.NETHERITE_SHEET.get(), stack -> List.of(Component.translatable(
-            "converter.createnetherite.plate_uses", ConversionPlate.remaining(stack))));
         registerWithDetails(BoosterItems.NETHERITE_BLAZE_BURNER.get(), stack -> {
             int count = NetheriteBlazeBurnerData.getCount(stack);
             return List.of(

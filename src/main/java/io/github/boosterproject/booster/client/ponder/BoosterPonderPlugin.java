@@ -16,7 +16,7 @@ public class BoosterPonderPlugin implements PonderPlugin {
     @Override
     public void registerScenes(PonderSceneRegistrationHelper<ResourceLocation> helper) {
         helper.forComponents(BoosterItems.NETHERITE_CONVERTER.getId())
-            .addStoryBoard("converter/tutorial", NetheriteConverterScenes::value)
+            .addStoryBoard("converter/tutorial", NetheriteConverterScenes::supply)
             .addStoryBoard("converter/tutorial", NetheriteConverterScenes::convert)
             .addStoryBoard("converter/tutorial", NetheriteConverterScenes::wrenches);
         helper.forComponents(BoosterItems.NETHERITE_ENCASED_FAN.getId())
@@ -32,19 +32,19 @@ public class BoosterPonderPlugin implements PonderPlugin {
 
     @Override
     public void registerSharedText(SharedTextRegistrationHelper helper) {
-        helper.registerSharedText("converter_value_sheet", "Right-click the converter with a Netherite Sheet. The sheet immediately becomes 16 Netherite Value.");
-        helper.registerSharedText("converter_value_read", "Right-click with an empty hand or wear Engineer's Goggles to check the stored value.");
-        helper.registerSharedText("converter_value_template", "A vanilla Netherite Upgrade Smithing Template can also be deposited. Each one adds 1 value.");
-        helper.registerSharedText("converter_value_stored", "Deposit more sheets to accumulate value. Redeemed sheets cannot be taken back out.");
+
+
+
+
         helper.registerSharedText("converter_layout", "Place the converter two blocks above a depot or belt. Put the item to upgrade directly below it.");
-        helper.registerSharedText("converter_power", "Connect at least 2048 SU through the side shaft, then deposit a sheet for Netherite Value.");
-        helper.registerSharedText("converter_fluid", "Add Nether Essence with a bucket or a pipe. This bucket adds 1000 mB.");
-        helper.registerSharedText("converter_process", "Put a regular machine below the converter and keep power connected for 5 seconds. Each upgrade costs 1 value and 250 mB essence.");
+        helper.registerSharedText("converter_power", "Connect at least2048SU to the side shaft and supply essence through pipes.");
+        helper.registerSharedText("converter_fluid", "Use a powered Mechanical Pump and Fluid Pipes to supply essence. Bucket clicks cannot fill it. Capacity:4000mB.");
+        helper.registerSharedText("converter_process", "Process a regular machine for five continuous seconds, consuming only1000mB essence.");
         helper.registerSharedText("converter_collect", "Right-click empty-handed to collect the result. Put in another item to continue converting.");
         helper.registerSharedText("converter_wrench_craft", "Craft a Create Wrench with one Netherite Sheet in any arrangement to make a Netherite Wrench.");
-        helper.registerSharedText("converter_wrench_supply", "Connect at least 2048 SU, deposit two sheets one at a time, then add Nether Essence.");
-        helper.registerSharedText("converter_wrench_basic", "Convert a Create Wrench for 5 seconds to make a Netherite Wrench. This uses 1 value and 250 mB essence.");
-        helper.registerSharedText("converter_wrench_advanced", "Put a Netherite Wrench below the converter for another 5 seconds. It becomes a Netherite Netherite Wrench, using 16 value and 250 mB essence.");
+        helper.registerSharedText("converter_wrench_supply", "Pipe in essence:1000mB for the basic wrench conversion,4000mB for the advanced upgrade.");
+        helper.registerSharedText("converter_wrench_basic", "Process a Create Wrench below for five seconds and1000mB essence to obtain a Netherite Wrench.");
+        helper.registerSharedText("converter_wrench_advanced", "Process a Netherite Wrench below for five seconds and4000mB essence to obtain the Netherite Netherite Wrench.");
         helper.registerSharedText("grip_offhand", "In Survival, put the Netherite Extendo Grip in your offhand.");
         helper.registerSharedText("grip_bucket", "Hold an empty bucket in your main hand and right-click a fluid tank.");
         helper.registerSharedText("grip_filled", "One bucket of fluid leaves the tank and fills your bucket.");
@@ -83,5 +83,7 @@ public class BoosterPonderPlugin implements PonderPlugin {
         helper.registerSharedText("fan_filter_switch", "The mode buttons change unmatched-item processing; installed filters keep their assigned modes.");
         helper.registerSharedText("fan_filter_result", "Unlisted blue wool now uses Washing; the listed raw iron is still blasted.");
         helper.registerSharedText("fan_transport", "Place items on a depot or belt in the air current, or drop them into the airflow.");
+        helper.registerSharedText("converter_supply_only", "The converter accepts only Nether Essence. Do not deposit sheets or templates; place the item to upgrade two blocks below.");
+        helper.registerSharedText("converter_inspect", "Wear Engineer’s Goggles to inspect essence and progress. Empty-hand use sends no hotbar message.");
     }
 }
