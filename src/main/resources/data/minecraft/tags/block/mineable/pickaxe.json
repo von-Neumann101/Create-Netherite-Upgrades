@@ -19,6 +19,7 @@
     "createnetherite:netherite_converter",
     "createnetherite:netherite_wireless_manager",
     "createnetherite:netherite_mechanical_saw",
-    "createnetherite:netherite_mechanical_crafter"
+    "createnetherite:netherite_mechanical_crafter",
+    "createnetherite:netherite_basin"
   ]
 }

@@ -224,5 +224,7 @@
   "gui.booster.nbt_filter.invalid": "条件无效：检查数值、NBT格式和范围上下界。",
   "tooltip.booster.netherite_filter.nbt_rules": "NBT筛选：%s条条件",
   "block.createnetherite.netherite_mechanical_crafter": "下界合金动力合成器",
-  "block.createnetherite.netherite_mechanical_crafter.tooltip.summary": "每格可放入_一组_材料，一轮尽可能完成_多份合成_。份数由材料最少的格子决定，多余材料留在原格。布局、箭头、槽位盖板和应力消耗沿用动力合成器；混用普通动力合成器时，每轮仅合成一份。"
+  "block.createnetherite.netherite_mechanical_crafter.tooltip.summary": "每格可放入_一组_材料，一轮尽可能完成_多份合成_。份数由材料最少的格子决定，多余材料留在原格。布局、箭头、槽位盖板和应力消耗沿用动力合成器；混用普通动力合成器时，每轮仅合成一份。",
+  "block.createnetherite.netherite_basin": "下界合金工作盆",
+  "block.createnetherite.netherite_basin.tooltip.summary": "物品容量为普通工作盆的_3倍_：输入和产物各_27格_，普通物品各最多_1728个_。同种物品可占多格，保留正常堆叠上限。流体容量、配方过滤、加热和加工方式沿用原版；可搭配普通或下界合金冲压机、搅拌机。"
 }

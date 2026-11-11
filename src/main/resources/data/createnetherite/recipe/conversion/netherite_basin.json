@@ -1,0 +1,14 @@
+{
+  "type": "createnetherite:netherite_conversion",
+  "ingredients": [
+    {
+      "item": "create:basin"
+    }
+  ],
+  "results": [
+    {
+      "id": "createnetherite:netherite_basin",
+      "count": 1
+    }
+  ]
+}

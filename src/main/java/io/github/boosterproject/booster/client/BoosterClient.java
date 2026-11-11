@@ -1,6 +1,7 @@
 package io.github.boosterproject.booster.client;
 
 import com.simibubi.create.CreateClient;
+import com.simibubi.create.content.processing.basin.BasinRenderer;
 import com.simibubi.create.AllPartialModels;
 import com.simibubi.create.content.kinetics.crafter.MechanicalCrafterRenderer;
 import com.simibubi.create.content.kinetics.base.SingleAxisRotatingVisual;
@@ -74,6 +75,7 @@ public final class BoosterClient {
     }
 
     private static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
+        event.registerBlockEntityRenderer(BoosterBlockEntityTypes.NETHERITE_BASIN.get(), BasinRenderer::new);
         event.registerBlockEntityRenderer(BoosterBlockEntityTypes.NETHERITE_MECHANICAL_CRAFTER.get(), MechanicalCrafterRenderer::new);
         event.registerBlockEntityRenderer(BoosterBlockEntityTypes.NETHERITE_MECHANICAL_SAW.get(), SawRenderer::new);
         event.registerBlockEntityRenderer(BoosterBlockEntityTypes.NETHERITE_DEPLOYER.get(), DeployerRenderer::new);
@@ -126,6 +128,7 @@ public final class BoosterClient {
 
     private static void clientSetup(FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
+            ItemBlockRenderTypes.setRenderLayer(BoosterBlocks.NETHERITE_BASIN.get(), RenderType.cutoutMipped());
             SimpleBlockEntityVisualizer.builder(BoosterBlockEntityTypes.NETHERITE_MECHANICAL_CRAFTER.get())
                 .factory(SingleAxisRotatingVisual.of(AllPartialModels.SHAFTLESS_COGWHEEL)).neverSkipVanillaRender().apply();
             ItemBlockRenderTypes.setRenderLayer(BoosterBlocks.NETHERITE_MECHANICAL_CRAFTER.get(), RenderType.cutoutMipped());

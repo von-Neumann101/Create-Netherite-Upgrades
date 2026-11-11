@@ -224,5 +224,7 @@
   "gui.booster.nbt_filter.invalid": "Invalid condition: check the value, NBT syntax and range bounds.",
   "tooltip.booster.netherite_filter.nbt_rules": "NBT filter: %s conditions",
   "block.createnetherite.netherite_mechanical_crafter": "Netherite Mechanical Crafter",
-  "block.createnetherite.netherite_mechanical_crafter.tooltip.summary": "Holds _one normal stack_ per cell and crafts the _largest complete batch_ in one cycle. The least-filled ingredient cell limits the batch; excess stays in its original cell. Uses standard crafter layouts, arrows, slot covers and stress. Mixed chains craft one recipe per cycle."
+  "block.createnetherite.netherite_mechanical_crafter.tooltip.summary": "Holds _one normal stack_ per cell and crafts the _largest complete batch_ in one cycle. The least-filled ingredient cell limits the batch; excess stays in its original cell. Uses standard crafter layouts, arrows, slot covers and stress. Mixed chains craft one recipe per cycle.",
+  "block.createnetherite.netherite_basin": "Netherite Basin",
+  "block.createnetherite.netherite_basin.tooltip.summary": "Holds _3 times_ the items of a regular Basin: _27 input slots_ and _27 product slots_, each storing up to _1728 ordinary items_. Identical items may fill multiple slots, with normal stack limits. Fluid capacity, filtering, heat and processing follow Create. Works with regular and Netherite Presses and Mixers."
 }

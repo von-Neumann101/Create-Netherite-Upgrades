@@ -1,0 +1,8 @@
+{
+  "type": "create:mixing",
+  "ingredients": [{"item": "minecraft:emerald"}],
+  "results": [
+    {"id": "minecraft:diamond", "count": 64},
+    {"id": "minecraft:diamond", "count": 64}
+  ]
+}

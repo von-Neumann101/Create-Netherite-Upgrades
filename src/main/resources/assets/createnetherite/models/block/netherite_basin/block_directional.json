@@ -1,0 +1,8 @@
+{
+  "parent": "create:block/basin/block_directional",
+  "textures": {
+    "1": "createnetherite:block/netherite_basin",
+    "2": "createnetherite:block/netherite_basin_canal",
+    "particle": "minecraft:block/netherite_block"
+  }
+}

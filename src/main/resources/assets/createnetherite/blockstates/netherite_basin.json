@@ -1,0 +1,22 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "createnetherite:block/netherite_basin/block"
+    },
+    "facing=east": {
+      "model": "createnetherite:block/netherite_basin/block_directional",
+      "y": 270
+    },
+    "facing=north": {
+      "model": "createnetherite:block/netherite_basin/block_directional",
+      "y": 180
+    },
+    "facing=south": {
+      "model": "createnetherite:block/netherite_basin/block_directional"
+    },
+    "facing=west": {
+      "model": "createnetherite:block/netherite_basin/block_directional",
+      "y": 90
+    }
+  }
+}

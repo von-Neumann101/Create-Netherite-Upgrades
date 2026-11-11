@@ -2,6 +2,9 @@ package io.github.boosterproject.booster;
 
 import com.mojang.logging.LogUtils;
 import com.simibubi.create.AllBlocks;
+import com.simibubi.create.api.packager.unpacking.UnpackingHandler;
+import com.simibubi.create.impl.unpacking.BasinUnpackingHandler;
+import com.simibubi.create.content.processing.basin.BasinMovementBehaviour;
 import com.simibubi.create.content.kinetics.deployer.DeployerMovementBehaviour;
 import com.simibubi.create.content.kinetics.deployer.DeployerMovingInteraction;
 import com.simibubi.create.api.behaviour.interaction.MovingInteractionBehaviour;
@@ -91,6 +94,8 @@ public class Booster {
             BlockMovementChecks.registerNotSupportiveCheck((state, direction) -> state.is(BoosterBlocks.NETHERITE_MECHANICAL_SAW.get())
                 ? BlockMovementChecks.CheckResult.of(direction == state.getValue(SawBlock.FACING)) : BlockMovementChecks.CheckResult.PASS);
             BlockStressValues.IMPACTS.register(BoosterBlocks.NETHERITE_MECHANICAL_SAW.get(), () -> BlockStressValues.getImpact(AllBlocks.MECHANICAL_SAW.get()));
+            MovementBehaviour.REGISTRY.register(BoosterBlocks.NETHERITE_BASIN.get(), new BasinMovementBehaviour());
+            UnpackingHandler.REGISTRY.register(BoosterBlocks.NETHERITE_BASIN.get(), BasinUnpackingHandler.INSTANCE);
             BlockStressValues.IMPACTS.register(BoosterBlocks.NETHERITE_MECHANICAL_CRAFTER.get(), () -> BlockStressValues.getImpact(AllBlocks.MECHANICAL_CRAFTER.get()));
             MovementBehaviour.REGISTRY.register(BoosterBlocks.NETHERITE_MECHANICAL_SAW.get(), new NetheriteSawMovementBehaviour());
             BlockStressValues.IMPACTS.register(BoosterBlocks.NETHERITE_CONVERTER.get(), () -> 2048D);

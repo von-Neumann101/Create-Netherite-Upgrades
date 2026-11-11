@@ -67,8 +67,8 @@ public final class JeiRecipeGameTest {
     public static void liveRecipesExposeEssenceAndAllConversions(GameTestHelper helper) throws Exception {
         Setup setup = setup(helper);
         helper.assertTrue(setup.recipes.get("createnetherite:netherite_mixing").size() == 1
-            && setup.recipes.get("createnetherite:netherite_conversion").size() == 19,
-            "JEI must receive the real exclusive mixing recipe and all nineteen live conversions");
+            && setup.recipes.get("createnetherite:netherite_conversion").size() == 20,
+            "JEI must receive the real exclusive mixing recipe and all twenty live conversions");
         List<Slot> mixing = layout(setup, "netherite_mixing", "mixing/nether_essence");
         helper.assertTrue(hasItem(mixing, RecipeIngredientRole.INPUT, Items.BLAZE_POWDER)
             && hasItem(mixing, RecipeIngredientRole.INPUT, Items.NETHER_WART)
@@ -121,7 +121,8 @@ public final class JeiRecipeGameTest {
             return null;
         }));
         helper.assertTrue(catalysts.get(BoosterItems.NETHERITE_MECHANICAL_MIXER.get()).containsAll(Set.of("createnetherite:netherite_mixing", "create:mixing", "create:automatic_shapeless", "create:automatic_brewing"))
-            && catalysts.get(BoosterItems.NETHERITE_CONVERTER.get()).contains("createnetherite:netherite_conversion"), "upgraded processing machines open their supported categories");
+            && catalysts.get(BoosterItems.NETHERITE_CONVERTER.get()).contains("createnetherite:netherite_conversion")
+            && catalysts.get(BoosterItems.NETHERITE_BASIN.get()).containsAll(Set.of("createnetherite:netherite_mixing", "create:mixing", "create:automatic_shapeless", "create:automatic_brewing", "create:packing", "create:automatic_packing")), "upgraded processing machines and basin open their supported categories");
         helper.assertTrue(!catalysts.getOrDefault(com.simibubi.create.AllBlocks.MECHANICAL_MIXER.asItem(), Set.of()).contains("createnetherite:netherite_mixing"),
             "ordinary mixers must not be advertised for exclusive essence recipes");
         helper.assertTrue(catalysts.get(BoosterItems.NETHERITE_MECHANICAL_PRESS.get()).containsAll(Set.of("create:pressing", "create:packing", "create:automatic_packing"))

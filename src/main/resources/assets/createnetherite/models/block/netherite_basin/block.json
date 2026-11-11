@@ -1,0 +1,7 @@
+{
+  "parent": "create:block/basin/block",
+  "textures": {
+    "12": "createnetherite:block/netherite_basin",
+    "particle": "minecraft:block/netherite_block"
+  }
+}

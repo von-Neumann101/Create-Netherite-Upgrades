@@ -9,9 +9,9 @@
 ## 版本与分支
 
 - 分支：`1.21.1-NeoForge`
-- 源码核对日期：`2026-11-10`
-- 本次更新基线提交：`27d23d3c08edbf03cb51f3d4d1865c84f51fd5ee`（0.3.25；0.3.26 动力合成器见本文末）
-- 模组版本：`0.3.26`
+- 源码核对日期：`2026-11-11`
+- 本次更新基线提交：`9dc0bd0649dadea7ef017b8a0cf868090d3571ed`（0.3.26；0.3.27 工作盆见本文末）
+- 模组版本：`0.3.27`
 - Mod id：`createnetherite`
 - 主包名：`io.github.boosterproject.booster`
 - Minecraft：`1.21.1`
@@ -74,7 +74,7 @@
 按当前配置生成的主 jar：
 
 ```text
-build/libs/createnetherite-1.21.1-0.3.26.jar
+build/libs/createnetherite-1.21.1-0.3.27.jar
 ```
 
 ## Gradle 与依赖
@@ -1304,3 +1304,19 @@ GUI底图由用户指定贴图对话提供：`textures/gui/netherite_nbt_filter.
 恢复存档时，在 `initialize` 调用父类前重新发现出口Capability。原因是原生SmartBlockEntity初始化会先调用lazyTick，INSERTING阶段此时若尚无库存缓存就会提前弹出成品。测试以全新BlockEntity实例模拟区块恢复，覆盖合成中途余料和堵塞中的完整产物；不把已放置实例的直接读NBT当作区块恢复（Create的wasMoved会清除该实例动力）。
 
 验证：12项新增真实服务器测试覆盖正常堆叠上限、模拟插入、应力与防护、两种升级配方、机械臂交互、64份一次合成、材料短板与余料、共享输入、普通／混合网格、超3×3机械配方、容器返还、盖板与红石空格、堵塞和两种阶段的读档、运行中拆除。`build/crafter-release-with-jei.log` 中205项回归及148项GameTest通过；`build/crafter-release-without-jei.log` 中205项回归及144项GameTest通过。独立源码复核指出缺少原生cutoutMipped层，已补齐。最终JAR核对包含289项生产资源、228个生产类、205个有效JSON，中英文各226键；元数据为0.3.26，未嵌入JEI或QA资源。未启动客户端，外观与手动交互由用户检查。
+
+## 下界合金工作盆（0.3.27）
+
+注册ID `createnetherite:netherite_basin`。用户确认采用输入／产物各27格、允许同种物品跨格存放的方案，普通64堆叠物品各最多1728个，输入与产物容量均为原版3倍。正常物品堆叠上限保留，鸡蛋16、桶1。流体容量、热量、过滤、加工速度和原版工作盆行为不扩容／加速；盆本身无需应力。
+
+`NetheriteBasinBlock` / `NetheriteBasinBlockEntity` 继承原生工作盆。`NetheriteBasinInventoryMixin` 在父类构造BasinInventory时，仅对新子类把9改成27并创建 `NetheriteBasinInventory`。因此原生私有invs列表、输入／产物字段和CombinedInvWrapper都指向同一批新库存，物品Capability共54格。流体Capability直接暴露原生组合罐。普通工作盆继续使用原生9格库存与同种物品唯一格规则。
+
+自定义库存使用原生SmartInventory底层插入，允许重复物品跨格；先检查insertionAllowed，避免绕过原生输出格的自动化写入锁。正常堆叠限制、内容更新、提取通知和NBT序列化继续走原生实现。工作盆朝下、产品留在内部时，`acceptOutputs` 先在独立库存副本中逐个插入整份产物清单，验证合计空间后再进入原生流程。这样不会把同一空位重复承诺给多个产物，空间不足时配方不消耗原料。侧向输出与流体处理保持原生流程。
+
+兼容点：原生BasinBlock与加工机器使用instanceof识别工作盆，因此普通／下界合金冲压机和搅拌机均能使用新增槽位。过滤槽继承原生FilteringBehaviour，渲染沿用BasinRenderer并注册cutoutMipped。注册原生BasinMovementBehaviour和BasinUnpackingHandler；运动结构从保存的Size恢复27格，包裹模式退出后仍支持正常重复堆叠插入。机械臂原生BasinType直接识别子类，无需另造交互点。
+
+获取：普通工作盆＋下界合金板无序合成；下界合金转换机转换成本默认1点、250mB精华、固定5秒。JEI新增第20条转换路线，新盆加入原版搅拌、无序合成、酿造、压缩、自动压缩以及下界合金专用搅拌分类。原生Shift概要有中英文版本。方块爆炸抗性1200，物品防火并使用现有掉落物防爆规则。贴图对话提供32×32盆体与16×16出口图，模型沿用原版UV与外形。
+
+验证：新增9项真实服务器测试。容量基线在 `build/basin-red.log` 按预期失败；独立审查指出取消唯一格限制后，多份相同产物可在原生逐项模拟时复用同一空位。真实配方“两组各64钻石、仅65个空位”在 `build/basin-multiple-products-red.log` 复现后，已加入整份产物预留检查。空间不足时原料与现有产物保持不变，腾出空间后128个产物完整产出。测试还覆盖27格满载输入／产物、输入模拟无副作用、产物格写入锁、物品正常堆叠与组件、全部高位槽存档及拆除、普通工作盆不变、两种制作方法、包裹、移动库存、机械臂识别、原生过滤及侧向出口、四种真实动力机器使用24—26号槽。
+
+最终 `build/basin-release-with-jei.log` 中205项回归及157项GameTest通过；`build/basin-release-without-jei.log` 中205项回归及153项GameTest通过。JAR包含298项生产资源、232个生产类、212个有效JSON，中英文各228键；元数据0.3.27，未嵌入JEI或QA资源。PNG可读、RGBA且与原版尺寸匹配。未启动客户端，外观与手动交互由用户检查。

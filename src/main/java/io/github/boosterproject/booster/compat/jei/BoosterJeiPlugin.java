@@ -45,6 +45,7 @@ public final class BoosterJeiPlugin implements IModPlugin {
         mixing = new CreateRecipeCategory.Builder<>(BasinRecipe.class)
             .catalyst(BoosterItems.NETHERITE_MECHANICAL_MIXER::get)
             .catalyst(AllBlocks.BASIN::get)
+            .catalyst(BoosterItems.NETHERITE_BASIN::get)
             .doubleItemIcon(BoosterItems.NETHERITE_MECHANICAL_MIXER.get(), AllBlocks.BASIN.get())
             .emptyBackground(177, 103)
             .build(BoosterRecipeTypes.NETHERITE_MIXING.getId(), MixingCategory::standard);
@@ -74,6 +75,7 @@ public final class BoosterJeiPlugin implements IModPlugin {
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
         mixing.registerCatalysts(registration);
         conversion.registerCatalysts(registration);
+        nativeCatalysts(registration, BoosterItems.NETHERITE_BASIN.get(), "mixing", "automatic_shapeless", "automatic_brewing", "packing", "automatic_packing");
         nativeCatalysts(registration, BoosterItems.NETHERITE_MECHANICAL_PRESS.get(), "pressing", "packing", "automatic_packing");
         nativeCatalysts(registration, BoosterItems.NETHERITE_MECHANICAL_MIXER.get(), "mixing", "automatic_shapeless", "automatic_brewing");
         nativeCatalysts(registration, BoosterItems.NETHERITE_MECHANICAL_SAW.get(), "sawing", "block_cutting");
