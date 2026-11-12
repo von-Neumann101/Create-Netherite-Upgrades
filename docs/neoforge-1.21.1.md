@@ -10,8 +10,8 @@
 
 - 分支：`1.21.1-NeoForge`
 - 源码核对日期：`2026-11-12`
-- 本次更新基线提交：`a488689d67ba4e16fdb958d499fbf6e26094ed43`（0.3.29；0.3.30 扳手激活位转换见本文末）
-- 模组版本：`0.3.30`
+- 本次更新基线提交：`0dfdb1027ee43f0db0b3fe296ca1fc7db5effea2`（0.3.30；0.3.31 右键模块兼容规则见本文末）
+- 模组版本：`0.3.31`
 - Mod id：`createnetherite`
 - 主包名：`io.github.boosterproject.booster`
 - Minecraft：`1.21.1`
@@ -74,7 +74,7 @@
 按当前配置生成的主 jar：
 
 ```text
-build/libs/createnetherite-1.21.1-0.3.30.jar
+build/libs/createnetherite-1.21.1-0.3.31.jar
 ```
 
 ## Gradle 与依赖
@@ -1364,3 +1364,17 @@ JEI读取21条真实转换路线，新路线实际结果带二激活位组件，
 验证：新路线先在 `build/wrench-slot-conversion-red.log` 复现三项失败（无升级配方、四桶加工未解锁、旧模板升级仍有效）。新增两项服务器用例及迁移后的装配台用例验证3999/4000mB边界、完整组件保留、双模块实际激活、已升级不再耗液、配方结果／网络往返和旧模板可取回；思索对应的真实管道流程增加第四次转换，确认高级扳手制作后仍只有一个激活位，再供4000mB才升级。`build/wrench-slot-conversion-green.log` 中无JEI174项GameTest通过；`build/wrench-slot-release-with-jei.log` 中205项回归及178项GameTest通过，JEI验证全部21条路线和新产物的二激活位组件；`build/wrench-slot-release-default-build.log` 中默认构建及205项回归通过。只读代码复核未发现待修问题。
 
 最终JAR元数据0.3.30，305项生产资源、241个生产类、216个有效JSON、84张可读PNG，中英文各226键；不含QA／测试结构或JEI运行库。装配台背景仍为288×286 RGBA，客户端未启动。
+
+## 扳手右键模块互斥与风锯组合（0.3.31）
+
+本节取代“多个右键模块同时激活、仅最近激活者生效”的旧规则。FAN、SAW、EJECTOR、ENGINE、CONVERTER、TANK属于右键模块，两两互斥，唯一例外是FAN＋SAW。PUMP、BURNER、PRESS保留被动共存规则。同类右键模块也不重复占用激活位。
+
+`WrenchModule.conflictsWith` 统一描述兼容关系；`WrenchData.appendActivation` 先移除冲突旧模块，再应用现有1／2激活位的FIFO上限。读取旧ActiveSlots及轮盘切换均走同一路径，因此旧冲突组合只暴露最新右键动作，不删除安装的模块或其他物品数据。被动模块不会因为换另一个右键动作而优先被挤掉。容量及4000mB第二激活位升级方式不变。
+
+风锯组合长按右键时，`NetheriteNetheriteWrenchItem.onUseTick` 分别执行两个已激活模块；WrenchAirflow、WrenchSaw、实体右键启动和鼓风机模式包均按has而非单一active动作判断。两种激活顺序均可工作。Shift继续切换吹／吸；伤害18、原生受击间隔、攻击距离、遮挡、玩家归属及PvP等原有规则保留。切换到其他冲突模块后两者均停用。轮盘“右键”标记按服务器activeSlots中的实际右键模块绘制，组合显示两个标记，不改变网络包格式。
+
+验证：新增5项服务器测试。`build/wrench-conflicts-red.log` 先复现5项缺失行为。测试覆盖9种模块的81种有序配对、冲突替换保留旧被动模块、旧冲突存档保留最新动作、风锯两种激活顺序的真实同tick吸力和18伤害、墙体阻挡、切换储罐同时停用风锯、锯最后激活时的模式包及风机最后激活时的实体右键。已有激活位升级测试原用风机＋储罐验证双激活，现改为风机＋被动动力泵，仍保留储罐模块和流体组件保留检查。只读复核未发现待修问题。
+
+`build/wrench-conflicts-release-with-jei.log` 中完整构建、205项回归及183项GameTest通过。检测到基础扳手模型／贴图存在并行修改，因此发布在独立目录从0.3.30基线仅复制本次17个文件构建；`build/wrench-conflicts-isolated-release.log` 中默认构建、205项回归及179项无JEI GameTest通过。两个并行资源保留在原工作区，本次提交及独立发布包不包含它们。最终JAR已复制回原项目build/libs。
+
+发布核对：元数据0.3.31，305项生产资源、241个生产类、216个有效JSON、84张可读PNG，中英文各226键；QA／测试结构及JEI运行库未打包。未启动客户端，轮盘画面和键鼠交互由用户检查。

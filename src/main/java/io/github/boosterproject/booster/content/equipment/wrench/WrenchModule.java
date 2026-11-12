@@ -20,6 +20,10 @@ public enum WrenchModule {
     WrenchModule(Supplier<Item> item) { this.item = item; }
     public Item item() { return item.get(); }
     public boolean usesRightClick() { return this != PUMP && this != BURNER && this != PRESS; }
+    public boolean conflictsWith(WrenchModule other) {
+        boolean fanSaw = this == FAN && other == SAW || this == SAW && other == FAN;
+        return usesRightClick() && other.usesRightClick() && !fanSaw;
+    }
     public static WrenchModule fromStack(ItemStack stack) {
         for (var module : values()) if (stack.is(module.item())) return module;
         return null;

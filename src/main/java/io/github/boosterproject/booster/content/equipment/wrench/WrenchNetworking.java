@@ -47,7 +47,7 @@ public final class WrenchNetworking {
         switch (payload.action()) {
             case OPEN -> { return; } // Loading modules now requires an assembly table.
             case TOGGLE_FAN -> {
-                if (WrenchData.active(stack) != WrenchModule.FAN) return;
+                if (!WrenchData.has(stack, WrenchModule.FAN)) return;
                 WrenchData.setFanPull(stack, !WrenchData.fanPull(stack));
                 player.displayClientMessage(Component.translatable(WrenchData.fanPull(stack) ? "wrench.createnetherite.pull" : "wrench.createnetherite.push"), true);
             }

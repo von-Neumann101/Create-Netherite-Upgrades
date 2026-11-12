@@ -61,10 +61,15 @@ public final class WrenchData {
         List<Integer> result = new ArrayList<>();
         for (int slot : stored) {
             if (slot < 0 || slot >= SLOTS || WrenchModule.fromStack(modules.get(slot)) == null || result.contains(slot)) continue;
-            if (result.size() == activationLimit(stack)) result.removeFirst();
-            result.add(slot);
+            appendActivation(result, modules, slot, activationLimit(stack));
         }
         return List.copyOf(result);
+    }
+    private static void appendActivation(List<Integer> active, List<ItemStack> modules, int slot, int limit) {
+        var module = WrenchModule.fromStack(modules.get(slot));
+        active.removeIf(previous -> module.conflictsWith(WrenchModule.fromStack(modules.get(previous))));
+        if (active.size() == limit) active.removeFirst();
+        active.add(slot);
     }
     private static void writeActive(ItemStack stack, List<Integer> slots) {
         update(stack, tag -> {
@@ -73,12 +78,11 @@ public final class WrenchData {
         });
     }
     public static boolean toggleSlot(ItemStack stack, int slot) {
-        if (!isWrench(stack) || slot < 0 || slot >= SLOTS || WrenchModule.fromStack(modules(stack).get(slot)) == null) return false;
+        if (!isWrench(stack) || slot < 0 || slot >= SLOTS) return false;
+        var modules = modules(stack);
+        if (WrenchModule.fromStack(modules.get(slot)) == null) return false;
         var active = new ArrayList<>(activeSlots(stack));
-        if (!active.remove(Integer.valueOf(slot))) {
-            if (active.size() == activationLimit(stack)) active.removeFirst();
-            active.add(slot);
-        }
+        if (!active.remove(Integer.valueOf(slot))) appendActivation(active, modules, slot, activationLimit(stack));
         writeActive(stack, active);
         return true;
     }

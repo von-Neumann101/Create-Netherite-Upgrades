@@ -67,6 +67,57 @@ public final class WrenchSawGameTest {
     }
 
     @GameTest(template = "wireless_empty", timeoutTicks = 40)
+    public static void fanAndSawBothRunWhenSawIsActivatedLast(GameTestHelper helper) { combinedFanSaw(helper, false); }
+
+    @GameTest(template = "wireless_empty", timeoutTicks = 40)
+    public static void fanAndSawBothRunWhenFanIsActivatedLast(GameTestHelper helper) { combinedFanSaw(helper, true); }
+
+    private static ItemStack combinedWrench(ServerPlayer player, boolean fanLast) {
+        var stack = new ItemStack(BoosterItems.NETHERITE_NETHERITE_WRENCH.get());
+        WrenchData.setModules(stack, List.of(new ItemStack(WrenchModule.FAN.item()), new ItemStack(WrenchModule.SAW.item()), new ItemStack(WrenchModule.TANK.item())));
+        WrenchData.unlockSecondSlot(stack);
+        WrenchData.toggleSlot(stack, fanLast ? 1 : 0); WrenchData.toggleSlot(stack, fanLast ? 0 : 1);
+        player.setItemInHand(InteractionHand.MAIN_HAND, stack);
+        return stack;
+    }
+
+    private static void combinedFanSaw(GameTestHelper helper, boolean fanLast) {
+        var player = player(helper, "FanSawQA"); var stack = combinedWrench(player, fanLast);
+        WrenchData.setFanPull(stack, true);
+        var cow = cow(helper, player.position().add(0, .4, 2));
+        // Isolate the fan's force from vanilla attack knockback.
+        cow.getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(1);
+        helper.assertTrue(stack.getItem().use(helper.getLevel(), player, InteractionHand.MAIN_HAND).getResult().consumesAction(), "combined right click starts continuous use");
+        stack.getItem().onUseTick(helper.getLevel(), player, stack, 71999);
+        helper.assertTrue(cow.getHealth() == 82 && cow.getDeltaMovement().z < 0, "one actual use tick both pulls the target and deals normal eighteen saw damage");
+        cow.setHealth(100); cow.invulnerableTime = 0; cow.setDeltaMovement(Vec3.ZERO);
+        var wall = BlockPos.containing(player.position()).offset(0, 1, 1);
+        helper.getLevel().setBlock(wall, Blocks.STONE.defaultBlockState(), 3);
+        stack.getItem().onUseTick(helper.getLevel(), player, stack, 71998);
+        helper.assertTrue(cow.getHealth() == 100 && cow.getDeltaMovement().lengthSqr() == 0, "wall blocks both combined effects");
+        helper.getLevel().removeBlock(wall, false);
+        WrenchData.toggleSlot(stack, 2);
+        stack.getItem().onUseTick(helper.getLevel(), player, stack, 71997);
+        helper.assertTrue(WrenchData.activeSlots(stack).equals(List.of(2)) && cow.getHealth() == 100
+            && cow.getDeltaMovement().lengthSqr() == 0 && !player.isUsingItem(), "conflicting tank disables both continuous modules");
+        cow.discard(); helper.succeed();
+    }
+
+    @GameTest(template = "wireless_empty", timeoutTicks = 40)
+    public static void combinedFanStillSwitchesModeAndStartsOnEntities(GameTestHelper helper) {
+        var player = player(helper, "FanSawModeQA"); var stack = combinedWrench(player, false);
+        WrenchNetworking.handle(player, new WrenchNetworking.Action(WrenchNetworking.TOGGLE_FAN, 0));
+        helper.assertTrue(WrenchData.fanPull(stack), "Shift mode packet works with saw activated last");
+        player.stopUsingItem();
+        WrenchData.toggleSlot(stack, 0); WrenchData.toggleSlot(stack, 0); // Fan is now newest.
+        var cow = cow(helper, player.position().add(0, .4, 2));
+        var event = new PlayerInteractEvent.EntityInteract(player, InteractionHand.MAIN_HAND, cow);
+        NeoForge.EVENT_BUS.post(event);
+        helper.assertTrue(event.isCanceled() && player.isUsingItem(), "entity right click starts the combined tool even with fan activated last");
+        cow.discard(); helper.succeed();
+    }
+
+    @GameTest(template = "wireless_empty", timeoutTicks = 40)
     public static void continuousSawUsesMachineDamageNativeIntervalAndRelease(GameTestHelper helper) {
         var player = player(helper, "SawHoldQA");
         var stack = equip(player);

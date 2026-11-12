@@ -153,7 +153,7 @@
   "item.createnetherite.netherite_netherite_wrench": "下界合金下界合金扳手",
   "key.createnetherite.wrench": "按住显示扳手模块轮盘",
   "key.categories.createnetherite": "Create：下界合金",
-  "item.createnetherite.netherite_netherite_wrench.tooltip.summary": "无耐久损耗的_下界合金扳手_，攻击伤害比下界合金剑_高2_，攻速相同。在_装配台_装入最多_8个_工作方块；主手按住_X_，点击轮盘区域切换激活，松开关闭。初始_1个激活位_，在_转换机_再消耗_4000mB下界精华_可升级为_2个_，超额激活会关闭最早启用的模块；最近激活的右键模块优先。按键可在设置中修改。 在_转换机_中用下界合金扳手消耗_4000mB下界精华_升级，保留主手_方块触及+2_。",
+  "item.createnetherite.netherite_netherite_wrench.tooltip.summary": "无耐久损耗的_下界合金扳手_，攻击伤害比下界合金剑_高2_，攻速相同。在_装配台_装入最多_8个_工作方块；主手按住_X_，点击轮盘区域切换激活，松开关闭。初始_1个激活位_，在_转换机_再消耗_4000mB下界精华_可升级为_2个_，超额激活会关闭最早启用的模块；右键冲突时关闭旧模块；_鼓风机＋动力锯_可同时吹吸和锯切。按键可在设置中修改。 在_转换机_中用下界合金扳手消耗_4000mB下界精华_升级，保留主手_方块触及+2_。",
   "item.createnetherite.netherite_netherite_wrench.tooltip.condition1": "激活动力泵、冲压机或燃烧室时",
   "item.createnetherite.netherite_netherite_wrench.tooltip.behaviour1": "动力泵使伤害_+6_、攻击距离_+1_、击退_+2级_；冲压机使总伤害_1.5倍_并定身_1秒_；燃烧室使你造成的火焰伤害_4倍_。",
   "item.createnetherite.netherite_netherite_wrench.tooltip.condition2": "激活鼓风机或弹射置物台时",

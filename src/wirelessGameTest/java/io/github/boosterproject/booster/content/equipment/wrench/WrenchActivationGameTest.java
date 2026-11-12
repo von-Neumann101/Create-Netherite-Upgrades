@@ -23,6 +23,36 @@ import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
 @PrefixGameTestTemplate(false)
 public final class WrenchActivationGameTest {
     @GameTest(template = "wireless_empty")
+    public static void rightClickPairsOnlyAllowFanAndSawTogether(GameTestHelper helper) {
+        var right = java.util.EnumSet.of(WrenchModule.FAN, WrenchModule.SAW, WrenchModule.EJECTOR,
+            WrenchModule.ENGINE, WrenchModule.CONVERTER, WrenchModule.TANK);
+        for (var first : WrenchModule.values()) for (var second : WrenchModule.values()) {
+            var wrench = new ItemStack(BoosterItems.NETHERITE_NETHERITE_WRENCH.get());
+            WrenchData.setModules(wrench, List.of(new ItemStack(first.item()), new ItemStack(second.item())));
+            WrenchData.unlockSecondSlot(wrench); WrenchData.toggleSlot(wrench, 0); WrenchData.toggleSlot(wrench, 1);
+            boolean fanSaw = first == WrenchModule.FAN && second == WrenchModule.SAW || first == WrenchModule.SAW && second == WrenchModule.FAN;
+            var expected = right.contains(first) && right.contains(second) && !fanSaw ? List.of(1) : List.of(0, 1);
+            helper.assertTrue(WrenchData.activeSlots(wrench).equals(expected), "right-click compatibility: " + first + " then " + second);
+        }
+        helper.succeed();
+    }
+
+    @GameTest(template = "wireless_empty")
+    public static void conflictReplacementKeepsPassiveAndLegacyLoadsKeepNewestAction(GameTestHelper helper) {
+        var wrench = new ItemStack(BoosterItems.NETHERITE_NETHERITE_WRENCH.get());
+        WrenchData.setModules(wrench, List.of(new ItemStack(WrenchModule.PUMP.item()), new ItemStack(WrenchModule.FAN.item()), new ItemStack(WrenchModule.TANK.item())));
+        WrenchData.unlockSecondSlot(wrench); WrenchData.toggleSlot(wrench, 0); WrenchData.toggleSlot(wrench, 1); WrenchData.toggleSlot(wrench, 2);
+        helper.assertTrue(WrenchData.activeSlots(wrench).equals(List.of(0, 2)) && WrenchData.has(wrench, WrenchModule.PUMP), "conflicting right click replaces fan without evicting older passive pump");
+        var root = wrench.get(DataComponents.CUSTOM_DATA).copyTag();
+        root.getCompound("NetheriteWrench").putIntArray("ActiveSlots", new int[] {1, 2}); root.putString("OtherMod", "keep");
+        wrench.set(DataComponents.CUSTOM_DATA, CustomData.of(root));
+        var loaded = ItemStack.parse(helper.getLevel().registryAccess(), wrench.save(helper.getLevel().registryAccess())).orElseThrow();
+        helper.assertTrue(WrenchData.activeSlots(loaded).equals(List.of(2)) && !WrenchData.has(loaded, WrenchModule.FAN)
+            && loaded.get(DataComponents.CUSTOM_DATA).copyTag().getString("OtherMod").equals("keep"), "legacy conflict exposes only newest action and preserves other data");
+        helper.succeed();
+    }
+
+    @GameTest(template = "wireless_empty")
     public static void wheelSessionRejectsReplacedSourceAndStaleRequests(GameTestHelper helper) {
         var player = FakePlayerFactory.get(helper.getLevel(), new GameProfile(UUID.randomUUID(), "WheelQA"));
         var wrench = new ItemStack(BoosterItems.NETHERITE_NETHERITE_WRENCH.get());

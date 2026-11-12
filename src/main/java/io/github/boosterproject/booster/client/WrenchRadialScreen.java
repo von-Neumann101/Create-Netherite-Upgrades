@@ -3,6 +3,7 @@ package io.github.boosterproject.booster.client;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.simibubi.create.foundation.gui.AllGuiTextures;
 import io.github.boosterproject.booster.content.equipment.wrench.WrenchData;
+import io.github.boosterproject.booster.content.equipment.wrench.WrenchModule;
 import io.github.boosterproject.booster.content.equipment.wrench.WrenchWheelNetworking;
 import java.util.ArrayList;
 import java.util.List;
@@ -87,6 +88,10 @@ public final class WrenchRadialScreen extends Screen {
         // Like Create's radial menus, tint the world without applying the menu blur pass.
         graphics.fillGradient(0, 0, width, height, 0xA0202028, 0xC0101018);
     }
+    private boolean isActiveRightClick(int slot) {
+        var module = WrenchModule.fromStack(state.modules().get(slot));
+        return state.activeSlots().contains(slot) && module != null && module.usesRightClick();
+    }
 
     @Override public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
         super.render(graphics, mouseX, mouseY, partialTick);
@@ -109,7 +114,7 @@ public final class WrenchRadialScreen extends Screen {
                 graphics.drawString(font, Integer.toString(order + 1), x, y - 3, 0xFFFFC76A, false);
             }
             if (slot == hovered && !module.isEmpty()) graphics.renderOutline(x - 2, y - 2, 26, 26, 0xFFE1E3E8);
-            if (slot == state.rightClickSlot()) {
+            if (isActiveRightClick(slot)) {
                 var badge = WrenchScreen.text("wheel_right_click");
                 int halfWidth = font.width(badge) / 2;
                 graphics.fill(x + 9 - halfWidth, y + 23, x + 13 + halfWidth, y + 33, 0xE0302920);
@@ -124,7 +129,7 @@ public final class WrenchRadialScreen extends Screen {
             tooltip.add(module.isEmpty() ? WrenchScreen.text("wheel_empty") : module.getHoverName());
             int order = state.activeSlots().indexOf(hovered);
             if (order >= 0) tooltip.add(WrenchScreen.text("wheel_order", order + 1));
-            if (hovered == state.rightClickSlot()) tooltip.add(WrenchScreen.text("wheel_right_click"));
+            if (isActiveRightClick(hovered)) tooltip.add(WrenchScreen.text("wheel_right_click"));
             if (!acknowledged) tooltip.add(WrenchScreen.text("wheel_waiting"));
             graphics.renderTooltip(font, tooltip, Optional.empty(), mouseX, mouseY);
         }

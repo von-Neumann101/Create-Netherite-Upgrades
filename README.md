@@ -4,7 +4,7 @@
 
 当前分支：`1.21.1-NeoForge`
 
-当前模组版本：`0.3.30`
+当前模组版本：`0.3.31`
 
 # 维护状态
 
@@ -228,7 +228,7 @@ JEI为可选客户端模组。开发环境需要随游戏加载JEI时，给启�
 
 先将扳手放入 **装配台** 中央槽，再往周围 **8个真实槽位** 装入下列工作方块（每槽一个），也可取出；取出已激活的模块立即停用，模块物品组件和储液随扳手保存。装配台无需动力，用 **工作台＋安山机壳＋下界合金板** 无序合成，拆除会返还内部扳手和旧版遗留材料。
 
-主手持有扳手，**按住 X** 显示工具箱风格轮盘，点击区域切换该模块的激活状态，松开关闭；按键可在设置中修改。初始 **1个激活位**，开启另一模块会关闭原模块；将成品扳手放在 **下界合金转换机** 下再加工一次，消耗 **4000mB（4桶）下界精华**，可永久解锁 **第2个激活位**；保留已装模块、激活状态、储液及物品组件，已解锁的扳手不会重复加工。装配台不再接收升级模板，旧版遗留模板可以取回。已激活两个时再开启一个，会关闭最早激活者。两个模块的被动效果共同生效，同种效果不重复叠加；**最近激活的右键模块优先**，激活被动模块不会抢占右键。轮盘中的数字表示激活顺序，“右键”标记当前右键模块。
+主手持有扳手，**按住 X** 显示工具箱风格轮盘，点击区域切换该模块的激活状态，松开关闭；按键可在设置中修改。初始 **1个激活位**，开启另一模块会关闭原模块；将成品扳手放在 **下界合金转换机** 下再加工一次，消耗 **4000mB（4桶）下界精华**，可永久解锁 **第2个激活位**；保留已装模块、激活状态、储液及物品组件，已解锁的扳手不会重复加工。装配台不再接收升级模板，旧版遗留模板可以取回。开启新的右键模块会先关闭已有的冲突模块，保留可共存的被动模块；仍超出两个激活位时关闭最早激活者。**鼓风机＋动力锯**是唯一可同时激活的右键组合：长按右键同时施加气流和持续锯切，Shift仍可切换吹／吸；两个效果均受方块阻挡。两个模块的被动效果共同生效，同种效果不重复叠加。轮盘中的数字表示激活顺序，“右键”标记所有正在生效的右键模块。
 
 轮盘使用半透明背景，背景先于图标、文字和提示绘制，不对轮盘施加菜单模糊。
 
@@ -285,7 +285,7 @@ createnetherite-server.toml
 构建产物：
 
 ```text
-build/libs/createnetherite-1.21.1-0.3.30.jar
+build/libs/createnetherite-1.21.1-0.3.31.jar
 ```
 
 # Introduction
@@ -294,7 +294,7 @@ build/libs/createnetherite-1.21.1-0.3.30.jar
 
 Current branch: `1.21.1-NeoForge`
 
-Current mod version: `0.3.30`
+Current mod version: `0.3.31`
 
 # Maintenance status
 
@@ -516,7 +516,7 @@ Convert a **Netherite Wrench** using **4000mB Nether Essence** with five seconds
 
 Put the wrench in the center slot of an **Assembly Table**, then install or remove the listed blocks in its **eight real module slots**, one per slot. Removing an active module disables it; item components and fluids stay with the wrench. The table needs no power and is crafted shapelessly from a **Crafting Table + Andesite Casing + Netherite Sheet**. Breaking it returns the stored wrench and any legacy materials.
 
-With the wrench in the main hand, **hold X** to show the toolbox-style wheel. Click a region to toggle its activation; release to close. Rebind the key in settings. Starts with **one active slot**, so enabling another replaces it. Convert the finished wrench once more in a **Netherite Converter** using **4000mB (four buckets) of Nether Essence** to permanently unlock the **second active slot**; installed modules, activation state, stored fluids and components are preserved, and upgraded wrenches do not process again. The table no longer accepts upgrade templates; legacy stored templates can be recovered. Enabling a third disables the oldest activation. Both active modules retain their passive effects; identical effects do not stack. The **most recently activated right-click module takes priority**; passive modules do not take over right-click. Numbers show activation order, and the Right-click badge marks the current action.
+With the wrench in the main hand, **hold X** to show the toolbox-style wheel. Click a region to toggle its activation; release to close. Rebind the key in settings. Starts with **one active slot**, so enabling another replaces it. Convert the finished wrench once more in a **Netherite Converter** using **4000mB (four buckets) of Nether Essence** to permanently unlock the **second active slot**; installed modules, activation state, stored fluids and components are preserved, and upgraded wrenches do not process again. The table no longer accepts upgrade templates; legacy stored templates can be recovered. Enabling a new right-click module first disables incompatible active actions while keeping compatible passive modules; if the two-slot limit is still exceeded, the oldest activation is disabled. **Fan + Saw** is the only compatible right-click pair: hold right-click to apply airflow and continuous saw damage together, with Shift still switching push/pull. Blocks obstruct both effects. Passive effects coexist without duplicate stacking. Numbers show activation order, and Right-click badges mark all active right-click modules.
 
 The translucent background is drawn before the wheel's icons, text and tooltips. Menu blur is not applied to the wheel.
 
@@ -573,5 +573,5 @@ Existing worlds keep their own `serverconfig/createnetherite-server.toml`. If de
 Build output:
 
 ```text
-build/libs/createnetherite-1.21.1-0.3.30.jar
+build/libs/createnetherite-1.21.1-0.3.31.jar
 ```

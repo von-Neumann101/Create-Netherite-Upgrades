@@ -26,7 +26,7 @@ public final class WrenchSaw {
 
     private static boolean canStart(Player player, InteractionHand hand, net.minecraft.world.entity.Entity target) {
         return hand == InteractionHand.MAIN_HAND && player.isAlive() && !player.isSpectator()
-            && WrenchData.active(player) == WrenchModule.SAW && target instanceof LivingEntity living && living.isAlive()
+            && WrenchData.has(player, WrenchModule.SAW) && target instanceof LivingEntity living && living.isAlive()
             && target.level() == player.level() && player.canInteractWithEntity(target, 0) && player.hasLineOfSight(target);
     }
 
@@ -48,7 +48,7 @@ public final class WrenchSaw {
         if (player.level().isClientSide || !player.isAlive() || player.isSpectator()
             || !player.isUsingItem() || player.getUsedItemHand() != InteractionHand.MAIN_HAND
             || player.getMainHandItem() != wrench || player.getUseItem() != wrench
-            || WrenchData.active(wrench) != WrenchModule.SAW) return;
+            || !WrenchData.has(wrench, WrenchModule.SAW)) return;
         var start = player.getEyePosition();
         var direction = player.getViewVector(1);
         double range = player.entityInteractionRange();

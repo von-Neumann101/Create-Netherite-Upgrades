@@ -27,7 +27,7 @@ public final class WrenchAirflow {
 
     public static void tick(Player player, ItemStack wrench) {
         if (player.level().isClientSide || !player.isAlive() || player.isSpectator()
-            || player.getMainHandItem() != wrench || WrenchData.active(wrench) != WrenchModule.FAN) return;
+            || player.getMainHandItem() != wrench || !WrenchData.has(wrench, WrenchModule.FAN)) return;
         boolean pulling = WrenchData.fanPull(wrench);
         double range = range(pulling);
         Vec3 origin = player.getEyePosition();

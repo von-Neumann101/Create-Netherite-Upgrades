@@ -384,7 +384,8 @@ public final class NetheriteConverterGameTest {
     public static void secondActivationSlotNeedsFourBucketsAndPreservesWrenchState(GameTestHelper helper) {
         var f = fixture(helper, 180, 64);
         var wrench = new ItemStack(BoosterItems.NETHERITE_NETHERITE_WRENCH.get());
-        var modules = List.of(new ItemStack(BoosterItems.NETHERITE_ENCASED_FAN.get()), new ItemStack(BoosterItems.NETHERITE_FLUID_TANK.get()));
+        var modules = List.of(new ItemStack(BoosterItems.NETHERITE_ENCASED_FAN.get()),
+            new ItemStack(BoosterItems.POWERFUL_MECHANICAL_PUMP.get()), new ItemStack(BoosterItems.NETHERITE_FLUID_TANK.get()));
         WrenchData.setModules(wrench, modules);
         WrenchData.toggleSlot(wrench, 0);
         WrenchData.setFanPull(wrench, true);
@@ -408,7 +409,7 @@ public final class NetheriteConverterGameTest {
             helper.assertTrue(ItemStack.matches(output, expected) && f.be.getEssenceTank().getFluidAmount() == 4000
                 && f.be.getProgress() == 0, "already upgraded wrench never repeats or spends more essence");
             WrenchData.toggleSlot(output, 1);
-            helper.assertTrue(WrenchData.activeSlots(output).equals(List.of(0, 1)), "upgraded wrench can activate both modules");
+            helper.assertTrue(WrenchData.activeSlots(output).equals(List.of(0, 1)), "upgraded wrench can activate both compatible modules");
             cleanup(helper, f); helper.succeed();
         });
     }

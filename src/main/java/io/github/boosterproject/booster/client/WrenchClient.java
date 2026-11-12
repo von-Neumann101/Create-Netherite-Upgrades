@@ -51,7 +51,7 @@ public final class WrenchClient {
             return;
         }
         var module = WrenchData.active(held);
-        if (pressed && module == WrenchModule.FAN) PacketDistributor.sendToServer(new WrenchNetworking.Action(WrenchNetworking.TOGGLE_FAN, 0));
+        if (pressed && WrenchData.has(held, WrenchModule.FAN)) PacketDistributor.sendToServer(new WrenchNetworking.Action(WrenchNetworking.TOGGLE_FAN, 0));
         if (pressed && module == WrenchModule.TANK) mc.setScreen(new WrenchFluidScreen(held));
     }
 }
