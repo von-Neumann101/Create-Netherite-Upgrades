@@ -11,7 +11,6 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import net.neoforged.neoforge.items.SlotItemHandler;
@@ -43,7 +42,7 @@ public final class WrenchMenu extends AbstractContainerMenu {
         inputs = table != null ? table.getInventory() : new ItemStackHandler(2) {
             @Override public int getSlotLimit(int slot) { return slot == 0 ? 1 : 64; }
             @Override public boolean isItemValid(int slot, ItemStack stack) {
-                return slot == 0 ? WrenchData.isWrench(stack) : stack.is(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE);
+                return slot == 0 && WrenchData.isWrench(stack);
             }
         };
         modules = table != null ? table.getModules() : new ItemStackHandler(WrenchData.SLOTS) {
@@ -69,6 +68,7 @@ public final class WrenchMenu extends AbstractContainerMenu {
 
     private void addInputSlot(int index, int x, int y) {
         addSlot(new SlotItemHandler(inputs, index, x, y) {
+            @Override public boolean isActive() { return index == 0 || hasItem(); }
             @Override public void setChanged() {
                 super.setChanged();
                 if (table != null && stillValid(viewer)) table.inventoryChanged(index);
@@ -77,7 +77,6 @@ public final class WrenchMenu extends AbstractContainerMenu {
     }
 
     public int activationLimit() { return WrenchData.isWrench(inputs.getStackInSlot(0)) ? WrenchData.activationLimit(inputs.getStackInSlot(0)) : 0; }
-    public boolean canUpgrade() { return activationLimit() == 1 && inputs.getStackInSlot(1).is(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE); }
     public int loadedCount() {
         int count = 0;
         for (int i = 0; i < WrenchData.SLOTS; i++) if (!modules.getStackInSlot(i).isEmpty()) count++;
@@ -89,12 +88,6 @@ public final class WrenchMenu extends AbstractContainerMenu {
         return player == viewer && table != null && !table.isRemoved() && table.getLevel() == player.level()
             && dimension.equals(player.level().dimension()) && player.level().getBlockEntity(pos) == table
             && player.level().getBlockState(pos).is(BoosterBlocks.ASSEMBLY_TABLE.get()) && player.distanceToSqr(pos.getCenter()) <= 64;
-    }
-
-    @Override public boolean clickMenuButton(Player player, int button) {
-        if (button != 0 || !stillValid(player) || player.level().isClientSide || table == null || !table.upgrade()) return false;
-        broadcastChanges();
-        return true;
     }
 
     @Override public void clicked(int slot, int button, ClickType type, Player player) {
@@ -112,7 +105,6 @@ public final class WrenchMenu extends AbstractContainerMenu {
         boolean moved;
         if (index < PLAYER_START) moved = moveItemStackTo(stack, PLAYER_START, slots.size(), true);
         else if (WrenchData.isWrench(stack)) moved = moveItemStackTo(stack, 0, 1, false);
-        else if (stack.is(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE)) moved = moveItemStackTo(stack, 1, MODULE_START, false);
         else {
             moved = false;
             if (WrenchModule.fromStack(stack) != null) {

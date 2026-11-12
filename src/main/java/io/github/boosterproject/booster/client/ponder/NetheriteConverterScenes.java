@@ -91,6 +91,11 @@ public final class NetheriteConverterScenes {
         fluidSupply(scene, util, 4000);
         process(scene, util, new ItemStack(BoosterItems.NETHERITE_WRENCH.get()),
             new ItemStack(BoosterItems.NETHERITE_NETHERITE_WRENCH.get()), "converter_wrench_advanced", 0);
+        fluidSupply(scene, util, 4000);
+        var upgraded = new ItemStack(BoosterItems.NETHERITE_NETHERITE_WRENCH.get());
+        io.github.boosterproject.booster.content.equipment.wrench.WrenchData.unlockSecondSlot(upgraded);
+        process(scene, util, new ItemStack(BoosterItems.NETHERITE_NETHERITE_WRENCH.get()), upgraded,
+            "converter_wrench_slots", 0);
         collect(scene, util);
         scene.markAsFinished();
     }

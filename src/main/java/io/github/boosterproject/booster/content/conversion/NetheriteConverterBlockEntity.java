@@ -10,6 +10,7 @@ import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour
 import io.github.boosterproject.booster.registry.BoosterBlockEntityTypes;
 import io.github.boosterproject.booster.registry.BoosterFluids;
 import io.github.boosterproject.booster.registry.BoosterRecipeTypes;
+import io.github.boosterproject.booster.content.equipment.wrench.WrenchData;
 import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -115,6 +116,13 @@ public class NetheriteConverterBlockEntity extends KineticBlockEntity {
 
     private ItemStack upgrade(ItemStack input, ItemStack result) {
         if (result.isEmpty()) return ItemStack.EMPTY;
+        if (WrenchData.isWrench(input) && WrenchData.isWrench(result) && WrenchData.activationLimit(result) == 2) {
+            // Merge this state change into the actual wrench. Replacing CUSTOM_DATA
+            // with the recipe's minimal result would erase fluids and activation order.
+            ItemStack output = input.copyWithCount(1);
+            WrenchData.unlockSecondSlot(output);
+            return output;
+        }
         ItemStack output = input.transmuteCopy(result.getItem(), 1);
         output.applyComponents(result.getComponentsPatch());
         CustomData stored = output.get(DataComponents.BLOCK_ENTITY_DATA);

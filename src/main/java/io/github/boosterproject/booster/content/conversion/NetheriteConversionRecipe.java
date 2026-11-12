@@ -11,6 +11,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
+import io.github.boosterproject.booster.content.equipment.wrench.WrenchData;
 
 public class NetheriteConversionRecipe extends StandardProcessingRecipe<SingleRecipeInput> {
     private int essenceAmount = 1000;
@@ -18,7 +19,14 @@ public class NetheriteConversionRecipe extends StandardProcessingRecipe<SingleRe
     public int getEssenceAmount() { return essenceAmount; }
     @Override protected int getMaxInputCount() { return 1; }
     @Override protected int getMaxOutputCount() { return 1; }
-    @Override public boolean matches(SingleRecipeInput input, Level level) { return ingredients.size() == 1 && ingredients.getFirst().test(input.item()); }
+    public boolean upgradesWrenchActivation() {
+        return !getRollableResults().isEmpty() && WrenchData.isWrench(getRollableResults().getFirst().getStack())
+            && WrenchData.activationLimit(getRollableResults().getFirst().getStack()) == 2;
+    }
+    @Override public boolean matches(SingleRecipeInput input, Level level) {
+        if (ingredients.size() != 1 || !ingredients.getFirst().test(input.item())) return false;
+        return !upgradesWrenchActivation() || WrenchData.isWrench(input.item()) && WrenchData.activationLimit(input.item()) < 2;
+    }
 
     public static final class Serializer implements RecipeSerializer<NetheriteConversionRecipe> {
         private final StandardProcessingRecipe.Serializer<NetheriteConversionRecipe> base = new StandardProcessingRecipe.Serializer<>(NetheriteConversionRecipe::new);

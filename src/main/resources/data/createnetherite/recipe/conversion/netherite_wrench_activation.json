@@ -1,0 +1,12 @@
+{
+  "type": "createnetherite:netherite_conversion",
+  "ingredients": [{ "item": "createnetherite:netherite_netherite_wrench" }],
+  "results": [{
+    "id": "createnetherite:netherite_netherite_wrench",
+    "count": 1,
+    "components": {
+      "minecraft:custom_data": { "NetheriteWrench": { "ActivationLimit": 2 } }
+    }
+  }],
+  "fluid_amount": 4000
+}

@@ -30,7 +30,7 @@ import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
 @GameTestHolder(Booster.MOD_ID)
 @PrefixGameTestTemplate(false)
 public final class NetheriteConverterPonderGameTest {
-    @GameTest(template = "wireless_empty", timeoutTicks = 750)
+    @GameTest(template = "wireless_empty", timeoutTicks = 950)
     public static void tutorialLayoutSupportsPipeSupplyMachineAndBothWrenchUpgrades(GameTestHelper helper) throws Exception {
         var level = helper.getLevel();
         var structure = new StructureTemplate();
@@ -78,6 +78,12 @@ public final class NetheriteConverterPonderGameTest {
                 stage[0] = 3; started[0] = -1;
             } else if (stage[0] == 3 && depot.getHeldItem().is(BoosterItems.NETHERITE_NETHERITE_WRENCH.get())) {
                 helper.assertTrue(now - started[0] >= 99 && machine.getEssenceTank().isEmpty(), "advanced wrench consumes exactly4000mB after a full five seconds");
+                helper.assertTrue(io.github.boosterproject.booster.content.equipment.wrench.WrenchData.activationLimit(depot.getHeldItem()) == 1, "crafting advanced wrench retains its initial single active slot");
+                var supply = level.getCapability(net.neoforged.neoforge.capabilities.Capabilities.FluidHandler.BLOCK, source, null);
+                helper.assertTrue(supply.fill(new net.neoforged.neoforge.fluids.FluidStack(BoosterFluids.NETHER_ESSENCE.get(), 4000), net.neoforged.neoforge.fluids.capability.IFluidHandler.FluidAction.EXECUTE) == 4000, "four more buckets supply the active-slot upgrade");
+                stage[0] = 4; started[0] = -1;
+            } else if (stage[0] == 4 && io.github.boosterproject.booster.content.equipment.wrench.WrenchData.activationLimit(depot.getHeldItem()) == 2) {
+                helper.assertTrue(now - started[0] >= 99 && machine.getEssenceTank().isEmpty(), "second active slot consumes another4000mB in five seconds");
                 for (int x = 0; x < structure.getSize().getX(); x++) for (int y = 0; y < structure.getSize().getY(); y++)
                     for (int z = 0; z < structure.getSize().getZ(); z++) level.removeBlock(origin.offset(x, y, z), false);
                 helper.succeed();

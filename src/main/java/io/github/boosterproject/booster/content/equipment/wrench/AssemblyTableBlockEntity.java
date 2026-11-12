@@ -12,20 +12,19 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.items.ItemStackHandler;
 
-/** The module handler is a shared editable view; only the two input stacks own items. */
+/** Shared module view; the second saved input is retained only to recover legacy materials. */
 public final class AssemblyTableBlockEntity extends BlockEntity implements MenuProvider {
     private boolean loadingModules;
     private final ItemStackHandler inventory = new ItemStackHandler(2) {
         @Override public void setSize(int size) { super.setSize(2); }
         @Override public int getSlotLimit(int slot) { return slot == 0 ? 1 : 64; }
         @Override public boolean isItemValid(int slot, ItemStack stack) {
-            return slot == 0 ? WrenchData.isWrench(stack) : stack.is(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE);
+            return slot == 0 && WrenchData.isWrench(stack);
         }
         @Override protected void onContentsChanged(int slot) { inventoryChanged(slot); }
         @Override protected void onLoad() { loadModules(); }
@@ -74,17 +73,6 @@ public final class AssemblyTableBlockEntity extends BlockEntity implements MenuP
         for (int i = 0; i < WrenchData.SLOTS; i++) stored.add(modules.getStackInSlot(i));
         WrenchData.setModules(wrench, stored);
         contentsChanged();
-    }
-
-    public boolean upgrade() {
-        if (level != null && level.isClientSide) return false;
-        var wrench = inventory.getStackInSlot(0);
-        var template = inventory.getStackInSlot(1);
-        if (!WrenchData.isWrench(wrench) || !template.is(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE)
-            || !WrenchData.unlockSecondSlot(wrench)) return false;
-        inventory.extractItem(1, 1, false);
-        contentsChanged();
-        return true;
     }
 
     private void contentsChanged() {

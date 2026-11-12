@@ -40,6 +40,7 @@ public final class NetheriteConversionCategory extends CreateRecipeCategory<Neth
         var font = Minecraft.getInstance().font;
         graphics.drawCenteredString(font, Component.translatable("jei.createnetherite.conversion_conditions",
             NetheriteConverterBlockEntity.PROCESSING_TICKS / 20, NetheriteConverterBlockEntity.REQUIRED_STRESS), 88, 63, 0x555555);
-        graphics.drawCenteredString(font, Component.translatable("jei.createnetherite.fluid_cost", recipe.getEssenceAmount()), 88, 79, 0x555555);
+        graphics.drawCenteredString(font, Component.translatable(recipe.upgradesWrenchActivation()
+            ? "jei.createnetherite.activation_upgrade" : "jei.createnetherite.fluid_cost", recipe.getEssenceAmount()), 88, 79, 0x555555);
     }
 }

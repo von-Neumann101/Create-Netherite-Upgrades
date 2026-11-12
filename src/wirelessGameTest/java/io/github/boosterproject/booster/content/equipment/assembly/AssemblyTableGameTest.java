@@ -122,24 +122,28 @@ public final class AssemblyTableGameTest {
     }
 
     @GameTest(template = "wireless_empty")
-    public static void templateUnlockConsumesOnceAndSurvivesReload(GameTestHelper helper) {
+    public static void legacyTemplatesAreRecoverableButCannotUnlockSlots(GameTestHelper helper) {
         var table = place(helper);
         var player = viewer(helper, table);
         var menu = new WrenchMenu(22, player.getInventory(), table);
         table.getInventory().setStackInSlot(1, new ItemStack(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE, 3));
         helper.assertTrue(!menu.clickMenuButton(player, 0) && table.getInventory().getStackInSlot(1).getCount() == 3, "template alone cannot buy an upgrade");
         table.getInventory().setStackInSlot(0, wrench());
-        helper.assertTrue(menu.clickMenuButton(player, 0) && WrenchData.activationLimit(menu.getSlot(0).getItem()) == 2
-            && table.getInventory().getStackInSlot(1).getCount() == 2, "upgrade consumes exactly one vanilla template");
+        helper.assertTrue(!menu.clickMenuButton(player, 0) && WrenchData.activationLimit(menu.getSlot(0).getItem()) == 1
+            && table.getInventory().getStackInSlot(1).getCount() == 3, "template upgrade is retired and consumes nothing");
         helper.assertTrue(!menu.clickMenuButton(player, 0) && !menu.clickMenuButton(player, 1)
-            && table.getInventory().getStackInSlot(1).getCount() == 2, "repeated upgrade and obsolete activation buttons consume nothing");
+            && table.getInventory().getStackInSlot(1).getCount() == 3, "obsolete buttons cannot consume legacy materials");
+        helper.assertTrue(!menu.getSlot(1).mayPlace(new ItemStack(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE))
+            && !table.getInventory().isItemValid(1, new ItemStack(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE)), "new template deposits are rejected");
+        WrenchData.unlockSecondSlot(menu.getSlot(0).getItem());
         menu.removed(player);
         var restored = new AssemblyTableBlockEntity(table.getBlockPos(), table.getBlockState());
         restored.setLevel(helper.getLevel());
         restored.loadWithComponents(table.saveWithoutMetadata(helper.getLevel().registryAccess()), helper.getLevel().registryAccess());
         helper.assertTrue(WrenchData.activationLimit(restored.getInventory().getStackInSlot(0)) == 2
-            && restored.getInventory().getStackInSlot(1).getCount() == 2, "closing keeps the actual inputs and permanent upgrade across reload");
-        helper.assertTrue(!restored.upgrade() && restored.getInventory().getStackInSlot(1).getCount() == 2, "reloaded permanent upgrade cannot consume a second template");
+            && restored.getInventory().getStackInSlot(1).getCount() == 3, "existing upgraded wrench and legacy materials survive reload");
+        helper.assertTrue(!menu.quickMoveStack(player, 1).isEmpty() && table.getInventory().getStackInSlot(1).isEmpty(), "legacy templates can be taken back");
+        helper.assertTrue(!menu.getSlot(1).isActive(), "empty retired slot is hidden");
         helper.succeed();
     }
 

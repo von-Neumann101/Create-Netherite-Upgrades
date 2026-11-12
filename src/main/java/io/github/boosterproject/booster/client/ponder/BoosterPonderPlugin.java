@@ -42,7 +42,8 @@ public class BoosterPonderPlugin implements PonderPlugin {
         helper.registerSharedText("converter_process", "Process a regular machine for five continuous seconds, consuming only1000mB essence.");
         helper.registerSharedText("converter_collect", "Right-click empty-handed to collect the result. Put in another item to continue converting.");
         helper.registerSharedText("converter_wrench_craft", "Craft a Create Wrench with one Netherite Sheet in any arrangement to make a Netherite Wrench.");
-        helper.registerSharedText("converter_wrench_supply", "Pipe in essence:1000mB for the basic wrench conversion,4000mB for the advanced upgrade.");
+        helper.registerSharedText("converter_wrench_supply", "Pipe in essence:1000mB for the basic wrench,4000mB for each advanced crafting or active-slot upgrade.");
+        helper.registerSharedText("converter_wrench_slots", "Convert the finished advanced wrench once more with4000mB essence to unlock its second active slot. Installed modules and fluids are preserved.");
         helper.registerSharedText("converter_wrench_basic", "Process a Create Wrench below for five seconds and1000mB essence to obtain a Netherite Wrench.");
         helper.registerSharedText("converter_wrench_advanced", "Process a Netherite Wrench below for five seconds and4000mB essence to obtain the Netherite Netherite Wrench.");
         helper.registerSharedText("grip_offhand", "In Survival, put the Netherite Extendo Grip in your offhand.");

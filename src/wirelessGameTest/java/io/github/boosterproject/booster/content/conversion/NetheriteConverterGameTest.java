@@ -1,6 +1,7 @@
 package io.github.boosterproject.booster.content.conversion;
 
 import io.github.boosterproject.booster.Booster;
+import io.github.boosterproject.booster.content.equipment.wrench.WrenchData;
 import com.mojang.authlib.GameProfile;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.kinetics.motor.CreativeMotorBlock;
@@ -377,6 +378,53 @@ public final class NetheriteConverterGameTest {
                 "one five-second belt operation upgrades only one input and preserves the waiting remainder");
             for (BlockPos pos : List.of(machine, beltDrive, machineDrive, controller, controller.south(), controller.south(2))) level.removeBlock(pos, false);
         });
+    }
+
+    @GameTest(template = "wireless_empty", timeoutTicks = 400)
+    public static void secondActivationSlotNeedsFourBucketsAndPreservesWrenchState(GameTestHelper helper) {
+        var f = fixture(helper, 180, 64);
+        var wrench = new ItemStack(BoosterItems.NETHERITE_NETHERITE_WRENCH.get());
+        var modules = List.of(new ItemStack(BoosterItems.NETHERITE_ENCASED_FAN.get()), new ItemStack(BoosterItems.NETHERITE_FLUID_TANK.get()));
+        WrenchData.setModules(wrench, modules);
+        WrenchData.toggleSlot(wrench, 0);
+        WrenchData.setFanPull(wrench, true);
+        WrenchData.setFluids(wrench, List.of(new FluidStack(Fluids.WATER, 2300)), helper.getLevel().registryAccess());
+        wrench.set(DataComponents.CUSTOM_NAME, Component.literal("Keep my configured wrench"));
+        var root = wrench.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag(); root.putString("OtherMod", "keep");
+        wrench.set(DataComponents.CUSTOM_DATA, CustomData.of(root));
+        var expected = wrench.copy(); WrenchData.unlockSecondSlot(expected);
+        helper.runAfterDelay(5, () -> { supply(f, 3999); put(f, wrench); });
+        helper.runAfterDelay(120, () -> {
+            helper.assertTrue(ItemStack.matches(find(f.inventory(), wrench.getItem()), wrench) && f.be.getProgress() == 0
+                && f.be.getEssenceTank().getFluidAmount() == 3999, "3999mB cannot start or alter the configured wrench");
+            supply(f, 1);
+        });
+        helper.runAfterDelay(230, () -> {
+            helper.assertTrue(ItemStack.matches(find(f.inventory(), wrench.getItem()), expected) && f.be.getEssenceTank().isEmpty(), "4000mB unlocks second activation and preserves all existing components");
+            supply(f, 4000);
+        });
+        helper.runAfterDelay(345, () -> {
+            var output = find(f.inventory(), wrench.getItem());
+            helper.assertTrue(ItemStack.matches(output, expected) && f.be.getEssenceTank().getFluidAmount() == 4000
+                && f.be.getProgress() == 0, "already upgraded wrench never repeats or spends more essence");
+            WrenchData.toggleSlot(output, 1);
+            helper.assertTrue(WrenchData.activeSlots(output).equals(List.of(0, 1)), "upgraded wrench can activate both modules");
+            cleanup(helper, f); helper.succeed();
+        });
+    }
+
+    @GameTest(template = "wireless_empty", timeoutTicks = 40)
+    public static void activationUpgradeRecipeComponentsAndNetworkRoundTrip(GameTestHelper helper) {
+        var holder = helper.getLevel().getRecipeManager().byKey(id("conversion/netherite_wrench_activation"));
+        helper.assertTrue(holder.isPresent(), "second activation has a real conversion recipe");
+        var recipe = (NetheriteConversionRecipe) holder.orElseThrow().value();
+        var input = new ItemStack(BoosterItems.NETHERITE_NETHERITE_WRENCH.get());
+        helper.assertTrue(recipe.getEssenceAmount() == 4000 && recipe.matches(new net.minecraft.world.item.crafting.SingleRecipeInput(input), helper.getLevel()), "fresh advanced wrench matches the four-bucket recipe");
+        WrenchData.unlockSecondSlot(input);
+        helper.assertTrue(!recipe.matches(new net.minecraft.world.item.crafting.SingleRecipeInput(input), helper.getLevel()), "two-slot wrench is excluded");
+        helper.assertTrue(WrenchData.activationLimit(recipe.getResultItem(helper.getLevel().registryAccess())) == 2, "JSON result exposes the unlocked state");
+        roundTrip(helper, recipe);
+        helper.succeed();
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})

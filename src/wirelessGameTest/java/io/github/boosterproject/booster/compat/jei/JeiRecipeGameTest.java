@@ -67,8 +67,8 @@ public final class JeiRecipeGameTest {
     public static void liveRecipesExposeEssenceAndAllConversions(GameTestHelper helper) throws Exception {
         Setup setup = setup(helper);
         helper.assertTrue(setup.recipes.get("createnetherite:netherite_mixing").size() == 1
-            && setup.recipes.get("createnetherite:netherite_conversion").size() == 20,
-            "JEI must receive the real exclusive mixing recipe and all twenty live conversions");
+            && setup.recipes.get("createnetherite:netherite_conversion").size() == 21,
+            "JEI must receive the real exclusive mixing recipe and all twenty-one live conversions");
         List<Slot> mixing = layout(setup, "netherite_mixing", "mixing/nether_essence");
         helper.assertTrue(hasItem(mixing, RecipeIngredientRole.INPUT, Items.BLAZE_POWDER)
             && hasItem(mixing, RecipeIngredientRole.INPUT, Items.NETHER_WART)
@@ -84,6 +84,12 @@ public final class JeiRecipeGameTest {
             && hasItem(conversion, RecipeIngredientRole.OUTPUT, BoosterItems.NETHERITE_NETHERITE_WRENCH.get())
             && fluid(conversion, RecipeIngredientRole.INPUT, BoosterFluids.NETHER_ESSENCE.get()) == 4000,
             "advanced wrench conversion is searchable with its basic wrench input and4000mB fluid");
+        var slots = layout(setup, "netherite_conversion", "conversion/netherite_wrench_activation");
+        helper.assertTrue(hasItem(slots, RecipeIngredientRole.INPUT, BoosterItems.NETHERITE_NETHERITE_WRENCH.get())
+            && fluid(slots, RecipeIngredientRole.INPUT, BoosterFluids.NETHER_ESSENCE.get()) == 4000
+            && slots.stream().filter(slot -> slot.role == RecipeIngredientRole.OUTPUT).flatMap(slot -> slot.ingredients.stream())
+                .anyMatch(value -> value instanceof ItemStack stack && io.github.boosterproject.booster.content.equipment.wrench.WrenchData.activationLimit(stack) == 2),
+            "JEI shows the real four-bucket active-slot upgrade and its configured output");
         var advanced = (NetheriteConversionRecipe) setup.recipes.get("createnetherite:netherite_conversion").stream()
             .filter(recipe -> recipe.id().getPath().equals("conversion/netherite_netherite_wrench")).findFirst().orElseThrow().value();
         helper.assertTrue(advanced.getEssenceAmount() == 4000

@@ -4,7 +4,7 @@
 
 当前分支：`1.21.1-NeoForge`
 
-当前模组版本：`0.3.29`
+当前模组版本：`0.3.30`
 
 # 维护状态
 
@@ -16,9 +16,9 @@ Minecraft `1.20.1` Forge 的 `main` 分支暂停更新，保留现有代码和�
 
 # JEI 配方查询
 
-安装适用于1.21.1 NeoForge的 **JEI 19.21.0.247或更新的19.x版本** 后，可用默认 `R` 查看制作方法、`U` 查看用途。普通合成和下界合金板冲压配方沿用原版／Create展示；新增“下界合金搅拌”和“下界合金转换”分类，读取当前世界的配方数据，包含全部20条转换路线和两级扳手升级。
+安装适用于1.21.1 NeoForge的 **JEI 19.21.0.247或更新的19.x版本** 后，可用默认 `R` 查看制作方法、`U` 查看用途。普通合成和下界合金板冲压配方沿用原版／Create展示；新增“下界合金搅拌”和“下界合金转换”分类，读取当前世界的配方数据，包含全部21条转换路线，含两级扳手制作与第二激活位升级。
 
-下界精华配方为 **1远古残骸＋1地狱疣＋1烈焰粉→1000mB下界精华**，无需岩浆。要求下界合金搅拌机、下界合金工作盆，以及装满4只烈焰人且正在加热的下界合金燃烧室。转换配方显示1000mB用量，高级扳手显示4000mB，均为固定5秒、2048SU；不再显示点数或板材／模板投入。精华桶仍可用注液器装满和运输，但不能右键注入转换机。
+下界精华配方为 **1远古残骸＋1地狱疣＋1烈焰粉→1000mB下界精华**，无需岩浆。要求下界合金搅拌机、下界合金工作盆，以及装满4只烈焰人且正在加热的下界合金燃烧室。转换配方显示1000mB用量，高级扳手制作与第二激活位升级各显示4000mB，均为固定5秒、2048SU；不再显示点数或板材／模板投入。精华桶仍可用注液器装满和运输，但不能右键注入转换机。
 
 JEI为可选客户端模组。开发环境需要随游戏加载JEI时，给启动命令加 `-PwithJei=true`；发布包不内置JEI。
 
@@ -226,9 +226,9 @@ JEI为可选客户端模组。开发环境需要随游戏加载JEI时，给启�
 
 将 **下界合金扳手** 放到转换机下方，消耗 **4000mB下界精华**，连续供能5秒即可制成。基础伤害 **10**（下界合金剑+2）、攻速 **1.6**，无耐久损耗，保留主手 **方块触及距离+2** 和 Create 扳手旋转、拆卸功能。
 
-先将扳手放入 **装配台** 中央槽，再往周围 **8个真实槽位** 装入下列工作方块（每槽一个），也可取出；取出已激活的模块立即停用，模块物品组件和储液随扳手保存。装配台无需动力，用 **工作台＋安山机壳＋下界合金板** 无序合成，拆除会返还内部扳手和剩余模板。
+先将扳手放入 **装配台** 中央槽，再往周围 **8个真实槽位** 装入下列工作方块（每槽一个），也可取出；取出已激活的模块立即停用，模块物品组件和储液随扳手保存。装配台无需动力，用 **工作台＋安山机壳＋下界合金板** 无序合成，拆除会返还内部扳手和旧版遗留材料。
 
-主手持有扳手，**按住 X** 显示工具箱风格轮盘，点击区域切换该模块的激活状态，松开关闭；按键可在设置中修改。初始 **1个激活位**，开启另一模块会关闭原模块；在装配台放入一张原版 **下界合金升级模板** 并点击升级，可永久解锁 **第2个激活位**。已激活两个时再开启一个，会关闭最早激活者。两个模块的被动效果共同生效，同种效果不重复叠加；**最近激活的右键模块优先**，激活被动模块不会抢占右键。轮盘中的数字表示激活顺序，“右键”标记当前右键模块。
+主手持有扳手，**按住 X** 显示工具箱风格轮盘，点击区域切换该模块的激活状态，松开关闭；按键可在设置中修改。初始 **1个激活位**，开启另一模块会关闭原模块；将成品扳手放在 **下界合金转换机** 下再加工一次，消耗 **4000mB（4桶）下界精华**，可永久解锁 **第2个激活位**；保留已装模块、激活状态、储液及物品组件，已解锁的扳手不会重复加工。装配台不再接收升级模板，旧版遗留模板可以取回。已激活两个时再开启一个，会关闭最早激活者。两个模块的被动效果共同生效，同种效果不重复叠加；**最近激活的右键模块优先**，激活被动模块不会抢占右键。轮盘中的数字表示激活顺序，“右键”标记当前右键模块。
 
 轮盘使用半透明背景，背景先于图标、文字和提示绘制，不对轮盘施加菜单模糊。
 
@@ -285,7 +285,7 @@ createnetherite-server.toml
 构建产物：
 
 ```text
-build/libs/createnetherite-1.21.1-0.3.29.jar
+build/libs/createnetherite-1.21.1-0.3.30.jar
 ```
 
 # Introduction
@@ -294,7 +294,7 @@ build/libs/createnetherite-1.21.1-0.3.29.jar
 
 Current branch: `1.21.1-NeoForge`
 
-Current mod version: `0.3.29`
+Current mod version: `0.3.30`
 
 # Maintenance status
 
@@ -306,9 +306,9 @@ Technical documentation (Chinese): [NeoForge 1.21.1](docs/neoforge-1.21.1.md) ·
 
 # JEI recipes
 
-With **JEI 19.21.0.247 or a newer 19.x release for 1.21.1 NeoForge**, use the default `R` to view recipes and `U` to view uses. Crafting and sheet pressing retain their native displays. New Netherite Mixing and Netherite Conversion categories read the current world's recipe data, including all 20 conversions and both wrench upgrade steps.
+With **JEI 19.21.0.247 or a newer 19.x release for 1.21.1 NeoForge**, use the default `R` to view recipes and `U` to view uses. Crafting and sheet pressing retain their native displays. New Netherite Mixing and Netherite Conversion categories read the current world's recipe data, including all 21 conversions, including both wrench tiers and the second active-slot upgrade.
 
-Nether Essence uses **1 Ancient Debris +1 Nether Wart +1 Blaze Powder →1000mB essence**, with no lava. Requires a Netherite Mixer, Netherite Basin and a fueled Netherite Burner containing all four blazes. JEI shows1000mB per normal conversion and4000mB for the advanced wrench, fixed five seconds and2048SU, with no point-source slots. Essence buckets remain transport/filling items and cannot fill the converter by right-click.
+Nether Essence uses **1 Ancient Debris +1 Nether Wart +1 Blaze Powder →1000mB essence**, with no lava. Requires a Netherite Mixer, Netherite Basin and a fueled Netherite Burner containing all four blazes. JEI shows1000mB per normal conversion and4000mB each for advanced wrench crafting and the second active-slot upgrade, fixed five seconds and2048SU, with no point-source slots. Essence buckets remain transport/filling items and cannot fill the converter by right-click.
 
 JEI is optional and is not bundled in the release. Add `-PwithJei=true` to development launch commands to load it locally.
 
@@ -514,9 +514,9 @@ Craft shapelessly from a **Create Wrench + Netherite Sheet**, or convert a Creat
 
 Convert a **Netherite Wrench** using **4000mB Nether Essence** with five seconds of uninterrupted power. Base attack damage is **10** (Netherite Sword +2), attack speed **1.6**, with no durability loss. Retains **2 extra blocks of main-hand block reach** and Create wrench rotation and dismantling.
 
-Put the wrench in the center slot of an **Assembly Table**, then install or remove the listed blocks in its **eight real module slots**, one per slot. Removing an active module disables it; item components and fluids stay with the wrench. The table needs no power and is crafted shapelessly from a **Crafting Table + Andesite Casing + Netherite Sheet**. Breaking it returns the stored wrench and remaining templates.
+Put the wrench in the center slot of an **Assembly Table**, then install or remove the listed blocks in its **eight real module slots**, one per slot. Removing an active module disables it; item components and fluids stay with the wrench. The table needs no power and is crafted shapelessly from a **Crafting Table + Andesite Casing + Netherite Sheet**. Breaking it returns the stored wrench and any legacy materials.
 
-With the wrench in the main hand, **hold X** to show the toolbox-style wheel. Click a region to toggle its activation; release to close. Rebind the key in settings. Starts with **one active slot**, so enabling another replaces it. Insert one vanilla **Netherite Upgrade Smithing Template** at the table and click Upgrade to permanently unlock the **second active slot**. Enabling a third disables the oldest activation. Both active modules retain their passive effects; identical effects do not stack. The **most recently activated right-click module takes priority**; passive modules do not take over right-click. Numbers show activation order, and the Right-click badge marks the current action.
+With the wrench in the main hand, **hold X** to show the toolbox-style wheel. Click a region to toggle its activation; release to close. Rebind the key in settings. Starts with **one active slot**, so enabling another replaces it. Convert the finished wrench once more in a **Netherite Converter** using **4000mB (four buckets) of Nether Essence** to permanently unlock the **second active slot**; installed modules, activation state, stored fluids and components are preserved, and upgraded wrenches do not process again. The table no longer accepts upgrade templates; legacy stored templates can be recovered. Enabling a third disables the oldest activation. Both active modules retain their passive effects; identical effects do not stack. The **most recently activated right-click module takes priority**; passive modules do not take over right-click. Numbers show activation order, and the Right-click badge marks the current action.
 
 The translucent background is drawn before the wheel's icons, text and tooltips. Menu blur is not applied to the wheel.
 
@@ -573,5 +573,5 @@ Existing worlds keep their own `serverconfig/createnetherite-server.toml`. If de
 Build output:
 
 ```text
-build/libs/createnetherite-1.21.1-0.3.29.jar
+build/libs/createnetherite-1.21.1-0.3.30.jar
 ```

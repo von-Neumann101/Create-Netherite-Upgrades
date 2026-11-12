@@ -46,12 +46,14 @@ public final class BoosterTooltips {
             BoosterItems.NETHERITE_SMART_CHUTE.get(),
             BoosterItems.NETHERITE_FILTER.get(),
             BoosterItems.NETHERITE_DEPLOYER.get(),
-            BoosterItems.NETHERITE_NETHERITE.get(),
-            BoosterItems.NETHERITE_NETHERITE_WRENCH.get()
+            BoosterItems.NETHERITE_NETHERITE.get()
         )) {
             TooltipModifier.REGISTRY.register(item, new ItemDescription.Modifier(item, Palette.STANDARD_CREATE));
         }
 
+        registerWithDetails(BoosterItems.NETHERITE_NETHERITE_WRENCH.get(), stack -> List.of(Component.translatable(
+            "wrench.createnetherite.activation_limit",
+            io.github.boosterproject.booster.content.equipment.wrench.WrenchData.activationLimit(stack))));
         registerWithDetails(BoosterItems.NETHERITE_FLUID_TANK.get(), stack -> List.of(Component.translatable(
             "tooltip.createnetherite.netherite_fluid_tank",
             NetheriteFluidTankBlockEntity.getConfiguredCapacityMultiplier()

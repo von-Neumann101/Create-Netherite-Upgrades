@@ -9,9 +9,9 @@
 ## 版本与分支
 
 - 分支：`1.21.1-NeoForge`
-- 源码核对日期：`2026-11-11`
-- 本次更新基线提交：`95bbdd1916145a7031e694b7d650a0ac0a4651db`（0.3.28；0.3.29 便捷应力装置见本文末）
-- 模组版本：`0.3.29`
+- 源码核对日期：`2026-11-12`
+- 本次更新基线提交：`a488689d67ba4e16fdb958d499fbf6e26094ed43`（0.3.29；0.3.30 扳手激活位转换见本文末）
+- 模组版本：`0.3.30`
 - Mod id：`createnetherite`
 - 主包名：`io.github.boosterproject.booster`
 - Minecraft：`1.21.1`
@@ -74,7 +74,7 @@
 按当前配置生成的主 jar：
 
 ```text
-build/libs/createnetherite-1.21.1-0.3.29.jar
+build/libs/createnetherite-1.21.1-0.3.30.jar
 ```
 
 ## Gradle 与依赖
@@ -1350,3 +1350,17 @@ JEI用量槽读取每条配方的getEssenceAmount，移除点数来源槽和16�
 验证：新增14项真实服务器测试，覆盖六方向预览与放置一致、两件物品同时部署及分别回收／冷却、交接与序列化、非法与被保护的放置、原生受保护拆卸、真实2048SU网络过载和恢复、无玩家持有时自动消失、精确运行／冷却边界、卸载断电与有效重载、旧部署隔离、首次tick及首次tick前移除时的完整网络容量对账、无重复掉落和下界合金保护属性。审查发现的放置事件、卸载残留动力、存档残留容量及拆卸保护均先在 `build/portable-review-red.log` 复现；补充的首次tick及首次tick前移除路径分别在 `build/portable-first-tick-red.log`、`build/portable-before-tick-removal-red.log` 复现后修正。上下模型朝向通过原版BlockModelRotation规则核对。
 
 最终 `build/portable-release-with-jei.log` 中205项回归及176项GameTest通过；`build/portable-release-without-jei.log` 中205项回归及172项GameTest通过。独立只读复核无待修问题。JAR元数据0.3.29，304项生产资源、241个生产类、215个有效JSON、84张可读PNG，中英文各225键；新物品暂未包含任何配方，QA与JEI运行库未嵌入。未启动客户端，实际预览、模型及物品状态条由用户检查。
+
+## 扳手第二激活位转换（0.3.30）
+
+本节取代历史装配台消耗原版升级模板解锁第二激活位的方式。高级扳手仍初始一个激活位；现有 `conversion/netherite_netherite_wrench` 仍花4000mB把基础下界合金扳手制成高级扳手。新增 `conversion/netherite_wrench_activation`，把成品高级扳手再转换一次，消耗4000mB，解锁第二激活位；固定2048SU、连续100tick的加工规则不变。
+
+沿用现有ProcessingRecipe结果组件和JSON／网络编码，结果 `minecraft:custom_data.NetheriteWrench.ActivationLimit=2`。`NetheriteConversionRecipe.matches` 在激活位升级结果时额外拒绝非高级扳手及已经解锁的输入，避免自转换配方重复耗液。转换机针对该同物品升级复制实际输入，仅调用WrenchData.unlockSecondSlot，不把配方的最小CUSTOM_DATA覆盖整个扳手，因此CONTAINER中的8格模块、激活顺序、流体、名称及其他自定义组件保持。
+
+装配台删除upgrade方法和升级按钮；保留存档第二格以免丢失旧材料，但该格禁止放入，只在有旧物品时显示取回槽。模块与玩家背包菜单编号保持不变，旧模板能取出或随拆除掉落；已有二激活位扳手不降级。背景中模板槽由指定贴图对话移除，其他布局保持。
+
+JEI读取21条真实转换路线，新路线实际结果带二激活位组件，显示4000mB及激活位1→2。Shift概要显示当前激活位数量。转换机扳手思索追加“成品扳手再加工一次”的用法及另一次4000mB管道供液；中英文说明同步。
+
+验证：新路线先在 `build/wrench-slot-conversion-red.log` 复现三项失败（无升级配方、四桶加工未解锁、旧模板升级仍有效）。新增两项服务器用例及迁移后的装配台用例验证3999/4000mB边界、完整组件保留、双模块实际激活、已升级不再耗液、配方结果／网络往返和旧模板可取回；思索对应的真实管道流程增加第四次转换，确认高级扳手制作后仍只有一个激活位，再供4000mB才升级。`build/wrench-slot-conversion-green.log` 中无JEI174项GameTest通过；`build/wrench-slot-release-with-jei.log` 中205项回归及178项GameTest通过，JEI验证全部21条路线和新产物的二激活位组件；`build/wrench-slot-release-default-build.log` 中默认构建及205项回归通过。只读代码复核未发现待修问题。
+
+最终JAR元数据0.3.30，305项生产资源、241个生产类、216个有效JSON、84张可读PNG，中英文各226键；不含QA／测试结构或JEI运行库。装配台背景仍为288×286 RGBA，客户端未启动。
